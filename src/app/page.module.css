@@ -1,0 +1,32 @@
+.mainContainer {
+  height: 100%;
+  min-height: 100%;
+}
+
+.notice {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  border-radius: 5px;
+  gap:20px;
+  overflow: hidden;
+  border: 1px solid gainsboro;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.author {
+  font-size: 1rem;
+  font-weight: lighter;
+}
+
+.content {
+  margin-top: 10px;
+  font-size: 1rem;
+  white-space: wrap; 
+}
+
