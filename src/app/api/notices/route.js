@@ -14,21 +14,21 @@ export const GET = async (request) => {
 
         let results = null;
 
-        if (nDepartment === 'Medical'){
-            results = await Notices.find(nDepartment && { nDepartment });
+        if (nDepartment === 'Medical') {
+            results = await Notices.find({ nDepartment: nDepartment });
         } else if (nDepartment === 'Dental') {
-            results = await Notices.find(nDepartment && { nDepartment });
+            results = await Notices.find({ nDepartment: nDepartment });
         } else if (nDepartment === 'SDPC') {
-            results = await Notices.find(nDepartment && { nDepartment });
+            results = await Notices.find({ nDepartment: nDepartment });
         } else {
-            results = await Notices.findAll(); 
+            results = await Notices.find();
         }
 
         console.log(JSON.stringify(results));
 
         return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
-        return new NextResponse("Database Error", { status: 500 });
+        return new NextResponse("Database Error" + err, { status: 500 });
     }
 };
 

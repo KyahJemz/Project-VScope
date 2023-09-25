@@ -1,61 +1,60 @@
 import NextAuth from "next-auth";
-import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import User from "@/models/User";
-import connect from "@/utils/db";
-import bcrypt from "bcryptjs";
+import Accounts from "@/models/Accounts";
 
 const handler = NextAuth({
   providers: [
-    CredentialsProvider({
-      id: "credentials",
-      name: "Credentials",
-      async authorize(credentials) {
-        // Check if the user's email domain is @sscr.edu
-        const userEmail = credentials.email;
-        if (userEmail.endsWith("@sscr.edu")) {
-          await connect();
-
-          try {
-            const user = await User.findOne({
-              email: credentials.email,
-            });
-
-            if (user) {
-              const isPasswordCorrect = await bcrypt.compare(
-                credentials.password,
-                user.password
-              );
-
-              if (isPasswordCorrect) {
-                return Promise.resolve(user);
-              } else {
-                return Promise.resolve(null); // Wrong password
-              }
-            } else {
-              return Promise.resolve(null); // User not found
-            }
-          } catch (err) {
-            return Promise.resolve(null); // Error
-          }
-        } else {
-          return Promise.resolve(null); // Reject sign-in for non-sscr.edu emails
-        }
-      },
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
   pages: {
-    error: "/appointment/login",
+    error: "/login",
   },
+  callbacks: {
+    async signIn(user, account, profile) {
+        const { email, id: GoogleId, image, name } = user.user;
+        const { given_name: GoogleFirstname, family_name: GoogleLastname } = user.profile;
+    
+        if (user.account.provider === 'google' && user.profile.hd === 'sscr.edu') {
+          const encodedEmail = encodeURIComponent(email);
+
+          console.log("Google Provider user:", user.user);
+    
+          // const response = await fetch(`/api/accounts?GoogleEmail=${encodedEmail}`);
+          // if (!response.ok) {
+          //   throw new Error('Network response was not ok');
+          // }
+    
+          // const accountsData = await response.json();
+          const accountsData= [];
+    
+          if (accountsData.length === 0) {
+            const formData = new FormData();
+            formData.append('GoogleId', GoogleId);
+            formData.append('GoogleEmail', email);
+            formData.append('GoogleImage', image);
+            formData.append('GoogleName', name);
+            formData.append('GoogleFirstname', GoogleFirstname);
+            formData.append('GoogleLastname', GoogleLastname);
+    
+            const postResponse = await fetch('/api/accounts', {
+              method: 'POST',
+              body: formData,
+            });
+    
+            if (!postResponse.ok) {
+              throw new Error('Failed to create account');
+            }
+          }
+    
+          return true;
+        }
+    
+        return false;
+      },
+    }
 });
 
 export { handler as GET, handler as POST };

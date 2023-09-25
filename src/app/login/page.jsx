@@ -1,13 +1,28 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import Image from "next/image";
-import Link from "next/link";
-import Button from '@/components/Button/Button';
+import { getProviders, signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const session = useSession();
   const [activePanel, setActivePanel] = useState('clientPanel');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+
+  if (session.status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  const router = useRouter();
+  if (session.status === "authenticated") {
+    router?.push("/services");
+    
+  }
+
+
 
   const handlePanelChange = (panel) => {
     console.log("changed" + panel);
@@ -16,6 +31,7 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
+      <h1 className={styles.title}>{success ? success : "Welcome Back"}</h1>
       <div
         className={`${activePanel === 'adminPanel' ? styles.visible : styles.panel}`}>
         <h2 className={styles.title}>Admin panel</h2>
@@ -57,7 +73,7 @@ const Login = () => {
       <div
         className={`${activePanel === 'clientPanel' ? styles.visible : styles.panel}`}>
         <h2 className={styles.title}>Client panel</h2>
-        <button className={styles.googlesignin} onClick={() => console.log('Sign in using SSSC Email')}>
+        <button className={styles.googlesignin} onClick={() => {signIn("google");}}>
           Sign in using SSSC Email
         </button>
       </div>

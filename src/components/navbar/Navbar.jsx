@@ -30,7 +30,14 @@ const links = [
 ];
 
 const Navbar = () => {
-  const session = useSession();
+  const { data: session, status } = useSession();
+
+  if (status === 'authenticated') {
+    const { GoogleId, GoogleEmail, GoogleImage, GoogleName, GoogleFirstname, GoogleLastname } = session;
+    console.log(GoogleLastname,GoogleFirstname);
+  }
+
+
 
   return (
     <div className={styles.container}>
@@ -44,7 +51,7 @@ const Navbar = () => {
             {link.title}
           </Link>
         ))}
-        {session.status === "authenticated" && (
+        {status === "authenticated" && (
           <button className={styles.logout} onClick={signOut}>
             Logout
           </button>
