@@ -22,8 +22,6 @@ export const GET = async (request) => {
             results = await SDPCAppointment.find(aUsername && { aUsername });
         }
 
-        console.log(JSON.stringify(results));
-
         return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
         return new NextResponse("Database Error", { status: 500 });
@@ -81,10 +79,8 @@ export const POST = async (request) => {
 
             await newPost.save();
 
-            console.log("success");
             return new NextResponse("Post has been created", { status: 201 });
         } catch (err) {
-            console.log("failed");
             return new NextResponse("Database Error", { status: 500 });
         }
     } else {

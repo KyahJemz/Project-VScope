@@ -1,22 +1,42 @@
+"use client"
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import useSWR from 'swr';
 
-async function getData() {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts', { 
-      cache: 'no-store' 
-  })
-  if (!res.ok) {
-    throw new Error('Failed to fetch data')
-  }
- 
-  return res.json()
-}
+// functn para sa Date Formatig
+const formatDate = (timestamp) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+    const hours = new Date(timestamp).getHours();
+    const minutes = new Date(timestamp).getMinutes();
+    const amOrPm = hours >= 12 ? 'pm' : 'am';
+    const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
+    return `${formattedDate} ${formattedTime}`;
+  };
 
 export default async function Home() {
-    const data = await getData();
+
+    const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+    const { data, mutate, error, isLoading } = useSWR(
+      `/api/notices?department=`,
+      fetcher
+    );
+  
+    const sortedData = data && !isLoading
+      ? [...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .map(item => ({
+        ...item,
+        createdAt: formatDate(item.createdAt)
+      }))
+      : [];
+  
+
+
         return (
             <div className={styles.mainContainer}>
-                {data.map(item=> (
+         {isLoading ? "Loading..." : sortedData?.map(item=> (
                     <div className={styles.notice}>
                         <div className={styles.imageContainer}>
                             <Image 
@@ -28,14 +48,14 @@ export default async function Home() {
                             />
                         </div>
                         <div className={styles.body}>
-                            <div className={styles.title}>{item.title}</div>
-                            <div className={styles.author}>1321313</div>
+                            <div className={styles.title}>{item.nTitle}</div>
+                            <div className={styles.author}>{item.nDepartment}</div>
                             <div className={styles.content}>
-                                {item.body}
+                            {item.nContent}
                             </div>
                         </div>
                     </div>
                 ))}
         </div>
     );
-}
+         }
