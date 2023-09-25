@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import useSWR from "swr";
+import { useSession } from "next-auth/react";
 
 // functn para sa Date Formatig
 const formatDate = (timestamp) => {
@@ -18,18 +19,25 @@ const formatDate = (timestamp) => {
   return `${formattedDate} ${formattedTime}`;
 };
 
+
+
 const Action = (params) => {
+  const { data: session, status } = useSession();
   const [uploading, setUploading] = useState(false);
   const category = params.params.category;
   const target = params.searchParams.target;
-  console.log(category);
+  let Email = '';
 
+  if (status === 'authenticated' && session?.user?.email) {
+    Email = session.user.email;
+    console.log(Email);
+  }
 
-// taga fetch
+    // taga fetch
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-  const { data, mutate, error, isLoading } = useSWR(
-      `/api/appointments?username=${encodeURIComponent('username')}&category=${encodeURIComponent(category)}`,
+    
+  const { data, mutate, error, isLoading } =  useSWR(
+      `/api/appointments?GoogleEmail=${encodeURIComponent(Email)}&category=${encodeURIComponent(category)}`,
       fetcher
   );
 
@@ -48,6 +56,9 @@ const Action = (params) => {
   }))
   : [];
 
+
+
+
 // parar sa submit appointment
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,8 +66,9 @@ const Action = (params) => {
     const aId = e.target[1].value;
     const aCategory = e.target[2].value;
     const aConsern = e.target[3].value;
-    const aUsername = 'username';
     const aDepartment = category;
+    const GoogleEmail = Email;
+    console.log('PAGE', Email);
   
     try {
         setUploading(true);
@@ -65,8 +77,8 @@ const Action = (params) => {
         formData.append("aId", aId);
         formData.append("aCategory", aCategory);
         formData.append("aConsern", aConsern);
-        formData.append("aUsername", aUsername);
         formData.append("aDepartment", aDepartment);
+        formData.append("GoogleEmail", GoogleEmail);
 
         console.log("Uploading");
         const response = await fetch("/api/appointments", {
@@ -87,6 +99,7 @@ const Action = (params) => {
         console.log(err);
     }
   };
+
 
   const AppointmentList = () => {
     return (

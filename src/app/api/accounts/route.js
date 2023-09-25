@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import Accounts from "@/models/Accounts"
+import { Session } from "next-auth";
 
 
 export const GET = async (request) => {
     const url = new URL(request.url);
     const GoogleEmail = url.searchParams.get("GoogleEmail");
-    console.log(GoogleEmail);
+    console.log("Accounts API GET", GoogleEmail);
 
     try {
         await connect();
 
-        results = await Accounts.find(GoogleEmail && { GoogleEmail });
-
+        const results = await Accounts.find(GoogleEmail && { GoogleEmail });
+        //console.log(results);
         return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
         return new NextResponse("Database Error", { status: 500 });

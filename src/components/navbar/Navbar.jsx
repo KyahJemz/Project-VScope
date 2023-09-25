@@ -31,14 +31,7 @@ const links = [
 
 const Navbar = () => {
   const { data: session, status } = useSession();
-
-  if (status === 'authenticated') {
-    const { GoogleId, GoogleEmail, GoogleImage, GoogleName, GoogleFirstname, GoogleLastname } = session;
-    console.log(GoogleLastname,GoogleFirstname);
-  }
-
-
-
+  
   return (
     <div className={styles.container}>
       <Link href="/" className={styles.logo}>

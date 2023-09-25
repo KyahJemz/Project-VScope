@@ -3,8 +3,10 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 import AuthProvider from '@/components/AuthProvider/AuthProvider.jsx';
+import { useRouter } from 'next/navigation';
 
 const Layout = ({ children }) => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   
   if (status === 'loading') {
@@ -12,7 +14,7 @@ const Layout = ({ children }) => {
   }
 
   if (!session) {
-    return window.location.href = '/login';
+    router.push('/login');
   }
 
   return (

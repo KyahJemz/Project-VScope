@@ -3,23 +3,31 @@ import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
+import Accounts from "@/models/Accounts";
 
 export const GET = async (request) => {
     const url = new URL(request.url);
-    const aUsername = url.searchParams.get("username");
+    const GoogleEmail = url.searchParams.get("GoogleEmail");
     const aDepartment = url.searchParams.get("category");
+
+    if (GoogleEmail === "" || GoogleEmail === null) {
+        return [];
+    }
 
     try {
         await connect();
 
+        const aAccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
+        const aAccount_Id = aAccountId[0]._id;
+
         let results = null;
 
         if (aDepartment === 'Medical'){
-            results = await MedicalAppointment.find(aUsername && { aUsername });
+            results = await MedicalAppointment.find(aAccount_Id && { aAccount_Id });
         } else if (aDepartment === 'Dental') {
-            results = await DentalAppointment.find(aUsername && { aUsername });
+            results = await DentalAppointment.find(aAccount_Id && { aAccount_Id });
         } else if (aDepartment === 'SDPC') {
-            results = await SDPCAppointment.find(aUsername && { aUsername });
+            results = await SDPCAppointment.find(aAccount_Id && { aAccount_Id });
         }
 
         return new NextResponse(JSON.stringify(results), { status: 200 });
@@ -36,9 +44,16 @@ export const POST = async (request) => {
         const aId = body.get("aId");
         const aCategory = body.get("aCategory");
         const aConsern = body.get("aConsern");
-        const aUsername = body.get("aUsername");
         const aDepartment = body.get("aDepartment");
+        const GoogleEmail = body.get("GoogleEmail");
         const aStatus = 'pending';
+
+        if (GoogleEmail === "" || GoogleEmail === null) {
+            return [];
+        }
+
+        const aAccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
+        const aAccount_Id = aAccountId[0]._id;
 
         try {
             await connect();
@@ -51,9 +66,9 @@ export const POST = async (request) => {
                     aId,
                     aCategory,
                     aConsern,
-                    aUsername,
                     aDepartment,
                     aStatus,
+                    aAccount_Id
                 });
             } else if (aDepartment === 'Dental') {
                 newPost = new DentalAppointment({
@@ -61,9 +76,9 @@ export const POST = async (request) => {
                     aId,
                     aCategory,
                     aConsern,
-                    aUsername,
                     aDepartment,
                     aStatus,
+                    aAccount_Id
                 });
             } else if (aDepartment === 'SDPC') {
                 newPost = new SDPCAppointment({
@@ -71,9 +86,9 @@ export const POST = async (request) => {
                     aId,
                     aCategory,
                     aConsern,
-                    aUsername,
                     aDepartment,
                     aStatus,
+                    aAccount_Id
                 });
             }
 

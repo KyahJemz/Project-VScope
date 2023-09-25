@@ -20,15 +20,15 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    aUsername: {
-      type: String,
-      required: true,
-    },
     aDepartment: {
       type: String,
       required: true,
     },
     aStatus: {
+      type: String,
+      required: true,
+    },
+    aAccount_Id: {
       type: String,
       required: true,
     },

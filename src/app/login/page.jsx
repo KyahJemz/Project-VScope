@@ -6,7 +6,7 @@ import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const session = useSession();
+  const session = useSession(); // moved to the top of the function
   const [activePanel, setActivePanel] = useState('clientPanel');
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -21,8 +21,6 @@ const Login = () => {
     router?.push("/services");
     
   }
-
-
 
   const handlePanelChange = (panel) => {
     console.log("changed" + panel);
