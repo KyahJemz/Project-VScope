@@ -1,7 +1,5 @@
 "use client"
 
-import React, { useState } from 'react';
-import styles from "./page.module.css";
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -27,8 +25,7 @@ const Authorized = () => {
     if (status === 'authenticated') {
         const Email = session.user.email;
         console.log(Email);
-        redirect(Email); 
-        return "null"; // Return null after redirecting
+        return redirect(Email); 
     }
 };
 
