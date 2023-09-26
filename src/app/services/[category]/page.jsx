@@ -15,6 +15,9 @@ const getData = (cat) => {
   return notFound();
 };
 
+const appointmentUrlTemplate = (category) =>
+  `/services/${category}/appointment?target=${category}`;
+
 const Category = ({ params }) => {
   const data = getData(params.category);
   return (
@@ -27,8 +30,9 @@ const Category = ({ params }) => {
           <div className={styles.content}>
             <h1 className={styles.title}>{item.title}</h1>
             <p className={styles.desc}>{item.desc}</p>
-            <Button text="Back" url="/services" />
-            <Button text="Set Apointment" url={`/services/${params.category}/appointment?target=${params.category}`} />
+            {item.button_1 && <Button text={item.button_1.text} url={item.button_1.url} />}
+            {item.button_2 && <Button text={item.button_2.text} url={item.button_2.url} />}
+            {item.button_3 && <Button text={item.button_3.text} url={item.button_3.url} />}
           </div>
           <div className={styles.imgContainer}>
             <Image

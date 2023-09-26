@@ -4,22 +4,24 @@ export const items = {
       id: 1,
       title: "Services 1",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://images.pexels.com/photos/3130810/pexels-photo-3130810.jpeg",
+      image: "https://images.pexels.com/photos/3130810/pexels-photo-3130810.jpeg",
+      button_1: {text: "Back", url: "/services"},
+      button_2: {text: "Set Apointment", url: "/services/SDPC/appointment"},
+      
     },
     {
       id: 2,
       title: "Services 2",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://images.pexels.com/photos/2103127/pexels-photo-2103127.jpeg",
+      image: "https://images.pexels.com/photos/2103127/pexels-photo-2103127.jpeg",
+      button_1: {text: "Back", url: "/services"},
     },
     {
       id: 3,
       title: "Services 3",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://images.pexels.com/photos/2916450/pexels-photo-2916450.jpeg",
+      image:"https://images.pexels.com/photos/2916450/pexels-photo-2916450.jpeg",
+      button_1: {text: "Back", url: "/services"},
     }
   ],
   Medical: [
@@ -27,22 +29,23 @@ export const items = {
       id: 1,
       title: "Services 1",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://i.imgur.com/reIgCuR.jpg",
+      image: "https://i.imgur.com/reIgCuR.jpg",
+      button_1: {text: "Back", url: "/services"},
+      button_2: {text: "Set Apointment", url: "/services/Medical/appointment"},
     },
     {
       id: 2,
       title: "Services 2",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://i.imgur.com/rq7cvgn.jpg",
+      image: "https://i.imgur.com/rq7cvgn.jpg",
+      button_1: {text: "Back", url: "/services"},
     },
     {
       id: 3,
       title: "Services 3",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://i.imgur.com/VkvYJia.jpg",
+      image: "https://i.imgur.com/VkvYJia.jpg",
+      button_1: {text: "Back", url: "/services"},
     }
   ],
   Dental: [
@@ -50,22 +53,23 @@ export const items = {
       id: 1,
       title: "Services 1",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://i.imgur.com/BKJs6CZ.png",
+      image: "https://i.imgur.com/BKJs6CZ.png",
+      button_1: {text: "Back", url: "/services"},
+      button_2: {text: "Set Apointment", url: "/services/Dental/appointment"},
     },
     {
       id: 2,
       title: "Services 2",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://i.imgur.com/GfPFTAQ.jpeg",
+      image: "https://i.imgur.com/GfPFTAQ.jpeg",
+      button_1: {text: "Back", url: "/services"},
     },
     {
       id: 3,
       title: "Services 3",
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
-      image:
-        "https://i.imgur.com/kuRCMh0.jpg",
+      image: "https://i.imgur.com/kuRCMh0.jpg",
+      button_1: {text: "Back", url: "/services"},
     }
   ],
 };
