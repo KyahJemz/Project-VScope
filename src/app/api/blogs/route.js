@@ -4,17 +4,17 @@ import Blogs from "@/models/Blogs";
 
 export const GET = async (request) => {
     const url = new URL(request.url);
-    const Department = url.searchParams.get("department");
-
-    if (Department === "" || Department === null) {
-        return [];
-    }
+    const department = url.searchParams.get("department");
 
     try {
         await connect();
 
-        let results = await Blogs.find(Department && { Department });
+        let query = {};
+        if (department) {
+            query = { Department: department };
+        }
 
+        const results = await Blogs.find(query);
         return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
         return new NextResponse("Database Error", { status: 500 });
@@ -28,9 +28,9 @@ export const POST = async (request) => {
         const Title = body.get("Title");
         const Content = body.get("Content");
         const Department = body.get("Department");
-        const Image = 'default.jpg';
+        const Image = null;
 
-        if (!Title || !Content || !Department || !Image) {
+        if (!Title || !Content || !Department ) {
             return new NextResponse("Empty", { status: 500 });
         } 
 

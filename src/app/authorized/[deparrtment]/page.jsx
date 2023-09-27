@@ -9,6 +9,7 @@ import useSWR from "swr";
 
 const Dashboard = ({ params }) => {
   const Department = params.department;
+  console.log(params);
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -65,8 +66,12 @@ const Dashboard = ({ params }) => {
             
               <div className={styles.leftContainer}>
                   <div className={styles.tab}>
-                      <button className={activeTab === 'blogs' ? styles.active : ''} onClick={() => handleTabClick('blogs')}>Blogs</button>
-                      <button className={activeTab === 'announcements' ? styles.active : ''} onClick={() => handleTabClick('announcements')}>Announcements</button>
+                    <p
+                      className={`${activeTab === 'blogs' ? styles.active : ''} ${styles.tabbutton}`}
+                      onClick={() => handleTabClick('blogs')}>Blogs</p>
+                    <p
+                      className={`${activeTab === 'announcements' ? styles.active : ''} ${styles.tabbutton}`}
+                      onClick={() => handleTabClick('announcements')}>Announcements</p>
                   </div>
 
               <div className={ activeTab === 'blogs' ? `${styles.blogsContainer}` : `${styles.hide}`}>
@@ -77,7 +82,29 @@ const Dashboard = ({ params }) => {
                   <div className={styles.content}>
                     {BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
                         <div key={index} className={styles.blogsItem}>
-                            
+                            <div className={styles.itemHeader}>
+                                <Image className={styles.itemDeptImage} 
+                                    src={`/public/${data.Department}`}
+                                    height={50}
+                                    width={50}
+                                />
+                                <div className={styles.itemHeaderDetails}>
+                                    <p className={styles.itemDepartment}>{data.Department}</p>
+                                    <p className={styles.itemDate}>{data?.createdAt}</p>
+                                </div>
+                            </div>
+                            <div className={styles.itemBody}>
+                                {data?.Image && (
+                                    <Image
+                                        className={styles.blogImage}
+                                        src={`/public/${data.Image}`}
+                                        height={500}
+                                        width={500}
+                                    />
+                                )}
+                                <p className={styles.itemTitle}>{data.Title}</p>
+                                <p className={styles.itemContent}>{data.Content}</p>
+                            </div>
                         </div>
                     ))}
                   </div>
@@ -90,8 +117,22 @@ const Dashboard = ({ params }) => {
                   </div>
                   <div className={styles.content}>
                     {AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
-                        <div key={index} className={styles.blogsItem}>
-                            
+                        <div key={index} className={styles.AnnouncementsItem}>
+                            <div className={styles.itemHeader}>
+                                <Image className={styles.itemDeptImage} 
+                                    src={`/public/${data.Department}`}
+                                    height={50}
+                                    width={50}
+                                />
+                                <div className={styles.itemHeaderDetails}>
+                                    <p className={styles.itemDepartment}>{data.Department}</p>
+                                    <p className={styles.itemDate}>{data?.createdAt}</p>
+                                </div>
+                            </div>
+                            <div className={styles.itemBody}>
+                                <p className={styles.itemTitle}>{data.Title}</p>
+                                <p className={styles.itemContent}>{data.Content}</p>
+                            </div>
                         </div>
                     ))}
                   </div>
@@ -107,8 +148,19 @@ const Dashboard = ({ params }) => {
                     </div>
                     <div className={styles.content}>
                         {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
-                            <div key={index} className={styles.blogsItem}>
-                                
+                            <div key={index} className={styles.faqsItem}>
+                                <Image className={styles.faqImage} 
+                                    src={`/public/${data.Department}`}
+                                    height={50}
+                                    width={50}
+                                />
+                                <div className={styles.faqDetails}>
+                                    <p className={styles.faqTitle}>{data.Department}</p>
+                                    <details>
+                                      <summary>{data.Title}</summary>
+                                      <p>{data.Content}</p>
+                                    </details>
+                                </div>
                             </div>
                         ))}
                     </div>

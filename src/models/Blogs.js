@@ -4,20 +4,22 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema(
   {
-    nTitle: {
+    Title: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    Department: {
       type: String,
       required: true,
     },
-    nDepartment: {
+    Image: {
       type: String,
-      required: true,
+      required: false,
     },
-    nImage: {
+    Content: {
       type: String,
-      required: true,
-    },
-    nContent: {
-      type: String,
+      unique: true,
       required: true,
     },
   },

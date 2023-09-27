@@ -4,17 +4,17 @@ import FAQ from "@/models/FAQ";
 
 export const GET = async (request) => {
     const url = new URL(request.url);
-    const Department = url.searchParams.get("department");
-
-    if (Department === "" || Department === null) {
-        return [];
-    }
+    const department = url.searchParams.get("department");
 
     try {
         await connect();
 
-        let results = await FAQ.find(Department && { Department });
+        let query = {};
+        if (department) {
+            query = { Department: department };
+        }
 
+        const results = await FAQ.find(query);
         return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
         return new NextResponse("Database Error", { status: 500 });

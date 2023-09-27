@@ -1,5 +1,6 @@
 "use client"
 
+import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import useSWR from 'swr';
@@ -16,52 +17,140 @@ const formatDate = (timestamp) => {
   };
 
 
-  const fetcher = async (url) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  };
-
   const Home = () => {
-    const { data, error } = useSWR(`/api/notices`, fetcher);
+    const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+    const { data: Blogs, mutate: Blogsmutate, error: Blogserror, isLoading: BlogsisLoading } = useSWR(
+      `/api/blogs?department=`,
+      fetcher
+    );
     
-    if (error) {
-      return <div>Error loading data</div>;
-    }
+    const { data: Announcements, mutate: Announcementsmutate, error: Announcementserror, isLoading: AnnouncementsisLoading } = useSWR(
+      `/api/announcements?department=`,
+      fetcher
+    );
+    
+    const { data: FAQ, mutate: FAQmutate, error: FAQerror, isLoading: FAQisLoading } = useSWR(
+      `/api/faq?department=`,
+      fetcher
+    );
   
-    const sortedData = data
-      ? data
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .map((item) => ({
-            ...item,
-            createdAt: formatDate(item.createdAt),
-          }))
-      : [];
+    const [activeTab, setActiveTab] = useState('blogs');
+  
+    const handleTabClick = (tab) => {
+      Blogsmutate();
+      Announcementsmutate();
+      FAQmutate();
+      setActiveTab(tab);
+    };
   
     return (
-      <div className={styles.mainContainer}>
-        {sortedData.map((item, index) => (
-          <div key={index} className={styles.notice}>
-            <div className={styles.imageContainer}>
-                <Image 
-                src='' 
-                alt=""
-                width={150}
-                height={150}
-                className={styles.image}
-                />
-            </div>
-            <div className={styles.body}>
-                <div className={styles.title}>{item.nTitle}</div>
-                <div className={styles.author}>{item.nDepartment}</div>
-                <div className={styles.content}>
-                {item.nContent}
+        <div className={styles.mainContainer}>
+            <h3 className={styles.mainTitle}>Home</h3>
+  
+            <div className={styles.container}>
+              
+                <div className={styles.leftContainer}>
+                    <div className={styles.tab}>
+                      <p
+                        className={`${activeTab === 'blogs' ? styles.active : ''} ${styles.tabbutton}`}
+                        onClick={() => handleTabClick('blogs')}>Blogs</p>
+                      <p
+                        className={`${activeTab === 'announcements' ? styles.active : ''} ${styles.tabbutton}`}
+                        onClick={() => handleTabClick('announcements')}>Announcements</p>
+                    </div>
+  
+                <div className={ activeTab === 'blogs' ? `${styles.blogsContainer}` : `${styles.hide}`}>
+                    <div className={styles.header}>
+                        <h3 className={styles.subtitle}>Blogs</h3>
+                    </div>
+                    <div className={styles.content}>
+                      {BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
+                          <div key={index} className={styles.blogsItem}>
+                              <div className={styles.itemHeader}>
+                                  <Image className={styles.itemDeptImage} 
+                                      src={`/public/${data.Department}`}
+                                      height={50}
+                                      width={50}
+                                  />
+                                  <div className={styles.itemHeaderDetails}>
+                                      <p className={styles.itemDepartment}>{data.Department}</p>
+                                      <p className={styles.itemDate}>{data?.createdAt}</p>
+                                  </div>
+                              </div>
+                              <div className={styles.itemBody}>
+                                  {data?.Image && (
+                                      <Image
+                                          className={styles.blogImage}
+                                          src={`/public/${data.Image}`}
+                                          height={500}
+                                          width={500}
+                                      />
+                                  )}
+                                  <p className={styles.itemTitle}>{data.Title}</p>
+                                  <p className={styles.itemContent}>{data.Content}</p>
+                              </div>
+                          </div>
+                      ))}
+                    </div>
                 </div>
-            </div>
+  
+                <div className={ activeTab === 'announcements' ? `${styles.announcementsContainer}` : `${styles.hide}`}>
+                    <div className={styles.header}>
+                        <h3 className={styles.subtitle}>Announcements</h3>
+                    </div>
+                    <div className={styles.content}>
+                      {AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
+                          <div key={index} className={styles.AnnouncementsItem}>
+                              <div className={styles.itemHeader}>
+                                  <Image className={styles.itemDeptImage} 
+                                      src={`/public/${data.Department}`}
+                                      height={50}
+                                      width={50}
+                                  />
+                                  <div className={styles.itemHeaderDetails}>
+                                      <p className={styles.itemDepartment}>{data.Department}</p>
+                                      <p className={styles.itemDate}>{data?.createdAt}</p>
+                                  </div>
+                              </div>
+                              <div className={styles.itemBody}>
+                                  <p className={styles.itemTitle}>{data.Title}</p>
+                                  <p className={styles.itemContent}>{data.Content}</p>
+                              </div>
+                          </div>
+                      ))}
+                    </div>
+                </div>
+  
+              </div>
+  
+              <div className={styles.rightContainer}>
+                  <div className={styles.FAQContainer}>
+                      <div className={styles.header}>
+                        <h3 className={styles.subtitle}>FAQ</h3>
+                      </div>
+                      <div className={styles.content}>
+                          {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
+                              <div key={index} className={styles.faqsItem}>
+                                  <Image className={styles.faqImage} 
+                                      src={`/public/${data.Department}`}
+                                      height={50}
+                                      width={50}
+                                  />
+                                  <div className={styles.faqDetails}>
+                                      <p className={styles.faqTitle}>{data.Department}</p>
+                                      <details>
+                                        <summary>{data.Title}</summary>
+                                        <p>{data.Content}</p>
+                                      </details>
+                                  </div>
+                              </div>
+                          ))}
+                      </div>
+                  </div>
+              </div>
           </div>
-        ))}
+  
       </div>
     );
   };
