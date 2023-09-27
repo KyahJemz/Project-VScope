@@ -6,6 +6,21 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { notFound } from "next/navigation";
 import useSWR from "swr";
+import Image from "next/image";
+
+const formatDate = (timestamp) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+  
+    const hours = new Date(timestamp).getHours();
+    const minutes = new Date(timestamp).getMinutes();
+    const amOrPm = hours >= 12 ? 'pm' : 'am';
+    const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
+  
+    return `${formattedDate} ${formattedTime}`;
+  };
+  
+
 
 const Dashboard = ({ params }) => {
   const Department = params.department;
@@ -32,6 +47,14 @@ const Dashboard = ({ params }) => {
   // Admin Post Announcements
   // Update FAQ
 
+  function convertNewlines(text, toHTML = false) {
+    if (toHTML) {
+      return text.replace(/\n/g, '<br />');
+    } else {
+      return text.replace(/<br \/>|<br\/>|<br>|<br\s\/>/g, '\n');
+    }
+  }
+
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
   const { data: Blogs, mutate: Blogsmutate, error: Blogserror, isLoading: BlogsisLoading } = useSWR(
@@ -45,7 +68,7 @@ const Dashboard = ({ params }) => {
   );
   
   const { data: FAQ, mutate: FAQmutate, error: FAQerror, isLoading: FAQisLoading } = useSWR(
-    `/api/faq?department=${encodeURIComponent(Department)}`,
+    `/api/faqs?department=${encodeURIComponent(Department)}`,
     fetcher
   );
 
@@ -77,7 +100,7 @@ const Dashboard = ({ params }) => {
               <div className={ activeTab === 'blogs' ? `${styles.blogsContainer}` : `${styles.hide}`}>
                   <div className={styles.header}>
                       <h3 className={styles.subtitle}>Blogs</h3>
-                      <button className={styles.subtitle}>Add Blogs</button>
+                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}
                   </div>
                   <div className={styles.content}>
                     {BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
@@ -90,7 +113,7 @@ const Dashboard = ({ params }) => {
                                 />
                                 <div className={styles.itemHeaderDetails}>
                                     <p className={styles.itemDepartment}>{data.Department}</p>
-                                    <p className={styles.itemDate}>{data?.createdAt}</p>
+                                    <p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
                                 </div>
                             </div>
                             <div className={styles.itemBody}>
@@ -103,7 +126,7 @@ const Dashboard = ({ params }) => {
                                     />
                                 )}
                                 <p className={styles.itemTitle}>{data.Title}</p>
-                                <p className={styles.itemContent}>{data.Content}</p>
+                                <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                             </div>
                         </div>
                     ))}
@@ -113,7 +136,7 @@ const Dashboard = ({ params }) => {
               <div className={ activeTab === 'announcements' ? `${styles.announcementsContainer}` : `${styles.hide}`}>
                   <div className={styles.header}>
                       <h3 className={styles.subtitle}>Announcements</h3>
-                      <button className={styles.subtitle}>Add Announcements</button>
+                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/authorized/'+Department+'/AddAnnouncement')}>Add Announcement</button> : ''}
                   </div>
                   <div className={styles.content}>
                     {AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
@@ -126,12 +149,12 @@ const Dashboard = ({ params }) => {
                                 />
                                 <div className={styles.itemHeaderDetails}>
                                     <p className={styles.itemDepartment}>{data.Department}</p>
-                                    <p className={styles.itemDate}>{data?.createdAt}</p>
+                                    <p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
                                 </div>
                             </div>
                             <div className={styles.itemBody}>
                                 <p className={styles.itemTitle}>{data.Title}</p>
-                                <p className={styles.itemContent}>{data.Content}</p>
+                                <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                             </div>
                         </div>
                     ))}
@@ -144,7 +167,7 @@ const Dashboard = ({ params }) => {
                 <div className={styles.FAQContainer}>
                     <div className={styles.header}>
                       <h3 className={styles.subtitle}>FAQ</h3>
-                      <button className={styles.subtitle}>Add FAQ</button>
+                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/authorized/'+Department+'/AddFAQ')}>Add FAQ</button> : ''}
                     </div>
                     <div className={styles.content}>
                         {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
@@ -158,7 +181,7 @@ const Dashboard = ({ params }) => {
                                     <p className={styles.faqTitle}>{data.Department}</p>
                                     <details>
                                       <summary>{data.Title}</summary>
-                                      <p>{data.Content}</p>
+                                      <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                                     </details>
                                 </div>
                             </div>

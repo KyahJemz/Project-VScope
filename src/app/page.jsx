@@ -18,6 +18,16 @@ const formatDate = (timestamp) => {
 
 
   const Home = () => {
+
+
+    function convertNewlines(text, toHTML = false) {
+        if (toHTML) {
+          return text.replace(/\n/g, '<br />');
+        } else {
+          return text.replace(/<br \/>|<br\/>|<br>|<br\s\/>/g, '\n');
+        }
+      }
+
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
     const { data: Blogs, mutate: Blogsmutate, error: Blogserror, isLoading: BlogsisLoading } = useSWR(
@@ -31,7 +41,7 @@ const formatDate = (timestamp) => {
     );
     
     const { data: FAQ, mutate: FAQmutate, error: FAQerror, isLoading: FAQisLoading } = useSWR(
-      `/api/faq?department=`,
+      `/api/faqs?department=`,
       fetcher
     );
   
@@ -88,7 +98,7 @@ const formatDate = (timestamp) => {
                                       />
                                   )}
                                   <p className={styles.itemTitle}>{data.Title}</p>
-                                  <p className={styles.itemContent}>{data.Content}</p>
+                                  <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                               </div>
                           </div>
                       ))}
@@ -115,7 +125,7 @@ const formatDate = (timestamp) => {
                               </div>
                               <div className={styles.itemBody}>
                                   <p className={styles.itemTitle}>{data.Title}</p>
-                                  <p className={styles.itemContent}>{data.Content}</p>
+                                  <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                               </div>
                           </div>
                       ))}
@@ -141,7 +151,7 @@ const formatDate = (timestamp) => {
                                       <p className={styles.faqTitle}>{data.Department}</p>
                                       <details>
                                         <summary>{data.Title}</summary>
-                                        <p>{data.Content}</p>
+                                        <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                                       </details>
                                   </div>
                               </div>

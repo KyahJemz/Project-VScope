@@ -23,9 +23,13 @@ const userSchema = new Schema(
       required: true,
     },
     Department: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: true,
+    },
+    Role: {
+      type: String,
+      default: 'Admin',
+    },
   },
   { timestamps: true }
 );
