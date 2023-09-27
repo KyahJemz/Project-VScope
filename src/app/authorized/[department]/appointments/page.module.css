@@ -1,48 +1,74 @@
-.mainTitle {
-  font-size: 60px;
+.mainContainer {
+  flex: 1;
 }
 
 .container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
 }
 
-.selectTitle {
-  margin: 20px 0px;
+.container > div {
+  width: 100%;
 }
 
-.items {
+.AppointmetsContainer{
+  justify-content: space-around;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  column-gap: 20px;
+}
+
+.AppointmentsItem{
+  border: 1px solid rgba(220, 220, 220, 0.500);
+  flex: 0 0 45%;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.details{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  gap: 50px;
+  justify-content: space-between;
+  padding: 5px 0px;
+  border-top: 1px solid rgba(220, 220, 220, 0.500);
+  border-bottom: 1px solid rgba(220, 220, 220, 0.500);
 }
 
-.item {
-  border: 5px solid #bbb;
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 5px 0px;
+}
+
+.rbutton,
+.abutton{
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
   border-radius: 5px;
-  width: 300px;
-  height: 400px;
-  position: relative;
-  background-size: cover !important;
+  width: max-content;
 }
 
-.item:nth-child(1) {
-  background: url("/images/banner-medical.jpg");
+.rbutton {
+  background-color: #c25353;
+  color: white;
 }
-.item:nth-child(2) {
-  background: url("/images/banner-dental.jpg");
-}
-.item:nth-child(3) {
-  background: url("/images/banner-sdpc.jpg");
-}
-
-.title {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  font-size: 40px;
-  font-weight: bold;
+.abutton {
+  background-color: #69c253;
+  color: white;
 }
 
-.item:hover .title {
-  color: #53c28b;
+.input{
+  padding: 5px 10px;
+  flex: 1;
 }

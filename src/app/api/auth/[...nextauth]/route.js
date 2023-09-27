@@ -5,10 +5,6 @@ import Staffs from "@/models/Staffs";
 import Admins from "@/models/Admins";
 import connect from "@/utils/db";
 
-async function addToSession(){
-
-}
-
 var data = null;
 
 const handler = NextAuth({

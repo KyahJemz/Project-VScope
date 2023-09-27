@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import DefaultImage from "public/uploads/blogs/default.png";
 
 
 
@@ -95,7 +96,7 @@ const action = ({ params }) => {
 
     const AddBlogForm = () => {
         return (
-            <form className={styles.form} onSubmit={handleSubmit} enctype="multipart/form-data">
+            <form className={styles.form} onSubmit={handleSubmit} encType="multipart/form-data">
                 <h3 className={styles.title}>Blog Form</h3>
                 <input 
                     type="text" 
@@ -104,6 +105,7 @@ const action = ({ params }) => {
                     required
                 />
                 <input 
+                    name="Image"
                     type="file" 
                     className={styles.input}
                 />
