@@ -2,21 +2,19 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const postSchema = new Schema(
+const userSchema = new Schema(
   {
-    nTitle: {
+    Title: {
       type: String,
+      unique: true,
       required: true,
     },
-    nDepartment: {
+    Content: {
       type: String,
+      unique: true,
       required: true,
     },
-    nImage: {
-      type: String,
-      required: true,
-    },
-    nContent: {
+    Department: {
       type: String,
       required: true,
     },
@@ -24,4 +22,4 @@ const postSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("notices", postSchema);
+export default mongoose.model("faq", userSchema);

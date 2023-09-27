@@ -10,7 +10,7 @@ const Consultation = () => {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.mainTitle}>Appointments</h3>
+      <h3 className={styles.mainTitle}>Consultation</h3>
      
     </div>
   );

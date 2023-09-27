@@ -29,8 +29,8 @@ const Action = (params) => {
   let Email = '';
   console.log(params);
 
-  if (status === 'authenticated' && session?.user?.email) {
-    Email = session.user.email;
+  if (status === 'authenticated' && session?.UserData?.GoogleEmail) {
+    Email = session.UserData.GoogleEmail;
     console.log(Email);
   }
 

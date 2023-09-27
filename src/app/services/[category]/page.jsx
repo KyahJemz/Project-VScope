@@ -15,9 +15,6 @@ const getData = (cat) => {
   return notFound();
 };
 
-const appointmentUrlTemplate = (category) =>
-  `/services/${category}/appointment?target=${category}`;
-
 const Category = ({ params }) => {
   const data = getData(params.category);
   return (

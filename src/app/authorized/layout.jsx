@@ -6,16 +6,24 @@ import AuthProvider from '@/components/AuthProvider/AuthProvider.jsx';
 import { useRouter } from 'next/navigation';
 
 const Layout = ({ children }) => {
-  const router = useRouter();
   const { data: session, status } = useSession();
+    const router = useRouter();
   
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
+  // if (status === 'loading') {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (!session) {
-    router.push('/login');
-  } 
+  // if (status === 'authenticated'){
+  //   if(session.UserDate?.Department){
+      
+  //   } else {
+  //     router.push('/services');
+  //   }
+  // }
+
+  // if (!session) {
+  //   router.push('/login');
+  // } 
 
   return (
     <AuthProvider>

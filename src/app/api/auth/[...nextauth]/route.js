@@ -5,6 +5,12 @@ import Staffs from "@/models/Staffs";
 import Admins from "@/models/Admins";
 import connect from "@/utils/db";
 
+async function addToSession(){
+
+}
+
+var data = null;
+
 const handler = NextAuth({
   providers: [
     GoogleProvider({
@@ -26,11 +32,13 @@ const handler = NextAuth({
 
             const staffs = await Staffs.find({ GoogleEmail });
             if (staffs.length > 0) {
+              data = staffs[0];
               return true
             }
 
             const admin = await Admins.find({ GoogleEmail });
             if (admin.length > 0) {
+              data = admin[0];
               return true
             }
 
@@ -56,7 +64,7 @@ const handler = NextAuth({
                   GoogleFirstname,
                   GoogleLastname,
                 });
-          
+                data = newPost;
                 await newPost.save();
           
                 return true;
@@ -65,6 +73,7 @@ const handler = NextAuth({
                 return false;
               }
             } else {
+              data = results[0];
               return true;
             }
           } catch (err) {
@@ -73,6 +82,11 @@ const handler = NextAuth({
           }
         }
         return false;
+      },
+      async session ({ session } ) {
+        session.UserData = data;
+        console.log('data',data);
+        return session;
       }
     }
 });

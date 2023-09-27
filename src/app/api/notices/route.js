@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
-import Notices from "@/models/Notices";
+import Notices from "@/models/Blogs";
 import fs from 'fs'; 
 import path from 'path'; 
 

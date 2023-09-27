@@ -3,30 +3,29 @@
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-async function redirect(email){
-    const router = useRouter();
-    try {
-      const response = await fetch(`/api/access?GoogleEmail=${encodeURIComponent(email)}`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        return router.push(`/authorized/${data.data[0].Department}`);
-      } else {
-        return router.push('/login');
-      }
-    } catch (error) {
-      return router.push(`/login?Error=${error.message}`);
-    }
-}
-
 const Authorized = () => {
     const { data: session, status } = useSession();
+    const router = useRouter();
+
+    if (status === 'loading'){
+      console.log('-----AUTHORIZED', session)
+      return <div>Loading...</div>
+    }
 
     if (status === 'authenticated') {
-        const Email = session.user.email;
-        console.log(Email);
-        return redirect(Email); 
+      console.log('-----AUTHORIZED', session)
+      if (session.UserData?.Department) {
+        router.push('/authorized/'+session.UserData.Department);
+      } else {
+        router.push('/login');
+      }
     }
+
+    if (!session){
+      router.push('/login');
+    }
+
+    return <div>end</div>
 };
 
 export default Authorized;

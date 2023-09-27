@@ -7,22 +7,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Hero from "public/hero.png";
 
-async function redirect(Email) {
-  const router = useRouter();
-  try {
-    const response = await fetch(`/api/access?GoogleEmail=${encodeURIComponent(Email)}`);
-    if (response.ok) {
-      const data = await response.json();
-      console.log("redirect",data);
-      return router.push(data.path+'/'+data.data[0].Department);
-    } else {
-      return router.push('/login');
-    }
-  } catch (error) {
-    return router.push(`/login?Error=${error.message}`);
-  }
-}
-
 const Login = () => {
   const session = useSession();
   const [activePanel, setActivePanel] = useState('clientPanel');
@@ -31,13 +15,14 @@ const Login = () => {
     return <p>Loading...</p>;
   }
 
-  
-  
+  const router = useRouter();
   if (session.status === "authenticated") {
-    // Assign the user's email to the Email variable
-      const Email = session.data.user.email;
-      console.log(Email);
-      redirect(Email);
+      console.log('-----LOGIN', session);
+      if (session.data.UserData?.Department){
+        router.push('/authorized/'+session.data.UserData.Department);
+      } else {
+        router.push('/services');
+      }
   }
 
   const handlePanelChange = (panel) => {
