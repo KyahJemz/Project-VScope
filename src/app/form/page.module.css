@@ -1,0 +1,50 @@
+.mainContainer {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.vLine{
+  position: absolute;
+  background-color: rgba(220, 220, 220, 0.500);
+  width: 5px;
+  height: 100%;
+  top: 0;
+  left: 150px;
+}
+
+.row{
+  display: flex;
+  position: relative;
+}
+
+.mark{ 
+  flex: 0 0 200px;
+  padding: 20px 0px;
+  height: fit-content;
+  position: relative;
+}
+
+.datetime{
+  font-size: small;
+}
+
+.hLine{
+  top: 30%;
+  left: 145px;
+  position: absolute;
+  background-color: gainsboro;
+  height: 15px;
+  width: 15px;
+  border: 1px solid gainsboro;
+  border-radius: 50%;
+}
+
+.content{
+  width: 100%;
+  flex: 1;
+  border: 1px solid gainsboro;
+}

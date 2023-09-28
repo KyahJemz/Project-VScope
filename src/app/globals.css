@@ -32,6 +32,7 @@ a {
 .container {
   max-width: 1366px;
   min-height: 100vh;
+  flex: 1;
   margin: 0 auto;
   padding: 0 60px;
   display: flex;
@@ -39,3 +40,4 @@ a {
   justify-content: space-between;
   position: relative;
 }
+
