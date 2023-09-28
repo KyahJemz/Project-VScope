@@ -32,6 +32,10 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+    Responces: {
+      type: Array,
+      required: false,
+    },
   },
   { timestamps: true }
 );

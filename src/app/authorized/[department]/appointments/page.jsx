@@ -1,6 +1,9 @@
-import React from "react";
+"use client"
+
+import React, { useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
+import useSWR from "swr";
 
 const formatDate = (timestamp) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -16,12 +19,47 @@ const formatDate = (timestamp) => {
 
 const Appointments = ({ params }) => {
   const Department = params.department;
-  // Accept
-  // Reject
 
-  // admin view Rejects 
-  // admin view Accepted
+   const [Status, setStatus] = useState();
 
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+  const { data: Appointments, mutate: Appointmentsmutate, error: Appointmentsserror, isLoading: AppointmentsisLoading } = useSWR(
+    `/api/appointments/GET_PendingByDepartment?Department=${encodeURIComponent(Department)}`,
+    fetcher
+  );
+  
+
+
+  var Email = "email";
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log('ADCTION', Status);
+
+    try {
+        const formData = new FormData();
+        formData.append("Name", e.target[1].value);
+        formData.append("Email", Email);
+        formData.append("Response", e.target[0].value);
+        formData.append("AppointmentId", e.target[2].value);
+        formData.append("Department", Department);
+        formData.append("Status", Status);
+
+        const response = await fetch("/api/appointments/POST_addResponse", { method: "POST", body: formData });
+
+        if (response.ok) {
+            console.log("Complete");
+            Appointmentsmutate();
+        } else {
+            console.log("Failed");
+        }
+    } catch (err) {
+        console.log(err);
+    }
+  };
 
   return (
     <div className={styles.mainContainer}>
@@ -29,75 +67,42 @@ const Appointments = ({ params }) => {
         <div className={styles.appointmentList}>
           <h3 className={styles.title}>Appointments</h3>
           <div className={styles.AppointmetsContainer}>
-
-              <div className={styles.AppointmentsItem}>
-
-              <div className={styles.details}>
-                      <p className={styles.stats}>Status</p>
-                      <p className={styles.date}>createdAt</p>
+              {AppointmentsisLoading ? "Loading..." : Appointments?.map((data, index) => (
+                  <div key={index} className={styles.AppointmentsItem}>
+                      <div className={styles.details}>
+                          <p className={styles.stats}>{data.aStatus}</p>
+                          <p className={styles.date}>{formatDate(data.createdAt)}</p>
+                      </div>
+                      
+                      <p className={styles.name}>{data.aName}</p>
+                      <p className={styles.id}>{data.aId}</p>
+                      <p className={styles.email}>Email</p>
+                      <p className={styles.category}>{data.aCategory}</p>
+                      <p className={styles.consern}>{data.aConsern}</p>
+          
+                      <form className={styles.actions} onSubmit={handleSubmit} >
+                          <input 
+                            className={styles.input}
+                            type="text" 
+                            placeholder="Response"
+                          />
+                          <input 
+                            className={styles.hide}
+                            type="text" 
+                            value={data.aName}
+                            hidden
+                          />
+                          <input 
+                            className={styles.hide}
+                            type="text" 
+                            value={data._id}
+                            hidden
+                          />
+                          <button type="submit" onClick={() => setStatus('Approved')} className={styles.abutton}>Approve</button>
+                          <button type="submit" onClick={() => setStatus('Rejected')} className={styles.rbutton}>Reject</button>
+                      </form>
                   </div>
-                  
-                  <p className={styles.name}>Name</p>
-                  <p className={styles.id}>Id</p>
-                  <p className={styles.email}>Email</p>
-                  <p className={styles.category}>Category</p>
-                  <p className={styles.consern}>Consern</p>
-
-                  
-                  <div className={styles.actions}>
-                      <input 
-                        className={styles.input}
-                        type="text" 
-                        placeholder="Response"
-                      />
-                      <button className={styles.abutton}>Approve</button>{/*responce also*/}
-                      <button className={styles.rbutton}>Reject</button>
-                  </div>
-              </div>
-
-              <div className={styles.AppointmentsItem}>
-                  <p className={styles.name}>Name</p>
-                  <p className={styles.id}>Id</p>
-                  <p className={styles.email}>Email</p>
-                  <p className={styles.category}>Category</p>
-                  <p className={styles.consern}>Consern</p>
-
-                  <div className={styles.details}>
-                      <p className={styles.stats}>Status</p>
-                      <p className={styles.date}>createdAt</p>
-                  </div>
-                  <div className={styles.actions}>
-                      <input 
-                        className={styles.input}
-                        type="text" 
-                        placeholder="Response"
-                      />
-                      <button className={styles.abutton}>Approve</button>{/*responce also*/}
-                      <button className={styles.rbutton}>Reject</button>
-                  </div>
-              </div>
-
-              <div className={styles.AppointmentsItem}>
-                  <p className={styles.name}>Name</p>
-                  <p className={styles.id}>Id</p>
-                  <p className={styles.email}>Email</p>
-                  <p className={styles.category}>Category</p>
-                  <p className={styles.consern}>Consern</p>
-
-                  <div className={styles.details}>
-                      <p className={styles.stats}>Status</p>
-                      <p className={styles.date}>createdAt</p>
-                  </div>
-                  <div className={styles.actions}>
-                      <input 
-                        className={styles.input}
-                        type="text" 
-                        placeholder="Response"
-                      />
-                      <button className={styles.abutton}>Approve</button>{/*responce also*/}
-                      <button className={styles.rbutton}>Reject</button>
-                  </div>
-              </div>
+              ))}
 
           </div>
         </div>

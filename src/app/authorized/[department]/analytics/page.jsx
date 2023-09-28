@@ -7,8 +7,10 @@ const Analytics = () => {
   // can view summray of students vs lay colabs
 
 
+
+
   return (
-    <div className={styles.container}>
+    <div className={styles.mainContainer}>
       <h3 className={styles.mainTitle}>Analytics</h3>
      
     </div>
