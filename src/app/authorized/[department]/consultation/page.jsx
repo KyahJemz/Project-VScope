@@ -1,16 +1,89 @@
-import React from "react";
+"use client"
+
+import React, { useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
+import useSWR from "swr";
+import { useRouter  } from "next/navigation";
 
-const Consultation = () => {
-  // admin view Consultation forms 
-  // admin view health status
-  // admin generate certificate 
+const formatDate = (timestamp) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
 
+  const hours = new Date(timestamp).getHours();
+  const minutes = new Date(timestamp).getMinutes();
+  const amOrPm = hours >= 12 ? 'pm' : 'am';
+  const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
+
+  return `${formattedDate} ${formattedTime}`;
+};
+
+const Consultation = ({ params }) => {
+    const Department = params.department;
+    const router = useRouter();
+
+
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+    
+  const { data, mutate, error, isLoading } =  useSWR(
+      `/api/appointments?GoogleEmail=&Department=${encodeURIComponent(Department)}`,
+      fetcher
+  );
+
+// taga bago ng arrangement
+const sortedData = data && !isLoading
+  ? [...data].sort((a, b) => {
+      if (a.Status === 'Approved' && b.Status !== 'Approved') return -1;
+      if (b.Status === 'Approved' && a.Status !== 'Approved') return 1;
+
+      if (a.Status === 'Completed' && b.Status !== 'Completed') return -1;
+      if (b.Status === 'Completed' && a.Status !== 'Completed') return 1;
+
+      if (a.Status === 'Canceled' && b.Status !== 'Canceled') return 1;
+      if (b.Status === 'Canceled' && a.Status !== 'Canceled') return -1;
+
+      return b.createdAt.localeCompare(a.createdAt);
+  }).map(item => ({
+    ...item,
+    createdAt: formatDate(item.createdAt)
+  }))
+  : [];
+
+  const [filterStatus, setFilterStatus] = useState(null);
+
+  const handleFilter = (status) => {
+    setFilterStatus(status);
+  };
+
+  const filteredData = sortedData.filter((appointment) => {
+    if (filterStatus === null) return true;
+    return appointment.Status === filterStatus;
+  });
 
   return (
-    <div className={styles.container}>
+    <div className={styles.mainContainer}>
+      <a href={'/authorized/' + Department} className={styles.back}>&lt; Back</a>
       <h3 className={styles.mainTitle}>Consultation</h3>
+
+      <div className={styles.appointmentList}>
+          <h3 className={styles.title}>Appointments History</h3>
+          <div className={styles.status}>
+            <button className={`${styles.cbutton} ${filterStatus === null ? styles.call : ''}`} onClick={() => handleFilter(null)}>All</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Pending' ? styles.cpending : ''}`} onClick={() => handleFilter('Pending')}>Pending</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Approved' ? styles.capproved : ''}`} onClick={() => handleFilter('Approved')}>Approved</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
+          </div>
+          {isLoading ? "Loading..." : filteredData?.map((appointment, index) => (
+            <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/authorized/'+Department+'/consultation/'+appointment._id) : null}>
+              <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a></h4>
+              <p className={styles.aDate}>{appointment.createdAt}</p>
+              <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>
+              <p className={styles.aConsern}>{appointment.Consern}</p>
+            </div>
+          ))}
+        </div>
      
     </div>
   );

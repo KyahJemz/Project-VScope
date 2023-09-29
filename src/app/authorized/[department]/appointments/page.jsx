@@ -64,6 +64,7 @@ const Appointments = ({ params }) => {
   return (
     <div className={styles.mainContainer}>
         <h1>{Department}</h1>
+        <a href={'/authorized/' + Department} className={styles.back}>&lt; Back</a>
         <div className={styles.appointmentList}>
           <h3 className={styles.title}>Appointments</h3>
           <div className={styles.AppointmetsContainer}>

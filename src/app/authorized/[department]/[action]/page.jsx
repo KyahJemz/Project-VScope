@@ -186,9 +186,7 @@ const action = ({ params }) => {
   
     return (
         <div className={styles.mainContainer}>
-          <a href={'/authorized/' + Department} className={styles.back}>
-            &lt; Back
-          </a>
+          <a href={'/authorized/' + Department} className={styles.back}>&lt; Back</a>
           {InitializeAction()}
         </div>
       );

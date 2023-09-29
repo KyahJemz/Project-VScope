@@ -10,25 +10,32 @@ export const GET = async (request) => {
     const GoogleEmail = url.searchParams.get("GoogleEmail");
     const Department = url.searchParams.get("Department");
 
-    if (GoogleEmail === "" || GoogleEmail === null) {
-        return [];
-    }
-
     try {
         await connect();
 
-        const AccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
-        const Account_Id = AccountId[0]._id;
-
         let results = [];
 
-        if (Department === 'Medical'){
-            results = await MedicalAppointment.find(Account_Id && { Account_Id });
-        } else if (Department === 'Dental') {
-            results = await DentalAppointment.find(Account_Id && { Account_Id });
-        } else if (Department === 'SDPC') {
-            results = await SDPCAppointment.find(Account_Id && { Account_Id });
+        if (GoogleEmail ==="" || GoogleEmail === null) {
+            if (Department === 'Medical'){
+                results = await MedicalAppointment.find();
+            } else if (Department === 'Dental') {
+                results = await DentalAppointment.find();
+            } else if (Department === 'SDPC') {
+                results = await SDPCAppointment.find();
+            }
+        } else {
+            const AccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
+            const Account_Id = AccountId[0]._id;
+
+            if (Department === 'Medical'){
+                results = await MedicalAppointment.find(Account_Id && { Account_Id });
+            } else if (Department === 'Dental') {
+                results = await DentalAppointment.find(Account_Id && { Account_Id });
+            } else if (Department === 'SDPC') {
+                results = await SDPCAppointment.find(Account_Id && { Account_Id });
+            }
         }
+
 
         return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
