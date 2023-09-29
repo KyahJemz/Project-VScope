@@ -8,25 +8,16 @@ export const POST = async (request) => {
     if (request.method === 'POST') {
         const body = await request.formData();
 
-        const Name = body.get("Name");
-        const Email = body.get("Email");
-        const Response = body.get("Response");
-        const AppointmentId = body.get("AppointmentId");
         const Department = body.get("Department");
+        const AppointmentId = body.get("AppointmentId");
+        const Response = body.get("Response");
         const Status = body.get("Status");
         const Timestamp = new Date().toISOString();
 
         const newResponse = {
-            Name: Name,
-            Email: Email,
             Response: Response,
-            Department: Department,
             Timestamp: Timestamp
-          };
-  
-        if (!AppointmentId || !newResponse) {
-            return new NextResponse('Invalid request data', { status: 400 });
-        }
+        };
   
     try {
         await connect();
@@ -35,28 +26,48 @@ export const POST = async (request) => {
 
         if (Department === 'Medical'){
             if (Response === '' || Response === null) {
-                appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
-                    { $set: { aStatus: Status }  },
-                    { new: true }
-                );
+                if(Status === '' || Status === null) {
+                } else {
+                    appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
+                        { $set: { aStatus: Status }  },
+                        { new: true }
+                    );
+                }
             } else {
-                appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
-                    { $push: { Responces: newResponse }, $set: { aStatus: Status }  },
-                    { new: true }
-                );
+                if(Status === '' || Status === null) { 
+                    appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
+                        { $push: { Responses: newResponse } },
+                        { new: true }
+                    );
+                } else {
+                    appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
+                        { $push: { Responses: newResponse }, $set: { aStatus: Status }  },
+                        { new: true }
+                    );
+                }
             }
 
         } else if (Department === 'Dental'){
             if (Response === '' || Response === null) {
-                appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
-                    { $set: { aStatus: Status }  },
-                    { new: true }
-                );
+                if(Status === '' || Status === null) {
+                } else {
+                    appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
+                        { $set: { aStatus: Status }  },
+                        { new: true }
+                    );
+                }
             } else {
-                appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
-                    { $push: { Responces: newResponse }, $set: { aStatus: Status }  },
-                    { new: true }
-                );
+                if(Status === '' || Status === null) { 
+                    appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
+                        { $push: { Responses: newResponse } },
+                        { new: true }
+                    );
+                } else {
+                    appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
+                        { $push: { Responses: newResponse }, $set: { aStatus: Status }  },
+                        { new: true }
+                    );
+                }
             }
 
         } else if (Department === 'SDPC'){
@@ -67,7 +78,7 @@ export const POST = async (request) => {
                 );
             } else {
                 appointment = await SDPCAppointment.findByIdAndUpdate(AppointmentId,
-                    { $push: { Responces: newResponse }, $set: { aStatus: Status }  },
+                    { $push: { Responses: newResponse }, $set: { aStatus: Status }  },
                     { new: true }
                 );
             }

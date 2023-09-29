@@ -15,12 +15,12 @@ const getData = (cat) => {
   return notFound();
 };
 
-const Category = ({ params }) => {
-  const data = getData(params.category);
+const Department = ({ params }) => {
+  const data = getData(params.department);
   return (
     <div className={styles.container}>
       <h3 className={styles.mainTitle}>Services</h3>
-      <h1 className={styles.catTitle}>{params.category}</h1>
+      <h1 className={styles.catTitle}>{params.department}</h1>
 
       {data.map((item) => (
         <div className={styles.item} key={item.id}>
@@ -36,7 +36,7 @@ const Category = ({ params }) => {
               className={styles.img}
               fill={true}
               src={item.image}
-              alt=""
+              alt='ImageFile'
             />
           </div>
         </div>
@@ -45,4 +45,4 @@ const Category = ({ params }) => {
   );
 };
 
-export default Category;
+export default Department;

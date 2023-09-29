@@ -36,7 +36,7 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    Responces: {
+    Responses: {
       type: Array,
       required: false,
     },

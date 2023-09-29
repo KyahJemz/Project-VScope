@@ -2,51 +2,77 @@ import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
-import SDPCAppointment from "@/models/SDPCAppointment";
 
 export const POST = async (request) => {
     if (request.method === 'POST') {
         const body = await request.formData();
 
-        const Name = body.get("aName");
-        const Id = body.get("aId");
-        const Category = body.get("aCategory");
-        const Consern = body.get("aConsern");
-        const Department = body.get("aDepartment");
-        const GoogleEmail = body.get("GoogleEmail");
-        const Status = 'Pending';
+        const Department = body.get("Department"); 
+        const AppointmentId = body.get("AppointmentId"); 
 
         try {
             await connect();
 
-            let newPost = null;
+            let updatedAppointment = null;
 
             if (Department === 'Medical'){
-                    MedicalAppointment.findByIdAndUpdate(
-                        docId,
-                            { $set: { 'Details.newProperty': 'Some value' } },
-                            { new: true },
-                            (error, updatedDocument) => {
-                            if (error) {
-                            console.error('Error updating document:', error);
-                          } else {
-                            console.log('Document updated:', updatedDocument);
-                          }
-                        }
-                    );
-            } else if (aDepartment === 'Dental') {
-              
-            } else if (aDepartment === 'SDPC') {
-                
+                const Data = {
+                    FullName: body.get("fullname"),
+                    DepartmentCourseYear: body.get("departmentcourseyear"),
+                    Address: body.get("address"),
+                    ContactNo: body.get("contactnumber"),
+                    CivilStatus: body.get("civilstatus"),
+                    Age: body.get("age"),
+                    Sex: body.get("sex"),
+                    EmergencyName: body.get("emergency"),
+                    EmergencyContactNo: body.get("emergencynumber"),
+                    Concern: body.get("concern"),
+                };
+                updatedAppointment = await MedicalAppointment.findOneAndUpdate(
+                    { _id: AppointmentId },
+                    { $set: { 'Details': Data } },
+                    { new: true }
+                  ).exec();
+
+            } else if (Department === 'Dental') {
+                const Data = {
+                    FirstName: body.get("firstname"),
+                    MiddleName: body.get("middlename"),
+                    LastName: body.get("lastname"),
+                    CivilStatus: body.get("civilstatus"),
+                    Address: body.get("address"),
+                    Course: body.get("course"),
+                    Year: body.get("year"),
+                    Section: body.get("section"),
+                    Age: body.get("age"),
+                    DateofBirth: body.get("dateofbirth"),
+                    Religion: body.get("religion"),
+                    ContactNo: body.get("contactno"),
+                    SpouseName: body.get("spousename"),
+                    Sex: body.get("sex"),
+                    MothersName: body.get("mothersname"),
+                    FathersName: body.get("fathersname"),
+                    EmergencyName: body.get("emergency"),
+                    EmergencyContactNo: body.get("emergencynumber"),
+                    Concern: body.get("concern"),
+                };
+                updatedAppointment = await DentalAppointment.findOneAndUpdate(
+                    { _id: AppointmentId },
+                    { $set: { 'Details': Data } },
+                    { new: true }
+                  ).exec();
             }
 
-            await newPost.save();
-
-            return new NextResponse("Post has been created", { status: 201 });
-        } catch (err) {
-            return new NextResponse("Database Error", { status: 500 });
-        }
-    } else {
-        return new NextResponse("Method Not Allowed", { status: 405 });
-    }
-};
+            if (!updatedAppointment) {
+                return new NextResponse("Appointment not found", { status: 404 });
+              }
+        
+              return new NextResponse("Post has been updated", { status: 200 });
+            } catch (err) {
+              console.error("Database Error:", err);
+              return new NextResponse("Database Error", { status: 500 });
+            }
+          } else {
+            return new NextResponse("Method Not Allowed", { status: 405 });
+          }
+        };

@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // functn para sa Date Formatig
 const formatDate = (timestamp) => {
@@ -19,40 +20,35 @@ const formatDate = (timestamp) => {
   return `${formattedDate} ${formattedTime}`;
 };
 
-
-
-const Action = (params) => {
+const Action = ({ params }) => {
   const { data: session, status } = useSession();
   const [uploading, setUploading] = useState(false);
-  const action = params.params.action;
-  const category = params.params.category;
-  let Email = '';
-  console.log(params);
+  const router = useRouter();
+  const department = params.department;
+  let GoogleEmail = '';
 
   if (status === 'authenticated' && session?.UserData?.GoogleEmail) {
-    Email = session.UserData.GoogleEmail;
-    console.log(Email);
+    GoogleEmail = session.UserData.GoogleEmail;
   }
 
-    // taga fetch
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
   const { data, mutate, error, isLoading } =  useSWR(
-      `/api/appointments?GoogleEmail=${encodeURIComponent(Email)}&category=${encodeURIComponent(category)}`,
+      `/api/appointments?GoogleEmail=${encodeURIComponent(GoogleEmail)}&Department=${encodeURIComponent(department)}`,
       fetcher
   );
 
 // taga bago ng arrangement
 const sortedData = data && !isLoading
   ? [...data].sort((a, b) => {
-      if (a.aStatus === 'approved' && b.aStatus !== 'approved') return -1;
-      if (b.aStatus === 'approved' && a.aStatus !== 'approved') return 1;
+      if (a.Status === 'Approved' && b.Status !== 'Approved') return -1;
+      if (b.Status === 'Approved' && a.Status !== 'Approved') return 1;
 
-      if (a.aStatus === 'completed' && b.aStatus !== 'completed') return -1;
-      if (b.aStatus === 'completed' && a.aStatus !== 'completed') return 1;
+      if (a.Status === 'Completed' && b.Status !== 'Completed') return -1;
+      if (b.Status === 'Completed' && a.Status !== 'Completed') return 1;
 
-      if (a.aStatus === 'canceled' && b.aStatus !== 'canceled') return 1;
-      if (b.aStatus === 'canceled' && a.aStatus !== 'canceled') return -1;
+      if (a.Status === 'Canceled' && b.Status !== 'Canceled') return 1;
+      if (b.Status === 'Canceled' && a.Status !== 'Canceled') return -1;
 
       return b.createdAt.localeCompare(a.createdAt);
   }).map(item => ({
@@ -69,7 +65,7 @@ const sortedData = data && !isLoading
 
   const filteredData = sortedData.filter((appointment) => {
     if (filterStatus === null) return true;
-    return appointment.aStatus === filterStatus;
+    return appointment.Status === filterStatus;
   });
 
 
@@ -77,25 +73,23 @@ const sortedData = data && !isLoading
 // parar sa submit appointment
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const aName = e.target[0].value;
-    const aId = e.target[1].value;
-    const aCategory = e.target[2].value;
-    const aConsern = e.target[3].value;
-    const aDepartment = category;
+    const Name = e.target[0].value;
+    const Id = e.target[1].value;
+    const Category = e.target[2].value;
+    const Consern = e.target[3].value;
+    const Department = department;
     const GoogleEmail = Email;
-    console.log('PAGE', Email);
   
     try {
         setUploading(true);
         const formData = new FormData();
-        formData.append("aName", aName);
-        formData.append("aId", aId);
-        formData.append("aCategory", aCategory);
-        formData.append("aConsern", aConsern);
-        formData.append("aDepartment", aDepartment);
+        formData.append("Name", Name);
+        formData.append("Id", Id);
+        formData.append("Category", Category);
+        formData.append("Consern", Consern);
+        formData.append("Department", Department);
         formData.append("GoogleEmail", GoogleEmail);
 
-        console.log("Uploading");
         const response = await fetch("/api/appointments", {
             method: "POST",
             body: formData,
@@ -115,46 +109,41 @@ const sortedData = data && !isLoading
     }
   };
 
-  const validation = (action,category) => {
-    if (action === 'appointment') {
-      if (category === 'Dental' || category === 'Medical' || category === 'SDPC') {
-          return true;
-      } else {
-        return false;
-      }
+  const validation = (department) => {
+    if (department === 'Dental' || department === 'Medical' || department === 'SDPC') {
+        return true;
     } else {
       return false;
     }
   }
 
-  const returned = validation(action,category);
+  const returned = validation(department);
 
   if (returned) {
 
     return (
       <div className={styles.mainContainer}>
-        <h1>{category}</h1>
+        <h1>{department}</h1>
         <div className={styles.container}>
         <div className={styles.appointmentList}>
           <h3 className={styles.title}>Appointments History</h3>
           <div className={styles.status}>
             <button className={`${styles.cbutton} ${filterStatus === null ? styles.call : ''}`} onClick={() => handleFilter(null)}>All</button>
-            <button className={`${styles.cbutton} ${filterStatus === 'pending' ? styles.cpending : ''}`} onClick={() => handleFilter('pending')}>Pending</button>
-            <button className={`${styles.cbutton} ${filterStatus === 'approved' ? styles.capproved : ''}`} onClick={() => handleFilter('approved')}>Approved</button>
-            <button className={`${styles.cbutton} ${filterStatus === 'completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('completed')}>Completed</button>
-            <button className={`${styles.cbutton} ${filterStatus === 'canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('canceled')}>Canceled</button>
-            <button className={`${styles.cbutton} ${filterStatus === 'rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('rejected')}>Rejected</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Pending' ? styles.cpending : ''}`} onClick={() => handleFilter('Pending')}>Pending</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Approved' ? styles.capproved : ''}`} onClick={() => handleFilter('Approved')}>Approved</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
           </div>
           {isLoading ? "Loading..." : filteredData?.map((appointment, index) => (
-            <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.aStatus]}`}>
+            <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/services/'+department+'/CreateAppointment/'+appointment._id) : null}>
               <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a></h4>
               <p className={styles.aDate}>{appointment.createdAt}</p>
-              <h5 className={styles.aStatus}>Status: {appointment.aStatus}</h5>
-              <p className={styles.aConsern}>{appointment.aConsern}</p>
+              <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>
+              <p className={styles.aConsern}>{appointment.Consern}</p>
             </div>
           ))}
         </div>
-
 
         <form className={styles.formContainer} onSubmit={handleSubmit}>
           <h3 className={styles.title}>Appointment Form</h3>
