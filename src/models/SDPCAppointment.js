@@ -4,36 +4,44 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema(
   {
-    aName: {
+    Name: {
       type: String,
       required: true,
     },
-    aId: {
+    Id: {
       type: String,
       required: true,
     },
-    aCategory: {
+    Category: {
       type: String,
       required: true,
     },
-    aConsern: {
+    Consern: {
       type: String,
       required: true,
     },
-    aDepartment: {
+    Department: {
       type: String,
       required: true,
     },
-    aStatus: {
+    Status: {
       type: String,
       required: true,
     },
-    aAccount_Id: {
+    Account_Id: {
+      type: String,
+      required: true,
+    },
+    GoogleEmail: {
       type: String,
       required: true,
     },
     Responces: {
       type: Array,
+      required: false,
+    },
+    Details: {
+      type: Object,
       required: false,
     },
   },
