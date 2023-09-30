@@ -5,27 +5,17 @@ import styles from "./page.module.css";
 import { notFound } from "next/navigation";
 import useSWR from "swr";
 import Image from "next/image";
+
 import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
 
-// functn para sa Date Formatig
-const formatDate = (timestamp) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
-
-  const hours = new Date(timestamp).getHours();
-  const minutes = new Date(timestamp).getMinutes();
-  const amOrPm = hours >= 12 ? 'pm' : 'am';
-  const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
-
-  return `${formattedDate} ${formattedTime}`;
-};
 
 const Form = ({params}) => {
     const Department = params.department;
     const AppointmentId = params.id;
     var GoogleImage = "";
+    var GoogleEmail = "";
 
     const [DetailsUploading, setDetailsUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
@@ -455,8 +445,8 @@ const Form = ({params}) => {
         return (
             <form className={styles.responseFormContainer} onSubmit={HandleResponseSubmit}>
                 <p>Your response/concern:</p>
-                <input name="GoogleEmail" value={data.GoogleEmail} type="text" hidden readOnly/>
-                <input name="Name" value={data.Name} type="text" hidden readOnly/>
+                <input name="GoogleEmail" value={GoogleEmail} type="text" hidden readOnly/>
+                <input name="Name" value={Department} type="text" hidden readOnly/>
                 <textarea name="Response" cols="50" rows="3" />
                 {ResponseUploading ? 
                     <button className={styles.submitBtn} disabled>Uploading...</button>
@@ -560,12 +550,12 @@ const Form = ({params}) => {
 
     return (
         <div className={styles.mainContainer}>
-            <a href={'/services/'+Department+'/CreateAppointment'} className={styles.back}>&lt; Back</a>
+            <a href={'/authorized/'+Department+'/consultation'} className={styles.back}>&lt; Back</a>
             <div className={styles.vLine}></div>
 
             {isLoading ? (
                 "Loading..."
-            ) : data ? (  
+            ) : data && data?.Details ? (  
                 <div className={styles.row}>
                     <div className={styles.mark}>
                         <div className={styles.datetime}>
@@ -587,23 +577,15 @@ const Form = ({params}) => {
                     </div>
                     <div className={styles.content}>
                         {Department === "Medical" ? (
-                            data?.Details ? (
-                                <MedicalForm data={data.Details} />
-                            ) : (
-                                <MedicalRegistrationForm />
-                            )
+                            <MedicalForm data={data.Details} />
                         ) : Department === "Dental" ? (
-                                data?.Details ? (
-                                <DentalForm data={data.Details} />
-                            ) : (
-                                <DentalRegistrationForm />
-                            )
-                        ) : null}
+                            <DentalForm data={data.Details} />
+                        ) : null};
                     </div>
                 </div>
 
                 ) : (
-                <p></p>
+                null
             )}
 
         

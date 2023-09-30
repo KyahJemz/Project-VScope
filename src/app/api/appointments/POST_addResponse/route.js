@@ -10,11 +10,15 @@ export const POST = async (request) => {
 
         const Department = body.get("Department");
         const AppointmentId = body.get("AppointmentId");
+        const Name = body.get("Name");
+        const GoogleEmail = body.get("GoogleEmail");
         const Response = body.get("Response");
         const Status = body.get("Status");
         const Timestamp = new Date().toISOString();
 
         const newResponse = {
+            Name: Name,
+            GoogleEmail: GoogleEmail,
             Response: Response,
             Timestamp: Timestamp
         };

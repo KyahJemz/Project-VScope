@@ -63,31 +63,31 @@
 }
 
 .capproved,
-.approved {
+.Approved {
   cursor: pointer;
   background-color: #53c28b;
 }
 
 .crejected,
-.rejected {
+.Rejected {
   cursor:not-allowed;
   background-color: rgb(165, 62, 62);
 }
 
 .cpending,
-.pending {
+.Pending {
   cursor:not-allowed;
   background-color: rgb(199, 199, 78);
 }
 
 .ccompleted,
-.completed {
+.Completed {
   cursor:not-allowed;
   background-color: rgb(55, 64, 187);
 }
 
 .ccanceled,
-.canceled {
+.Canceled {
   cursor:not-allowed;
   background-color: rgb(165, 62, 62);
 }
