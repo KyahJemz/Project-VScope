@@ -83,11 +83,11 @@ const action = ({ params }) => {
                     className={styles.input}
                     required
                 />
-                <input 
+                {/* <input 
                     name="Image"
                     type="file" 
                     className={styles.input}
-                />
+                /> */}
                 <textarea 
                     type="text" 
                     className={styles.input}

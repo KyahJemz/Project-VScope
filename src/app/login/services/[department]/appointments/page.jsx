@@ -27,13 +27,13 @@ const Action = ({ params }) => {
   const department = params.department;
   var GoogleEmail = "";
 
-  if (status === 'authenticated' && session?.UserData){
-    GoogleEmail = session.UserData.GoogleEmail;
+  if (status === 'authenticated'){
+    GoogleEmail = session.user.email;
   } 
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
-  const { data, mutate, error, isLoading } =  useSWR(
+  const { data, mutate, isLoading } =  useSWR(
       `/api/appointments?GoogleEmail=${encodeURIComponent(GoogleEmail)}&Department=${encodeURIComponent(department)}`,
       fetcher
   );
@@ -78,7 +78,7 @@ const sortedData = data && !isLoading
     const Category = e.target[2].value;
     const Consern = e.target[3].value;
     const Department = department;
-    const GoogleEmail = Email;
+    const Googleemail = GoogleEmail;
   
     try {
         setUploading(true);
@@ -88,7 +88,7 @@ const sortedData = data && !isLoading
         formData.append("Category", Category);
         formData.append("Consern", Consern);
         formData.append("Department", Department);
-        formData.append("GoogleEmail", GoogleEmail);
+        formData.append("GoogleEmail", Googleemail);
 
         const response = await fetch("/api/appointments", {
             method: "POST",

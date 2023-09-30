@@ -67,15 +67,15 @@ const Appointments = ({ params }) => {
               {AppointmentsisLoading ? "Loading..." : Appointments.length === 0 ? "No pending cooncerns at the mmement" : Appointments.map((data, index) => (
                   <div key={index} className={styles.AppointmentsItem}>
                       <div className={styles.details}>
-                          <p className={styles.stats}>{data.aStatus}</p>
+                          <p className={styles.stats}>{data.Status}</p>
                           <p className={styles.date}>{formatDate(data.createdAt)}</p>
                       </div>
                       
-                      <p className={styles.name}>{data.aName}</p>
-                      <p className={styles.id}>{data.aId}</p>
-                      <p className={styles.email}>Email</p>
-                      <p className={styles.category}>{data.aCategory}</p>
-                      <p className={styles.consern}>{data.aConsern}</p>
+                      <p className={styles.name}>{data.Name}</p>
+                      <p className={styles.id}>{data.Id}</p>
+                      <p className={styles.email}>{Appointments.GoogleEmail}</p>
+                      <p className={styles.category}>{data.Category}</p>
+                      <p className={styles.consern}>{data.Consern}</p>
           
                       <form className={styles.actions} onSubmit={handleSubmit} >
                           <input 
@@ -86,7 +86,7 @@ const Appointments = ({ params }) => {
                           <input 
                             className={styles.hide}
                             type="text" 
-                            value={data.aName}
+                            value={data.Name}
                             hidden
                           />
                           <input 

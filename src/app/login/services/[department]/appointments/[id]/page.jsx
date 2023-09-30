@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import { notFound } from "next/navigation";
+import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import Image from "next/image";
 import Dental from "public/Dental.jpg";
@@ -23,9 +24,16 @@ const formatDate = (timestamp) => {
 };
 
 const Form = ({params}) => {
+    const { data: session, status } = useSession();
     const Department = params.department;
     const AppointmentId = params.id;
     var GoogleImage = "";
+
+    if (status === 'authenticated'){
+        GoogleImage = session.user.image;
+    } 
+    
+    const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
     const [DetailsUploading, setDetailsUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
@@ -492,8 +500,6 @@ const Form = ({params}) => {
             </div>
         )
     }
-
-    const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
     const { data, mutate, error, isLoading } = useSWR(
         `/api/appointments/GET_Details?department=${encodeURIComponent(Department)}&id=${encodeURIComponent(AppointmentId)}`,

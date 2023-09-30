@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,18 +10,33 @@ import Hero from "public/hero.png";
 const Login = () => {
   const session = useSession();
   const [activePanel, setActivePanel] = useState('clientPanel');
+  const [account, setAccount] = useState(null);
+
+  const router = useRouter();
+  console.log(session);
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      fetch(`/api/accounts?GoogleEmail=${encodeURIComponent(session.data.user.email)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAccount(data);
+        })
+        .catch(error => console.error("Error fetching account:", error));
+    }
+  }, [session]);
+
+  if (account) {
+    if (account?.Department) {
+      router.push('/login/authorized/' + account.Department);
+    } else {
+      router.push('/login/services');
+    }
+  }
+  
 
   if (session.status === "loading") {
     return <p>Loading...</p>;
-  }
-
-  const router = useRouter();
-  if (session.status === "authenticated") {
-      if (session.data.UserData?.Department){
-        router.push('/login/authorized/'+session.data.UserData.Department);
-      } else {
-        router.push('/login/services');
-      }
   }
 
   const handlePanelChange = (panel) => {

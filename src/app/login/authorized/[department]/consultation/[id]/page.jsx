@@ -340,7 +340,7 @@ const Form = ({params}) => {
         }
     }
 
-    const HandleStatusUpdatel = async (Status) => {
+    const HandleStatusUpdate = async (Status) => {
         try {
             setStatusUploading(true);
           const formData = new FormData();
@@ -369,17 +369,25 @@ const Form = ({params}) => {
         <div className={styles.mainContainer}>
             <div className={styles.vLine}></div>
 
-            {StatusUploading ? 
-                <div className={styles.statusUpdate}>
-                    <button disabled className={`${styles.btnSU} ${styles.maCompleted}`} onclick={()=>HandleStatusUpdatel('Completed')}>Loading..</button>
-                    <button disabled className={`${styles.btnSU} ${styles.maCanceled}`} onclick={()=>HandleStatusUpdatel('Canceled')}>Loading..</button>
-                </div>
-            :
-                <div className={styles.statusUpdate}>
-                    <button className={`${styles.btnSU} ${styles.maCompleted}`} onclick={()=>HandleStatusUpdatel('Completed')}>Mark as Completed</button>
-                    <button className={`${styles.btnSU} ${styles.maCanceled}`} onclick={()=>HandleStatusUpdatel('Canceled')}>Mark as Canceled</button>
-                </div>                
-            }
+            {StatusUploading ? (
+        <div className={styles.statusUpdate}>
+          <button disabled className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
+            Loading..
+          </button>
+          <button disabled className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
+            Loading..
+          </button>
+        </div>
+      ) : (
+        <div className={styles.statusUpdate}>
+          <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
+            Mark as Completed
+          </button>
+          <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
+            Mark as Canceled
+          </button>
+        </div>
+      )}
             
             {isLoading ? (
                 "Loading..."

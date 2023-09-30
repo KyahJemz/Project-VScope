@@ -53,9 +53,10 @@ export const POST = async (request) => {
         const Consern = body.get("Consern");
         const Department = body.get("Department");
         const Status = 'Pending';
+        const GoogleEmail = body.get("GoogleEmail");
         const AccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
         const Account_Id = AccountId[0]._id;
-        const GoogleEmail = body.get("GoogleEmail");
+
 
         if (GoogleEmail === "" || GoogleEmail === null) {
             return [];
@@ -75,7 +76,7 @@ export const POST = async (request) => {
                     Department,
                     Status,
                     Account_Id,
-                    GoogleEmail
+                    GoogleEmail,
                 });
             } else if (Department === 'Dental') {
                 newPost = new DentalAppointment({
@@ -86,7 +87,7 @@ export const POST = async (request) => {
                     Department,
                     Status,
                     Account_Id,
-                    GoogleEmail
+                    GoogleEmail,
                 });
             } else if (Department === 'SDPC') {
                 newPost = new SDPCAppointment({
@@ -97,7 +98,7 @@ export const POST = async (request) => {
                     Department,
                     Status,
                     Account_Id,
-                    GoogleEmail
+                    GoogleEmail,
                 });
             }
 
