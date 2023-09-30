@@ -17,11 +17,10 @@ const Login = () => {
 
   const router = useRouter();
   if (session.status === "authenticated") {
-      console.log('--LOGIN--', session);
       if (session.data.UserData?.Department){
-        router.push('/services/authorized/'+session.data.UserData.Department);
+        router.push('/login/authorized/'+session.data.UserData.Department);
       } else {
-        router.push('/services');
+        router.push('/login/services');
       }
   }
 

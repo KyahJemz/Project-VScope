@@ -2,40 +2,19 @@
 
 import React, { useState } from "react";
 import styles from "./page.module.css";
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import DefaultImage from "public/uploads/blogs/default.png";
-
-
 
 const action = ({ params }) => {
   const Department = params.department;
   const Action = params.action;
-  console.log(params);
-  const { data: session, status } = useSession();
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
 
-  // if (status === "authenticated") {
-  //   console.log('-----AUTHORIZED', session);
-  //   if (session.UserData?.Department){
-  //     if (Department != session.UserData.Department) {
-  //       router.push('/authorized/'+session.UserData.Department);
-  //     }
-  //   } else {
-  //     router.push('/services');
-  //   }
-  // }
-
   function convertNewlines(text, toHTML = false) {
     if (toHTML) {
-      // Replace newlines with <br />
       return text.replace(/\n/g, '<br />');
     } else {
-      // Replace newlines with \n
       return text.replace(/<br \/>|<br\/>|<br>|<br\s\/>/g, '\n');
     }
   }
@@ -83,7 +62,7 @@ const action = ({ params }) => {
 
         if (response.ok) {
             console.log("Complete");
-            router.push('/authorized/'+Department);
+            router.push('/login/authorized/'+Department);
         } else {
             console.log("Failed");
         }
@@ -186,7 +165,7 @@ const action = ({ params }) => {
   
     return (
         <div className={styles.mainContainer}>
-          <a href={'/authorized/' + Department} className={styles.back}>&lt; Back</a>
+          <a href={'/login/authorized/' + Department} className={styles.back}>&lt; Back</a>
           {InitializeAction()}
         </div>
       );

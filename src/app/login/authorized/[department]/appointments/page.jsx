@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
 import useSWR from "swr";
 
 const formatDate = (timestamp) => {
@@ -20,7 +19,7 @@ const formatDate = (timestamp) => {
 const Appointments = ({ params }) => {
   const Department = params.department;
 
-   const [Status, setStatus] = useState();
+  const [Status, setStatus] = useState();
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -29,9 +28,7 @@ const Appointments = ({ params }) => {
     fetcher
   );
   
-
-  var Email = "email";
-
+  var Email = "email"; /// SESSION EMAIL
 
   const handleSubmit = async (e) => {
     e.preventDefault();

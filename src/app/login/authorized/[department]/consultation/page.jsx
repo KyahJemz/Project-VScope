@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
 import useSWR from "swr";
 import { useRouter  } from "next/navigation";
 
@@ -75,7 +74,7 @@ const sortedData = data && !isLoading
             <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
           </div>
           {isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((appointment, index) => (
-            <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/authorized/'+Department+'/consultation/'+appointment._id) : null}>
+            <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/login/authorized/'+Department+'/consultation/'+appointment._id) : null}>
               <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a></h4>
               <p className={styles.aDate}>{appointment.createdAt}</p>
               <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>

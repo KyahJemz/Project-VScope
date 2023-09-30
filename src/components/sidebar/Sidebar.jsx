@@ -1,57 +1,59 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Sidebar.module.css";
-import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
-import { signOut, useSession } from "next-auth/react";
 
-const StaffLinks = [
-  {
-    id: 1,
-    title: "Dashboard",
-    url: "/authorized/department/dashboard",
-  },
-  {
-    id: 2,
-    title: "Appointments",
-    url: "/authorized/department/appointments",
-  },
-];
+const Sidebar = ({department}) => {
 
-const AdminLinks = [
-  {
-    id: 3,
-    title: "Consultation",
-    url: "/authorized/department/consultation",
-  },
-  {
-    id: 4,
-    title: "Analytics",
-    url: "/authorized/department/analytics",
-  }
-];
+  const [panel, setPanel] = useState(false);
 
-const Sidebar = () => {
-  const { data: session, status } = useSession();
+  const ManagementLinks = [
+    {
+      id: 1,
+      title: "Dashboard",
+      url: "/login/authorized/"+department,
+    },
+    {
+      id: 2,
+      title: "Appointments",
+      url: "/login/authorized/"+department+"/appointments",
+    },
+  ];
+  
+  const AdminLinks = [
+    {
+      id: 3,
+      title: "Consultation",
+      url: "/login/authorized/"+department+"/consultation",
+    },
+    {
+      id: 4,
+      title: "Analytics",
+      url: "/login/authorized/"+department+"/analytics",
+    }
+  ];
   
   return (
-    <div className={styles.containerHide}>
-      <Link href="/" className={styles.logo}>
-        VScope Admin
-      </Link>
-      <div className={styles.links}>
-        {StaffLinks.map((link) => (
-          <Link key={link.id} href={link.url} className={styles.link}>
-            {link.title}
+    <div className={panel ? styles.container : styles.containerHide}>
+      <button className={styles.toggle} onClick={panel ? ()=>setPanel(false) : ()=>setPanel(true)}>#</button>
+      {panel === false ? null : 
+        <div className={styles.links}>
+          <Link href="/" className={styles.logo}>
+            VScope Admin
           </Link>
-        ))}
-        {AdminLinks.map((link) => (
-          <Link key={link.id} href={link.url} className={styles.link}>
-            {link.title}
-          </Link>
-        ))}
+          {ManagementLinks.map((link) => (
+            <a key={link.id} href={link.url} className={styles.link}>
+              {link.title}
+            </a>
+          ))}
+          {AdminLinks.map((link) => (
+            <a key={link.id} href={link.url} className={styles.link}>
+              {link.title}
+            </a>
+          ))}
       </div>
+      }
     </div>
   );
 };

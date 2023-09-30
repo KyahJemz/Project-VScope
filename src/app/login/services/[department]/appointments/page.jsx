@@ -186,8 +186,8 @@ const sortedData = data && !isLoading
           />
           <select className={styles.input} required>
           <option className={styles.option} value="">Select category...</option>
-            <option className={styles.option} value="student">Student</option>
-            <option className={styles.option} value="client">Client</option>
+            <option className={styles.option} value="Student">Student</option>
+            <option className={styles.option} value="Lay Collaborator">Lay Collaborator</option>
           </select>
           <textarea 
             type="text" 

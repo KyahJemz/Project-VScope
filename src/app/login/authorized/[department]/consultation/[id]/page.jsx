@@ -1,8 +1,7 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./page.module.css";
-import { notFound } from "next/navigation";
 import useSWR from "swr";
 import Image from "next/image";
 
@@ -19,6 +18,7 @@ const Form = ({params}) => {
 
     const [DetailsUploading, setDetailsUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
+    const [StatusUploading, setStatusUploading] = useState(false);
 
     const DentalForm = ({data}) => {
         return (
@@ -234,7 +234,6 @@ const Form = ({params}) => {
     }
 
     const ResponseForm = ({data}) => {
-        console.log(data);
         return (
             <form className={styles.responseFormContainer} onSubmit={HandleResponseSubmit}>
                 <p>Your response/concern:</p>
@@ -341,10 +340,47 @@ const Form = ({params}) => {
         }
     }
 
+    const HandleStatusUpdatel = async (Status) => {
+        try {
+            setStatusUploading(true);
+          const formData = new FormData();
+          formData.append("Department", Department);
+          formData.append("AppointmentId", AppointmentId);
+          formData.append("Status", Status);
+    
+          const response = await fetch("/api/appointments/POST_UpdateStatus", {
+            method: "POST",
+            body: formData,
+          });
+    
+          setStatusUploading(false);
+          if (response.ok) {
+            console.log("Complete");
+            mutate(); 
+          } else {
+            console.log("Failed");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
     return (
         <div className={styles.mainContainer}>
             <div className={styles.vLine}></div>
 
+            {StatusUploading ? 
+                <div className={styles.statusUpdate}>
+                    <button disabled className={`${styles.btnSU} ${styles.maCompleted}`} onclick={()=>HandleStatusUpdatel('Completed')}>Loading..</button>
+                    <button disabled className={`${styles.btnSU} ${styles.maCanceled}`} onclick={()=>HandleStatusUpdatel('Canceled')}>Loading..</button>
+                </div>
+            :
+                <div className={styles.statusUpdate}>
+                    <button className={`${styles.btnSU} ${styles.maCompleted}`} onclick={()=>HandleStatusUpdatel('Completed')}>Mark as Completed</button>
+                    <button className={`${styles.btnSU} ${styles.maCanceled}`} onclick={()=>HandleStatusUpdatel('Canceled')}>Mark as Canceled</button>
+                </div>                
+            }
+            
             {isLoading ? (
                 "Loading..."
             ) : data && data?.Details ? (  

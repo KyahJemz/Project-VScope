@@ -168,3 +168,29 @@
   color: white;
 
 }
+
+.statusUpdate{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btnSU{
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btnSU:active{
+  border: 1px solid rgba(220, 220, 220, 0.500);
+}
+
+.maCompleted{
+  background-color: #535ac2;
+  color: white;
+}
+
+.maCanceled{
+  background-color: #c25353;
+  color: white;
+}

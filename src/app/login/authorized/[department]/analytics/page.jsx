@@ -7,9 +7,6 @@ import PieChart from "@/components/PieChart/PieChart";
 import LineChart from "@/components/LineChart/LineChart";
 
 const Analytics = ({ params }) => {
-  // adminn summary of appointments day month year
-  // can view summray of students vs lay colabs
-
   const Department = params.department;
 
   const [option, setOption] = useState ('day');
@@ -146,14 +143,6 @@ const Analytics = ({ params }) => {
       },
     ],
   };
-
-  // const { data: AllData, mutate: AllDatamutate, error: AllDataerror, isLoading: AllDataisLoading } = useSWR(
-  //   `/api/charts/12?department=${encodeURIComponent(Department)}`,
-  //   fetcher
-  // );
-
-  // console.log(AllData);
-  
 
   return (
     <div className={styles.mainContainer}>

@@ -31,25 +31,6 @@ const Dashboard = ({ params }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // if (status === "authenticated") {
-  //   console.log('-----AUTHORIZED', session);
-  //   if (session.UserData?.Department){
-  //     if (Department != session.UserData.Department) {
-  //       router.push('/authorized/'+session.UserData.Department);
-  //     }
-  //   } else {
-  //     router.push('/services');
-  //   }
-  // }
-
-  // View Blogs
-  // View Anns
-  // View FAQ
-
-  // Admin Post Blogs
-  // Admin Post Announcements
-  // Update FAQ
-
   function convertNewlines(text, toHTML = false) {
     if (toHTML) {
       return text.replace(/\n/g, '<br />');
@@ -105,7 +86,7 @@ const Dashboard = ({ params }) => {
               <div className={ activeTab === 'blogs' ? `${styles.blogsContainer}` : `${styles.hide}`}>
                   <div className={styles.header}>
                       <h3 className={styles.subtitle}>Blogs</h3>
-                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}
+                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}
                   </div>
                   <div className={styles.content}>
                     {BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
@@ -145,7 +126,7 @@ const Dashboard = ({ params }) => {
               <div className={ activeTab === 'announcements' ? `${styles.announcementsContainer}` : `${styles.hide}`}>
                   <div className={styles.header}>
                       <h3 className={styles.subtitle}>Announcements</h3>
-                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/authorized/'+Department+'/AddAnnouncement')}>Add Announcement</button> : ''}
+                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddAnnouncement')}>Add Announcement</button> : ''}
                   </div>
                   <div className={styles.content}>
                     {AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
@@ -180,7 +161,7 @@ const Dashboard = ({ params }) => {
                 <div className={styles.FAQContainer}>
                     <div className={styles.header}>
                       <h3 className={styles.subtitle}>FAQ</h3>
-                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/authorized/'+Department+'/AddFAQ')}>Add FAQ</button> : ''}
+                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddFAQ')}>Add FAQ</button> : ''}
                     </div>
                     <div className={styles.content}>
                         {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
