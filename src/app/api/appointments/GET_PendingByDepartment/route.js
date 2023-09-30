@@ -18,11 +18,11 @@ export const GET = async (request) => {
         let results = [];
 
         if (Department === 'Medical'){
-            results = await MedicalAppointment.find({ aDepartment: Department, aStatus: 'Pending' });
+            results = await MedicalAppointment.find({ Status: 'Pending' });
         } else if (Department === 'Dental') {
-            results = await DentalAppointment.find({ aDepartment: Department, aStatus: 'Pending' });
+            results = await DentalAppointment.find({ Status: 'Pending' });
         } else if (Department === 'SDPC') {
-            results = await SDPCAppointment.find({ aDepartment: Department, aStatus: 'Pending' });
+            results = await SDPCAppointment.find({ Status: 'Pending' });
         }
 
         return new NextResponse(JSON.stringify(results), { status: 200 });

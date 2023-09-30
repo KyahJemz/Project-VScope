@@ -62,7 +62,6 @@ const sortedData = data && !isLoading
 
   return (
     <div className={styles.mainContainer}>
-      <a href={'/authorized/' + Department} className={styles.back}>&lt; Back</a>
       <h3 className={styles.mainTitle}>Consultation</h3>
 
       <div className={styles.appointmentList}>
@@ -75,7 +74,7 @@ const sortedData = data && !isLoading
             <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
           </div>
-          {isLoading ? "Loading..." : filteredData?.map((appointment, index) => (
+          {isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((appointment, index) => (
             <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/authorized/'+Department+'/consultation/'+appointment._id) : null}>
               <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a></h4>
               <p className={styles.aDate}>{appointment.createdAt}</p>

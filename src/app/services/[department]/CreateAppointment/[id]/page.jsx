@@ -177,7 +177,7 @@ const Form = ({params}) => {
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Name:</p>
                         <input name="firstname" value={data.FirstName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
-                        <input name="middlename" value={data.MiddletName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
+                        <input name="middlename" value={data.MiddleName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                         <input name="lastname" value={data.LastName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
@@ -230,7 +230,7 @@ const Form = ({params}) => {
                 <div className={styles.formRow}>
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Spouse Name:</p>
-                        <input name="spousename" value={data.SpouseName} className={`${styles.readinput} ${styles.fullInput}`} type="text"/>
+                        <input name="spousename" value={data.SpouseName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
                         <p className={styles.label}>Sex:</p>
@@ -383,37 +383,37 @@ const Form = ({params}) => {
                 <div className={styles.formRow}>
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Full Name:</p>
-                        <input value={data.FullName} name="fullname" className={`${styles.readinput} ${styles.fullInput}`} type="text" required/>
+                        <input value={data.FullName} name="fullname" className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
                         <p className={styles.label}>Department/Course/Year:</p>
-                        <input name="departmentcourseyear" value={data.DepartmentCourseYear} className={styles.readinput} type="text" required/>
+                        <input name="departmentcourseyear" value={data.DepartmentCourseYear} className={styles.readinput} type="text" readOnly/>
                     </div>
                 </div>
 
                 <div className={styles.formRow}>
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Address:</p>
-                        <input name="address" value={data.Address} className={`${styles.readinput} ${styles.fullInput}`} type="text" required/>
+                        <input name="address" value={data.Address} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                 </div>
 
                 <div className={styles.formRow}>
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Contact No.:</p>
-                        <input name="contactnumber" value={data.ContactNo} className={`${styles.readinput} ${styles.fullInput}`} type="text" required/>
+                        <input name="contactnumber" value={data.ContactNo} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Civil Status:</p>
-                        <input name="civilstatus" value={data.CivilStatus} className={`${styles.readinput} ${styles.fullInput}`} type="text" required/>
+                        <input name="civilstatus" value={data.CivilStatus} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
                         <p className={styles.label}>Age:</p>
-                        <input name="age" value={data.Age} className={`${styles.readinput} ${styles.smallInput}`} type="text" required/>
+                        <input name="age" value={data.Age} className={`${styles.readinput} ${styles.smallInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
                         <p className={styles.label}>Sex:</p>
-                        <select name="sex" value={data.Sex} className={`${styles.readinput} ${styles.smallInput}`} type="text" required>
+                        <select name="sex" value={data.Sex} className={`${styles.readinput} ${styles.smallInput}`} type="text" readOnly>
                             <option value=""></option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -424,18 +424,18 @@ const Form = ({params}) => {
                 <div className={styles.formRow}>
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Emergency Contact Person:</p>
-                        <input name="emergency" value={data.EmergencyName} className={`${styles.readinput} ${styles.fullInput}`} type="text" required/>
+                        <input name="emergency" value={data.EmergencyName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
                         <p className={styles.label}>Contact No.:</p>
-                        <input name="emergencynumber" value={data.EmergencyContactNo} className={styles.readinput} type="text" required/>
+                        <input name="emergencynumber" value={data.EmergencyContactNo} className={styles.readinput} type="text" readOnly/>
                     </div>
                 </div>
 
                 <div className={styles.formRow}>
                     <div className={styles.textareaContainer}>
                         <p className={styles.label}>Concern:</p>
-                        <textarea name="concern" value={data.Concern} className={`${styles.readinput} ${styles.textarea}`} type="text" cols='50' rows='5' required/>
+                        <textarea name="concern" value={data.Concern} className={`${styles.readinput} ${styles.textarea}`} type="text" cols='50' rows='5' readOnly/>
                     </div>
                 </div> 
 
@@ -538,7 +538,7 @@ const Form = ({params}) => {
             formData.append("Department", Department);
             formData.append("AppointmentId", AppointmentId);
 
-            const response = await fetch("/api/appointments/POST_addResponse", {
+            const response = await fetch("/api/appointments/POST_AddResponse", {
                 method: "POST",
                 body: formData,
             });
@@ -560,7 +560,6 @@ const Form = ({params}) => {
 
     return (
         <div className={styles.mainContainer}>
-            <a href={'/services/'+Department+'/CreateAppointment'} className={styles.back}>&lt; Back</a>
             <div className={styles.vLine}></div>
 
             {isLoading ? (
@@ -605,7 +604,6 @@ const Form = ({params}) => {
                 ) : (
                 <p></p>
             )}
-
         
             {isLoading ? (
                 ""

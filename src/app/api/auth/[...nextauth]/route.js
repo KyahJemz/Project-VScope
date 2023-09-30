@@ -5,8 +5,6 @@ import Staffs from "@/models/Staffs";
 import Admins from "@/models/Admins";
 import connect from "@/utils/db";
 
-var data = null;
-
 const handler = NextAuth({
   providers: [
     GoogleProvider({
@@ -19,6 +17,7 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn(user, account, profile) {
+        console.log("--CALLBACK--",user.account)
         const { email: GoogleEmail, id: GoogleId, image: GoogleImage, name: GoogleName } = user.user;
         const { given_name: GoogleFirstname, family_name: GoogleLastname } = user.profile;
 
@@ -45,11 +44,9 @@ const handler = NextAuth({
         }
     
         if (user.account.provider === 'google' && user.profile.hd === 'sscr.edu') {
-          console.log("Google Provider user:", user.user);
           try {
             await connect();
             const results = await Accounts.find({ GoogleEmail });
-            console.log(results);
             if (results.length === 0) {
               try {
                 const newPost = new Accounts({
@@ -69,7 +66,6 @@ const handler = NextAuth({
                 return false;
               }
             } else {
-              data = results[0];
               return true;
             }
           } catch (err) {
@@ -79,11 +75,6 @@ const handler = NextAuth({
         }
         return false;
       },
-      async session ({ session } ) {
-        session.UserData = data;
-        console.log('data',data);
-        return session;
-      }
     }
 });
 

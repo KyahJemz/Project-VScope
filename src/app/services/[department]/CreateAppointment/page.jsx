@@ -25,11 +25,11 @@ const Action = ({ params }) => {
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
   const department = params.department;
-  let GoogleEmail = '';
+  var GoogleEmail = "";
 
-  if (status === 'authenticated' && session?.UserData?.GoogleEmail) {
+  if (status === 'authenticated' && session?.UserData){
     GoogleEmail = session.UserData.GoogleEmail;
-  }
+  } 
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
@@ -109,6 +109,30 @@ const sortedData = data && !isLoading
     }
   };
 
+  const HandleCancelBtn = async (AppointmentId) => {
+    try {
+      console.log(AppointmentId);
+      const formData = new FormData();
+      formData.append("Department", department);
+      formData.append("AppointmentId", AppointmentId);
+      formData.append("Status", 'Canceled');
+
+      const response = await fetch("/api/appointments/POST_UpdateStatus", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log("Complete");
+        mutate(); 
+      } else {
+        console.log("Failed");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const validation = (department) => {
     if (department === 'Dental' || department === 'Medical' || department === 'SDPC') {
         return true;
@@ -135,14 +159,15 @@ const sortedData = data && !isLoading
             <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
           </div>
-          {isLoading ? "Loading..." : filteredData?.map((appointment, index) => (
+          {isLoading ? "Loading..." : filteredData.length === 0 ? "No appointments" : filteredData.map((appointment, index) => (
             <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/services/'+department+'/CreateAppointment/'+appointment._id) : null}>
-              <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a></h4>
+              <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a> {appointment.Status === 'Pending' ? <button className={styles.cancelBtn} onClick={()=> HandleCancelBtn(appointment._id)}>Cancel</button> : null}</h4>
               <p className={styles.aDate}>{appointment.createdAt}</p>
               <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>
               <p className={styles.aConsern}>{appointment.Consern}</p>
             </div>
-          ))}
+          ))
+          }
         </div>
 
         <form className={styles.formContainer} onSubmit={handleSubmit}>

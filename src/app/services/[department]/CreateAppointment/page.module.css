@@ -29,7 +29,7 @@
 
 .appointmentListItem {
   padding: 10px;
-  margin-top: 20px;
+  margin-bottom: 20px;
   width: 100%;
   border-radius: 5px;
   color: #111;
@@ -38,10 +38,11 @@
 
 .id {
   font-weight: lighter;
+  font-size: 0.9rem;
 }
 
 .aTitle {
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .aDate {
@@ -92,6 +93,16 @@
   background-color: rgb(165, 62, 62);
 }
 
+.cancelBtn{
+  cursor: pointer;
+  background-color: rgb(165, 62, 62);
+  color: white;
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 0.8rem;
+}
+
 .call{
   background-color: #53c28b;
   color: white;
@@ -124,6 +135,7 @@
 }
 .status {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .cbutton {

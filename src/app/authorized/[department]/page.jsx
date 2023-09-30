@@ -7,6 +7,9 @@ import { useRouter } from 'next/navigation';
 import { notFound } from "next/navigation";
 import useSWR from "swr";
 import Image from "next/image";
+import Dental from "public/Dental.jpg";
+import Medical from "public/Medical.jpg";
+import SDPC from "public/SDPC.jpg";
 
 const formatDate = (timestamp) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -109,7 +112,11 @@ const Dashboard = ({ params }) => {
                         <div key={index} className={styles.blogsItem}>
                             <div className={styles.itemHeader}>
                                 <Image className={styles.itemDeptImage} 
-                                    src={`/public/${data.Department}`}
+                                    src={
+                                      data.Department === "Dental" ? Dental : 
+                                      data.Department === "Medical" ? Medical :
+                                      data.Department === "SDPC" ? SDPC : null
+                                    }
                                     height={50}
                                     width={50}
                                 />
@@ -145,7 +152,11 @@ const Dashboard = ({ params }) => {
                         <div key={index} className={styles.AnnouncementsItem}>
                             <div className={styles.itemHeader}>
                                 <Image className={styles.itemDeptImage} 
-                                    src={`/public/${data.Department}`}
+                                    src={
+                                      data.Department === "Dental" ? Dental : 
+                                      data.Department === "Medical" ? Medical :
+                                      data.Department === "SDPC" ? SDPC : null
+                                    }
                                     height={50}
                                     width={50}
                                 />
@@ -175,7 +186,11 @@ const Dashboard = ({ params }) => {
                         {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
                             <div key={index} className={styles.faqsItem}>
                                 <Image className={styles.faqImage} 
-                                    src={`/public/${data.Department}`}
+                                    src={
+                                      data.Department === "Dental" ? Dental : 
+                                      data.Department === "Medical" ? Medical :
+                                      data.Department === "SDPC" ? SDPC : null
+                                    }
                                     height={50}
                                     width={50}
                                 />

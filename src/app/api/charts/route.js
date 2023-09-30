@@ -42,15 +42,15 @@ export const GET = async (request) => {
                     
                         if (AppointmentModel) {
                             countStudent = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startOfDay, $lte: endOfDay },
-                                aCategory: 'Student'
+                                Category: 'Student'
                             });
                         
                             countLayColaborators = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startOfDay, $lte: endOfDay },
-                                aCategory: 'Lay Collaborator'
+                                Category: 'Lay Collaborator'
                             });
 
                             const data = { label: ['Student','Lay Collaborator'], counts: [countStudent,countLayColaborators] };  // Modified to properly structure data
@@ -74,44 +74,44 @@ export const GET = async (request) => {
                         
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Student',
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Student',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             });
                         
                             countLayCollaborators = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Lay Collaborator',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             });
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Student',
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Student',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             });
                         
                             countLayCollaborators = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Lay Collaborator',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             })
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Student',
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Student',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             });
                         
                             countLayCollaborators = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Lay Collaborator',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             })
                         } else {
@@ -158,15 +158,15 @@ export const GET = async (request) => {
                     
                         if (AppointmentModel) {
                             countStudent = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startDateWeek, $lte: endDateWeek },
-                                aCategory: 'Student'
+                                Category: 'Student'
                             });
                         
                             countLayColaborators = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startDateWeek, $lte: endDateWeek },
-                                aCategory: 'Lay Collaborator'
+                                Category: 'Lay Collaborator'
                             });
 
                             const data = { label: ['Student','Lay Collaborator'], counts: [countStudent,countLayColaborators] };  // Modified to properly structure data
@@ -189,44 +189,44 @@ export const GET = async (request) => {
                         
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Student',  // Count for 'Student'
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Student',  // Count for 'Student'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         
                             countLayCollaborators = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',  // Count for 'Lay Collaborator'
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Lay Collaborator',  // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Student',  // Count for 'Student'
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Student',  // Count for 'Student'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         
                             countLayCollaborators = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',  // Count for 'Lay Collaborator'
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Lay Collaborator',  // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Student',  // Count for 'Student'
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Student',  // Count for 'Student'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         
                             countLayCollaborators = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',  // Count for 'Lay Collaborator'
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Lay Collaborator',  // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         } else {
@@ -280,15 +280,15 @@ export const GET = async (request) => {
                     
                         if (AppointmentModel) {
                             countStudent = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startDateMonth, $lte: endDateMonth },
-                                aCategory: 'Student'
+                                Category: 'Student'
                             });
                         
                             countLayColaborators = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startDateMonth, $lte: endDateMonth },
-                                aCategory: 'Lay Collaborator'
+                                Category: 'Lay Collaborator'
                             });
                             
                             const data = { label: ['Student','Lay Collaborator'], counts: [countStudent,countLayColaborators] };  // Modified to properly structure data
@@ -312,44 +312,44 @@ export const GET = async (request) => {
                       
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Student', // Count for 'Student'
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Student', // Count for 'Student'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         
                             countLayCollaborators = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator', // Count for 'Lay Collaborator'
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Lay Collaborator', // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Student', // Count for 'Student'
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Student', // Count for 'Student'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         
                             countLayCollaborators = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator', // Count for 'Lay Collaborator'
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Lay Collaborator', // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Student', // Count for 'Student'
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Student', // Count for 'Student'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         
                             countLayCollaborators = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator', // Count for 'Lay Collaborator'
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Lay Collaborator', // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
                         } else {
@@ -397,15 +397,15 @@ export const GET = async (request) => {
                     
                         if (AppointmentModel) {
                             countStudent = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startDateYear, $lte: endDateYear },
-                                aCategory: 'Student'
+                                Category: 'Student'
                             });
                     
                             countLayColaborators = await AppointmentModel.countDocuments({
-                                aDepartment: department,
+                                Department: department,
                                 createdAt: { $gte: startDateYear, $lte: endDateYear },
-                                aCategory: 'Lay Collaborator'
+                                Category: 'Lay Collaborator'
                             });
 
                             const data = { label: ['Student','Lay Collaborator'], counts: [countStudent,countLayColaborators] };  // Modified to properly structure data
@@ -432,44 +432,44 @@ export const GET = async (request) => {
                     
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Student',
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Student',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
                     
                             countLayCollaborators = await MedicalAppointment.countDocuments({
-                                aDepartment: 'Medical',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',
+                                Department: 'Medical',
+                                Status: status,
+                                Category: 'Lay Collaborator',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Student',
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Student',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
                     
                             countLayCollaborators = await DentalAppointment.countDocuments({
-                                aDepartment: 'Dental',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',
+                                Department: 'Dental',
+                                Status: status,
+                                Category: 'Lay Collaborator',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Student',
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Student',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
                     
                             countLayCollaborators = await SDPCAppointment.countDocuments({
-                                aDepartment: 'SDPC',
-                                aStatus: status,
-                                aCategory: 'Lay Collaborator',
+                                Department: 'SDPC',
+                                Status: status,
+                                Category: 'Lay Collaborator',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
                         } else {
@@ -499,6 +499,6 @@ export const GET = async (request) => {
 
         return new NextResponse("Invalid", { status: 500 });
     } catch (err) {
-        return new NextResponse("Database Error", { status: 500 });
+        return new NextResponse("Database Error"+err, { status: 500 });
     }
 };

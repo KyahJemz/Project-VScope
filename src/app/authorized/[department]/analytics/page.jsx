@@ -146,32 +146,23 @@ const Analytics = ({ params }) => {
       },
     ],
   };
+
+  // const { data: AllData, mutate: AllDatamutate, error: AllDataerror, isLoading: AllDataisLoading } = useSWR(
+  //   `/api/charts/12?department=${encodeURIComponent(Department)}`,
+  //   fetcher
+  // );
+
+  // console.log(AllData);
   
-
-
-
 
   return (
     <div className={styles.mainContainer}>
         <h3 className={styles.mainTitle}>Analytics</h3>
-        <a href={'/authorized/' + Department} className={styles.back}>&lt; Back</a>
         <div className={styles.options}>
             <button className={styles.option} onClick={()=> setOption('day')}>Day</button>
             <button className={styles.option} onClick={()=> setOption('week')}>Week</button>
             <button className={styles.option} onClick={()=> setOption('month')}>Month</button>
             <button className={styles.option} onClick={()=> setOption('year')}>Year</button>
-            {/* <details>
-                <summary className={styles.calendarTitle}>Custom Date</summary>
-                <div className={styles.calendars}>
-                    <span className={styles.leftCalendar}>
-                        <input type="date" name="" id="" />
-                    </span>
-                    <span> to </span>
-                    <span className={styles.rightCalendar}>
-                        <input type="date" name="" id="" />
-                    </span>
-                </div>
-            </details> */}
         </div>
 
         <div className={styles.container}>

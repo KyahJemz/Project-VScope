@@ -20,145 +20,9 @@ const Form = ({params}) => {
     const [DetailsUploading, setDetailsUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
 
-    const DentalRegistrationForm = () => {
-        return (
-            <form className={styles.form} onSubmit={HandleDetailsSubmit}>
-                <div className={styles.formRow}>
-                    <p className={styles.formTitle}>Dental Form</p>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Name:</p>
-                        <input name="firstname" className={`${styles.input} ${styles.fullInput}`} placeholder="First name" type="text" required/>
-                        <input name="middlename" className={`${styles.input} ${styles.fullInput}`} placeholder="Middle name" type="text" required/>
-                        <input name="lastname" className={`${styles.input} ${styles.fullInput}`} placeholder="Last name" type="text" required/>
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Civil Status:</p>
-                        <input name="civilstatus" className={`${styles.input} ${styles.smallInput}`} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Address:</p>
-                        <input name="address" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Course:</p>
-                        <input name="course" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Year:</p>
-                        <input name="year" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Section:</p>
-                        <input name="section" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Age:</p>
-                        <input name="age" className={`${styles.input} ${styles.smallInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Date of Birth:</p>
-                        <input name="dateofbirth" className={`${styles.input} ${styles.fullInput}`} type="date" required/>
-                    </div>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Religion:</p>
-                        <input name="religion" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Contact No:</p>
-                        <input name="contactno" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Spouse Name:</p>
-                        <input name="spousename" className={`${styles.input} ${styles.fullInput}`} type="text"/>
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Sex:</p>
-                        <select name="sex" className={styles.input} type="text" required>
-                        <option value=""></option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Mothers Name:</p>
-                        <input name="mothersname" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Fathers Name:</p>
-                        <input name="fathersname" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Person to notify incase of emergency:</p>
-                        <input name="emergency" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Contact No:</p>
-                        <input name="emergencynumber" className={styles.input} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Date:</p>
-                        <input className={styles.input} type="date" readOnly disabled/>
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Tooth:</p>
-                        <input className={styles.input} type="text" readOnly disabled/>
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Service Offered:</p>
-                        <input className={styles.input} type="text" readOnly disabled/>
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Service Offered:</p>
-                        <input className={styles.input} type="text" readOnly disabled/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.textareaContainer}>
-                    <p className={styles.label}>Concern:</p>
-                        <textarea name="concern" className={`${styles.input} ${styles.textarea}`} type="text" cols='50' rows='5' required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    {DetailsUploading ? 
-                        <button className={styles.submitBtn} disabled>Uploading...</button>
-                        :
-                        <button className={styles.submitBtn}>Save Details</button>
-                    } 
-                </div>
-
-            </form>
-        )
-    }
-
     const DentalForm = ({data}) => {
         return (
-            <form className={styles.form} onSubmit={HandleDetailsSubmit}>
+            <form className={styles.form} onSubmit={HandleUpdateSubmit}>
                 <div className={styles.formRow}>
                     <p className={styles.formTitle}>Dental Details</p>
                 </div>
@@ -167,7 +31,7 @@ const Form = ({params}) => {
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Name:</p>
                         <input name="firstname" value={data.FirstName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
-                        <input name="middlename" value={data.MiddletName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
+                        <input name="middlename" value={data.MiddleName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                         <input name="lastname" value={data.LastName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
@@ -220,7 +84,7 @@ const Form = ({params}) => {
                 <div className={styles.formRow}>
                     <div className={styles.inputContainerMax}>
                         <p className={styles.label}>Spouse Name:</p>
-                        <input name="spousename" value={data.SpouseName} className={`${styles.readinput} ${styles.fullInput}`} type="text"/>
+                        <input name="spousename" value={data.SpouseName} className={`${styles.readinput} ${styles.fullInput}`} type="text" readOnly/>
                     </div>
                     <div className={styles.inputContainer}>
                         <p className={styles.label}>Sex:</p>
@@ -254,118 +118,47 @@ const Form = ({params}) => {
                     </div>
                 </div>
 
-                {data?.dDate ? 
-                    <div className={styles.formRow}>
-                        <div className={styles.inputContainer}>
-                            <p className={styles.label}>Date:</p>
-                            <input value={data.dDate} className={styles.readinput} type="date" readOnly/>
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <p className={styles.label}>Tooth:</p>
-                            <input value={data.dTooth} className={styles.readinput} type="text" readOnly/>
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <p className={styles.label}>Service Offered:</p>
-                            <input value={data.dServiceOffered} className={styles.readinput} type="text" readOnly/>
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <p className={styles.label}>unknown:</p>
-                            <input value={data.unknown} className={styles.readinput} type="text" readOnly/>
-                        </div>
-                    </div>
-                : ""}
-
                 <div className={styles.formRow}>
-                    <div className={styles.textareaContainer}>
-                    <p className={styles.label}>Concern:</p>
-                        <textarea name="concern" value={data.Concern} className={`${styles.readinput} ${styles.textarea}`} type="text" cols='50' rows='5' required/>
-                    </div>
-                </div>
-
-            </form>
-        )
-    }
-
-    const MedicalRegistrationForm = () => {
-        return (
-            <form className={styles.form} onSubmit={HandleDetailsSubmit}>
-                <div className={styles.formRow}>
-                    <p className={styles.formTitle}>Medical Form</p>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Full Name:</p>
-                        <input name="fullname" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
+                    <div className={styles.inputContainer}>
+                        <p className={styles.label}>Date:</p>
+                        <input name="dDate" value={data.dDate} className={styles.input} type="date" />
                     </div>
                     <div className={styles.inputContainer}>
-                        <p className={styles.label}>Department/Course/Year:</p>
-                        <input name="departmentcourseyear" className={styles.input} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Address:</p>
-                        <input name="address" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Contact No.:</p>
-                        <input name="contactnumber" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Civil Status:</p>
-                        <input name="civilstatus" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
+                        <p className={styles.label}>Tooth:</p>
+                        <input name="dTooth" value={data.dTooth} className={styles.input} type="text" />
                     </div>
                     <div className={styles.inputContainer}>
-                        <p className={styles.label}>Age:</p>
-                        <input name="age" className={`${styles.input} ${styles.smallInput}`} type="text" required/>
+                        <p className={styles.label}>Service Offered:</p>
+                        <input name="dServiceOffered" value={data.dServiceOffered} className={styles.input} type="text" />
                     </div>
                     <div className={styles.inputContainer}>
-                        <p className={styles.label}>Sex:</p>
-                        <select name="sex" className={`${styles.input} ${styles.smallInput}`} type="text" required>
-                            <option value=""></option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div className={styles.formRow}>
-                    <div className={styles.inputContainerMax}>
-                        <p className={styles.label}>Emergency Contact Person:</p>
-                        <input name="emergency" className={`${styles.input} ${styles.fullInput}`} type="text" required/>
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <p className={styles.label}>Contact No.:</p>
-                        <input name="emergencynumber" className={styles.input} type="text" required/>
+                        <p className={styles.label}>unknown:</p>
+                        <input name="unknown" value={data.unknown} className={styles.input} type="text" />
                     </div>
                 </div>
 
                 <div className={styles.formRow}>
                     <div className={styles.textareaContainer}>
-                        <p className={styles.label}>Concern:</p>
-                        <textarea name="concern" className={`${styles.input} ${styles.textarea}`} type="text" cols='50' rows='5' required/>
+                    <p className={styles.label}>Concern:</p>
+                        <textarea name="concern" value={data.Concern} className={`${styles.readinput} ${styles.textarea}`} type="text" cols='50' rows='5' readOnly/>
                     </div>
-                </div> 
+                </div>
 
                 <div className={styles.formRow}>
-                    {DetailsUploading ? 
+                    {data.dDate ? null : DetailsUploading ? 
                         <button className={styles.submitBtn} disabled>Uploading...</button>
                         :
-                        <button className={styles.submitBtn}>Save Details</button>
+                        <button className={styles.submitBtn}>Final Update Details</button>
                     } 
                 </div> 
+
             </form>
         )
     }
 
     const MedicalForm = ({data}) => {
         return (
-            <form className={styles.form} onSubmit={HandleDetailsSubmit}>
+            <form className={styles.form} onSubmit={HandleUpdateSubmit}>
                 <div className={styles.formRow}>
                     <p className={styles.formTitle}>Medical Details</p>
                 </div>
@@ -433,7 +226,7 @@ const Form = ({params}) => {
                     {DetailsUploading ? 
                         <button className={styles.submitBtn} disabled>Uploading...</button>
                         :
-                        <button className={styles.submitBtn}>Save Details</button>
+                        <button className={styles.submitBtn}>Update Details</button>
                     } 
                 </div> 
             </form>
@@ -490,7 +283,7 @@ const Form = ({params}) => {
         fetcher
     );
 
-    const HandleDetailsSubmit = async (e) => {
+    const HandleUpdateSubmit = async (e) => {
         e.preventDefault();
         try {
             setDetailsUploading(true);
@@ -528,7 +321,7 @@ const Form = ({params}) => {
             formData.append("Department", Department);
             formData.append("AppointmentId", AppointmentId);
 
-            const response = await fetch("/api/appointments/POST_addResponse", {
+            const response = await fetch("/api/appointments/POST_AddResponse", {
                 method: "POST",
                 body: formData,
             });
@@ -550,7 +343,6 @@ const Form = ({params}) => {
 
     return (
         <div className={styles.mainContainer}>
-            <a href={'/authorized/'+Department+'/consultation'} className={styles.back}>&lt; Back</a>
             <div className={styles.vLine}></div>
 
             {isLoading ? (

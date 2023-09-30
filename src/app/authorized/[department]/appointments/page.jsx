@@ -30,7 +30,6 @@ const Appointments = ({ params }) => {
   );
   
 
-
   var Email = "email";
 
 
@@ -47,8 +46,9 @@ const Appointments = ({ params }) => {
         formData.append("AppointmentId", e.target[2].value);
         formData.append("Department", Department);
         formData.append("Status", Status);
+        console.log(Status);
 
-        const response = await fetch("/api/appointments/POST_addResponse", { method: "POST", body: formData });
+        const response = await fetch("/api/appointments/POST_AddResponse", { method: "POST", body: formData });
 
         if (response.ok) {
             console.log("Complete");
@@ -64,11 +64,10 @@ const Appointments = ({ params }) => {
   return (
     <div className={styles.mainContainer}>
         <h1>{Department}</h1>
-        <a href={'/authorized/' + Department} className={styles.back}>&lt; Back</a>
         <div className={styles.appointmentList}>
           <h3 className={styles.title}>Appointments</h3>
           <div className={styles.AppointmetsContainer}>
-              {AppointmentsisLoading ? "Loading..." : Appointments?.map((data, index) => (
+              {AppointmentsisLoading ? "Loading..." : Appointments.length === 0 ? "No pending cooncerns at the mmement" : Appointments.map((data, index) => (
                   <div key={index} className={styles.AppointmentsItem}>
                       <div className={styles.details}>
                           <p className={styles.stats}>{data.aStatus}</p>

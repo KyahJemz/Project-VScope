@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import useSWR from 'swr';
+import Dental from "public/Dental.jpg";
+import Medical from "public/Medical.jpg";
+import SDPC from "public/SDPC.jpg";
 
 // functn para sa Date Formatig
 const formatDate = (timestamp) => {
@@ -79,7 +82,11 @@ const formatDate = (timestamp) => {
                           <div key={index} className={styles.blogsItem}>
                               <div className={styles.itemHeader}>
                                   <Image className={styles.itemDeptImage} 
-                                      src={`/public/${data.Department}`}
+                                      src={
+                                        data.Department === "Dental" ? Dental : 
+                                        data.Department === "Medical" ? Medical :
+                                        data.Department === "SDPC" ? SDPC : null
+                                      }
                                       height={50}
                                       width={50}
                                   />
@@ -114,7 +121,11 @@ const formatDate = (timestamp) => {
                           <div key={index} className={styles.AnnouncementsItem}>
                               <div className={styles.itemHeader}>
                                   <Image className={styles.itemDeptImage} 
-                                      src={`/public/${data.Department}`}
+                                      src={
+                                        data.Department === "Dental" ? Dental : 
+                                        data.Department === "Medical" ? Medical :
+                                        data.Department === "SDPC" ? SDPC : null
+                                      }
                                       height={50}
                                       width={50}
                                   />
@@ -143,7 +154,11 @@ const formatDate = (timestamp) => {
                           {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
                               <div key={index} className={styles.faqsItem}>
                                   <Image className={styles.faqImage} 
-                                      src={`/public/${data.Department}`}
+                                      src={
+                                        data.Department === "Dental" ? Dental : 
+                                        data.Department === "Medical" ? Medical :
+                                        data.Department === "SDPC" ? SDPC : null
+                                      }
                                       height={50}
                                       width={50}
                                   />

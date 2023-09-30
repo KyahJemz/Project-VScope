@@ -16,6 +16,8 @@ export const POST = async (request) => {
         const Status = body.get("Status");
         const Timestamp = new Date().toISOString();
 
+        console.log(Status);
+
         const newResponse = {
             Name: Name,
             GoogleEmail: GoogleEmail,
@@ -33,7 +35,7 @@ export const POST = async (request) => {
                 if(Status === '' || Status === null) {
                 } else {
                     appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $set: { aStatus: Status }  },
+                        { $set: { Status: Status }  },
                         { new: true }
                     );
                 }
@@ -45,7 +47,7 @@ export const POST = async (request) => {
                     );
                 } else {
                     appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $push: { Responses: newResponse }, $set: { aStatus: Status }  },
+                        { $push: { Responses: newResponse }, $set: { Status: Status }  },
                         { new: true }
                     );
                 }
@@ -56,7 +58,7 @@ export const POST = async (request) => {
                 if(Status === '' || Status === null) {
                 } else {
                     appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $set: { aStatus: Status }  },
+                        { $set: { Status: Status }  },
                         { new: true }
                     );
                 }
@@ -68,7 +70,7 @@ export const POST = async (request) => {
                     );
                 } else {
                     appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $push: { Responses: newResponse }, $set: { aStatus: Status }  },
+                        { $push: { Responses: newResponse }, $set: { Status: Status }  },
                         { new: true }
                     );
                 }
@@ -77,12 +79,12 @@ export const POST = async (request) => {
         } else if (Department === 'SDPC'){
             if (Response === '' || Response === null) {
                 appointment = await SDPCAppointment.findByIdAndUpdate(AppointmentId,
-                    { $set: { aStatus: Status }  },
+                    { $set: { Status: Status }  },
                     { new: true }
                 );
             } else {
                 appointment = await SDPCAppointment.findByIdAndUpdate(AppointmentId,
-                    { $push: { Responses: newResponse }, $set: { aStatus: Status }  },
+                    { $push: { Responses: newResponse }, $set: { Status: Status }  },
                     { new: true }
                 );
             }
@@ -92,7 +94,7 @@ export const POST = async (request) => {
           return new NextResponse('Appointment not found', { status: 404 });
         }
 
-        return new NextResponse(JSON.stringify(appointment), { status: 200 });
+        return new NextResponse('Success', { status: 200 });
       } catch (err) {
         return new NextResponse('Database Error', { status: 500 });
       }
