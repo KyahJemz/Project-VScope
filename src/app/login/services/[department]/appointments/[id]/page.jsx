@@ -459,13 +459,12 @@ const Form = ({params}) => {
     }
 
     const ResponseForm = ({data}) => {
-        console.log(data);
         return (
             <form className={styles.responseFormContainer} onSubmit={HandleResponseSubmit}>
                 <p>Your response/concern:</p>
                 <input name="GoogleEmail" value={data.GoogleEmail} type="text" hidden readOnly/>
                 <input name="Name" value={data.Name} type="text" hidden readOnly/>
-                <textarea name="Response" cols="50" rows="3" />
+                <textarea name="Response" rows="3" />
                 {ResponseUploading ? 
                     <button className={styles.submitBtn} disabled>Uploading...</button>
                 :
@@ -478,7 +477,12 @@ const Form = ({params}) => {
     const Response = ({data,response}) => {
         return (
             <div className={styles.responseContainer}>
-                <div className={styles.responseHeader}>
+                <div className={
+                    response.Name === "Dental" ? styles.responseHeader : 
+                    response.Name === "Medical" ? styles.responseHeader :
+                    response.Name === "SDPC" ? styles.responseHeader :
+                    styles.responseHeaderReverse
+                }>
                     <Image 
                         className={styles.responseImage}
                         src={
@@ -491,12 +495,21 @@ const Form = ({params}) => {
                         width={50}
                         height={50}
                     />
-                    <div className={styles.responseData}>
+                    <div className={
+                        response.Name === "Dental" ? styles.responseData : 
+                        response.Name === "Medical" ? styles.responseData :
+                        response.Name === "SDPC" ? styles.responseData :
+                        styles.responseDataReverse
+                        }>
                         <p className={styles.responseName}>{response.Name}</p>
                         <p className={styles.responseEmail}>{response.GoogleEmail}</p>
                     </div>
                 </div>
-                <div className={styles.responseresponse}>{response.Response}</div>
+                <div className={
+                     response.Name === "Dental" ? styles.responseresponse : 
+                     response.Name === "Medical" ? styles.responseresponse :
+                     response.Name === "SDPC" ? styles.responseresponse :
+                    styles.responseresponseReverse}>{response.Response}</div>
             </div>
         )
     }
@@ -643,7 +656,7 @@ const Form = ({params}) => {
                 <p></p>
             )}
 
-            {isLoading ? ("") : data ? (
+            {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
                 <div className={styles.row}> 
                     <div className={styles.mark}>
                         <div className={styles.datetime}>
@@ -656,7 +669,32 @@ const Form = ({params}) => {
                         <ResponseForm data={data} />
                     </div>
                 </div>
-            ) : null}
+            ) : (
+                <div className={styles.row}> 
+                    <div className={styles.mark}>
+                        <div className={styles.datetime}>
+                            <div className={styles.date}>
+                                {new Date(data.updatedAt).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </div>
+                            <div className={styles.time}>
+                                {new Date(data.updatedAt).toLocaleTimeString('en-US', {
+                                    hour: 'numeric',
+                                    minute: '2-digit'
+                                })}
+                            </div>
+                        </div>
+                        <div className={styles.hLine}></div>
+                    </div>
+                    <div className={styles.content}>
+                        <div className={styles.responseresponse}> Marked as {data.Status}</div>
+                    </div>
+                </div>
+                )
+            }
 
         </div>
     );

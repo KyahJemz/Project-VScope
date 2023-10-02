@@ -35,6 +35,12 @@ const userSchema = new Schema(
       enum: ["Client","Management", "Admin"],
       required: true,
     },
+    Department: {
+      type: String,
+      enum: ["Dental","Medical", "SDPC"],
+      required: false,
+      default: null,
+    },
   },
   { timestamps: true }
 );

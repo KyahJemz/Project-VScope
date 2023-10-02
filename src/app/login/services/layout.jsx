@@ -13,7 +13,7 @@ const Layout = async ({ children }) => {
     } else {
         if (session.user?.department) {
             console.log("--SERVICES--",session);
-            redirect('/login/authorized'+session.user.department);
+            redirect('/login/authorized/'+session.user.department);
             return null;
         } else {
             return children;

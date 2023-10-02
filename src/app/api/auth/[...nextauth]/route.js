@@ -81,7 +81,7 @@ export const authOptions = {
     
             if (user) {
               session.user.role = user.Role;
-              if(user?.department) {
+              if(user?.Department) {
                 session.user.department = user.Department;
               } 
             }

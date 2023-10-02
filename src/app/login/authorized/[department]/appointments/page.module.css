@@ -76,3 +76,48 @@
   padding: 5px 10px;
   flex: 1;
 }
+
+.date{
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.Name{
+  font-size: 0.8rem;
+}
+.id{
+  font-size: 0.8rem;
+}
+.email{
+  font-size: 0.8rem;
+}
+.category{
+  font-size: 0.8rem;
+}
+
+.consern {
+  border-top: 1px solid rgba(220, 220, 220, 0.500);
+  padding-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .mainContainer {
+    margin: 0px 20px;
+  }
+
+  .AppointmetsContainer{
+    flex-direction: column;
+  }
+  .AppointmentsItem{
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  .input{
+    padding: 5px 10px;
+    flex: 1;
+    min-width: 50px;
+  }
+  
+}

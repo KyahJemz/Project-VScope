@@ -17,17 +17,12 @@ const Login = () => {
   console.log("--LOGIN--",session);
 
   if (status === "authenticated") {
-    if (session.user?.department) {
+    if (session.user?.department && session.user.department != null) {
       redirect('/login/authorized/' + session.user.department);
     } else {
       redirect('/login/services');
     }
   }
-
-  const handlePanelChange = (panel) => {
-    console.log("changed" + panel);
-    setActivePanel(panel);
-  };
 
   return (
     <div className={styles.container}>

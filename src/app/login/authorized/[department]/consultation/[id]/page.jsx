@@ -239,7 +239,7 @@ const Form = ({params}) => {
                 <p>Your response/concern:</p>
                 <input name="GoogleEmail" value={GoogleEmail} type="text" hidden readOnly/>
                 <input name="Name" value={Department} type="text" hidden readOnly/>
-                <textarea name="Response" cols="50" rows="3" />
+                <textarea name="Response" rows="3" />
                 {ResponseUploading ? 
                     <button className={styles.submitBtn} disabled>Uploading...</button>
                 :
@@ -252,25 +252,39 @@ const Form = ({params}) => {
     const Response = ({data,response}) => {
         return (
             <div className={styles.responseContainer}>
-                <div className={styles.responseHeader}>
+                <div className={
+                    response.Name === "Dental" ? styles.responseHeaderReverse : 
+                    response.Name === "Medical" ? styles.responseHeaderReverse :
+                    response.Name === "SDPC" ? styles.responseHeaderReverse :
+                    styles.responseHeader
+                }>
                     <Image 
                         className={styles.responseImage}
                         src={
                             response.Name === "Dental" ? Dental : 
                             response.Name === "Medical" ? Medical :
                             response.Name === "SDPC" ? SDPC :
-                            GoogleImage
+                            data.GoogleImage
                         }
                         alt=""
                         width={50}
                         height={50}
                     />
-                    <div className={styles.responseData}>
+                    <div className={
+                        response.Name === "Dental" ? styles.responseDataReverse : 
+                        response.Name === "Medical" ? styles.responseDataReverse :
+                        response.Name === "SDPC" ? styles.responseDataReverse :
+                        styles.responseData
+                        }>
                         <p className={styles.responseName}>{response.Name}</p>
                         <p className={styles.responseEmail}>{response.GoogleEmail}</p>
                     </div>
                 </div>
-                <div className={styles.responseresponse}>{response.Response}</div>
+                <div className={
+                     response.Name === "Dental" ? styles.responseresponseReverse : 
+                     response.Name === "Medical" ? styles.responseresponseReverse :
+                     response.Name === "SDPC" ? styles.responseresponseReverse :
+                    styles.responseresponse}>{response.Response}</div>
             </div>
         )
     }
@@ -369,25 +383,26 @@ const Form = ({params}) => {
         <div className={styles.mainContainer}>
             <div className={styles.vLine}></div>
 
-            {StatusUploading ? (
-        <div className={styles.statusUpdate}>
-          <button disabled className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
-            Loading..
-          </button>
-          <button disabled className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
-            Loading..
-          </button>
-        </div>
-      ) : (
-        <div className={styles.statusUpdate}>
-          <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
-            Mark as Completed
-          </button>
-          <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
-            Mark as Canceled
-          </button>
-        </div>
-      )}
+        {isLoading ? null : data.Status === "Completed" || data.Status === "Canceled" ? null : StatusUploading ? (
+                <div className={styles.statusUpdate}>
+                <button disabled className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
+                    Loading..
+                </button>
+                <button disabled className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
+                    Loading..
+                </button>
+                </div>
+            ) : (
+                <div className={styles.statusUpdate}>
+                <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
+                    Mark as Completed
+                </button>
+                <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
+                    Mark as Canceled
+                </button>
+                </div>
+            )
+        }
             
             {isLoading ? (
                 "Loading..."
@@ -457,7 +472,7 @@ const Form = ({params}) => {
                 <p></p>
             )}
 
-            {isLoading ? ("") : (
+            {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
                 <div className={styles.row}> 
                     <div className={styles.mark}>
                         <div className={styles.datetime}>
@@ -470,7 +485,32 @@ const Form = ({params}) => {
                         <ResponseForm data={data} />
                     </div>
                 </div>
-            )}
+            ) : (
+                <div className={styles.row}> 
+                    <div className={styles.mark}>
+                        <div className={styles.datetime}>
+                            <div className={styles.date}>
+                                {new Date(data.updatedAt).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </div>
+                            <div className={styles.time}>
+                                {new Date(data.updatedAt).toLocaleTimeString('en-US', {
+                                    hour: 'numeric',
+                                    minute: '2-digit'
+                                })}
+                            </div>
+                        </div>
+                        <div className={styles.hLine}></div>
+                    </div>
+                    <div className={styles.content}>
+                            <div className={styles.responseresponse}> Marked as {data.Status}</div>
+                    </div>
+                </div>
+                )
+                }
 
         </div>
     );

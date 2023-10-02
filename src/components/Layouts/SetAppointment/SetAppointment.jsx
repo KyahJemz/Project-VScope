@@ -1,11 +1,12 @@
 "use client"
 
 import React, { useState } from "react";
-import styles from "./page.module.css";
+import styles from "./SetAppointment.module.css";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
 
 const SetAppointment = ({req}) => {
+    console.log(req);
     const [uploading, setUploading] = useState(false);
     const router = useRouter();
 
@@ -24,7 +25,7 @@ const SetAppointment = ({req}) => {
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
         
     const { data, mutate, isLoading } =  useSWR(
-        `/api/appointments?GoogleEmail=${encodeURIComponent(req.session.user.email)}&Department=${encodeURIComponent(req.department)}`,
+        `/api/appointments?GoogleEmail=${encodeURIComponent(req.session.email)}&Department=${encodeURIComponent(req.department)}`,
         fetcher
     );
 
@@ -68,7 +69,7 @@ const SetAppointment = ({req}) => {
         const Category = e.target[2].value;
         const Consern = e.target[3].value;
         const Department = req.department;
-        const Googleemail = req.session.user.email;
+        const Googleemail = req.session.email;
     
         try {
             setUploading(true);
@@ -85,14 +86,16 @@ const SetAppointment = ({req}) => {
                 body: formData,
             });
         
-            setUploading(false);
+            
             e.target.reset();
 
             if (response.ok) {
-            console.log("Complete");
-            mutate(); // mag refresh to
+                setUploading(false);
+                console.log("Complete");
+                mutate(); // mag refresh to
             } else {
-            console.log("Failed");
+                setUploading(false);
+                console.log("Failed");
             }
         } catch (err) {
             console.log(err);
@@ -112,7 +115,7 @@ const SetAppointment = ({req}) => {
         });
 
         if (response.ok) {
-            console.log("Complete");
+            console.log(response);
             mutate(); 
         } else {
             console.log("Failed");
@@ -122,60 +125,69 @@ const SetAppointment = ({req}) => {
         }
     }
 
+    function hasFalseViewedByClient(responses) {
+        if (!responses || !Array.isArray(responses)) {
+          return false;
+        }
+    
+        return responses.some((response) => response.ViewedByClient === 'false');
+      }
+
     return (
         <div className={styles.mainContainer}>
-            <h1>{req.department}</h1>
+            <h1 className={styles.mainTitle}>{req.department}</h1>
             <div className={styles.container}>
-            <div className={styles.appointmentList}>
-            <h3 className={styles.title}>Appointments History</h3>
-            <div className={styles.status}>
-                <button className={`${styles.cbutton} ${filterStatus === null ? styles.call : ''}`} onClick={() => handleFilter(null)}>All</button>
-                <button className={`${styles.cbutton} ${filterStatus === 'Pending' ? styles.cpending : ''}`} onClick={() => handleFilter('Pending')}>Pending</button>
-                <button className={`${styles.cbutton} ${filterStatus === 'Approved' ? styles.capproved : ''}`} onClick={() => handleFilter('Approved')}>Approved</button>
-                <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
-                <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
-                <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
-            </div>
-            {isLoading ? "Loading..." : filteredData?.length && filteredData.length === 0 ? "No appointments" : filteredData.map((appointment, index) => (
-                <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/login/services/'+req.department+'/appointments/'+appointment._id) : null}>
-                    <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a> {appointment.Status === 'Pending' ? <button className={styles.cancelBtn} onClick={()=> HandleCancelBtn(appointment._id)}>Cancel</button> : null}</h4>
-                    <p className={styles.aDate}>{appointment.createdAt}</p>
-                    <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>
-                    <p className={styles.aConsern}>{appointment.Consern}</p>
+                <div className={styles.appointmentList}>
+                    <h3 className={styles.title}>Appointments History</h3>
+                    <div className={styles.status}>
+                        <button className={`${styles.cbutton} ${filterStatus === null ? styles.call : ''}`} onClick={() => handleFilter(null)}>All</button>
+                        <button className={`${styles.cbutton} ${filterStatus === 'Pending' ? styles.cpending : ''}`} onClick={() => handleFilter('Pending')}>Pending</button>
+                        <button className={`${styles.cbutton} ${filterStatus === 'Approved' ? styles.capproved : ''}`} onClick={() => handleFilter('Approved')}>Approved</button>
+                        <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
+                        <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
+                        <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
+                    </div>
+                    {isLoading ? "Loading..." : filteredData?.length && filteredData.length === 0 ? "No appointments" : filteredData.map((appointment, index) => (
+                        <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/login/services/'+req.department+'/appointments/'+appointment._id) : null}>
+                            {appointment.Status === "Approved" && hasFalseViewedByClient(appointment.Responses) ? <div className={styles.dot}></div> : null}
+                            <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a> {appointment.Status === 'Pending' ? <button className={styles.cancelBtn} onClick={()=> HandleCancelBtn(appointment._id)}>Cancel</button> : null}</h4>
+                            <p className={styles.aDate}>{appointment.createdAt}</p>
+                            <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>
+                            <p className={styles.aConsern}>{appointment.Consern}</p>
+                        </div>
+                    ))
+                    }
                 </div>
-            ))
-            }
-            </div>
 
-            <form className={styles.formContainer} onSubmit={handleSubmit}>
-            <h3 className={styles.title}>Appointment Form</h3>
-            <input 
-                type="text" 
-                placeholder="Lastname, Firstname MI."
-                className={styles.input}
-                required
-            />
-            <input 
-                type="text" 
-                placeholder="Student no."
-                className={styles.input}
-                required
-            />
-            <select className={styles.input} required>
-            <option className={styles.option} value="">Select category...</option>
-                <option className={styles.option} value="Student">Student</option>
-                <option className={styles.option} value="Lay Collaborator">Lay Collaborator</option>
-            </select>
-            <textarea 
-                type="text" 
-                className={styles.input}
-                required
-                placeholder="Concern"
-                cols="30"
-                rows="10"
-            />
-            <button className={styles.button} disabled={uploading}>{uploading ? "Uploading..." : "Upload Request"}</button>
-            </form>
+                <form className={styles.formContainer} onSubmit={handleSubmit}>
+                    <h3 className={styles.title}>Appointment Form</h3>
+                    <input 
+                        type="text" 
+                        placeholder="Lastname, Firstname MI."
+                        className={styles.input}
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Student no."
+                        className={styles.input}
+                        required
+                    />
+                    <select className={styles.input} required>
+                    <option className={styles.option} value="">Select category...</option>
+                        <option className={styles.option} value="Student">Student</option>
+                        <option className={styles.option} value="Lay Collaborator">Lay Collaborator</option>
+                    </select>
+                    <textarea 
+                        type="text" 
+                        className={styles.input}
+                        required
+                        placeholder="Concern"
+                        cols="30"
+                        rows="10"
+                    />
+                    <button className={styles.button} disabled={uploading}>{uploading ? "Uploading..." : "Upload Request"}</button>
+                </form>
             </div>
         </div>
     );

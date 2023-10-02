@@ -31,7 +31,7 @@
 
 .toggle {
   position: absolute;
-  top: 20px;
+  top: 40px;
   margin: auto;
 }
 
@@ -42,6 +42,7 @@
   font-size: 22px;
   width: 100%;
   margin-bottom: 100px;
+  text-wrap: nowrap;
 }
 
 .links {
@@ -50,6 +51,10 @@
   width: 100%;
   gap: 50px;
   flex-direction: column;
+}
+
+.link:hover {
+  font-weight: bolder;
 }
 
 
@@ -61,4 +66,16 @@
   color: white;
   cursor: pointer;
   border-radius: 3px;
+}
+
+
+@media (max-width: 640px) {
+  .toggle {
+    position: absolute;
+    top: 75px;
+    margin: auto;
+  }
+  .logo {
+    margin-top: 100px;
+  }
 }

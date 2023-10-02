@@ -1,3 +1,6 @@
+.mainContainer * {
+  text-wrap: wrap;
+}
 .mainContainer {
   flex: 1;
   position: relative;
@@ -30,6 +33,7 @@
 
 .datetime{
   font-size: small;
+  margin-left: 20px;
 }
 
 .hLine{
@@ -46,6 +50,7 @@
 .content{
   width: 100%;
   flex: 1;
+   margin-right: 20px;
   border: 1px solid gainsboro;
 }
 
@@ -93,6 +98,7 @@
   width: 100%;
   height: fit-content;
   padding: 3px 10px;
+  min-width: 100px;
 }
 
 .smallInput {
@@ -114,9 +120,16 @@
 }
 
 
-
+.responseHeaderReverse{
+  padding: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap:20px;
+  border-bottom: 1px solid rgba(220, 220, 220, 0.500);
+}
 
 .responseHeader {
+  text-align: left;
   padding: 20px;
   display: flex;
   gap:20px;
@@ -128,6 +141,10 @@
   height: 50px;
 }
 
+.responseDataReverse{
+  text-align: right;
+}
+
 .responseData{
   display: flex;
   flex-direction: column;
@@ -136,16 +153,27 @@
 
 .responseName {
   font-weight: bold;
+  text-align: inherit;
+  text-wrap: wrap;
 }
 
 .responsenEmail {
+  font-size: 0.8em;
   font-weight: lighter;
+  text-align: inherit;
+  text-wrap: wrap;
 }
 
 .responseresponse{
   font-size: 0.9em;
-   padding: 20px;
-   text-wrap: wrap;
+  padding: 20px;
+  text-wrap: wrap;
+}
+
+.responseresponseReverse {
+  font-size: 0.9em;
+  padding: 20px;
+  text-align: right
 }
 
 .readinput{
@@ -167,6 +195,143 @@
   background-color: #53c28b;
   color: white;
 
+}
+
+
+
+
+@media (min-width: 0px) and (max-width: 600px) {
+  .vLine{
+    left: 50px;
+  }
+
+  .mainContainer {
+    gap: 75px;
+  }
+
+  .content{
+    margin-top: 25px;
+    margin-left: 100px;
+   margin-right: 20px;
+   overflow: hidden;
+  }
+
+  .statusUpdate{
+    margin-right: 20px;
+  }
+  
+    
+  .mark{ 
+    width: 100%;
+    flex: 0 0 80px;
+    padding: 20px 0px;
+    height: fit-content;
+    position: absolute;
+    transform: translateY(-65%);
+  }
+
+  .datetime{
+    font-size: small;
+    margin-left: 20px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    left: 60px;
+    top:12px;
+  }
+
+  .hLine{
+    top: 30%;
+    left: 45px;
+    position: absolute;
+    background-color: gainsboro;
+    height: 15px;
+    width: 15px;
+    border: 1px solid gainsboro;
+    border-radius: 50%;
+  }
+
+
+}
+
+@media (min-width: 0px) and (max-width: 760px) {
+
+  .inputContainer{
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .inputContainerMax{
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .input {
+    width: 100%;
+    height: fit-content;
+    padding: 3px 10px;
+    min-width: 100px;
+  }
+  
+  .smallInput {
+    width: 100%;
+  }
+  
+  .fullInput {
+    width: 100%;
+  }
+}
+
+@media (min-width: 0px) and (max-width: 945px) {
+  .responseFormContainer{
+    width: 100%;
+  }
+  .inputContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .inputContainerMax{
+    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex: 1;
+    align-items: center;
+  }
+ 
+}
+
+@media (min-width: 0px) and (max-width: 1145px) {
+
+  .formRow{
+    justify-content: center;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.submitBtn{
+  padding: 5px 10px;
+  background-color: #53c28b;
+  color: white;
 }
 
 .statusUpdate{

@@ -56,6 +56,7 @@ export const POST = async (request) => {
         const GoogleEmail = body.get("GoogleEmail");
         const AccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
         const Account_Id = AccountId[0]._id;
+        const GoogleImage = AccountId[0].GoogleImage;
 
 
         if (GoogleEmail === "" || GoogleEmail === null) {
@@ -77,6 +78,7 @@ export const POST = async (request) => {
                     Status,
                     Account_Id,
                     GoogleEmail,
+                    GoogleImage,
                 });
             } else if (Department === 'Dental') {
                 newPost = new DentalAppointment({
@@ -88,6 +90,7 @@ export const POST = async (request) => {
                     Status,
                     Account_Id,
                     GoogleEmail,
+                    GoogleImage,
                 });
             } else if (Department === 'SDPC') {
                 newPost = new SDPCAppointment({
@@ -99,6 +102,7 @@ export const POST = async (request) => {
                     Status,
                     Account_Id,
                     GoogleEmail,
+                    GoogleImage,
                 });
             }
 
