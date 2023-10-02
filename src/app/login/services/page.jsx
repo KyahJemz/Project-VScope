@@ -1,18 +1,8 @@
-"use client"
-
 import React from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 
 const Services = () => {
-  const {data: session} = useSession({
-    required: true, 
-    onUnauthenticated() {
-      redirect('/login?callbackUrl=/login/services');
-    }
-  })
 
     return (
       <div className={styles.container}>

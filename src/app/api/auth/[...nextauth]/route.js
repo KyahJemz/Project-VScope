@@ -73,13 +73,22 @@ export const authOptions = {
         }
         return false;
       },
-      async session({ session }) {
-
-        if (data) {
-          session.user.data = data;
-        }
+      async session({ session, token }) {
+        try {
+          if (token && token.email) {
+            await connect();
+            const user = await Accounts.findOne({ GoogleEmail: token.email });
     
-        console.log("--SESSION--", session);
+            if (user) {
+              session.user.role = user.Role;
+              if(user?.department) {
+                session.user.department = user.Department;
+              } 
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user role from MongoDB:', error);
+        }
     
         return Promise.resolve(session);
       },

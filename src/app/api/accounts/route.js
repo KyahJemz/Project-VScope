@@ -11,14 +11,25 @@ export const GET = async (request) => {
 
     try {
         await connect();
-
         const results = await Accounts.find(GoogleEmail && { GoogleEmail });
-        //console.log(results);
         return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
         return new NextResponse("Database Error", { status: 500 });
     }
 };
+
+export async function getAccountByEmail(GoogleEmail) {
+    console.log("Accounts API GET", GoogleEmail);
+
+    try {
+        await connect(); // Connect to your database
+        const results = await AccountModel.find(GoogleEmail && { GoogleEmail });
+        console.log(results);
+        return JSON.stringify(results);
+    } catch (err) {
+        return [];
+    }
+}
 
 export const POST = async (request) => {
     if (request.method === 'POST') {

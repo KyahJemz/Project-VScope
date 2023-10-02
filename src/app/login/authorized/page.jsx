@@ -1,13 +1,9 @@
-"use client"
 
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { notFound } from "next/navigation";
 
 const Authorized = () => {
 
-
-    return <div>end</div>
+    return (notFound());
 };
 
 export default Authorized;
-

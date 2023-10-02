@@ -1,17 +1,17 @@
-import React from "react";
-import { NextResponse } from "next/server";
+
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route"
-import About from "./client/page"
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import About from "./client/page";
 import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const Page = async () => {
     const session = await getServerSession(authOptions);
-    console.log("SSSSSSS", session);
+    console.log("session",session);
     if (session === null) {
-        return <div>You need to login first.</div>;
+        redirect('/login');
     } else {
-        return (<About data={session} />);
+        return (<About data={session.user} />);
     }
 }
     

@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 
 const About = ( {data}) => {
-  console.log(data);
+  console.log("ABOUT",data);
   return (
     <div className={styles.container}>
       <div className={styles.imgContainer}>
