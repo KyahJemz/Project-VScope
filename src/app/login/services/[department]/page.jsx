@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./page.module.css";
 import Button from "@/components/Button/Button";
+import Link from "next/link";
 import Image from "next/image";
 import { items } from "./data.js";
 import { notFound } from "next/navigation";
@@ -21,6 +22,7 @@ const Department = ({ params }) => {
     <div className={styles.container}>
       <h3 className={styles.mainTitle}>Services</h3>
       <h1 className={styles.catTitle}>{params.department}</h1>
+      <div className={styles.appointmentBtn} ><a className={styles.appointmentBtntext} href={`/login/services/${params.department}/appointments`}> Set Appointment</a></div>
 
       {data.map((item) => (
         <div className={styles.item} key={item.id}>

@@ -36,7 +36,6 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  border: 1px solid gainsboro;
 }
 
 .rightContainer{
@@ -45,7 +44,6 @@
   flex: 0 0 30%;
   display: flex;
   flex-direction: column;
-  border: 1px solid gainsboro;
 }
 
 
@@ -95,6 +93,7 @@
 .faqsItem,
 .AnnouncementsItem,
 .blogsItem {
+  border-radius: 15px;
   margin-top: 20px;
   border: 1px solid rgba(220, 220, 220, 0.500);
 }

@@ -159,8 +159,8 @@ const sortedData = data && !isLoading
             <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
           </div>
-          {isLoading ? "Loading..." : filteredData.length === 0 ? "No appointments" : filteredData.map((appointment, index) => (
-            <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/services/'+department+'/CreateAppointment/'+appointment._id) : null}>
+          {isLoading ? "Loading..." : filteredData?.length && filteredData.length === 0 ? "No appointments" : filteredData.map((appointment, index) => (
+            <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/login/services/'+department+'/appointments/'+appointment._id) : null}>
               <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a> {appointment.Status === 'Pending' ? <button className={styles.cancelBtn} onClick={()=> HandleCancelBtn(appointment._id)}>Cancel</button> : null}</h4>
               <p className={styles.aDate}>{appointment.createdAt}</p>
               <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>

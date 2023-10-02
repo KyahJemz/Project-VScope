@@ -30,6 +30,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    Role: {
+      type: String,
+      enum: ["Client","Management", "Admin"],
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -570,7 +570,7 @@ const Form = ({params}) => {
 
             {isLoading ? (
                 "Loading..."
-            ) : data ? (  
+            ) : Department != 'SDPC' ? (  
                 <div className={styles.row}>
                     <div className={styles.mark}>
                         <div className={styles.datetime}>
@@ -643,7 +643,7 @@ const Form = ({params}) => {
                 <p></p>
             )}
 
-            {isLoading ? ("") : (
+            {isLoading ? ("") : data ? (
                 <div className={styles.row}> 
                     <div className={styles.mark}>
                         <div className={styles.datetime}>
@@ -656,7 +656,7 @@ const Form = ({params}) => {
                         <ResponseForm data={data} />
                     </div>
                 </div>
-            )}
+            ) : null}
 
         </div>
     );

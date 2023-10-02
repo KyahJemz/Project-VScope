@@ -26,3 +26,14 @@
   cursor: pointer;
   border-radius: 3px;
 }
+
+@media (max-width: 640px) {
+  .logo {
+    display: none;
+  }
+  .links {
+    justify-content: space-around;
+    gap: 0px;
+    width: 100%;
+  }
+}

@@ -7,22 +7,47 @@ const postSchema = new Schema(
     Name: {
       type: String,
       required: true,
+      encrypt: {
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random",
+        keyId: "/encryption/encryption-key",
+      },
     },
     Id: {
       type: String,
       required: true,
+      encrypt: {
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random",
+        keyId: "/encryption/encryption-key",
+      },
     },
     Category: {
       type: String,
       required: true,
+      encrypt: {
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random",
+        keyId: "/encryption/encryption-key",
+      },
     },
     Consern: {
       type: String,
       required: true,
+      encrypt: {
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random",
+        keyId: "/encryption/encryption-key",
+      },
     },
     Department: {
       type: String,
       required: true,
+      encrypt: {
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random",
+        keyId: "/encryption/encryption-key",
+      },
     },
     Status: {
       type: String,
@@ -31,10 +56,20 @@ const postSchema = new Schema(
     Account_Id: {
       type: String,
       required: true,
+      encrypt: {
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random",
+        keyId: "/encryption/encryption-key",
+      },
     },
     GoogleEmail: {
       type: String,
       required: true,
+      encrypt: {
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random",
+        keyId: "/encryption/encryption-key",
+      },
     },
     Responses: {
       type: Array,

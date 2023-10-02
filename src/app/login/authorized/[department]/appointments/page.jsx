@@ -64,7 +64,7 @@ const Appointments = ({ params }) => {
         <div className={styles.appointmentList}>
           <h3 className={styles.title}>Appointments</h3>
           <div className={styles.AppointmetsContainer}>
-              {AppointmentsisLoading ? "Loading..." : Appointments.length === 0 ? "No pending cooncerns at the mmement" : Appointments.map((data, index) => (
+              {AppointmentsisLoading ? "Loading..." : Appointments?.lenght && Appointments.lenght === 0 ? "No pending cooncerns at the mmement" : Appointments.map((data, index) => (
                   <div key={index} className={styles.AppointmentsItem}>
                       <div className={styles.details}>
                           <p className={styles.stats}>{data.Status}</p>

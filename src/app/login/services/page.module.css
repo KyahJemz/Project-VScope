@@ -3,6 +3,7 @@
 }
 
 .container {
+  flex: 1;
 }
 
 .selectTitle {

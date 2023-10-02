@@ -6,7 +6,6 @@ export const items = {
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
       image: "https://images.pexels.com/photos/3130810/pexels-photo-3130810.jpeg",
       button_1: {text: "Back", url: "/login/services"},
-      button_2: {text: "Set Apointment", url: "/login/services/SDPC/appointments"},
       
     },
     {
@@ -31,7 +30,6 @@ export const items = {
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
       image: "https://i.imgur.com/reIgCuR.jpg",
       button_1: {text: "Back", url: "/login/services"},
-      button_2: {text: "Set Apointment", url: "/login/services/SDPC/appointments"},
     },
     {
       id: 2,
@@ -55,7 +53,6 @@ export const items = {
       desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur vel tenetur necessitatibus unde natus perspiciatis, amet cupiditate ducimus possimus, eaque ex autem id nobis eum dolorem. Neque eveniet fugiat tenetur?",
       image: "https://i.imgur.com/BKJs6CZ.png",
       button_1: {text: "Back", url: "/login/services"},
-      button_2: {text: "Set Apointment", url: "/login/services/SDPC/appointments"},
     },
     {
       id: 2,

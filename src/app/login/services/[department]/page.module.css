@@ -1,5 +1,6 @@
 .container {
 }
+
 .catTitle {
   color: #53c28b;
 }
@@ -39,4 +40,33 @@
 
 .desc{
   font-size: 20px;
+}
+
+.appointmentBtn{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  
+}
+
+.appointmentBtntext {
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  background-color: #53c28b;;
+  color: white;
+  border-radius: 5px;
+}
+
+
+@media (max-width: 640px) {
+  .container {
+    max-width: 100%;
+    padding: 0px;
+  }
+  .item:nth-child(2n+1) {
+    flex-direction: column;
+  }
+  .item {
+    flex-direction: column;
+  }
 }

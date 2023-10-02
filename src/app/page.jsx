@@ -92,7 +92,7 @@ const formatDate = (timestamp) => {
                                   />
                                   <div className={styles.itemHeaderDetails}>
                                       <p className={styles.itemDepartment}>{data.Department}</p>
-                                      <p className={styles.itemDate}>{data?.createdAt}</p>
+                                      <p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
                                   </div>
                               </div>
                               <div className={styles.itemBody}>
@@ -131,7 +131,7 @@ const formatDate = (timestamp) => {
                                   />
                                   <div className={styles.itemHeaderDetails}>
                                       <p className={styles.itemDepartment}>{data.Department}</p>
-                                      <p className={styles.itemDate}>{data?.createdAt}</p>
+                                      <p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
                                   </div>
                               </div>
                               <div className={styles.itemBody}>
