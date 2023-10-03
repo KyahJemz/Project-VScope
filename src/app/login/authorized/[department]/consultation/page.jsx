@@ -64,7 +64,7 @@ const sortedData = data && !isLoading
       return false;
     }
 
-    return responses.some((response) => response.ViewedByDepartment === 'false');
+    return responses.some((response) => response.ViewedByDepartment === false);
   }
 
   return (

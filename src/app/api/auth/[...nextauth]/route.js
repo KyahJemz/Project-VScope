@@ -1,11 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Accounts from "@/models/Accounts"
-import Staffs from "@/models/Staffs";
-import Admins from "@/models/Admins";
 import connect from "@/utils/db";
-
-var data;
+import { encryptText, decryptText } from "@/utils/cryptojs";
 
 export const authOptions = {
   providers: [
@@ -19,45 +16,43 @@ export const authOptions = {
   },
   callbacks: {
     async signIn(user, account, profile) {
-        console.log("--CALLBACK--",user.account)
+        console.log("--CALLBACK--",user)
         const { email: GoogleEmail, id: GoogleId, image: GoogleImage, name: GoogleName } = user.user;
         const { given_name: GoogleFirstname, family_name: GoogleLastname } = user.profile;
-
-        
 
         if (user.account.provider === 'google') {
           try {
             await connect();
-            const results = await Accounts.find({ GoogleEmail });
-            if (results) {
-              data = results;
+            const results = await Accounts.findOne({ GoogleEmail });
+            if (results != null) {
+              console.log("--NEXTAUTH--", "Management / Admin");
               return true
             }
           } catch (err) {
               console.log(err);
-            return false;
+              return false;
           }
         }
     
         if (user.account.provider === 'google' && user.profile.hd === 'sscr.edu') {
           try {
             await connect();
-            const results = await Accounts.find({ GoogleEmail });
-            if (results) {
-              data = results[0];
+            const results = await Accounts.findOne({ GoogleEmail });
+            if (results != null) {
+              console.log("--NEXTAUTH--", "Old Client");
               return true;
             } else {
+              console.log("--NEXTAUTH--", "New Client");
               try {
                 const newPost = new Accounts({
-                  GoogleId,
-                  GoogleEmail,
-                  GoogleImage,
-                  GoogleName,
-                  GoogleFirstname,
-                  GoogleLastname,
+                  GoogleId: encryptText(GoogleId),
+                  GoogleEmail: GoogleEmail,
+                  GoogleImage: encryptText(GoogleImage),
+                  GoogleName: encryptText(GoogleName),
+                  GoogleFirstname: encryptText(GoogleFirstname),
+                  GoogleLastname: encryptText(GoogleLastname),
                   Role: "Client"
                 });
-                data = newPost;
                 await newPost.save();
           
                 return true;

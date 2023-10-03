@@ -129,6 +129,11 @@
   border-bottom: 1px solid rgba(220, 220, 220, 0.500);
 }
 
+.responseFormTextbox{
+  padding: 10px;
+}
+
+
 .responseHeader {
   text-align: left;
   padding: 20px;

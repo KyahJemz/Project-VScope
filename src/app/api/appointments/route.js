@@ -4,60 +4,114 @@ import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 import Accounts from "@/models/Accounts";
+import { encryptText, decryptText } from "@/utils/cryptojs";
 
-export const GET = async (request) => {
+const decryptFields = (obj) => {
+    if (typeof obj !== "object" || obj === null) {
+      return obj;
+    }
+  
+    if (Array.isArray(obj)) {
+      return obj.map((item) => decryptFields(item));
+    }
+  
+    const decryptedObj = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+          decryptedObj[key] = decryptFields(obj[key]);
+        } else {
+          decryptedObj[key] = decryptText(obj[key]);
+        }
+      }
+    }
+    return decryptedObj;
+  };
+  
+  export const GET = async (request) => {
     const url = new URL(request.url);
     const GoogleEmail = url.searchParams.get("GoogleEmail");
     const Department = url.searchParams.get("Department");
-
+  
     try {
-        await connect();
-
-        let results = [];
-
-        if (GoogleEmail ==="" || GoogleEmail === null) {
-            if (Department === 'Medical'){
-                results = await MedicalAppointment.find();
-            } else if (Department === 'Dental') {
-                results = await DentalAppointment.find();
-            } else if (Department === 'SDPC') {
-                results = await SDPCAppointment.find();
-            }
-        } else {
-            const AccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
-            const Account_Id = AccountId[0]._id;
-
-            if (Department === 'Medical'){
-                results = await MedicalAppointment.find(Account_Id && { Account_Id });
-            } else if (Department === 'Dental') {
-                results = await DentalAppointment.find(Account_Id && { Account_Id });
-            } else if (Department === 'SDPC') {
-                results = await SDPCAppointment.find(Account_Id && { Account_Id });
-            }
+      await connect();
+  
+      let results = null;
+  
+      if (GoogleEmail === "" || GoogleEmail === null) {
+        if (Department === 'Medical') {
+          results = await MedicalAppointment.find();
+        } else if (Department === 'Dental') {
+          results = await DentalAppointment.find();
+        } else if (Department === 'SDPC') {
+          results = await SDPCAppointment.find();
         }
+      } else {
+        if (Department === 'Medical') {
+          results = await MedicalAppointment.find(GoogleEmail && { GoogleEmail });
+        } else if (Department === 'Dental') {
+          results = await DentalAppointment.find(GoogleEmail && { GoogleEmail });
+        } else if (Department === 'SDPC') {
+          results = await SDPCAppointment.find(GoogleEmail && { GoogleEmail });
+        }
+      }
+  
+      if (results) {
+        const topLevelFieldsToDecrypt = ["Name", "Id", "Consern", "GoogleImage"];
+  
+        results = results.map((result) => {
+          const decryptedResult = { ...result._doc };
+  
+          topLevelFieldsToDecrypt.forEach((field) => {
+            decryptedResult[field] = decryptText(result._doc[field]);
+          });
+  
+          if (result._doc.Details && Object.keys(result._doc.Details).length > 0) {
+            decryptedResult.Details = decryptFields(result._doc.Details);
+          }
+  
+          if (result._doc.Responses && result._doc.Responses.length > 0) {
+                const decryptedResponses = result._doc.Responses.map(response => {
+                    const decryptedResponse = {
+                        Name: decryptText(response.Name),
+                        GoogleEmail: decryptText(response.GoogleEmail),
+                        Response: decryptText(response.Response),
+                        Timestamp: decryptText(response.Timestamp),
+                        ViewedByDepartment: response.ViewedByDepartment,
+                        ViewedByClient: response.ViewedByClient
+                    };
+                return decryptedResponse;
+            });
+            decryptedResult.Responses = decryptedResponses;
+          }
 
-
-        return new NextResponse(JSON.stringify(results), { status: 200 });
+          return decryptedResult;
+        });
+      }
+  
+      return new NextResponse(JSON.stringify(results), { status: 200 });
     } catch (err) {
-        return new NextResponse("Database Error", { status: 500 });
+      return new NextResponse("Database Error" + err, { status: 500 });
     }
-};
+  };
 
 export const POST = async (request) => {
     if (request.method === 'POST') {
         const body = await request.formData();
 
-        const Name = body.get("Name");
-        const Id = body.get("Id");
+        const Name = encryptText(body.get("Name"));
+        const Id = encryptText(body.get("Id"));
         const Category = body.get("Category");
-        const Consern = body.get("Consern");
+        const Consern = encryptText(body.get("Consern"));
         const Department = body.get("Department");
         const Status = 'Pending';
         const GoogleEmail = body.get("GoogleEmail");
-        const AccountId = await Accounts.find(GoogleEmail && { GoogleEmail });
-        const Account_Id = AccountId[0]._id;
-        const GoogleImage = AccountId[0].GoogleImage;
+        const AccountId = await Accounts.findOne({GoogleEmail: GoogleEmail });
+        console.log(AccountId);
+        const Account_Id = AccountId._id;
+        const GoogleImage = AccountId.GoogleImage;
 
+        
 
         if (GoogleEmail === "" || GoogleEmail === null) {
             return [];
@@ -105,8 +159,9 @@ export const POST = async (request) => {
                     GoogleImage,
                 });
             }
-
+            
             await newPost.save();
+            console.log(newPost);
 
             return new NextResponse("Success", { status: 201 });
         } catch (err) {

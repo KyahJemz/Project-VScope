@@ -36,6 +36,10 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+    GoogleImage: {
+      type: String,
+      required: true,
+    },
     Responses: {
       type: Array,
       required: false,

@@ -70,6 +70,11 @@
   padding: 0px 20px;
   /* border: 1px solid rgba(220, 220, 220, 0.500); */
   border-radius: 5px;
+  max-height: 300px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .rightpanel {
@@ -80,3 +85,22 @@
 }
 
 
+@media (max-width: 1100px) {
+  .rightpanel{
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 850px) {
+  
+  .container{
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .mainContainer{
+    padding: 0px 20px;
+  }
+}

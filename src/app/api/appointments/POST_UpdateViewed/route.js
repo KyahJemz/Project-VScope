@@ -10,88 +10,62 @@ export const POST = async (request) => {
 
         const Department = body.get("Department");
         const AppointmentId = body.get("AppointmentId");
+        const Name = body.get("Name");
 
-        console.log(Status);
-
-        const newResponse = {
-            Name: Name,
-            GoogleEmail: GoogleEmail,
-            Response: Response,
-            Timestamp: Timestamp,
-            ViewedByDepartment: false,
-            ViewedByClient: false,
-        };
-  
     try {
         await connect();
 
         let appointment = null;
 
         if (Department === 'Medical'){
-            if (Response === '' || Response === null) {
-                if(Status === '' || Status === null) {
-                } else {
-                    appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
+            if (Name === Department) {
+                appointment = await MedicalAppointment.findByIdAndUpdate(
+                    AppointmentId,
+                    { $set: { 'Responses.$[].ViewedByDepartment': true } },
+                    { new: true }
+                  );
             } else {
-                if(Status === '' || Status === null) { 
-                    appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $push: { Responses: newResponse } },
-                        { new: true }
-                    );
-                } else {
-                    appointment = await MedicalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $push: { Responses: newResponse }, $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
+                appointment = await MedicalAppointment.findByIdAndUpdate(
+                    AppointmentId,
+                    { $set: { 'Responses.$[].ViewedByClient': true } },
+                    { new: true }
+                  );
             }
-
         } else if (Department === 'Dental'){
-            if (Response === '' || Response === null) {
-                if(Status === '' || Status === null) {
-                } else {
-                    appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
+            if (Name === Department) {
+                appointment = await DentalAppointment.findByIdAndUpdate(
+                    AppointmentId,
+                    { $set: { 'Responses.$[].ViewedByDepartment': true } },
+                    { new: true }
+                  );
             } else {
-                if(Status === '' || Status === null) { 
-                    appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $push: { Responses: newResponse } },
-                        { new: true }
-                    );
-                } else {
-                    appointment = await DentalAppointment.findByIdAndUpdate(AppointmentId,
-                        { $push: { Responses: newResponse }, $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
+                appointment = await DentalAppointment.findByIdAndUpdate(
+                    AppointmentId,
+                    { $set: { 'Responses.$[].ViewedByClient': true } },
+                    { new: true }
+                  );
             }
-
         } else if (Department === 'SDPC'){
-            if (Response === '' || Response === null) {
-                appointment = await SDPCAppointment.findByIdAndUpdate(AppointmentId,
-                    { $set: { Status: Status }  },
+            if (Name === Department) {
+                appointment = await SDPCAppointment.findByIdAndUpdate(
+                    AppointmentId,
+                    { $set: { 'Responses.$[].ViewedByDepartment': true } },
                     { new: true }
-                );
+                  );
             } else {
-                appointment = await SDPCAppointment.findByIdAndUpdate(AppointmentId,
-                    { $push: { Responses: newResponse }, $set: { Status: Status }  },
+                appointment = await SDPCAppointment.findByIdAndUpdate(
+                    AppointmentId,
+                    { $set: { 'Responses.$[].ViewedByClient': true } },
                     { new: true }
-                );
+                  );
             }
         } 
-  
-        if (!appointment) {
-          return new NextResponse('Appointment not found', { status: 404 });
-        }
 
-        return new NextResponse('Success', { status: 200 });
+        if (appointment) {
+            return new NextResponse('Success, Updated', { status: 200 });
+        } else {
+            return new NextResponse('Success, No Updated', { status: 200 });
+        }
       } catch (err) {
         return new NextResponse('Database Error', { status: 500 });
       }

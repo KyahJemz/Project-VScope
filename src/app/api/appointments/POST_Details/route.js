@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
+import { encryptText, decryptText } from "@/utils/cryptojs";
 
 export const POST = async (request) => {
     if (request.method === 'POST') {
@@ -20,16 +21,16 @@ export const POST = async (request) => {
             if (dDate === "" || dDate === null) {
               if (Department === 'Medical'){
                 const Data = {
-                  FullName: body.get("fullname"),
-                  DepartmentCourseYear: body.get("departmentcourseyear"),
-                  Address: body.get("address"),
-                  ContactNo: body.get("contactnumber"),
-                  CivilStatus: body.get("civilstatus"),
-                  Age: body.get("age"),
-                  Sex: body.get("sex"),
-                  EmergencyName: body.get("emergency"),
-                  EmergencyContactNo: body.get("emergencynumber"),
-                  Concern: body.get("concern"),
+                  FullName: encryptText(body.get("fullname")),
+                  DepartmentCourseYear: encryptText(body.get("departmentcourseyear")),
+                  Address: encryptText(body.get("address")),
+                  ContactNo: encryptText(body.get("contactnumber")),
+                  CivilStatus: encryptText(body.get("civilstatus")),
+                  Age: encryptText(body.get("age")),
+                  Sex: encryptText(body.get("sex")),
+                  EmergencyName: encryptText(body.get("emergency")),
+                  EmergencyContactNo: encryptText(body.get("emergencynumber")),
+                  Concern: encryptText(body.get("concern")),
                 };
                 updatedAppointment = await MedicalAppointment.findOneAndUpdate(
                   { _id: AppointmentId },
@@ -38,25 +39,25 @@ export const POST = async (request) => {
                 ).exec();
               } else if (Department === 'Dental') {
                 const Data = {
-                  FirstName: body.get("firstname"),
-                  MiddleName: body.get("middlename"),
-                  LastName: body.get("lastname"),
-                  CivilStatus: body.get("civilstatus"),
-                  Address: body.get("address"),
-                  Course: body.get("course"),
-                  Year: body.get("year"),
-                  Section: body.get("section"),
-                  Age: body.get("age"),
-                  DateofBirth: body.get("dateofbirth"),
-                  Religion: body.get("religion"),
-                  ContactNo: body.get("contactno"),
-                  SpouseName: body.get("spousename"),
-                  Sex: body.get("sex"),
-                  MothersName: body.get("mothersname"),
-                  FathersName: body.get("fathersname"),
-                  EmergencyName: body.get("emergency"),
-                  EmergencyContactNo: body.get("emergencynumber"),
-                  Concern: body.get("concern"),
+                  FirstName: encryptText(body.get("firstname")),
+                  MiddleName: encryptText(body.get("middlename")),
+                  LastName: encryptText(body.get("lastname")),
+                  CivilStatus: encryptText(body.get("civilstatus")),
+                  Address: encryptText(body.get("address")),
+                  Course: encryptText(body.get("course")),
+                  Year: encryptText(body.get("year")),
+                  Section: encryptText(body.get("section")),
+                  Age: encryptText(body.get("age")),
+                  DateofBirth: encryptText(body.get("dateofbirth")),
+                  Religion: encryptText(body.get("religion")),
+                  ContactNo: encryptText(body.get("contactno")),
+                  SpouseName: encryptText(body.get("spousename")),
+                  Sex: encryptText(body.get("sex")),
+                  MothersName: encryptText(body.get("mothersname")),
+                  FathersName: encryptText(body.get("fathersname")),
+                  EmergencyName: encryptText(body.get("emergency")),
+                  EmergencyContactNo: encryptText(body.get("emergencynumber")),
+                  Concern: encryptText(body.get("concern")),
                 };
                 updatedAppointment = await DentalAppointment.findOneAndUpdate(
                   { _id: AppointmentId },
@@ -67,29 +68,29 @@ export const POST = async (request) => {
             } else {
               if (Department === 'Dental') {
                 const Data = {
-                  FirstName: body.get("firstname"),
-                  MiddleName: body.get("middlename"),
-                  LastName: body.get("lastname"),
-                  CivilStatus: body.get("civilstatus"),
-                  Address: body.get("address"),
-                  Course: body.get("course"),
-                  Year: body.get("year"),
-                  Section: body.get("section"),
-                  Age: body.get("age"),
-                  DateofBirth: body.get("dateofbirth"),
-                  Religion: body.get("religion"),
-                  ContactNo: body.get("contactno"),
-                  SpouseName: body.get("spousename"),
-                  Sex: body.get("sex"),
-                  MothersName: body.get("mothersname"),
-                  FathersName: body.get("fathersname"),
-                  EmergencyName: body.get("emergency"),
-                  EmergencyContactNo: body.get("emergencynumber"),
-                  Concern: body.get("concern"),
-                  dDate: body.get("dDate"),
-                  dTooth: body.get("dTooth"),
-                  dServiceOffered: body.get("dServiceOffered"),
-                  unknown: body.get("unknown"),
+                  FirstName: encryptText(body.get("firstname")),
+                  MiddleName: encryptText(body.get("middlename")),
+                  LastName: encryptText(body.get("lastname")),
+                  CivilStatus: encryptText(body.get("civilstatus")),
+                  Address: encryptText(body.get("address")),
+                  Course: encryptText(body.get("course")),
+                  Year: encryptText(body.get("year")),
+                  Section: encryptText(body.get("section")),
+                  Age: encryptText(body.get("age")),
+                  DateofBirth: encryptText(body.get("dateofbirth")),
+                  Religion: encryptText(body.get("religion")),
+                  ContactNo: encryptText(body.get("contactno")),
+                  SpouseName: encryptText(body.get("spousename")),
+                  Sex: encryptText(body.get("sex")),
+                  MothersName: encryptText(body.get("mothersname")),
+                  FathersName: encryptText(body.get("fathersname")),
+                  EmergencyName: encryptText(body.get("emergency")),
+                  EmergencyContactNo: encryptText(body.get("emergencynumber")),
+                  Concern: encryptText(body.get("concern")),
+                  dDate: encryptText(body.get("dDate")),
+                  dTooth: encryptText(body.get("dTooth")),
+                  dServiceOffered: encryptText(body.get("dServiceOffered")),
+                  unknown: encryptText(body.get("unknown")),
                 };
                 updatedAppointment = await DentalAppointment.findOneAndUpdate(
                   { _id: AppointmentId },

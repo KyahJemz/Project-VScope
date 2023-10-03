@@ -20,6 +20,7 @@ const Appointments = ({ params }) => {
   const Department = params.department;
 
   const [Status, setStatus] = useState();
+  const [Uploading, setUploading] = useState(false);
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -28,25 +29,27 @@ const Appointments = ({ params }) => {
     fetcher
   );
   
-  var Email = "email"; /// SESSION EMAIL
+  var Email = "Test Email"; /// SESSION EMAIL
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setUploading(true);
 
     console.log('ADCTION', Status);
 
     try {
         const formData = new FormData();
-        formData.append("Name", e.target[1].value);
+        formData.append("Name", Department);
         formData.append("Email", Email);
         formData.append("Response", e.target[0].value);
-        formData.append("AppointmentId", e.target[2].value);
+        formData.append("AppointmentId", e.target[1].value);
         formData.append("Department", Department);
         formData.append("Status", Status);
         console.log(Status);
 
         const response = await fetch("/api/appointments/POST_AddResponse", { method: "POST", body: formData });
-
+        setUploading(false);
         if (response.ok) {
             console.log("Complete");
             Appointmentsmutate();
@@ -86,17 +89,11 @@ const Appointments = ({ params }) => {
                           <input 
                             className={styles.hide}
                             type="text" 
-                            value={data.Name}
-                            hidden
-                          />
-                          <input 
-                            className={styles.hide}
-                            type="text" 
                             value={data._id}
                             hidden
                           />
-                          <button type="submit" onClick={() => setStatus('Approved')} className={styles.abutton}>Approve</button>
-                          <button type="submit" onClick={() => setStatus('Rejected')} className={styles.rbutton}>Reject</button>
+                          <button type="submit" disabled={Uploading} onClick={() => setStatus('Approved')} className={styles.abutton}>{Uploading ? "Uploading" : "Approve"}</button>
+                          <button type="submit" disabled={Uploading} onClick={() => setStatus('Rejected')} className={styles.rbutton}>{Uploading ? "Uploading" : "Reject"}</button>
                       </form>
                   </div>
               ))}

@@ -33,8 +33,7 @@ const Login = () => {
 
       <div classname={styles.rightpanel}>
 
-        <div
-          className={styles.visible}>
+        <div className={styles.visible}>
           <h2 className={styles.title}>Login</h2>
           <button className={styles.googlesignin} onClick={() => {signIn("google");}}>
             Sign in using Google

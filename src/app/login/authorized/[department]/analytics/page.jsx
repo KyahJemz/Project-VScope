@@ -5,12 +5,14 @@ import styles from "./page.module.css";
 import useSWR from "swr";
 import PieChart from "@/components/PieChart/PieChart";
 import LineChart from "@/components/LineChart/LineChart";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const Analytics = ({ params }) => {
   const Department = params.department;
-
   const [option, setOption] = useState ('day');
-
+  const { data: session, status } = useSession();
+  
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
   const { data: SLC, mutate: SLCmutate, error: SLCserror, isLoading: SLCisLoading } = useSWR(
@@ -143,6 +145,16 @@ const Analytics = ({ params }) => {
       },
     ],
   };
+
+  if (status === 'loading') {
+    return "Loading...";
+  }
+
+  if (session.user.role != "Admin") {
+    redirect('/login/authorized/'+Department);
+    return "Loading...";
+  }
+
 
   return (
     <div className={styles.mainContainer}>

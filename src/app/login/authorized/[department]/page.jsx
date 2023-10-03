@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import styles from "./page.module.css";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { notFound } from "next/navigation";
 import useSWR from "swr";
 import Image from "next/image";
 import Dental from "public/Dental.jpg";
@@ -86,7 +85,7 @@ const Dashboard = ({ params }) => {
               <div className={ activeTab === 'blogs' ? `${styles.blogsContainer}` : `${styles.hide}`}>
                   <div className={styles.header}>
                       <h3 className={styles.subtitle}>Blogs</h3>
-                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}
+                      {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}
                   </div>
                   <div className={styles.content}>
                     {BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
@@ -126,7 +125,7 @@ const Dashboard = ({ params }) => {
               <div className={ activeTab === 'announcements' ? `${styles.announcementsContainer}` : `${styles.hide}`}>
                   <div className={styles.header}>
                       <h3 className={styles.subtitle}>Announcements</h3>
-                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddAnnouncement')}>Add Announcement</button> : ''}
+                      {session?.user?.role === 'Admin' ? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddAnnouncement')}>Add Announcement</button> : ''}
                   </div>
                   <div className={styles.content}>
                     {AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
@@ -161,7 +160,7 @@ const Dashboard = ({ params }) => {
                 <div className={styles.FAQContainer}>
                     <div className={styles.header}>
                       <h3 className={styles.subtitle}>FAQ</h3>
-                      {session?.UserDate?.Role === 'Staff'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddFAQ')}>Add FAQ</button> : ''}
+                      {session?.user?.role === 'Admin' ? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddFAQ')}>Add FAQ</button> : ''}
                     </div>
                     <div className={styles.content}>
                         {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
@@ -179,7 +178,7 @@ const Dashboard = ({ params }) => {
                                     <p className={styles.faqTitle}>{data.Department}</p>
                                     <details>
                                       <summary>{data.Title}</summary>
-                                      <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+                                      <p className={styles.faqContent} dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                                     </details>
                                 </div>
                             </div>

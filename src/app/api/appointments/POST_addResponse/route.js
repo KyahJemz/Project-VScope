@@ -3,6 +3,7 @@ import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
+import { encryptText, decryptText } from "@/utils/cryptojs";
 
 export const POST = async (request) => {
     if (request.method === 'POST') {
@@ -16,13 +17,11 @@ export const POST = async (request) => {
         const Status = body.get("Status");
         const Timestamp = new Date().toISOString();
 
-        console.log(Status);
-
         const newResponse = {
-            Name: Name,
-            GoogleEmail: GoogleEmail,
-            Response: Response,
-            Timestamp: Timestamp,
+            Name: encryptText(Name),
+            GoogleEmail: encryptText(GoogleEmail),
+            Response: encryptText(Response),
+            Timestamp: encryptText(Timestamp),
             ViewedByDepartment: false,
             ViewedByClient: false,
         };

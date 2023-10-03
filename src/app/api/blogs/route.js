@@ -49,7 +49,7 @@ export const POST = async (request) => {
         const Content = body.get("Content");
         const Department = body.get("Department");
         const Image = request.files && request.files.Image; // Get the image file
-        console.log(Image);
+
   
         let imageUrl = null;
   

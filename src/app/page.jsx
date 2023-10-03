@@ -166,7 +166,7 @@ const formatDate = (timestamp) => {
                                       <p className={styles.faqTitle}>{data.Department}</p>
                                       <details>
                                         <summary>{data.Title}</summary>
-                                        <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+                                        <p className={styles.faqContent} dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
                                       </details>
                                   </div>
                               </div>

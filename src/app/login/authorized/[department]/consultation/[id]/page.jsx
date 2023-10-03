@@ -221,14 +221,15 @@ const Form = ({params}) => {
                         <textarea name="concern" value={data.Concern} className={`${styles.readinput} ${styles.textarea}`} type="text" cols='50' rows='5' required/>
                     </div>
                 </div> 
-
-                <div className={styles.formRow}>
-                    {DetailsUploading ? 
-                        <button className={styles.submitBtn} disabled>Uploading...</button>
-                        :
-                        <button className={styles.submitBtn}>Update Details</button>
-                    } 
-                </div> 
+                {Department === "Dental" ? 
+                    <div className={styles.formRow}>
+                        {DetailsUploading ? 
+                            <button className={styles.submitBtn} disabled>Uploading...</button>
+                            :
+                            <button className={styles.submitBtn}>Update Details</button>
+                        } 
+                    </div> 
+                : null }
             </form>
         )
     }
@@ -239,7 +240,7 @@ const Form = ({params}) => {
                 <p>Your response/concern:</p>
                 <input name="GoogleEmail" value={GoogleEmail} type="text" hidden readOnly/>
                 <input name="Name" value={Department} type="text" hidden readOnly/>
-                <textarea name="Response" rows="3" />
+                <textarea className={styles.responseFormTextbox} name="Response" rows="3" />
                 {ResponseUploading ? 
                     <button className={styles.submitBtn} disabled>Uploading...</button>
                 :
@@ -295,6 +296,21 @@ const Form = ({params}) => {
         `/api/appointments/GET_Details?department=${encodeURIComponent(Department)}&id=${encodeURIComponent(AppointmentId)}`,
         fetcher
     );
+
+    const handleBeforeUnload = () => {
+        const formData = new FormData();
+        formData.append('Department', Department);
+        formData.append('AppointmentId', AppointmentId);
+        formData.append('Name', Department);
+    
+        fetch('/api/appointments/POST_UpdateViewed', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => console.log('API call successful', data))
+        .catch(error => console.error('Error making API call', error));
+    };
 
     const HandleUpdateSubmit = async (e) => {
         e.preventDefault();
@@ -377,7 +393,9 @@ const Form = ({params}) => {
         } catch (err) {
           console.log(err);
         }
-      }
+    }
+
+    handleBeforeUnload();
 
     return (
         <div className={styles.mainContainer}>

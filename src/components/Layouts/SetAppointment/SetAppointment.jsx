@@ -6,7 +6,6 @@ import useSWR from "swr";
 import { useRouter } from "next/navigation";
 
 const SetAppointment = ({req}) => {
-    console.log(req);
     const [uploading, setUploading] = useState(false);
     const router = useRouter();
 
@@ -58,7 +57,6 @@ const SetAppointment = ({req}) => {
         if (filterStatus === null) return true;
         return appointment.Status === filterStatus;
     });
-
 
 
 // parar sa submit appointment
@@ -130,8 +128,8 @@ const SetAppointment = ({req}) => {
           return false;
         }
     
-        return responses.some((response) => response.ViewedByClient === 'false');
-      }
+        return responses.some((response) => response.ViewedByClient === false);
+    }
 
     return (
         <div className={styles.mainContainer}>

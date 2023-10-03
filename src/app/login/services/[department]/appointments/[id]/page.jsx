@@ -32,6 +32,22 @@ const Form = ({params}) => {
     if (status === 'authenticated'){
         GoogleImage = session.user.image;
     } 
+
+    
+    const handleBeforeUnload = () => {
+        const formData = new FormData();
+        formData.append('Department', Department);
+        formData.append('AppointmentId', AppointmentId);
+        formData.append('Name', data.Name);
+    
+        fetch('/api/appointments/POST_UpdateViewed', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => console.log('API call successful', data))
+        .catch(error => console.error('Error making API call', error));
+    };
     
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -464,7 +480,7 @@ const Form = ({params}) => {
                 <p>Your response/concern:</p>
                 <input name="GoogleEmail" value={data.GoogleEmail} type="text" hidden readOnly/>
                 <input name="Name" value={data.Name} type="text" hidden readOnly/>
-                <textarea name="Response" rows="3" />
+                <textarea className={styles.responseFormTextbox} name="Response" rows="3" />
                 {ResponseUploading ? 
                     <button className={styles.submitBtn} disabled>Uploading...</button>
                 :
@@ -576,6 +592,8 @@ const Form = ({params}) => {
             console.log(err);
         }
     }
+
+    handleBeforeUnload();
 
     return (
         <div className={styles.mainContainer}>

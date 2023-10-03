@@ -19,7 +19,6 @@ const postSchema = new Schema(
     },
     Content: {
       type: String,
-      unique: true,
       required: true,
     },
   },

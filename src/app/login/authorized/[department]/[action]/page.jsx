@@ -4,20 +4,32 @@ import React, { useState } from "react";
 import styles from "./page.module.css";
 import { useRouter } from 'next/navigation';
 import { notFound } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const action = ({ params }) => {
-  const Department = params.department;
-  const Action = params.action;
-  const [uploading, setUploading] = useState(false);
-  const router = useRouter();
+    const Department = params.department;
+    const Action = params.action;
+    const [uploading, setUploading] = useState(false);
+    const { data: session, status } = useSession();
+    const router = useRouter();
 
-  function convertNewlines(text, toHTML = false) {
-    if (toHTML) {
-      return text.replace(/\n/g, '<br />');
-    } else {
-      return text.replace(/<br \/>|<br\/>|<br>|<br\s\/>/g, '\n');
+    if (status === 'loading') {
+        return "Loading...";
+      }
+    
+      if (session.user.role != "Admin") {
+        redirect('/login/authorized/'+Department);
+        return "Loading...";
+      }
+
+    function convertNewlines(text, toHTML = false) {
+        if (toHTML) {
+            return text.replace(/\n/g, '<br />');
+        } else {
+            return text.replace(/<br \/>|<br\/>|<br>|<br\s\/>/g, '\n');
+        }
     }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,8 +40,8 @@ const action = ({ params }) => {
 
     if (Action === 'AddBlog') {
         Title = e.target[0].value;
-        Image = e.target[1].files[0];;
-        Content = convertNewlines(e.target[2].value, false);
+        // Image = e.target[1].files[0];;
+        Content = convertNewlines(e.target[1].value, false);
     } else {
         Title = e.target[0].value;
         Content = convertNewlines(e.target[1].value, false);

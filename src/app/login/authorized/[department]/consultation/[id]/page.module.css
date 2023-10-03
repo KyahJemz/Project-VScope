@@ -103,10 +103,12 @@
 
 .smallInput {
   width: 100px;
+  min-width: 100px;
 }
 
 .fullInput {
   flex: 1;
+  min-width: 100px;
 }
 
 .textareaContainer {
@@ -195,6 +197,11 @@
   background-color: #53c28b;
   color: white;
 
+}
+
+
+.responseFormTextbox{
+  padding: 10px;
 }
 
 

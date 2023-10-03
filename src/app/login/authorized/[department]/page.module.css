@@ -47,6 +47,8 @@
 }
 
 
+
+
 .hide {
   display: none;
   transform: translateY(-100%);
@@ -113,3 +115,38 @@
   font-weight: bold;
 }
 
+.subtitleBTN{
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.faqContent{
+   padding-top: 20px;
+}
+
+
+@media (max-width: 1100px) {
+  .rightContainer{
+    flex: 0 0 40%;
+  }
+}
+
+@media (max-width: 850px) {
+  .rightContainer{
+    flex: 0 0 50%;
+  }
+}
+
+@media (max-width: 640px) {
+  .mainContainer{
+    padding: 0px 20px;
+  }
+  .container{
+    padding: 10px 0px;
+    flex-direction: column-reverse;
+  }
+}

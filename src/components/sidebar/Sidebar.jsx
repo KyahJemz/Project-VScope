@@ -3,8 +3,10 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import styles from "./Sidebar.module.css";
+import { useSession } from "next-auth/react";
 
 const Sidebar = ({department}) => {
+  const { data: session, status } = useSession();
 
   const [panel, setPanel] = useState(false);
 
@@ -19,14 +21,14 @@ const Sidebar = ({department}) => {
       title: "Appointments",
       url: "/login/authorized/"+department+"/appointments",
     },
-  ];
-  
-  const AdminLinks = [
     {
       id: 3,
       title: "Consultation",
       url: "/login/authorized/"+department+"/consultation",
     },
+  ];
+  
+  const AdminLinks = [
     {
       id: 4,
       title: "Analytics",
@@ -36,7 +38,11 @@ const Sidebar = ({department}) => {
   
   return (
     <div className={panel ? styles.container : styles.containerHide}>
-      <button className={styles.toggle} onClick={panel ? ()=>setPanel(false) : ()=>setPanel(true)}>#</button>
+      <div className={styles.toggle} onClick={panel ? ()=>setPanel(false) : ()=>setPanel(true)}>
+        <div className={styles.toggleLine}></div>
+        <div className={styles.toggleLine}></div>
+        <div className={styles.toggleLine}></div>
+      </div>
       {panel === false ? null : 
         <div className={styles.links}>
           <Link href="/" className={styles.logo}>
@@ -47,11 +53,13 @@ const Sidebar = ({department}) => {
               {link.title}
             </a>
           ))}
-          {AdminLinks.map((link) => (
+          {session.user.role === "Admin" ? AdminLinks.map((link) => (
             <a key={link.id} href={link.url} className={styles.link}>
               {link.title}
             </a>
-          ))}
+            )) 
+            : null
+          }
       </div>
       }
     </div>

@@ -6,7 +6,6 @@ const userSchema = new Schema(
   {
     GoogleId: {
       type: String,
-      unique: true,
       required: true,
     },
     GoogleEmail: {
@@ -37,7 +36,7 @@ const userSchema = new Schema(
     },
     Department: {
       type: String,
-      enum: ["Dental","Medical", "SDPC"],
+      enum: ["Dental","Medical", "SDPC", null],
       required: false,
       default: null,
     },
