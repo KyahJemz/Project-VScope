@@ -90,7 +90,7 @@
 
 .ccompleted,
 .Completed {
-  cursor:not-allowed;
+  cursor:pointer;
   background-color: rgb(55, 64, 187);
 }
 

@@ -32,22 +32,6 @@ const Form = ({params}) => {
     if (status === 'authenticated'){
         GoogleImage = session.user.image;
     } 
-
-    
-    const handleBeforeUnload = () => {
-        const formData = new FormData();
-        formData.append('Department', Department);
-        formData.append('AppointmentId', AppointmentId);
-        formData.append('Name', data.Name);
-    
-        fetch('/api/appointments/POST_UpdateViewed', {
-          method: 'POST',
-          body: formData,
-        })
-        .then(response => response.json())
-        .then(data => console.log('API call successful', data))
-        .catch(error => console.error('Error making API call', error));
-    };
     
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -593,7 +577,25 @@ const Form = ({params}) => {
         }
     }
 
-    handleBeforeUnload();
+    const handleBeforeUnload = () => {
+        const formData = new FormData();
+        formData.append('Department', Department);
+        formData.append('AppointmentId', AppointmentId);
+        formData.append('Name', data.Name);
+    
+        fetch('/api/appointments/POST_UpdateViewed', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => console.log('API call successful', data))
+        .catch(error => console.error('Error making API call', error));
+    };
+
+    if (!isLoading) {
+        handleBeforeUnload();
+    }
+    
 
     return (
         <div className={styles.mainContainer}>
