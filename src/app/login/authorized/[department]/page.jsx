@@ -55,140 +55,173 @@ const Dashboard = ({ params }) => {
     fetcher
   );
 
-  const [activeTab, setActiveTab] = useState('blogs');
+  const [activeTab, setActiveTab] = useState('Announcements');
 
-  const handleTabClick = (tab) => {
-    Blogsmutate();
-    Announcementsmutate();
-    FAQmutate();
-    setActiveTab(tab);
-  };
+  const BlogsCode = () => {
+		return ( <div>
+			{BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
+				<div key={index} className={styles.blogsItem}>
+					<div className={styles.itemHeader}>
+						<Image className={styles.itemDeptImage} 
+							src={
+								data.Department === "Dental" ? Dental : 
+								data.Department === "Medical" ? Medical :
+								data.Department === "SDPC" ? SDPC : null
+							}
+							height={50}
+							width={50}
+						/>
+						<div className={styles.itemHeaderDetails}>
+							<p className={styles.itemDepartment}>{
+								data.Department === "Dental" ? "Dental Health Services" : 
+								data.Department === "Medical" ? "Medical Health Services" :
+								data.Department === "SDPC" ? "Student Development And Placement Center" : null}</p>
+							<p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
+						</div>
+					</div>
+					<div className={styles.itemBody}>
+						{data?.Image && (
+							<Image
+								className={styles.blogImage}
+								src={`/public/${data.Image}`}
+								height={500}
+								width={500}
+							/>
+						)}
+						<p className={styles.itemTitle}>{data.Title}</p>
+						<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+					</div>
+				</div>
+			))}
+		</div>)
+	}
 
+	const FAQCode = () => {
+		return ( <div>
+			<div className={styles.content}>
+				{FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
+					<div key={index} className={styles.faqsItem}>
+						<Image className={styles.faqImage} 
+							src={
+								data.Department === "Dental" ? Dental : 
+								data.Department === "Medical" ? Medical :
+								data.Department === "SDPC" ? SDPC : null
+							}
+							height={50}
+							width={50}
+						/>
+						<div className={styles.faqDetails}>
+							<p className={styles.faqTitle}>{data.Department}</p>
+							<details>
+								<summary>{data.Title}</summary>
+								<p className={styles.faqContent} dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+							</details>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>)
+	}
+
+	const AnnouncementsCode = () => {
+		return ( <div>
+			{AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
+				<div key={index} className={styles.AnnouncementsItem}>
+					<div className={styles.itemHeader}>
+						<Image className={styles.itemDeptImage} 
+							src={
+								data.Department === "Dental" ? Dental : 
+								data.Department === "Medical" ? Medical :
+								data.Department === "SDPC" ? SDPC : null
+							}
+							height={50}
+							width={50}
+						/>
+						<div className={styles.itemHeaderDetails}>
+							<p className={styles.itemDepartment}>{data.Department}</p>
+							<p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
+						</div>
+					</div>
+					<div className={styles.itemBody}>
+						<p className={styles.itemTitle}>{data.Title}</p>
+						<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+					</div>
+				</div>
+			))}
+		</div>)
+	}
+
+
+//{session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}
  
+if (status === 'loading') {
+  return "Loading..."
+}
+
 
   return (
-      <div className={styles.mainContainer}>
-          <h3 className={styles.mainTitle}>Dashboard</h3>
+    <div className={styles.mainContainer}>
+    <div className={styles.mobileLayout}>
+      <div className={styles.maintab}>
+        <p className={`${activeTab === 'Blogs' ? styles.active : ''} ${styles.tabbutton}`}
+          onClick={() => setActiveTab('Blogs')}>Blogs</p>
+        <p className={`${activeTab === 'Announcements' ? styles.active : ''} ${styles.tabbutton}`}
+          onClick={() => setActiveTab('Announcements')}>Announcements</p>
+        <p className={`${activeTab === 'FAQ' ? styles.active : ''} ${styles.tabbutton}`}
+          onClick={() => setActiveTab('FAQ')}>FAQ</p>
+      </div>
+      <div className={styles.mobileContainer}>
+        {session?.user?.role === 'Admin' && (
+          activeTab === 'Blogs' ? (
+            <button className={styles.subtitleBTN} onClick={() => router.push(`/login/authorized/${Department}/AddBlogs`)}>Add Blog</button>
+          ) : activeTab === 'Announcements' ? (
+            <button className={styles.subtitleBTN} onClick={() => router.push(`/login/authorized/${Department}/AddAnnouncements`)}>Add Announcement</button>
+          ) : activeTab === 'FAQ' && (
+            <button className={styles.subtitleBTN} onClick={() => router.push(`/login/authorized/${Department}/AddFAQ`)}>Add FAQ</button>
+          )
+        )}
 
-          <div className={styles.container}>
-            
-              <div className={styles.leftContainer}>
-                  <div className={styles.tab}>
-                    <p
-                      className={`${activeTab === 'blogs' ? styles.active : ''} ${styles.tabbutton}`}
-                      onClick={() => handleTabClick('blogs')}>Blogs</p>
-                    <p
-                      className={`${activeTab === 'announcements' ? styles.active : ''} ${styles.tabbutton}`}
-                      onClick={() => handleTabClick('announcements')}>Announcements</p>
-                  </div>
+        {activeTab === 'Blogs' ? <BlogsCode /> : 
+        activeTab === 'Announcements' ? <AnnouncementsCode /> :
+        activeTab === 'FAQ' ? <FAQCode /> : null}
 
-              <div className={ activeTab === 'blogs' ? `${styles.blogsContainer}` : `${styles.hide}`}>
-                  <div className={styles.header}>
-                      <h3 className={styles.subtitle}>Blogs</h3>
-                      {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}
-                  </div>
-                  <div className={styles.content}>
-                    {BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
-                        <div key={index} className={styles.blogsItem}>
-                            <div className={styles.itemHeader}>
-                                <Image className={styles.itemDeptImage} 
-                                    src={
-                                      data.Department === "Dental" ? Dental : 
-                                      data.Department === "Medical" ? Medical :
-                                      data.Department === "SDPC" ? SDPC : null
-                                    }
-                                    height={50}
-                                    width={50}
-                                />
-                                <div className={styles.itemHeaderDetails}>
-                                    <p className={styles.itemDepartment}>{data.Department}</p>
-                                    <p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
-                                </div>
-                            </div>
-                            <div className={styles.itemBody}>
-                                {data?.Image && (
-                                    <Image
-                                        className={styles.blogImage}
-                                        src={`/public/${data.Image}`}
-                                        height={500}
-                                        width={500}
-                                    />
-                                )}
-                                <p className={styles.itemTitle}>{data.Title}</p>
-                                <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
-                            </div>
-                        </div>
-                    ))}
-                  </div>
-              </div>
+      </div>
+    </div>
+    <div className={styles.container}>
+      <div className={styles.leftContainer}>
+        <div className={styles.maintab}>
+          <h3 className={`${styles.subtitle} ${styles.tabbutton}`}>Blogs</h3>
+        </div>
+        <div className={styles.blogsContainer}>
+          {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlogs')}>Add Blog</button> : ''}  
+          <div className={styles.content}>
+            {<BlogsCode />}
+          </div>
+        </div>
+      </div>
 
-              <div className={ activeTab === 'announcements' ? `${styles.announcementsContainer}` : `${styles.hide}`}>
-                  <div className={styles.header}>
-                      <h3 className={styles.subtitle}>Announcements</h3>
-                      {session?.user?.role === 'Admin' ? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddAnnouncement')}>Add Announcement</button> : ''}
-                  </div>
-                  <div className={styles.content}>
-                    {AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
-                        <div key={index} className={styles.AnnouncementsItem}>
-                            <div className={styles.itemHeader}>
-                                <Image className={styles.itemDeptImage} 
-                                    src={
-                                      data.Department === "Dental" ? Dental : 
-                                      data.Department === "Medical" ? Medical :
-                                      data.Department === "SDPC" ? SDPC : null
-                                    }
-                                    height={50}
-                                    width={50}
-                                />
-                                <div className={styles.itemHeaderDetails}>
-                                    <p className={styles.itemDepartment}>{data.Department}</p>
-                                    <p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
-                                </div>
-                            </div>
-                            <div className={styles.itemBody}>
-                                <p className={styles.itemTitle}>{data.Title}</p>
-                                <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
-                            </div>
-                        </div>
-                    ))}
-                  </div>
-              </div>
-
-            </div>
-
-            <div className={styles.rightContainer}>
-                <div className={styles.FAQContainer}>
-                    <div className={styles.header}>
-                      <h3 className={styles.subtitle}>FAQ</h3>
-                      {session?.user?.role === 'Admin' ? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddFAQ')}>Add FAQ</button> : ''}
-                    </div>
-                    <div className={styles.content}>
-                        {FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
-                            <div key={index} className={styles.faqsItem}>
-                                <Image className={styles.faqImage} 
-                                    src={
-                                      data.Department === "Dental" ? Dental : 
-                                      data.Department === "Medical" ? Medical :
-                                      data.Department === "SDPC" ? SDPC : null
-                                    }
-                                    height={50}
-                                    width={50}
-                                />
-                                <div className={styles.faqDetails}>
-                                    <p className={styles.faqTitle}>{data.Department}</p>
-                                    <details>
-                                      <summary>{data.Title}</summary>
-                                      <p className={styles.faqContent} dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
-                                    </details>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+      <div className={styles.rightContainer}>
+        <div className={styles.maintab}>
+          <p className={`${activeTab === 'Announcements' ? styles.active : ''} ${styles.tabbutton}`}
+            onClick={() => setActiveTab('Announcements')}>Announcements</p>
+          <p className={`${activeTab === 'FAQ' ? styles.active : ''} ${styles.tabbutton}`}
+            onClick={() => setActiveTab('FAQ')}>FAQ</p>
         </div>
 
+        <div className={ activeTab === 'Announcements' ? `${styles.announcementsContainer}` : `${styles.hide}`}>
+        {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddAnnouncements')}>Add Announcement</button> : ''}  
+          <div className={styles.content}>
+            {<AnnouncementsCode />}
+          </div>
+        </div>
+
+        <div className={ activeTab === 'FAQ' ? `${styles.FAQContainer}` : `${styles.hide}`}>
+          {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddFAQ')}>Add FAQ</button> : ''}  
+          {<FAQCode />}
+        </div>
+      </div>
     </div>
+  </div>
   );
 };
 
