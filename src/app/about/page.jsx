@@ -1,60 +1,60 @@
 import React from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
+import { data } from "./data.js";
 
 const About = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.imgContainer}>
+      <div className={`${styles.imgContainer} ${styles.row}`}>
         <Image
           src="https://images.pexels.com/photos/3194521/pexels-photo-3194521.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           fill={true}
           alt=""
           className={styles.img}
         />
-        <div className={styles.imgText}>
-          <h1 className={styles.imgTitle}>Group 4</h1>
-          <h2 className={styles.imgDesc}>
-            We are the VScope developers
-          </h2>
+      </div>
+
+      <div className={`${styles.row} ${styles.border}`}>
+        <div className={styles.header}>The V-Scope: Health Services Management System</div>
+        <div className={styles.thevscope}>
+          <div className={styles.aboutvscope}>
+            <p className={styles.aboutvscopetitle}>{data.aboutvscope[0].title}</p>
+            <p className={styles.aboutvscopecontent}>{data.aboutvscope[0].desc}</p>
+          </div>
+          <div className={styles.vscopevideo}>
+            <Image src={data.aboutvscope[0].image} alt="" width='300' height='300'/>
+          </div>
         </div>
       </div>
-      <div className={styles.textContainer}>
-        <div className={styles.item}>
-          <h1 className={styles.title}>Who Are We?</h1>
-          <p className={styles.desc}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-            quae dolor, optio voluptatibus magnam iure esse tempora beatae. A
-            suscipit eos. Animi quibusdam cum omnis officiis voluptatum quo ea
-            eveniet? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Ducimus quae dolor, optio voluptatibus magnam iure esse tempora
-            beatae, a suscipit eos. Animi quibusdam cum omnis officiis
-            <br />
-            <br />
-            voluptatum quo ea eveniet? Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Ducimus quae dolor, optio voluptatibus magnam iure
-            esse tempora beatae, a suscipit eos. Animi quibusdam cum omnis
-            officiis voluptatum quo ea eveniet?
-          </p>
-        </div>
-        <div className={styles.item}>
-          <h1 className={styles.title}>What We Do?</h1>
-          <p className={styles.desc}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-            quae dolor, optio voluptatibus magnam iure esse tempora beatae, a
-            suscipit eos. Animi quibusdam cum omnis officiis voluptatum quo ea
-            eveniet? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            <br />
-            <br /> - Creative Illustrations
-            <br />
-            <br /> - Dynamic Websites
-            <br />
-            <br /> - Fast and Handy
-            <br />
-            <br /> - Mobile Apps
-          </p>
+
+      <div className={styles.row}>
+        <p className={styles.thedevelopers}>The Developers</p>
+        <div className={styles.thedeveloperscontainer}>
+          {data['developers'].map((item) => (
+            <div className={styles.thedevelopersborder}  key={item.id}>
+              <div className={styles.thedeveloperscards}>
+                <Image className={styles.thedevelopersimage} src={item.image} alt="" height="200" width="200"/>
+                <p className={styles.thedevelopersname}>{item.name}</p>
+              </div>
+            </div>
+          ))}
+          
         </div>
       </div>
+
+      <div className={styles.row}>
+        {data['about'].map((item) => (
+              <div className={styles.aboutrow} key={item.id}>
+                <div className={styles.aboutcontent}>
+                  <p className={styles.abouttitle}>{item.title}</p>
+                  <p className={styles.abouttext}>{item.desc}</p>
+                </div>
+                <Image className={styles.aboutimage} src={item.image} alt="" height="300" width="300"/>
+              </div>
+          ))}
+      </div>
+      
     </div>
   );
 };

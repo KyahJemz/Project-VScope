@@ -12,25 +12,25 @@ const links = [
     id: 1,
     title: "Home",
     url: "/",
-    icon: "/home.png",
+    icon: "/images/icons/2.png",
   },
   {
     id: 2,
     title: "Information",
     url: "/information",
-    icon: "/home.png",
+    icon: "/images/icons/4.png",
   },
   {
     id: 3,
     title: "About",
     url: "/about",
-    icon: "/home.png",
+    icon: "/images/icons/3.png",
   },
   {
     id: 4,
     title: "Services",
     url: "/login",
-    icon: "/home.png",
+    icon: "/images/icons/5.png",
   }
 ];
 
@@ -56,7 +56,7 @@ const Navbar = () => {
         <div className={styles.mobileLayout}>
           {links.map((link) => (
               <Link key={link.id} href={link.url} className={styles.link}>
-                <Image src={link.icon} width='25' height='25'/>
+                <Image className={styles.icons} src={link.icon} width='25' height='25'/>
               </Link>
           ))}
         </div>

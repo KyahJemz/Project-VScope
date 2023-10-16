@@ -12,6 +12,10 @@
   font-size: 22px;
 }
 
+.icons{
+  transform: scale(2);
+}
+
 .links {
   display: flex;
   align-items: center;

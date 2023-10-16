@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/runtime": "^7.23.2",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.0",
     "crypto-js": "^4.1.1",
