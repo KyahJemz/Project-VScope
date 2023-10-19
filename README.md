@@ -1,7 +1,7 @@
 
 ## Welcome to V-Scope
 
-
+- A Capstone Project
 
 ## Project Details
 
