@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 
 const action = ({ params }) => {
     const Department = params.department;
+    const [file, setFile] = useState(null);
     const Action = params.action;
     const [uploading, setUploading] = useState(false);
     const { data: session, status } = useSession();
@@ -35,23 +36,21 @@ const action = ({ params }) => {
     e.preventDefault();
 
     var Title = '';
-    var Image = '';
     var Content = '';
 
     if (Action === 'AddBlog') {
         Title = e.target[0].value;
-        // Image = e.target[1].files[0];;
-        Content = convertNewlines(e.target[1].value, false);
+        Content = convertNewlines(e.target[2].value, false);
     } else {
         Title = e.target[0].value;
-        Content = convertNewlines(e.target[1].value, false);
+        Content = convertNewlines(e.target[2].value, false);
     }
   
     try {
         setUploading(true);
         const formData = new FormData();
         formData.append("Title", Title);
-        formData.append("Image", Image);
+        formData.set("Image", file);
         formData.append("Content", Content);
         formData.append("Department", Department);
 
@@ -85,6 +84,7 @@ const action = ({ params }) => {
 
 
 
+
     const AddBlogForm = () => {
         return (
             <form className={styles.form} onSubmit={handleSubmit} encType="multipart/form-data">
@@ -95,11 +95,12 @@ const action = ({ params }) => {
                     className={styles.input}
                     required
                 />
-                {/* <input 
+                <input 
                     name="Image"
                     type="file" 
+                    onChange={(e) => setFile (e.target.files?.[0])}
                     className={styles.input}
-                /> */}
+                />
                 <textarea 
                     type="text" 
                     className={styles.input}

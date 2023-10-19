@@ -153,6 +153,14 @@
   border: 1px solid gainsboro;
 }
 
+.itemBodyBlogs {
+  border: 1px solid gainsboro;
+  padding: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+}
+
 .itemBody {
   border: 1px solid gainsboro;
   padding: 10px;
@@ -161,8 +169,16 @@
   gap: 10px;
 }
 
+.itemBodyContent{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
 .blogImage {
-  margin: auto;
+
 }
 
 .itemTitle{
@@ -200,4 +216,19 @@
   .container{
     display: none;
   }
+  .itemBodyBlogs {
+    flex-direction: column;
+  }
+  .blogImage {
+    margin: auto;
+  }
+  
+
+
 }
+
+
+
+
+
+

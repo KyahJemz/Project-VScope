@@ -79,17 +79,21 @@ const Home = () => {
 							<p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
 						</div>
 					</div>
-					<div className={styles.itemBody}>
+					<div className={styles.itemBodyBlogs}>
 						{data?.Image && (
 							<Image
 								className={styles.blogImage}
-								src={`/public/${data.Image}`}
-								height={500}
-								width={500}
+								src={`/uploads/blogs/${data.Image}`}
+								height={250}
+								width={250}
+								alt="Blog Image"
 							/>
 						)}
-						<p className={styles.itemTitle}>{data.Title}</p>
-						<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+						<div className={styles.itemBodyContent}>
+							<p className={styles.itemTitle}>{data.Title}</p>
+							<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+						</div>
+						
 					</div>
 				</div>
 			))}

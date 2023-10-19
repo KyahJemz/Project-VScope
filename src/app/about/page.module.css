@@ -18,6 +18,12 @@
   border: 1px solid gainsboro;
 }
 
+.imageSlider{
+  margin-bottom: 40px;
+  height: 500px;
+  width: 100%;
+}
+
 .row{
   width: 100%;
   padding: 20px;

@@ -6,6 +6,18 @@ import { getProviders, signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Hero from "public/hero.png";
+import ImageSlider from "@/components/ImageSlider/ImageSlider";
+
+const slides = [
+  { url: "/1.png", title: "beach" },
+  { url: "/2.png", title: "boat" },
+  { url: "/3.png", title: "forest" },
+];
+
+const containerStyles = {
+  width: "300px",
+  height: "300px",
+};
 
 const Login = () => {
   const {data: session, status} = useSession();
@@ -28,16 +40,19 @@ const Login = () => {
     <div className={styles.container}>
 
       <div className={styles.leftpanel}>
-        <Image src={Hero} alt="" className={styles.img} />
+        <div style={containerStyles}>
+          <ImageSlider slides={slides} />
+        </div>
       </div>
 
       <div classname={styles.rightpanel}>
 
         <div className={styles.visible}>
-          <h2 className={styles.title}>Login</h2>
+          <Image src={Hero} className={styles.imagelogo} alt="logo" width={100} height={100} />
           <button className={styles.googlesignin} onClick={() => {signIn("google");}}>
-            Sign in using Google
+            Login
           </button>
+          <p className={styles.note}>IF YOU DONT HAVE AN SSCR EMAIL PLEASE CONTACT ICT DEPARTMENT FOR YOUR CONCERNS. THANK YOU!</p>
         </div>
 
       </div>

@@ -17,22 +17,45 @@
   gap: 50px;
 }
 
-.item {
-  border: 5px solid #bbb;
+.setAppointment {
+  text-align: center;
+  background-color: #53c28b;
+  padding: 10px 20px;
+  color: white;
   border-radius: 5px;
-  width: 300px;
-  height: 400px;
-  position: relative;
-  background-size: cover !important;
 }
 
-.item:nth-child(1) {
+.setAppointment:active {
+  border: 1px solid gainsboro;
+}
+
+.Medical,
+.Dental,
+.SDPC {
+  border: 5px solid #bbb;
+  border-radius: 5px;
+  width: 250px;
+  height: 350px;
+  position: relative;
+  background-size: cover !important;
+  display: block;
+  text-align: center;
+}
+
+.itemcontainer{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.Medical {
   background: url("/images/banner-medical.jpg");
 }
-.item:nth-child(2) {
+.Dental {
   background: url("/images/banner-dental.jpg");
 }
-.item:nth-child(3) {
+.SDPC {
   background: url("/images/banner-sdpc.jpg");
 }
 
@@ -44,7 +67,9 @@
   font-weight: bold;
 }
 
-.item:hover .title {
+.Medical:hover .title,
+.Dental:hover .title,
+.SDPC:hover .title {
   color: #53c28b;
 }
 
@@ -55,13 +80,17 @@
     justify-content: flex-start;
     align-items: center;
   }
-  .item{
+  .Medical,
+.Dental,
+.SDPC {
     width: 400px;
   }
 }
 
 @media (max-width: 640px) {
-  .item{
+  .Medical,
+  .Dental,
+  .SDPC {
     width: 300px;
     height: 350px;
   }

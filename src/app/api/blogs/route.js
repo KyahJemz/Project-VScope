@@ -1,82 +1,57 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import connect from "@/utils/db";
 import Blogs from "@/models/Blogs";
-import { createWriteStream } from 'fs';
-import { v4 as uuidv4 } from 'uuid';
 
-const saveImage = async (image) => {
-    const uniqueFilename = `${uuidv4()}.jpg`; // Generate a unique filename using UUID
-    const path = `./public/uploads/blogs/${uniqueFilename}`; // Specify the directory to save the image
-  
-    return new Promise((resolve, reject) => {
-      const writeStream = createWriteStream(path);
-  
-      image.stream.pipe(writeStream);
-      image.on('end', () => resolve({ filename: uniqueFilename, path }));
-      image.on('error', (error) => {
-        console.log('Error saving image:', error);
-        reject(error);
-      });
-    });
-  };
+import { writeFile } from 'fs/promises'
+
+const uploadDir = "public/images/uploads/blogs/";
 
 export const GET = async (request) => {
-    const url = new URL(request.url);
-    const department = url.searchParams.get("department");
+  const url = new URL(request.url);
+  const department = url.searchParams.get("department");
 
-    try {
-        await connect();
+  try {
+    await connect();
 
-        let query = {};
-        if (department) {
-            query = { Department: department };
-        }
-
-        const results = await Blogs.find(query);
-        return new NextResponse(JSON.stringify(results), { status: 200 });
-    } catch (err) {
-        return new NextResponse("Database Error", { status: 500 });
+    let query = {};
+    if (department) {
+      query = { Department: department };
     }
+
+    const results = await Blogs.find(query);
+    return new NextResponse(JSON.stringify(results), { status: 200 });
+  } catch (err) {
+    return new NextResponse("Database Error", { status: 500 });
+  }
 };
 
 export const POST = async (request) => {
-    if (request.method === 'POST') {
-      try {
-        await connect();
-  
-        const body = await request.formData();
-        const Title = body.get("Title");
-        const Content = body.get("Content");
-        const Department = body.get("Department");
-        const Image = request.files && request.files.Image; // Get the image file
+  const data = await request.formData();
+  const file = data.get('Image');
 
-  
-        let imageUrl = null;
-  
-        if (Image) {
-          const { filename, path } = await saveImage(Image);
-          imageUrl = path; // Use the file path as the image URL
-        }
-  
-        if (!Title || !Content || !Department) {
-          return new NextResponse("Missing required data", { status: 400 });
-        }
-  
+    try {
+      await connect();
+
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const path = `public/uploads/blogs/${file.name}`;
+      await writeFile(path, buffer);
+      console.log(`open ${path} to see the uploaded file`);
+
         const newBlogs = new Blogs({
-          Title,
-          Department,
-          Image: imageUrl,
-          Content,
+          Title: data.get('Title'),
+          Department: data.get('Department'),
+          Image: file.name,
+          Content: data.get('Content'),
         });
-  
+
         await newBlogs.save();
-  
+
         return new NextResponse("Blog has been created", { status: 201 });
-      } catch (err) {
-        console.error(err);
-        return new NextResponse("Database Error", { status: 500 });
-      }
-    } else {
-      return new NextResponse("Method Not Allowed", { status: 405 });
+
+    } catch (err) {
+      console.error('Error:', err);
+      return new NextResponse("An error occurred", { status: 500 });
     }
-  };
+};

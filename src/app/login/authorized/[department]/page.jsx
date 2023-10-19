@@ -79,17 +79,19 @@ const Dashboard = ({ params }) => {
 							<p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
 						</div>
 					</div>
-					<div className={styles.itemBody}>
+					<div className={styles.itemBodyBlogs}>
 						{data?.Image && (
 							<Image
 								className={styles.blogImage}
-								src={`/public/${data.Image}`}
-								height={500}
-								width={500}
+								src={`/uploads/blogs/${data.Image}`}
+								height={250}
+								width={250}
 							/>
 						)}
-						<p className={styles.itemTitle}>{data.Title}</p>
-						<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+            <div className={styles.itemBodyContent}>
+              <p className={styles.itemTitle}>{data.Title}</p>
+              <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+            </div>
 					</div>
 				</div>
 			))}
@@ -193,7 +195,7 @@ if (status === 'loading') {
           <h3 className={`${styles.subtitle} ${styles.tabbutton}`}>Blogs</h3>
         </div>
         <div className={styles.blogsContainer}>
-          {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlogs')}>Add Blog</button> : ''}  
+          {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddBlog')}>Add Blog</button> : ''}  
           <div className={styles.content}>
             {<BlogsCode />}
           </div>
@@ -209,7 +211,7 @@ if (status === 'loading') {
         </div>
 
         <div className={ activeTab === 'Announcements' ? `${styles.announcementsContainer}` : `${styles.hide}`}>
-        {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddAnnouncements')}>Add Announcement</button> : ''}  
+        {session?.user?.role === 'Admin'? <button className={styles.subtitleBTN} onClick={() => router.push('/login/authorized/'+Department+'/AddAnnouncement')}>Add Announcement</button> : ''}  
           <div className={styles.content}>
             {<AnnouncementsCode />}
           </div>

@@ -1,18 +1,30 @@
-import React from "react";
+"use client"
+
+import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
 import { data } from "./data.js";
+import ImageSlider from "@/components/ImageSlider/ImageSlider";
+
+const slides = [
+  { url: "/1.png", title: "beach" },
+  { url: "/2.png", title: "boat" },
+  { url: "/3.png", title: "forest" },
+];
+
+const containerStyles = {
+  width: "100%",
+  height: "400px",
+};
+
 
 const About = () => {
   return (
     <div className={styles.container}>
-      <div className={`${styles.imgContainer} ${styles.row}`}>
-        <Image
-          src="https://images.pexels.com/photos/3194521/pexels-photo-3194521.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          fill={true}
-          alt=""
-          className={styles.img}
-        />
+      <div className={`${styles.row}`}>
+        <div style={containerStyles} className={styles.imageSlider}>
+          <ImageSlider slides={slides} />
+        </div>
       </div>
 
       <div className={`${styles.row} ${styles.border}`}>
