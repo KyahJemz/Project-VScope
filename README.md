@@ -40,11 +40,12 @@ Local Server : [http://localhost:3000](http://localhost:3000)
 ```bash
 # ROLE = ["Client","Management", "Admin"]
 # DEPARTMENT = ["Dental","Medical", "SDPC", null] 
-#  null = user
+# null = user
+# ONLY editable fields GoogleEmail, Role, Department. 
 
 {
   "GoogleId": "0",
-  "GoogleEmail": "jameslayson.0@gmail.com",
+  "GoogleEmail": "email@email.com",
   "GoogleImage": "-",
   "GoogleName": "-",
   "GoogleFirstname": "-",
