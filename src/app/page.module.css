@@ -177,6 +177,11 @@
   flex: 1;
 }
 
+.itemFooterBlogs{
+  border: 1px solid gainsboro;
+  padding: 10px;
+}
+
 .blogImage {
 
 }

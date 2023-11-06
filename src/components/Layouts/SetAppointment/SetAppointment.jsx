@@ -107,9 +107,6 @@ const SetAppointment = ({req}) => {
         }
     };
 
-
-
-
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationData, setConfirmationData] = useState({
         title: '',

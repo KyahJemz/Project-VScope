@@ -7,6 +7,10 @@ import useSWR from 'swr';
 import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
+import { useSession } from "next-auth/react";
+
+import StarRating from "@/components/StarRating/StarRating";
+import StarRatingStatic from "@/components/StarRatingStatic/StarRatingStatic";
 
 const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -23,7 +27,7 @@ const formatDate = (timestamp) => {
 };
 
 const Home = () => {
-
+	const { data: session, status } = useSession();
 
 	function convertNewlines(text, toHTML = false) {
 			if (toHTML) {
@@ -119,7 +123,13 @@ const Home = () => {
 							<p className={styles.itemTitle}>{data.Title}</p>
 							<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
 						</div>
-						
+					</div>
+					<div className={styles.itemFooterBlogs}>
+						{status === "authenticated" ? (
+							<StarRating Refresh={Blogsmutate} Email={session.user.email} blogId={data.Title} averageRating={data?.avgRating ?? 0} />
+						) : (
+							<StarRatingStatic Email={null} blogId={data.Title} averageRating={data?.avgRating ?? 0} />
+						)}
 					</div>
 				</div>
 			))}

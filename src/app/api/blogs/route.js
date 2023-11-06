@@ -18,7 +18,15 @@ export const GET = async (request) => {
       query = { Department: department };
     }
 
-    const results = await Blogs.find(query);
+    const results = await Blogs.aggregate([
+      { $match: query },
+      {
+        $addFields: {
+          avgRating: { $avg: "$Ratings.Rating" }
+        }
+      }
+    ]);
+
     return new NextResponse(JSON.stringify(results), { status: 200 });
   } catch (err) {
     return new NextResponse("Database Error", { status: 500 });

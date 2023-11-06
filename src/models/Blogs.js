@@ -21,6 +21,10 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+    Ratings: [{
+      Id: String,
+      Rating: Number,
+    }],
   },
   { timestamps: true }
 );
