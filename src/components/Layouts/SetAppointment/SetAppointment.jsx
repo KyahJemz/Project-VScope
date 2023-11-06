@@ -5,6 +5,8 @@ import styles from "./SetAppointment.module.css";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
 
+import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
+
 const SetAppointment = ({req}) => {
     const [uploading, setUploading] = useState(false);
     const router = useRouter();
@@ -30,27 +32,27 @@ const SetAppointment = ({req}) => {
 
     // taga bago ng arrangement
     const sortedData = data && !isLoading
-    ? [...data].sort((a, b) => {
-        const statusOrder = { Approved: 1, Pending: 2, Rejected: 2, Completed: 2, Canceled: 2 };
-  
-        if (a.Status !== b.Status) {
-          return statusOrder[a.Status] - statusOrder[b.Status];
-        }
-  
-        if (a.Status === 'Approved' && b.Status === 'Approved') {
-          return b.createdAt.localeCompare(a.createdAt);
-        }
-        
-        if (a.Status === 'Completed' && b.Status === 'Completed') {
-          return b.createdAt.localeCompare(a.createdAt);
-        }
-  
-        return 0;
-      }).map(item => ({
-        ...item,
-        createdAt: formatDate(item.createdAt)
-      }))
-    : [];
+  ? [...data].sort((a, b) => {
+      const statusOrder = { Approved: 1, Pending: 2, Rejected: 3, Completed: 4, Canceled: 5 };
+
+      if (a.Status !== b.Status) {
+        return statusOrder[a.Status] - statusOrder[b.Status];
+      }
+
+      if (a.Status === 'Approved') {
+        return b.createdAt.localeCompare(a.createdAt);
+      }
+
+      if (a.Status === 'Completed') {
+        return b.createdAt.localeCompare(a.createdAt);
+      }
+
+      return 0;
+    }).map(item => ({
+      ...item,
+      createdAt: formatDate(item.createdAt)
+    }))
+  : [];
 
     const [filterStatus, setFilterStatus] = useState(null);
 
@@ -105,27 +107,47 @@ const SetAppointment = ({req}) => {
         }
     };
 
-    const HandleCancelBtn = async (AppointmentId) => {
+
+
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationData, setConfirmationData] = useState({
+        title: '',
+        content: '',
+        AppointmentId: '',
+      });
+  
+    const handleConfirmationCancel = () => {
+        setShowConfirmation(false);
+    };
+  
+    const handleConfirmationYes = async () => {
+        setShowConfirmation(false);
         try {
-        const formData = new FormData();
-        formData.append("Department", req.department);
-        formData.append("AppointmentId", AppointmentId);
-        formData.append("Status", 'Canceled');
+            const formData = new FormData();
+            formData.append("Department", req.department);
+            formData.append("AppointmentId", confirmationData.AppointmentId);
+            formData.append("Status", 'Canceled');
 
-        const response = await fetch("/api/appointments/POST_UpdateStatus", {
-            method: "POST",
-            body: formData,
-        });
+            const response = await fetch("/api/appointments/POST_UpdateStatus", {
+                method: "POST",
+                body: formData,
+            });
 
-        if (response.ok) {
-            console.log(response);
-            mutate(); 
-        } else {
-            console.log("Failed");
-        }
+            if (response.ok) {
+                console.log(response);
+                mutate(); 
+            } else {
+                console.log("Failed");
+            }
         } catch (err) {
-        console.log(err);
+            console.log(err);
         }
+    };
+
+    const HandleCancelBtn = async (AppointmentId) => {
+        setShowConfirmation(true);
+        setConfirmationData({ title: "Cancel Confirmation", content : "Do you want to proceed with this action?", AppointmentId });
     }
 
     function hasFalseViewedByClient(responses) {
@@ -142,6 +164,16 @@ const SetAppointment = ({req}) => {
             <div className={styles.container}>
                 <div className={styles.appointmentList}>
                     <h3 className={styles.title}>Appointments History</h3>
+
+                    {showConfirmation && (
+                        <ActionConfirmation
+                            title={confirmationData.title}
+                            content={confirmationData.content}
+                            onYes={handleConfirmationYes}
+                            onCancel={handleConfirmationCancel}
+                        />
+                    )}
+                    
                     <div className={styles.status}>
                         <button className={`${styles.cbutton} ${filterStatus === null ? styles.call : ''}`} onClick={() => handleFilter(null)}>All</button>
                         <button className={`${styles.cbutton} ${filterStatus === 'Pending' ? styles.cpending : ''}`} onClick={() => handleFilter('Pending')}>Pending</button>

@@ -9,6 +9,8 @@ import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
 
+import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
+
 
 const Form = ({params}) => {
     const Department = params.department;
@@ -18,7 +20,32 @@ const Form = ({params}) => {
 
     const [DetailsUploading, setDetailsUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
+    
     const [StatusUploading, setStatusUploading] = useState(false);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationData, setConfirmationData] = useState({
+        title: '',
+        content: '',
+        status: '',
+      });
+
+    const handleButtonAction = (title, content, status) => {
+        setShowConfirmation(true);
+        setConfirmationData({ title, content, status});
+    };
+
+    const handleConfirmationYes = () => {
+        HandleStatusUpdate(confirmationData.status);
+        setShowConfirmation(false);
+    };
+
+    const handleConfirmationCancel = () => {
+        setShowConfirmation(false);
+    };
+
+
+
 
     const DentalForm = ({data}) => {
         return (
@@ -401,21 +428,30 @@ const Form = ({params}) => {
         <div className={styles.mainContainer}>
             <div className={styles.vLine}></div>
 
+        {showConfirmation && (
+            <ActionConfirmation
+                title={confirmationData.title}
+                content={confirmationData.content}
+                onYes={handleConfirmationYes}
+                onCancel={handleConfirmationCancel}
+            />
+        )}
+
         {isLoading ? null : data.Status === "Completed" || data.Status === "Canceled" ? null : StatusUploading ? (
                 <div className={styles.statusUpdate}>
-                <button disabled className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
+                <button disabled className={`${styles.btnSU} ${styles.maCompleted}`}>
                     Loading..
                 </button>
-                <button disabled className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
+                <button disabled className={`${styles.btnSU} ${styles.maCanceled}`}>
                     Loading..
                 </button>
                 </div>
             ) : (
                 <div className={styles.statusUpdate}>
-                <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => HandleStatusUpdate('Completed')}>
+                <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => handleButtonAction('Mark as Completed?',"Do you want to proceed with this action?","Completed")}>
                     Mark as Completed
                 </button>
-                <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => HandleStatusUpdate('Canceled')}>
+                <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => handleButtonAction('Mark as Canceled?',"Do you want to proceed with this action?","Canceled")}>
                     Mark as Canceled
                 </button>
                 </div>

@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import styles from "./page.module.css";
 import useSWR from "swr";
 
+import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
+
 const formatDate = (timestamp) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
@@ -35,34 +37,51 @@ const Appointments = ({ params }) => {
   
   var Email = "Test Email"; /// SESSION EMAIL
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationData, setConfirmationData] = useState({
+      title: '',
+      content: '',
+      formData: null,
+    });
 
-    setUploading(true);
 
-    console.log('ADCTION', Status);
 
+  const handleConfirmationCancel = () => {
+      setShowConfirmation(false);
+      setUploading(false);
+  };
+
+  const handleConfirmationYes = async () => {
+    setShowConfirmation(false);
     try {
-        const formData = new FormData();
-        formData.append("Name", Department);
-        formData.append("Email", Email);
-        formData.append("Response", e.target[0].value);
-        formData.append("AppointmentId", e.target[1].value);
-        formData.append("Department", Department);
-        formData.append("Status", Status);
-        console.log(Status);
-
-        const response = await fetch("/api/appointments/POST_AddResponse", { method: "POST", body: formData });
-        setUploading(false);
+        const response = await fetch("/api/appointments/POST_AddResponse", { method: "POST", body: confirmationData.formData });
+        
         if (response.ok) {
             console.log("Complete");
             Appointmentsmutate();
         } else {
             console.log("Failed");
         }
+        setUploading(false);
     } catch (err) {
         console.log(err);
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setUploading(true);
+    setShowConfirmation(true);
+    const formData = new FormData();
+    formData.append("Name", Department);
+    formData.append("Email", Email);
+    formData.append("Response", e.target[0].value);
+    formData.append("AppointmentId", e.target[1].value);
+    formData.append("Department", Department);
+    formData.append("Status", Status);
+
+    setConfirmationData({ title: "Mark as "+Status, content : "Do you want to proceed with this action?", formData});
   };
 
   return (
@@ -70,6 +89,16 @@ const Appointments = ({ params }) => {
         <h1>{Department}</h1>
         <div className={styles.appointmentList}>
           <h3 className={styles.title}>Appointments</h3>
+
+          {showConfirmation && (
+            <ActionConfirmation
+                title={confirmationData.title}
+                content={confirmationData.content}
+                onYes={handleConfirmationYes}
+                onCancel={handleConfirmationCancel}
+            />
+        )}
+
           <div className={styles.AppointmetsContainer}>
               {AppointmentsisLoading ? "Loading..." : Appointments?.lenght && Appointments.lenght === 0 ? "No pending cooncerns at the mmement" : Appointments.map((data, index) => (
                   <div key={index} className={styles.AppointmentsItem}>
