@@ -27,6 +27,22 @@ const decryptFields = (obj) => {
     }
     return decryptedObj;
   };
+
+  async function UpdateStatus(Model) {
+    try {
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+      const appointmentsToUpdate = await Model.updateMany(
+        { Status: 'Approved', updatedAt: { $lt: twoDaysAgo } },
+        { $set: { Status: 'Canceled' } }
+      );
+  
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
   
   export const GET = async (request) => {
     const url = new URL(request.url);
@@ -40,28 +56,35 @@ const decryptFields = (obj) => {
   
       if (GoogleEmail === "" || GoogleEmail === null) {
         if (Department === 'Medical') {
+          await UpdateStatus(MedicalAppointment);
           results = await MedicalAppointment.find();
         } else if (Department === 'Dental') {
+          await UpdateStatus(DentalAppointment);
           results = await DentalAppointment.find();
         } else if (Department === 'SDPC') {
+          await UpdateStatus(SDPCAppointment);
           results = await SDPCAppointment.find();
         }
       } else {
         if (Department === 'Medical') {
+          await UpdateStatus(MedicalAppointment);
           results = await MedicalAppointment.find(GoogleEmail && { GoogleEmail });
         } else if (Department === 'Dental') {
+          await UpdateStatus(DentalAppointment);
           results = await DentalAppointment.find(GoogleEmail && { GoogleEmail });
         } else if (Department === 'SDPC') {
+          await UpdateStatus(SDPCAppointment);
           results = await SDPCAppointment.find(GoogleEmail && { GoogleEmail });
         }
       }
   
       if (results) {
+      
         const topLevelFieldsToDecrypt = ["Name", "Id", "Consern", "GoogleImage"];
   
         results = results.map((result) => {
           const decryptedResult = { ...result._doc };
-  
+
           topLevelFieldsToDecrypt.forEach((field) => {
             decryptedResult[field] = decryptText(result._doc[field]);
           });

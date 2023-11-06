@@ -43,7 +43,7 @@ const action = ({ params }) => {
         Content = convertNewlines(e.target[2].value, false);
     } else {
         Title = e.target[0].value;
-        Content = convertNewlines(e.target[2].value, false);
+        Content = convertNewlines(e.target[1].value, false);
     }
   
     try {

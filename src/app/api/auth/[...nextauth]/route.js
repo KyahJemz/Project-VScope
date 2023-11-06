@@ -16,7 +16,6 @@ export const authOptions = {
   },
   callbacks: {
     async signIn(user, account, profile) {
-        console.log("--CALLBACK--",user)
         const { email: GoogleEmail, id: GoogleId, image: GoogleImage, name: GoogleName } = user.user;
         const { given_name: GoogleFirstname, family_name: GoogleLastname } = user.profile;
 

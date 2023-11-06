@@ -30,46 +30,30 @@ const Consultation = ({ params }) => {
   );
 
 // taga bago ng arrangement
-const sortedData = data && !isLoading
-  ? [...data]
-    .filter(item => item.Status !== 'Pending')
-    .sort((a, b) => {
-    
-      const statusOrder = {
-        Rejected: 3,
-        Canceled: 2,
-        Completed: 2,
-        Approved: 1,
-        Pending: 0,
-      };
-
-      if (statusOrder[a.Status] < statusOrder[b.Status]) return -1;
-      if (statusOrder[a.Status] > statusOrder[b.Status]) return 1;
-
-      // If statuses are the same, sort by createdAt in the specified order
-      if (a.Status === 'Pending') {
-        return a.createdAt.localeCompare(b.createdAt);
-      } else if (a.Status === 'Approved') {
-        return b.createdAt.localeCompare(a.createdAt);
-      } else {
-        // For Completed, Canceled, and Rejected, present first then to older
-        return b.createdAt.localeCompare(a.createdAt);
-      }
-    }).map(item => ({
-      ...item,
-      createdAt: formatDate(item.createdAt)
-    }))
-  : [];
+  const sortedData = data && !isLoading
+    ? [...data]
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+      .map(item => ({
+        ...item,
+        createdAt: formatDate(item.createdAt)
+      }))
+    : [];
 
   const [filterStatus, setFilterStatus] = useState(null);
+  const [searchName, setSearchName] = useState('');
 
   const handleFilter = (status) => {
     setFilterStatus(status);
   };
 
+  const handleSearch = (e) => {
+    setSearchName(e.target.value);
+  };
+
   const filteredData = sortedData.filter((appointment) => {
-    if (filterStatus === null) return true;
-    return appointment.Status === filterStatus;
+    if (filterStatus !== null && appointment.Status !== filterStatus) return false;
+    if (searchName !== '' && !appointment.Name.toLowerCase().includes(searchName.toLowerCase())) return false;
+    return true;
   });
 
   function hasFalseViewedByClient(responses) {
@@ -82,10 +66,10 @@ const sortedData = data && !isLoading
 
   return (
     <div className={styles.mainContainer}>
-      <h3 className={styles.mainTitle}>Consultation</h3>
+      <h3 className={styles.mainTitle}>Search</h3>
 
       <div className={styles.appointmentList}>
-          <h3 className={styles.title}>Appointments History</h3>
+          <h3 className={styles.title}>All Appointments History</h3>
           <div className={styles.status}>
             <button className={`${styles.cbutton} ${filterStatus === null ? styles.call : ''}`} onClick={() => handleFilter(null)}>All</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Pending' ? styles.cpending : ''}`} onClick={() => handleFilter('Pending')}>Pending</button>
@@ -93,6 +77,7 @@ const sortedData = data && !isLoading
             <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
+            <input className={styles.searchBar} type="search" placeholder="Search..." value={searchName} onChange={handleSearch}/>
           </div>
           <div className={styles.AppointmentsContainer}>
             {isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((appointment, index) => (

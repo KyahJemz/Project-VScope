@@ -26,8 +26,6 @@ const Login = () => {
     return <p>Loading...</p>;
   }
 
-  console.log("--LOGIN--",session);
-
   if (status === "authenticated") {
     if (session.user?.department && session.user.department != null) {
       redirect('/login/authorized/' + session.user.department);

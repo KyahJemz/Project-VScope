@@ -28,6 +28,10 @@ const Appointments = ({ params }) => {
     `/api/appointments/GET_PendingByDepartment?Department=${encodeURIComponent(Department)}`,
     fetcher
   );
+
+  if (Appointments && !AppointmentsisLoading) {
+    Appointments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  }
   
   var Email = "Test Email"; /// SESSION EMAIL
 

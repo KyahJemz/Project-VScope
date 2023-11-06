@@ -643,34 +643,76 @@ const Form = ({params}) => {
                 ) : (
                 <p></p>
             )}
+
+            {isLoading ? "Loading..." : (
+                <div className={styles.row}>
+                    <div className={styles.mark}>
+                        <div className={styles.datetime}>
+                            <div className={styles.date}>
+                                {new Date(data.createdAt).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </div>
+                            <div className={styles.time}>
+                                {new Date(data.createdAt).toLocaleTimeString('en-US', {
+                                    hour: 'numeric',
+                                    minute: '2-digit'
+                                })}
+                            </div>
+                        </div>
+                        <div className={styles.hLine}></div>
+                    </div>
+                    <div className={styles.content}>
+                        <div className={styles.responseContainer}>
+                            <div className={styles.responseHeaderReverse}>
+                                <Image 
+                                    className={styles.responseImage}
+                                    src={data.GoogleImage}
+                                    alt=""
+                                    width={50}
+                                    height={50}
+                                />
+                                <div className={styles.responseDataReverse}>
+                                    <p className={styles.responseName}>{data.Name}</p>
+                                    <p className={styles.responseEmail}>{data.GoogleEmail}</p>
+                                </div>
+                            </div>
+                            <div className={styles.responseresponseReverse}>{data.Consern}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         
             {isLoading ? (
                 ""
             ) : data && data.Responses ? (
                     data.Responses.map((response, index) => (
                         <div key={index} className={styles.row}>
-                        <div className={styles.mark}>
-                            <div className={styles.datetime}>
-                                <div className={styles.date}>
-                                    {new Date(response.Timestamp).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric'
-                                    })}
+                            <div className={styles.mark}>
+                                <div className={styles.datetime}>
+                                    <div className={styles.date}>
+                                        {new Date(response.Timestamp).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
+                                    </div>
+                                    <div className={styles.time}>
+                                        {new Date(response.Timestamp).toLocaleTimeString('en-US', {
+                                            hour: 'numeric',
+                                            minute: '2-digit'
+                                        })}
+                                    </div>
                                 </div>
-                                <div className={styles.time}>
-                                    {new Date(response.Timestamp).toLocaleTimeString('en-US', {
-                                        hour: 'numeric',
-                                        minute: '2-digit'
-                                    })}
-                                </div>
+                                <div className={styles.hLine}></div>
                             </div>
-                            <div className={styles.hLine}></div>
+                            <div className={styles.content}>
+                                <Response data={data} response={response} />
+                            </div>
                         </div>
-                        <div className={styles.content}>
-                            <Response data={data} response={response} />
-                        </div>
-                    </div>
                     ))
                 ) : (
                 <p></p>

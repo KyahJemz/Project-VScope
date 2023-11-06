@@ -11,16 +11,18 @@ import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
 
 const formatDate = (timestamp) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
-  
-    const hours = new Date(timestamp).getHours();
-    const minutes = new Date(timestamp).getMinutes();
-    const amOrPm = hours >= 12 ? 'pm' : 'am';
-    const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
-  
-    return `${formattedDate} ${formattedTime}`;
-  };
+  const date = new Date(timestamp);
+  const formattedDate = new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+  }).format(date);
+
+  return formattedDate;
+};
   
 
 
@@ -55,11 +57,35 @@ const Dashboard = ({ params }) => {
     fetcher
   );
 
+  const sorted_Blogs = Blogs && !BlogsisLoading
+	? [...Blogs].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+		.map(item => ({
+		...item,
+		createdAt: formatDate(item.createdAt)
+		}))
+	: [];
+
+	const sorted_Announcements = Announcements && !AnnouncementsisLoading
+	? [...Announcements].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+		.map(item => ({
+		...item,
+		createdAt: formatDate(item.createdAt)
+		}))
+	: [];
+
+	const sorted_FAQ = FAQ && !FAQisLoading
+	? [...FAQ].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+		.map(item => ({
+		...item,
+		createdAt: formatDate(item.createdAt)
+		}))
+	: [];
+
   const [activeTab, setActiveTab] = useState('Announcements');
 
   const BlogsCode = () => {
 		return ( <div>
-			{BlogsisLoading ? "Loading..." : Blogs?.map((data, index) => (
+			{BlogsisLoading ? "Loading..." : sorted_Blogs?.map((data, index) => (
 				<div key={index} className={styles.blogsItem}>
 					<div className={styles.itemHeader}>
 						<Image className={styles.itemDeptImage} 
@@ -101,7 +127,7 @@ const Dashboard = ({ params }) => {
 	const FAQCode = () => {
 		return ( <div>
 			<div className={styles.content}>
-				{FAQisLoading ? "Loading..." : FAQ?.map((data, index) => (
+				{FAQisLoading ? "Loading..." : sorted_FAQ?.map((data, index) => (
 					<div key={index} className={styles.faqsItem}>
 						<Image className={styles.faqImage} 
 							src={
@@ -127,7 +153,7 @@ const Dashboard = ({ params }) => {
 
 	const AnnouncementsCode = () => {
 		return ( <div>
-			{AnnouncementsisLoading ? "Loading..." : Announcements?.map((data, index) => (
+			{AnnouncementsisLoading ? "Loading..." : sorted_Announcements?.map((data, index) => (
 				<div key={index} className={styles.AnnouncementsItem}>
 					<div className={styles.itemHeader}>
 						<Image className={styles.itemDeptImage} 

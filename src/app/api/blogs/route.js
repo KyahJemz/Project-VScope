@@ -29,9 +29,12 @@ export const POST = async (request) => {
   const data = await request.formData();
   const file = data.get('Image');
 
-    try {
-      await connect();
+  try {
+    await connect();
 
+    let imageName = ''; // Default image name
+
+    if (file && typeof file.arrayBuffer === 'function') {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
@@ -39,19 +42,21 @@ export const POST = async (request) => {
       await writeFile(path, buffer);
       console.log(`open ${path} to see the uploaded file`);
 
-        const newBlogs = new Blogs({
-          Title: data.get('Title'),
-          Department: data.get('Department'),
-          Image: file.name,
-          Content: data.get('Content'),
-        });
-
-        await newBlogs.save();
-
-        return new NextResponse("Blog has been created", { status: 201 });
-
-    } catch (err) {
-      console.error('Error:', err);
-      return new NextResponse("An error occurred", { status: 500 });
+      imageName = file.name; // Set the image name from the uploaded file
     }
+
+    const newBlogs = new Blogs({
+      Title: data.get('Title'),
+      Department: data.get('Department'),
+      Image: imageName, // Assign the image name
+      Content: data.get('Content'),
+    });
+
+    await newBlogs.save();
+
+    return new NextResponse('Blog has been created', { status: 201 });
+  } catch (err) {
+    console.error('Error:', err);
+    return new NextResponse('An error occurred', { status: 500 });
+  }
 };

@@ -31,20 +31,25 @@ const SetAppointment = ({req}) => {
     // taga bago ng arrangement
     const sortedData = data && !isLoading
     ? [...data].sort((a, b) => {
-        if (a.Status === 'Approved' && b.Status !== 'Approved') return -1;
-        if (b.Status === 'Approved' && a.Status !== 'Approved') return 1;
-
-        if (a.Status === 'Completed' && b.Status !== 'Completed') return -1;
-        if (b.Status === 'Completed' && a.Status !== 'Completed') return 1;
-
-        if (a.Status === 'Canceled' && b.Status !== 'Canceled') return 1;
-        if (b.Status === 'Canceled' && a.Status !== 'Canceled') return -1;
-
-        return b.createdAt.localeCompare(a.createdAt);
-    }).map(item => ({
+        const statusOrder = { Approved: 1, Pending: 2, Rejected: 2, Completed: 2, Canceled: 2 };
+  
+        if (a.Status !== b.Status) {
+          return statusOrder[a.Status] - statusOrder[b.Status];
+        }
+  
+        if (a.Status === 'Approved' && b.Status === 'Approved') {
+          return b.createdAt.localeCompare(a.createdAt);
+        }
+        
+        if (a.Status === 'Completed' && b.Status === 'Completed') {
+          return b.createdAt.localeCompare(a.createdAt);
+        }
+  
+        return 0;
+      }).map(item => ({
         ...item,
         createdAt: formatDate(item.createdAt)
-    }))
+      }))
     : [];
 
     const [filterStatus, setFilterStatus] = useState(null);

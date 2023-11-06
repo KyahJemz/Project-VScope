@@ -26,6 +26,11 @@ const Sidebar = ({department}) => {
       title: "Consultation",
       url: "/login/authorized/"+department+"/consultation",
     },
+    {
+      id: 4,
+      title: "Search",
+      url: "/login/authorized/"+department+"/search",
+    },
   ];
   
   const AdminLinks = [
