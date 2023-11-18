@@ -1,0 +1,106 @@
+.mainTitle {
+  font-size: 40px;
+}
+
+.mainContainer {
+  flex: 1;
+}
+
+.options {
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px;
+}
+
+.option{
+  height: fit-content;
+  padding: 5px 10px;
+  background-color: #53c28b;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.calendarTitle {
+  height: fit-content;
+  padding: 4px 10px;
+  background-color: #53c28b;
+  color: white;
+  cursor: pointer;
+  border: none;
+  font-size: small;
+}
+
+.calendars {
+  padding: 5px;
+  background-color: #53c28b;
+  color: white;
+}
+
+.option:active{
+  background-color: #24523b;
+}
+
+.container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.rightpanel {
+  flex: 1;
+}
+.leftpanel{
+  flex: 0 0 30%;
+}
+
+.chartTitle{
+  margin: 10px 0px;
+  font-size: large;
+  font-weight: bold;
+}
+
+.PieChartContainer{
+  width: 100%;
+  padding: 0px 20px;
+  /* border: 1px solid rgba(220, 220, 220, 0.500); */
+  border-radius: 5px;
+  max-height: 300px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.rightpanel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 20px;
+  column-gap: 20px;
+}
+
+
+@media (max-width: 1100px) {
+  .rightpanel{
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 850px) {
+  
+  .container{
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .mainContainer{
+    padding: 0px 20px;
+  }
+}

@@ -1,0 +1,179 @@
+.container {
+  flex: 1;
+  padding: 0 100px ;
+}
+
+.imgContainer {
+  width: 100%;
+  height: 300px;
+  position: relative;
+}
+
+.img {
+  object-fit: cover;
+  filter: grayscale(100%);
+}
+
+.border {
+  border: 1px solid gainsboro;
+}
+
+.imageSlider{
+  margin-bottom: 40px;
+  height: 500px;
+  width: 100%;
+}
+
+.row{
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header{
+  text-align: center;
+  width: 100%;
+  font-size: 1.7rem;
+  font-weight: bold;
+  border: 1px solid gainsboro;
+  padding: 10px;
+}
+
+.thevscope{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.aboutvscope{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid gainsboro;
+}
+
+.aboutvscopetitle{
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.aboutvscopecontent{
+  font-size: 1.1rem;
+  text-indent: 20px;
+}
+
+
+
+
+
+
+
+.thedeveloperscontainer{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  row-gap: 20px;
+  column-gap: 20px;
+}
+
+.thedeveloperscards{
+  position: relative;
+  padding: 0;
+  margin: 0;
+  height: 200px;
+}
+
+.thedevelopers {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.thedevelopersname {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.thedevelopersborder{
+  border: 1px solid gainsboro;
+  padding: 5px;
+}
+
+
+.aboutrow{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 20px;
+}
+
+.aboutrow:nth-child(odd) {
+  flex-direction: row;
+}
+.aboutrow:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.aboutcontent{
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.abouttitle{
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.abouttext{
+  font-size: 1.1rem;
+  text-indent: 20px;
+  flex: 1
+}
+
+.aboutimage{
+  flex: 0 0 300px;
+}
+
+@media (max-width: 1100px) {
+  .container {
+    padding: 0px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .thevscope{
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
+
+@media (max-width: 800px) {
+  .aboutrow{
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px;
+    gap: 20px;
+    align-items: center;
+  }
+  .aboutrow:nth-child(odd) {
+    flex-direction: column-reverse;
+  }
+  .aboutrow:nth-child(even) {
+    flex-direction: column-reverse;
+  }
+  .aboutrow{
+    padding: 20px;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+}

@@ -1,0 +1,369 @@
+.mainContainer * {
+  text-wrap: wrap;
+}
+.mainContainer {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.vLine{
+  position: absolute;
+  background-color: rgba(220, 220, 220, 0.500);
+  width: 5px;
+  height: 100%;
+  top: 0;
+  left: 150px;
+}
+
+.row{
+  display: flex;
+  position: relative;
+}
+
+.mark{ 
+  flex: 0 0 200px;
+  padding: 20px 0px;
+  height: fit-content;
+  position: relative;
+}
+
+.datetime{
+  font-size: small;
+  margin-left: 20px;
+}
+
+.hLine{
+  top: 30%;
+  left: 145px;
+  position: absolute;
+  background-color: gainsboro;
+  height: 15px;
+  width: 15px;
+  border: 1px solid gainsboro;
+  border-radius: 50%;
+}
+
+.content{
+  width: 100%;
+  flex: 1;
+   margin-right: 20px;
+  border: 1px solid gainsboro;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
+
+.formRow{
+  justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.formTitle {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.inputContainer{
+  display: flex;
+  gap: 10px;
+}
+
+.inputContainerMax{
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-wrap: nowrap;
+  font-size: 0.8rem;
+}
+
+.input {
+  width: 100%;
+  height: fit-content;
+  padding: 3px 10px;
+  min-width: 100px;
+}
+
+.smallInput {
+  width: 100px;
+  min-width: 100px;
+}
+
+.fullInput {
+  flex: 1;
+  min-width: 100px;
+}
+
+.textareaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.textarea {
+  padding: 10px;
+}
+
+
+.responseHeaderReverse{
+  padding: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap:20px;
+  border-bottom: 1px solid rgba(220, 220, 220, 0.500);
+}
+
+.responseHeader {
+  text-align: left;
+  padding: 20px;
+  display: flex;
+  gap:20px;
+  border-bottom: 1px solid rgba(220, 220, 220, 0.500);
+}
+
+.responseImage{
+  width: 50px;
+  height: 50px;
+}
+
+.responseDataReverse{
+  text-align: right;
+}
+
+.responseData{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.responseName {
+  font-weight: bold;
+  text-align: inherit;
+  text-wrap: wrap;
+}
+
+.responsenEmail {
+  font-size: 0.8em;
+  font-weight: lighter;
+  text-align: inherit;
+  text-wrap: wrap;
+}
+
+.responseresponse{
+  font-size: 0.9em;
+  padding: 20px;
+  text-wrap: wrap;
+}
+
+.responseresponseReverse {
+  font-size: 0.9em;
+  padding: 20px;
+  text-align: right
+}
+
+.readinput{
+  background-color: gainsboro;
+  font-weight: bold;
+  width: 100%;
+  padding: 3px 10px;
+}
+
+.responseFormContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+.submitBtn{
+  padding: 5px 10px;
+  background-color: #53c28b;
+  color: white;
+
+}
+
+
+.responseFormTextbox{
+  padding: 10px;
+  width: 100%;
+}
+
+
+
+
+@media (min-width: 0px) and (max-width: 600px) {
+  .vLine{
+    left: 50px;
+  }
+
+  .mainContainer {
+    gap: 75px;
+  }
+
+  .content{
+    margin-top: 25px;
+    margin-left: 100px;
+   margin-right: 20px;
+   overflow: hidden;
+  }
+
+  .statusUpdate{
+    margin-right: 20px;
+  }
+  
+    
+  .mark{ 
+    width: 100%;
+    flex: 0 0 80px;
+    padding: 20px 0px;
+    height: fit-content;
+    position: absolute;
+    transform: translateY(-65%);
+  }
+
+  .datetime{
+    font-size: small;
+    margin-left: 20px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    left: 60px;
+    top:12px;
+  }
+
+  .hLine{
+    top: 30%;
+    left: 45px;
+    position: absolute;
+    background-color: gainsboro;
+    height: 15px;
+    width: 15px;
+    border: 1px solid gainsboro;
+    border-radius: 50%;
+  }
+
+
+}
+
+@media (min-width: 0px) and (max-width: 760px) {
+
+  .inputContainer{
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .inputContainerMax{
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .input {
+    width: 100%;
+    height: fit-content;
+    padding: 3px 10px;
+    min-width: 100px;
+  }
+  
+  .smallInput {
+    width: 100%;
+  }
+  
+  .fullInput {
+    width: 100%;
+  }
+}
+
+@media (min-width: 0px) and (max-width: 945px) {
+  .responseFormContainer{
+    width: 100%;
+  }
+  .inputContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .inputContainerMax{
+    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex: 1;
+    align-items: center;
+  }
+ 
+}
+
+@media (min-width: 0px) and (max-width: 1145px) {
+
+  .formRow{
+    justify-content: center;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.submitBtn{
+  padding: 5px 10px;
+  background-color: #53c28b;
+  color: white;
+}
+
+.statusUpdate{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btnSU{
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btnSU:active{
+  border: 1px solid rgba(220, 220, 220, 0.500);
+}
+
+.maCompleted{
+  background-color: #535ac2;
+  color: white;
+}
+
+.maCanceled{
+  background-color: #c25353;
+  color: white;
+}

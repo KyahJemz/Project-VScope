@@ -1,0 +1,239 @@
+.mainContainer {
+  width: 100%;
+  height: 100%;
+  flex: 1;  
+}
+
+.mainTitle {
+  font-size: 35px;
+}
+
+.mobileLayout {
+  display: none;
+  padding: 10px 20px;
+  overflow: hidden;
+  height:80vh;
+  scroll-behavior: smooth;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px 20px;
+  gap: 20px;
+  height: 80vh;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+
+.tab {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.mainsubtab,
+.maintab {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mainsubtab{
+  margin-bottom: 20px;
+}
+
+.leftContainer{
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 20px;
+}
+
+.active {
+  color: #53c28b;
+}
+
+.rightContainer{
+  height: 100%;
+  padding: 20px;
+  flex: 0 0 30%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+
+.hide {
+  display: none;
+  transform: translateY(-100%);
+}
+
+.blogsContainer,
+.FAQContainer,
+.announcementsContainer {
+  display: block;
+  transform: translateY(0);
+  border: 1px solid gainsboro;
+  padding: 20px;
+  border-radius: 5px;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 20px;
+}
+
+.tabbutton {
+  border: 1px solid gainsboro;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  flex:1;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.tabsubbutton {
+  border: 1px solid gainsboro;
+  text-align: center;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex:1;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+
+.faqsItem,
+.itemHeader {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  gap: 10px;
+}
+
+.faqDetails,
+.itemHeaderDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.itemDepartment {
+  font-weight: bold;
+}
+
+.itemDate {
+  font-weight: lighter;
+}
+
+.faqsItem,
+.AnnouncementsItem,
+.blogsItem {
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid gainsboro;
+}
+
+.AnnouncementsItem,
+.blogsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.itemHeader{
+  border: 1px solid gainsboro;
+}
+
+.itemBodyBlogs {
+  border: 1px solid gainsboro;
+  padding: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+}
+
+.itemBody {
+  border: 1px solid gainsboro;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.itemBodyContent{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.itemFooterBlogs{
+  border: 1px solid gainsboro;
+  padding: 10px;
+}
+
+.blogImage {
+
+}
+
+.itemTitle{
+  font-weight: bold;
+}
+
+.faqContent{
+  padding-top: 20px;
+}
+
+.mobileContainer{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 1px solid gainsboro;
+  padding: 20px;
+  border-radius: 5px;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 20px;
+}
+
+@media (max-width: 1100px) {
+  .rightContainer{
+    flex: 0 0 40%;
+  }
+}
+
+@media (max-width: 850px) {
+  .rightContainer{
+    flex: 0 0 50%;
+  }
+  .mobileLayout{
+    display: block;
+  }
+  .container{
+    display: none;
+  }
+  .itemBodyBlogs {
+    flex-direction: column;
+  }
+  .blogImage {
+    margin: auto;
+  }
+  
+
+
+}
+
+
+
+
+
+

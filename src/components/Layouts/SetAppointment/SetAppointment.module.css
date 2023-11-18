@@ -1,0 +1,189 @@
+.mainContainer {
+  flex: 1;  
+
+}
+
+.container {
+  
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
+}
+
+
+.container > div {
+  width: 100%;
+}
+
+.formContainer{
+  flex: 0 0 40%;
+}
+
+.appointmentList {
+  flex: 0 0 60%;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+
+
+.appointmentListItem {
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-radius: 5px;
+  color: #111;
+  position: relative;
+}
+
+.id {
+  font-weight: lighter;
+  font-size: 0.9rem;
+}
+
+.aTitle {
+  font-size: 0.9rem;
+}
+
+.aDate {
+  font-size: 0.7rem;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.aStatus {
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.507);
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.aConsern {
+  font-size: 0.8rem;
+}
+
+.capproved,
+.Approved {
+  cursor: pointer;
+  background-color: #53c28b;
+}
+
+.crejected,
+.Rejected {
+  cursor:not-allowed;
+  background-color: rgb(165, 62, 62);
+}
+
+.cpending,
+.Pending {
+  cursor:not-allowed;
+  background-color: rgb(199, 199, 78);
+}
+
+.ccompleted,
+.Completed {
+  cursor: pointer;
+  background-color: rgb(55, 64, 187);
+}
+
+.ccanceled,
+.Canceled {
+  cursor:not-allowed;
+  background-color: rgb(165, 62, 62);
+}
+
+.cancelBtn{
+  cursor: pointer;
+  background-color: rgb(165, 62, 62);
+  color: white;
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 0.8rem;
+}
+
+.call{
+  background-color: #53c28b;
+  color: white;
+}
+
+.formContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.option,
+.input {
+  padding: 10px 20px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.button {
+  padding: 20px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 5px;
+  width: max-content;
+  color: white;
+  align-self: flex-start;
+}
+.status {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.cbutton {
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  width: max-content;
+  align-self: flex-start;
+}
+
+
+.title {
+  align-self: flex-start;
+}
+
+
+.dot{
+  background-color: red;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    height: 100%;
+  }
+  .mainTitle{
+    margin-left: 20px;
+  }
+
+
+}

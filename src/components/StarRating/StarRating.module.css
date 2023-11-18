@@ -1,0 +1,29 @@
+.starRatingContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.starsContainer {
+  display: flex;
+  font-size: 15px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.star {
+  color: #ccc;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.starFilled {
+  cursor: pointer;
+  font-size: 20px;
+  margin-right: 5px;
+  color: gold;
+}
+
+.averageRating {
+  font-size: 12px;
+}

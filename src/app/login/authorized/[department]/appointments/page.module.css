@@ -1,0 +1,123 @@
+.mainContainer {
+  flex: 1;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.AppointmetsContainer{
+  justify-content: space-around;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  column-gap: 20px;
+}
+
+.AppointmentsItem{
+  border: 1px solid rgba(220, 220, 220, 0.500);
+  flex: 0 0 45%;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.details{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 0px;
+  border-top: 1px solid rgba(220, 220, 220, 0.500);
+  border-bottom: 1px solid rgba(220, 220, 220, 0.500);
+}
+
+.hide{
+  display: none;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 5px 0px;
+}
+
+.rbutton,
+.abutton{
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  width: max-content;
+}
+
+.rbutton {
+  background-color: #c25353;
+  color: white;
+}
+.abutton {
+  background-color: #69c253;
+  color: white;
+}
+
+.input{
+  padding: 5px 10px;
+  flex: 1;
+}
+
+.date{
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.Name{
+  font-size: 0.8rem;
+}
+.id{
+  font-size: 0.8rem;
+}
+.email{
+  font-size: 0.8rem;
+}
+.category{
+  font-size: 0.8rem;
+}
+
+.consern {
+  border-top: 1px solid rgba(220, 220, 220, 0.500);
+  padding-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .mainContainer {
+    margin: 0px 20px;
+  }
+
+  .AppointmetsContainer{
+    flex-direction: column;
+  }
+  .AppointmentsItem{
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  .input{
+    padding: 5px 10px;
+    flex: 1;
+    min-width: 50px;
+  }
+  
+}
