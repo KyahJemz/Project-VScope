@@ -5,6 +5,8 @@ import styles from "./page.module.css";
 import useSWR from "swr";
 import Image from "next/image";
 
+import { Reports } from "@/models/Reports";
+
 import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
@@ -17,9 +19,22 @@ const Form = ({params}) => {
     const AppointmentId = params.id;
     var GoogleImage = "";
     var GoogleEmail = "";
+    var CurrentMessageDate = "";
+
+    
+
+    const handleReport1Change = (e) => {
+        setReport1(e.target.value);
+    };
+    const handleReport2Change = (e) => {
+        setReport2(e.target.value);
+    };
 
     const [DetailsUploading, setDetailsUploading] = useState(false);
+    const [ReportUploading, setReportUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
+    const [Report1, setReport1] = useState(""); 
+    const [Report2, setReport2] = useState("");
     
     const [StatusUploading, setStatusUploading] = useState(false);
 
@@ -261,13 +276,12 @@ const Form = ({params}) => {
         )
     }
 
-    const ResponseForm = ({data}) => {
+    const ResponseForm = () => {
         return (
-            <form className={styles.responseFormContainer} onSubmit={HandleResponseSubmit}>
-                <p>Your response/concern:</p>
+            <form className={styles.MessageFormContainer} onSubmit={HandleResponseSubmit}>
                 <input name="GoogleEmail" value={GoogleEmail} type="text" hidden readOnly/>
                 <input name="Name" value={Department} type="text" hidden readOnly/>
-                <textarea className={styles.responseFormTextbox} name="Response" rows="3" />
+                <textarea className={styles.responseFormTextbox} name="Response" rows="2" />
                 {ResponseUploading ? 
                     <button className={styles.submitBtn} disabled>Uploading...</button>
                 :
@@ -278,43 +292,177 @@ const Form = ({params}) => {
     }
 
     const Response = ({data,response}) => {
+        let ResponseDate = "";
+        let MessageDate = new Date(response.Timestamp).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'});
+
+            if (CurrentMessageDate === MessageDate){
+                ResponseDate = "";
+            } else {
+                ResponseDate = CurrentMessageDate;
+                CurrentMessageDate = MessageDate;
+            }
+
         return (
-            <div className={styles.responseContainer}>
-                <div className={
-                    response.Name === "Dental" ? styles.responseHeaderReverse : 
-                    response.Name === "Medical" ? styles.responseHeaderReverse :
-                    response.Name === "SDPC" ? styles.responseHeaderReverse :
-                    styles.responseHeader
-                }>
-                    <Image 
-                        className={styles.responseImage}
-                        src={
-                            response.Name === "Dental" ? Dental : 
-                            response.Name === "Medical" ? Medical :
-                            response.Name === "SDPC" ? SDPC :
-                            data.GoogleImage
-                        }
-                        alt=""
-                        width={50}
-                        height={50}
-                    />
-                    <div className={
-                        response.Name === "Dental" ? styles.responseDataReverse : 
-                        response.Name === "Medical" ? styles.responseDataReverse :
-                        response.Name === "SDPC" ? styles.responseDataReverse :
-                        styles.responseData
-                        }>
-                        <p className={styles.responseName}>{response.Name}</p>
-                        <p className={styles.responseEmail}>{response.GoogleEmail}</p>
+            <>  
+
+            <div className={styles.responseTime}>{ResponseDate}</div>
+
+            <div className={
+                response.Name === "Dental" ? styles.MessageRowReverse : 
+                response.Name === "Medical" ? styles.MessageRowReverse :
+                response.Name === "SDPC" ? styles.MessageRowReverse :
+                styles.MessageRow}>
+
+                <Image 
+                    title={
+                        new Date(data.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                        })
+                    }
+                    className={styles.responseImage}
+                    src={
+                        response.Name === "Dental" ? Dental : 
+                        response.Name === "Medical" ? Medical :
+                        response.Name === "SDPC" ? SDPC :
+                        data.GoogleImage
+                    }
+                    alt=""
+                    width={50}
+                    height={50}
+                />
+                
+                <div
+                    title={
+                        new Date(data.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                        })
+                    }
+                className={styles.response}>{response.Response}</div>
+                </div> 
+            </>
+        )
+    }
+
+    const SideBar = ({data}) => {
+
+        return <div className={styles.SideBar}>
+            <Image 
+                className={styles.ProfileImage}
+                src={data.GoogleImage}
+                alt="ProfileImage"
+                width={200}
+                height={200}
+            />
+            
+            <p className={styles.ProfileName}>{data.Name}</p>
+            <p className={styles.ProfileEmail}>{data.GoogleEmail}</p>
+
+            <form className={styles.SideBarContent} onSubmit={HandleReportUpdate}>
+                <p className={styles.SideBarContentHeader}>{Department} Report</p>
+                <div className={styles.SideBarInputContainer}>
+                    <p className={styles.SideBarInputLabel}>{Reports[Department]["Question1"]}</p>
+                    <select className={styles.SideBarInput} name="R1" id="" value={data.Report1} onChange={(e) => HandleReportUpdate(e, "1")}> 
+                        <option value=""></option>
+                        {Reports[Department]["Options1"].map((Options, index) => (
+                            <option key={index} value={Options["Option"]}>{Options["Option"]}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className={styles.SideBarInputContainer}>
+                    <p className={styles.SideBarInputLabel}>{Reports[Department]["Question2"]}</p>
+                    <select className={styles.SideBarInput} name="R2" id="" value={data.Report2} onChange={(e) => HandleReportUpdate(e, "2")}>
+                        <option value=""></option>
+                        {Reports[Department]["Options2"].map((Options, index) => (
+                            <option key={index} value={Options["Option"]}>{Options["Option"]}</option>
+                        ))}
+                    </select>
+                </div>
+                {ReportUploading ? (
+                    <p className={styles.note}>Updating...</p>
+                ) : (
+                    null
+                )}
+            </form>
+
+            {isLoading ? null : data.Status === "Completed" || data.Status === "Canceled" ? null : StatusUploading ? (
+                <div className={styles.statusUpdate}>
+                    <button disabled className={`${styles.btnSU} ${styles.maCompleted}`}>
+                        Loading..
+                    </button>
+                    <button disabled className={`${styles.btnSU} ${styles.maCanceled}`}>
+                        Loading..
+                    </button>
+                </div>
+            ) : (
+                <div className={styles.statusUpdate}>
+                    <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => handleButtonAction('Mark as Completed?',"Do you want to proceed with this action?","Completed")}>
+                        Mark as Completed
+                    </button>
+                    <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => handleButtonAction('Mark as Canceled?',"Do you want to proceed with this action?","Canceled")}>
+                        Mark as Canceled
+                    </button>
+                </div>
+            )}      
+
+        </div>
+    }
+
+    const MainContent = ({data}) => {
+
+        return <div className={styles.MainContent}>
+            <div className={styles.MessagesContainer}>
+
+            {isLoading ? (
+                "Loading..."
+            ) : data && data?.Details ? (  
+                <div className={styles.row}>    
+                    <div className={styles.content}>
+                        {Department === "Medical" ? (
+                            <MedicalForm data={data.Details} />
+                        ) : Department === "Dental" ? (
+                            <DentalForm data={data.Details} />
+                        ) : null}
                     </div>
                 </div>
-                <div className={
-                     response.Name === "Dental" ? styles.responseresponseReverse : 
-                     response.Name === "Medical" ? styles.responseresponseReverse :
-                     response.Name === "SDPC" ? styles.responseresponseReverse :
-                    styles.responseresponse}>{response.Response}</div>
+
+                ) : (
+                null
+            )}
+
+
+                {isLoading ? (
+                        ""
+                ) : data && data.Responses ? (
+                        data.Responses.map((response, index) => (
+                            <Response key={index} data={data} response={response} />
+                        ))
+                    ) : (
+                    <p></p>
+                )} 
+
             </div>
-        )
+
+            {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
+                <ResponseForm />
+            ) : (
+                <div className={styles.MessageFormContainer}>
+                    <div className={styles.responseStatus}>Marked as {data.Status}</div>
+                </div>
+            )}
+        </div>
     }
 
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -422,150 +570,57 @@ const Form = ({params}) => {
         }
     }
 
+    const HandleReportUpdate = async (e, Report) => {
+        try {
+            setReportUploading(true);
+            
+            const formData = new FormData(); 
+            formData.append("Department", Department);
+            formData.append("AppointmentId", AppointmentId);
+            formData.append("Report", Report);
+            formData.append("Value", e.target.value);
+
+            const response = await fetch("/api/appointments/POST_UpdateReport", {
+                method: "POST",
+                body: formData,
+            });
+        
+            setReportUploading(false);
+            mutate(); 
+           
+            if (response.ok) {
+                e.target.reset();
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     handleBeforeUnload();
 
     return (
         <div className={styles.mainContainer}>
-            <div className={styles.vLine}></div>
 
-        {showConfirmation && (
-            <ActionConfirmation
-                title={confirmationData.title}
-                content={confirmationData.content}
-                onYes={handleConfirmationYes}
-                onCancel={handleConfirmationCancel}
-            />
-        )}
+            {showConfirmation && (
+                <ActionConfirmation
+                    title={confirmationData.title}
+                    content={confirmationData.content}
+                    onYes={handleConfirmationYes}
+                    onCancel={handleConfirmationCancel}
+                />
+            )}
 
-        {isLoading ? null : data.Status === "Completed" || data.Status === "Canceled" ? null : StatusUploading ? (
-                <div className={styles.statusUpdate}>
-                <button disabled className={`${styles.btnSU} ${styles.maCompleted}`}>
-                    Loading..
-                </button>
-                <button disabled className={`${styles.btnSU} ${styles.maCanceled}`}>
-                    Loading..
-                </button>
-                </div>
-            ) : (
-                <div className={styles.statusUpdate}>
-                <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => handleButtonAction('Mark as Completed?',"Do you want to proceed with this action?","Completed")}>
-                    Mark as Completed
-                </button>
-                <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => handleButtonAction('Mark as Canceled?',"Do you want to proceed with this action?","Canceled")}>
-                    Mark as Canceled
-                </button>
-                </div>
-            )
-        }
-            
             {isLoading ? (
                 "Loading..."
-            ) : data && data?.Details ? (  
-                <div className={styles.row}>
-                    <div className={styles.mark}>
-                        <div className={styles.datetime}>
-                            <div className={styles.date}>
-                                {new Date(data.createdAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
-                            </div>
-                            <div className={styles.time}>
-                                {new Date(data.createdAt).toLocaleTimeString('en-US', {
-                                    hour: 'numeric',
-                                    minute: '2-digit'
-                                })}
-                            </div>
-                        </div>
-                        <div className={styles.hLine}></div>
-                    </div>
-                    <div className={styles.content}>
-                        {Department === "Medical" ? (
-                            <MedicalForm data={data.Details} />
-                        ) : Department === "Dental" ? (
-                            <DentalForm data={data.Details} />
-                        ) : null};
-                    </div>
-                </div>
-
-                ) : (
-                null
-            )}
-
-        
-            {isLoading ? (
-                ""
-            ) : data && data.Responses ? (
-                    data.Responses.map((response, index) => (
-                        <div key={index} className={styles.row}>
-                        <div className={styles.mark}>
-                            <div className={styles.datetime}>
-                                <div className={styles.date}>
-                                    {new Date(response.Timestamp).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric'
-                                    })}
-                                </div>
-                                <div className={styles.time}>
-                                    {new Date(response.Timestamp).toLocaleTimeString('en-US', {
-                                        hour: 'numeric',
-                                        minute: '2-digit'
-                                    })}
-                                </div>
-                            </div>
-                            <div className={styles.hLine}></div>
-                        </div>
-                        <div className={styles.content}>
-                            <Response data={data} response={response} />
-                        </div>
-                    </div>
-                    ))
-                ) : (
-                <p></p>
-            )}
-
-            {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
-                <div className={styles.row}> 
-                    <div className={styles.mark}>
-                        <div className={styles.datetime}>
-                            <div className={styles.date}>Create a response</div>
-                            <div className={styles.time}>-</div>
-                        </div>
-                        <div className={styles.hLine}></div>
-                    </div>
-                    <div className={styles.content}>
-                        <ResponseForm data={data} />
-                    </div>
-                </div>
             ) : (
-                <div className={styles.row}> 
-                    <div className={styles.mark}>
-                        <div className={styles.datetime}>
-                            <div className={styles.date}>
-                                {new Date(data.updatedAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
-                            </div>
-                            <div className={styles.time}>
-                                {new Date(data.updatedAt).toLocaleTimeString('en-US', {
-                                    hour: 'numeric',
-                                    minute: '2-digit'
-                                })}
-                            </div>
-                        </div>
-                        <div className={styles.hLine}></div>
-                    </div>
-                    <div className={styles.content}>
-                            <div className={styles.responseresponse}> Marked as {data.Status}</div>
-                    </div>
-                </div>
-                )
-                }
-
+                <>
+                    <SideBar data={data}/>
+                    <MainContent data={data}/>    
+                </>
+            )}
         </div>
     );
 };

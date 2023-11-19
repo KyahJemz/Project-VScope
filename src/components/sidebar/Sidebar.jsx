@@ -1,14 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Sidebar.module.css";
 import { useSession } from "next-auth/react";
 
 const Sidebar = ({department}) => {
   const { data: session, status } = useSession();
-
-  const [panel, setPanel] = useState(false);
 
   const ManagementLinks = [
     {
@@ -42,23 +39,14 @@ const Sidebar = ({department}) => {
   ];
   
   return (
-    <div className={panel ? styles.container : styles.containerHide}>
-      <div className={styles.toggle} onClick={panel ? ()=>setPanel(false) : ()=>setPanel(true)}>
-        <div className={styles.toggleLine}></div>
-        <div className={styles.toggleLine}></div>
-        <div className={styles.toggleLine}></div>
-      </div>
-      {panel === false ? null : 
+    <div className={styles.container}>
         <div className={styles.links}>
-          <Link href="/" className={styles.logo}>
-            VScope Admin
-          </Link>
           {ManagementLinks.map((link) => (
             <a key={link.id} href={link.url} className={styles.link}>
               {link.title}
             </a>
           ))}
-          {session.user.role === "Admin" ? AdminLinks.map((link) => (
+          {status === "authenticated" && session.user.role === "Admin" ? AdminLinks.map((link) => (
             <a key={link.id} href={link.url} className={styles.link}>
               {link.title}
             </a>
@@ -66,7 +54,6 @@ const Sidebar = ({department}) => {
             : null
           }
       </div>
-      }
     </div>
   );
 };

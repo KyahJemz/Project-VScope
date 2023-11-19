@@ -40,6 +40,12 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+    Report1: {
+      type: String,
+    },
+    Report2: {
+      type: String,
+    },
     Responses: {
       type: Array,
       required: false,

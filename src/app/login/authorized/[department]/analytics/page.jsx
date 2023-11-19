@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 const Analytics = ({ params }) => {
   const Department = params.department;
   const [option, setOption] = useState ('day');
+  const [Panel, setPanel] = useState ('Panel1');
   const { data: session, status } = useSession();
   
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -25,7 +26,7 @@ const Analytics = ({ params }) => {
     datasets: [
       {
         data: SLC?.counts ? SLC.counts : [],
-        backgroundColor: ['#69c253', '#6453c2'], // Colors for each section
+        backgroundColor: ['#69c253', '#6453c2'], 
         hoverBackgroundColor: ['#69c2537c', '#6453c27c'],
       },
     ],
@@ -146,6 +147,46 @@ const Analytics = ({ params }) => {
     ],
   };
 
+  const { data: Reports, mutate: Reportsmutate, error: Reportserror, isLoading: ReportsisLoading } = useSWR(
+    `/api/charts?department=${encodeURIComponent(Department)}&query=countStatus&option=${option}&status=`,
+    fetcher
+  );
+
+  const LineReportsData = {};
+  const LineChartReportsData = [];
+  
+  if (!ReportsisLoading) {
+    Reports["countsReport1"].forEach((obj) => {
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          LineReportsData[key] = LineReportsData[key] || [];
+          LineReportsData[key].push(Number(obj[key] ?? 0));
+        }
+      }
+    });
+  
+    for (const key in LineReportsData) {
+      if (LineReportsData.hasOwnProperty(key)) {
+        LineChartReportsData.push({
+          title: key,
+          data: {
+            labels: Reports?.label ? Reports.label : [],
+            datasets: [
+              {
+                label: key,
+                data: LineReportsData[key],
+                borderColor: '#69c253',
+                borderWidth: 1,
+              },
+            ],
+          },
+        });
+      }
+    }
+  
+    console.log(LineChartReportsData);
+  }
+
   if (status === 'loading') {
     return "Loading...";
   }
@@ -173,36 +214,47 @@ const Analytics = ({ params }) => {
                 <p className={styles.chartTitle}>Category Chart</p>
                 <PieChart data={PieChartData} />
               </div>
+              <div className={styles.panelSwitchContainer}>
+                <button className={`${styles.option} ${styles.panelSwitch}`} onClick={() => setPanel("Panel1")}>System Reports</button>
+                <button className={`${styles.option} ${styles.panelSwitch}`} onClick={() => setPanel("Panel2")}>Reports</button>
+              </div>
           </div>
 
-          <div className={styles.rightpanel}>
+          {Panel === "Panel1" ? (
+            <div className={styles.rightpanel}>
               <div className={styles.LineChartContainer}>
                   <p className={styles.chartTitle}>Canceled</p>
                   <LineChart data={LineChartCanceledData} />
               </div>
-
               <div className={styles.LineChartContainer}>
                   <p className={styles.chartTitle}>Completed</p>
                   <LineChart data={LineChartCompletedData} />
               </div>
-
               <div className={styles.LineChartContainer}>
                   <p className={styles.chartTitle}>Approved</p>
                   <LineChart data={LineChartApprovedData} />
               </div>
-
               <div className={styles.LineChartContainer}>
                   <p className={styles.chartTitle}>Rejected</p>
                   <LineChart data={LineChartRejectedData} />
               </div>
-
               <div className={styles.LineChartContainer}>
                   <p className={styles.chartTitle}>Pending</p>
                   <LineChart data={LineChartPendingData} />
               </div>
-
-          </div>
-
+            </div>
+          ) : (
+            <div className={styles.rightpanel}>
+              {!ReportsisLoading ? (
+                LineChartReportsData.map((chart, index) => (
+                  <div key={index} className={styles.LineChartContainer}>
+                    <p className={styles.chartTitle}>{chart.title}</p>
+                    <LineChart data={chart.data} />
+                  </div>
+                ))
+              ) : null}
+            </div>
+          )}
         </div>
 
     </div>

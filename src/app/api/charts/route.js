@@ -3,6 +3,7 @@ import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
+import { Reports } from "@/models/Reports";
 
 export const GET = async (request) => {
     const url = new URL(request.url);
@@ -10,6 +11,10 @@ export const GET = async (request) => {
     const query = url.searchParams.get("query");
     const option = url.searchParams.get("option");
     const status = url.searchParams.get("status");
+
+    const SDPCReport1Options = Reports["SDPC"]["Options1"];
+    const DentalReport1Options = Reports["Dental"]["Options1"];
+    const MedicalReport1Options = Reports["Medical"]["Options1"];
 
     if (!department || !query || !option) {
         return new NextResponse("Empty", { status: 500 });
@@ -23,6 +28,7 @@ export const GET = async (request) => {
                 const dcountsStudent = [];
                 const dcountsLayCollaborators = [];
                 const dlabel = [];
+                const dReport1 = [];
 
                 const currentDate = new Date();
                 const startOfDay = new Date(currentDate);
@@ -62,6 +68,8 @@ export const GET = async (request) => {
                 }
             
                 if (query === 'countStatus') {
+
+
                     for (let i = 0; i < 24; i++) {
                         const hourStart = new Date(startOfDay);
                         hourStart.setHours(i, 0, 0, 0);
@@ -71,6 +79,7 @@ export const GET = async (request) => {
                         
                         let countStudent;
                         let countLayCollaborators;
+                        let countReport1;
                         
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
@@ -79,13 +88,24 @@ export const GET = async (request) => {
                                 Category: 'Student',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             });
-                        
+
                             countLayCollaborators = await MedicalAppointment.countDocuments({
                                 Department: 'Medical',
                                 Status: status,
                                 Category: 'Lay Collaborator',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             });
+
+                            let countReport1Raw = {};
+                            MedicalReport1Options.forEach(async option => {
+                                const report1Result = await MedicalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: hourStart, $lte: hourEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+                            
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
                                 Department: 'Dental',
@@ -100,6 +120,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             })
+
+                            let countReport1Raw = {};
+                            DentalReport1Options.forEach(async option => {
+                                const report1Result = await DentalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: hourStart, $lte: hourEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
                                 Department: 'SDPC',
@@ -114,6 +145,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',
                                 createdAt: { $gte: hourStart, $lte: hourEnd },
                             })
+
+                            let countReport1Raw = {};
+                            SDPCReport1Options.forEach(async option => {
+                                const report1Result = await SDPCAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: hourStart, $lte: hourEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else {
                             return new NextResponse('Invalid Department', { status: 500 });
                         }
@@ -123,12 +165,14 @@ export const GET = async (request) => {
                         dlabel.push(formattedHour);
                         dcountsStudent.push(countStudent);
                         dcountsLayCollaborators.push(countLayCollaborators);
+                        dReport1.push(countReport1);
                     }
                         
                     const data = {
                         label: dlabel,
                         countsStudent: dcountsStudent,
                         countsLayCollaborator: dcountsLayCollaborators,
+                        countsReport1 : dReport1,
                     };
                       
                     return new NextResponse(JSON.stringify(data), { status: 200 });
@@ -139,6 +183,8 @@ export const GET = async (request) => {
                 const countsStudentWeek = [];
                 const countsLayCollaboratorsWeek = [];
                 const labelWeek = [];
+                const Report1Week = [];
+
                 const currentDateWeek = new Date();
                 const endDateWeek = new Date(currentDateWeek);
                 endDateWeek.setHours(23, 59, 59, 999);
@@ -186,6 +232,7 @@ export const GET = async (request) => {
                         
                         let countStudent = 0;
                         let countLayCollaborators = 0;
+                        let countReport1;
                         
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
@@ -201,6 +248,18 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',  // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
+
+                            let countReport1Raw = {};
+                            MedicalReport1Options.forEach(async option => {
+                                const report1Result = await MedicalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: dayStart, $lte: dayEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
+
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
                                 Department: 'Dental',
@@ -215,6 +274,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',  // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
+
+                            let countReport1Raw = {};
+                            DentalReport1Options.forEach(async option => {
+                                const report1Result = await DentalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: dayStart, $lte: dayEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
                                 Department: 'SDPC',
@@ -229,6 +299,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',  // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
+
+                            let countReport1Raw = {};
+                            SDPCReport1Options.forEach(async option => {
+                                const report1Result = await SDPCAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: dayStart, $lte: dayEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else {
                             return new NextResponse('Invalid Department', { status: 500 });
                         }
@@ -238,12 +319,14 @@ export const GET = async (request) => {
                         labelWeek.push(dayFormatted);
                         countsStudentWeek.push(countStudent);
                         countsLayCollaboratorsWeek.push(countLayCollaborators);
+                        Report1Week.push(countReport1);
                     }
                         
                     const data = {
                         label: labelWeek,
                         countsStudent: countsStudentWeek,
                         countsLayCollaborator: countsLayCollaboratorsWeek,
+                        countsReport1 : Report1Week,
                     };
                         
                     return new NextResponse(JSON.stringify(data), { status: 200 });
@@ -254,6 +337,7 @@ export const GET = async (request) => {
                 const countsStudentMonth = [];
                 const countsLayCollaboratorsMonth = [];
                 const labelMonth = [];
+                const Report1Month = [];
 
                 const currentDateMonth = new Date();
                 const endDateMonth = new Date(currentDateMonth);
@@ -309,6 +393,7 @@ export const GET = async (request) => {
                       
                         let countStudent = 0;
                         let countLayCollaborators = 0;
+                        let countReport1;
                       
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
@@ -324,6 +409,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator', // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
+
+                            let countReport1Raw = {};
+                            MedicalReport1Options.forEach(async option => {
+                                const report1Result = await MedicalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: dayStart, $lte: dayEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
                                 Department: 'Dental',
@@ -338,6 +434,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator', // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
+
+                            let countReport1Raw = {};
+                            DentalReport1Options.forEach(async option => {
+                                const report1Result = await DentalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: dayStart, $lte: dayEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
                                 Department: 'SDPC',
@@ -352,6 +459,16 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator', // Count for 'Lay Collaborator'
                                 createdAt: { $gte: dayStart, $lte: dayEnd },
                             });
+
+                            let countReport1Raw = {};
+                            SDPCReport1Options.forEach(async option => {
+                                const report1Result = await SDPCAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: dayStart, $lte: dayEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
                         } else {
                             return new NextResponse('Invalid Department', { status: 500 });
                         }
@@ -361,12 +478,14 @@ export const GET = async (request) => {
                         labelMonth.push(dayFormatted);
                         countsStudentMonth.push(countStudent);
                         countsLayCollaboratorsMonth.push(countLayCollaborators);
+                        Report1Month.push(countReport1);
                     }
                       
                     const data = {
                         label: labelMonth,
                         countsStudent: countsStudentMonth,
                         countsLayCollaborator: countsLayCollaboratorsMonth,
+                        countsReport1 : Report1Month,
                     };
                       
                     return new NextResponse(JSON.stringify(data), { status: 200 });
@@ -377,6 +496,7 @@ export const GET = async (request) => {
                 const countsYearStudent = [];
                 const countsYearLayCollaborators = [];
                 const labelYear = [];
+                const Report1Year = [];
 
                 const currentDateYear = new Date();
                 const endDateYear = new Date(currentDateYear);
@@ -429,6 +549,7 @@ export const GET = async (request) => {
                     
                         let countStudent;
                         let countLayCollaborators;
+                        let countReport1;
                     
                         if (department === 'Medical') {
                             countStudent = await MedicalAppointment.countDocuments({
@@ -444,6 +565,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
+
+                            let countReport1Raw = {};
+                            MedicalReport1Options.forEach(async option => {
+                                const report1Result = await MedicalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: monthStart, $lte: monthEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else if (department === 'Dental') {
                             countStudent = await DentalAppointment.countDocuments({
                                 Department: 'Dental',
@@ -458,6 +590,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
+
+                            let countReport1Raw = {};
+                            DentalReport1Options.forEach(async option => {
+                                const report1Result = await DentalAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: monthStart, $lte: monthEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else if (department === 'SDPC') {
                             countStudent = await SDPCAppointment.countDocuments({
                                 Department: 'SDPC',
@@ -472,6 +615,17 @@ export const GET = async (request) => {
                                 Category: 'Lay Collaborator',
                                 createdAt: { $gte: monthStart, $lte: monthEnd },
                             });
+
+                            let countReport1Raw = {};
+                            SDPCReport1Options.forEach(async option => {
+                                const report1Result = await SDPCAppointment.countDocuments({
+                                    Report1: option["Option"],
+                                    createdAt: { $gte: monthStart, $lte: monthEnd },
+                                });
+                                countReport1Raw[option["Option"]] = report1Result;
+                            });
+                            countReport1 = countReport1Raw;
+
                         } else {
                             return new NextResponse("Invalid Department", { status: 500 });
                         }
@@ -481,12 +635,14 @@ export const GET = async (request) => {
                         labelYear.push(monthFormatted);
                         countsYearStudent.push(countStudent);
                         countsYearLayCollaborators.push(countLayCollaborators);
+                        Report1Year.push(countReport1);
                     }
                     
                     const data = {
                         label: labelYear,
                         countsStudent: countsYearStudent,
                         countsLayCollaborator: countsYearLayCollaborators,
+                        countsReport1 : Report1Year,
                     };
                     
                     return new NextResponse(JSON.stringify(data), { status: 200 });

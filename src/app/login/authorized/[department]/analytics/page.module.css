@@ -25,6 +25,19 @@
   border-radius: 5px;
 }
 
+.panelSwitchContainer{
+  width: 100%;
+  margin-top: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 20px;
+}
+
+.panelSwitch{
+  margin-top  : 20px;
+  width: 100%;
+}
+
 .calendarTitle {
   height: fit-content;
   padding: 4px 10px;
