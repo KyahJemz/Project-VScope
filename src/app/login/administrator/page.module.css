@@ -1,0 +1,179 @@
+.mainTitle {
+  font-size: 40px;
+}
+
+.container {
+  flex: 1;
+}
+
+.mainContainer{
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 25%;
+  width: 100%;
+  gap: 20px;
+}
+
+.formContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.input{
+  padding: 10px 20px;
+}
+
+.button{
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #53c28b;
+  color: white;
+  border: 0px solid gainsboro;
+  transition: 300ms;
+  border-radius: 5px;
+}
+.button:hover{
+  box-shadow: 0px 0px 2px 2px gainsboro;
+}
+.button:hover{
+  background-color: #2e6e4e;
+}
+
+.Accounts {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+
+.departments{
+  display: flex;
+  gap: 20px;
+}
+
+.cbutton{
+  padding: 5px 20px;
+  cursor: pointer;
+  background-color: gainsboro;
+  color: black;
+  border: 0px solid gainsboro;
+  transition: 300ms;
+  border-radius: 5px;
+}
+
+.call{
+  background-color: #53c28b;
+  color: white;
+}
+.cdental{
+  background-color: #53c28b;
+  color: white;
+}
+.cmedical{
+  background-color: #53c28b;
+  color: white;
+}
+.csdpc {
+  background-color: #53c28b;
+  color: white;
+}
+
+.cbutton:hover{
+  box-shadow: 0px 0px 2px 2px gainsboro;
+}
+.cbutton:active{
+  background-color: #2e6e4e;
+}
+
+.accountItem {
+  background-color: gainsboro;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.accountItemLeft{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.accountGmail{
+  font-weight: bold;
+  color: #2f644a;
+  text-shadow: 2px 2px 2px  rgb(255, 255, 255);
+}
+.accountRole,
+.accountDepartment{
+  font-size: 15px;
+}
+
+.accountItemRight {
+  display: flex;
+  flex-direction: row;
+  height: fit-content;
+  gap: 10px;
+}
+
+.accountOptions{
+  background-color: #53c28b;
+  color: white;
+  border: 0px solid gainsboro;
+  padding: 5px 20px;
+  border-radius: 5px;
+  transition: 300ms;
+  cursor: pointer;
+}
+.accountOptions:hover{
+  box-shadow: 0px 0px 2px 2px white;
+}
+.accountOptions:active{
+  background-color: #2e6e4e;
+}
+
+.forms{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+
+
+
+
+@media (max-width: 750px) {
+  .items{
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .Medical,
+.Dental,
+.SDPC {
+    width: 400px;
+  }
+}
+
+@media (max-width: 640px) {
+  .Medical,
+  .Dental,
+  .SDPC {
+    width: 300px;
+    height: 350px;
+  }
+  .container{
+    padding: 0px 20px;
+  }
+}
+
+
+

@@ -31,12 +31,12 @@ const userSchema = new Schema(
     },
     Role: {
       type: String,
-      enum: ["Client","Management", "Admin"],
+      enum: ["Client","Management", "Admin", "Administrator"],
       required: true,
     },
     Department: {
       type: String,
-      enum: ["Dental","Medical", "SDPC", null],
+      enum: ["Dental","Medical", "SDPC", "Administrator", null],
       required: false,
       default: null,
     },

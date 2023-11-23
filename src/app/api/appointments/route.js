@@ -5,6 +5,17 @@ import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 import Accounts from "@/models/Accounts";
 import { encryptText, decryptText } from "@/utils/cryptojs";
+import Defaults from '@/models/Defaults';
+import sendMail from '@/app/api/sendMail/route.js';
+
+async function sendEmail({ to, subject, text }) {
+  try {
+    await sendMail(to, subject, text);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+}
 
 const decryptFields = (obj) => {
     if (typeof obj !== "object" || obj === null) {
@@ -35,7 +46,7 @@ const decryptFields = (obj) => {
 
       const appointmentsToUpdate = await Model.updateMany(
         { Status: 'Approved', updatedAt: { $lt: twoDaysAgo } },
-        { $set: { Status: 'Canceled' } }
+        { $set: { Status: 'Advising' } }
       );
   
       return true;
@@ -185,6 +196,15 @@ export const POST = async (request) => {
             
             await newPost.save();
             console.log(newPost);
+
+            const to = 
+              Department === 'Dental' ? Defaults.DentalEmail : 
+              Department === 'Medical' ? Defaults.MedicalEmail : 
+              Department === 'SDPC' ? Defaults.SDPCEmail : "" ;
+            const subject = "Appointment Request";
+            const text = "You have received an appointment request via VScope. The request is now pending at the appointment requests page, and we will be in touch with you soon to confirm the details. ";
+
+            await sendEmail({to,subject,text});
 
             return new NextResponse("Success", { status: 201 });
         } catch (err) {

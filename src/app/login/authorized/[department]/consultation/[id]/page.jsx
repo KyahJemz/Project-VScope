@@ -21,20 +21,9 @@ const Form = ({params}) => {
     var GoogleEmail = "";
     var CurrentMessageDate = "";
 
-    
-
-    const handleReport1Change = (e) => {
-        setReport1(e.target.value);
-    };
-    const handleReport2Change = (e) => {
-        setReport2(e.target.value);
-    };
-
     const [DetailsUploading, setDetailsUploading] = useState(false);
     const [ReportUploading, setReportUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
-    const [Report1, setReport1] = useState(""); 
-    const [Report2, setReport2] = useState("");
     
     const [StatusUploading, setStatusUploading] = useState(false);
 
@@ -58,8 +47,6 @@ const Form = ({params}) => {
     const handleConfirmationCancel = () => {
         setShowConfirmation(false);
     };
-
-
 
 
     const DentalForm = ({data}) => {
@@ -276,10 +263,11 @@ const Form = ({params}) => {
         )
     }
 
-    const ResponseForm = () => {
+    const ResponseForm = ({data}) => {
         return (
             <form className={styles.MessageFormContainer} onSubmit={HandleResponseSubmit}>
                 <input name="GoogleEmail" value={GoogleEmail} type="text" hidden readOnly/>
+                <input name="ReceiverGoogleEmail" value={data.GoogleEmail} type="text" hidden readOnly/>
                 <input name="Name" value={Department} type="text" hidden readOnly/>
                 <textarea className={styles.responseFormTextbox} name="Response" rows="2" />
                 {ResponseUploading ? 
@@ -397,22 +385,28 @@ const Form = ({params}) => {
                 )}
             </form>
 
-            {isLoading ? null : data.Status === "Completed" || data.Status === "Canceled" ? null : StatusUploading ? (
+            {isLoading ? null : data.Status === "Completed" || data.Status === "Canceled"? null : StatusUploading ? (
                 <div className={styles.statusUpdate}>
-                    <button disabled className={`${styles.btnSU} ${styles.maCompleted}`}>
+                    <button disabled className={`${styles.btnSU} ${styles.maAdvising}`}>
                         Loading..
                     </button>
                     <button disabled className={`${styles.btnSU} ${styles.maCanceled}`}>
                         Loading..
                     </button>
+                    <button disabled className={`${styles.btnSU} ${styles.maCompleted}`}>
+                        Loading..
+                    </button>
                 </div>
             ) : (
                 <div className={styles.statusUpdate}>
-                    <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => handleButtonAction('Mark as Completed?',"Do you want to proceed with this action?","Completed")}>
-                        Mark as Completed
+                    <button className={`${styles.btnSU} ${styles.maAdvising}`} onClick={() => handleButtonAction('Mark as Advising?',"Do you want to proceed with this action?","Advising")}>
+                        Mark as Advising
                     </button>
                     <button className={`${styles.btnSU} ${styles.maCanceled}`} onClick={() => handleButtonAction('Mark as Canceled?',"Do you want to proceed with this action?","Canceled")}>
                         Mark as Canceled
+                    </button>
+                    <button className={`${styles.btnSU} ${styles.maCompleted}`} onClick={() => handleButtonAction('Mark as Completed?',"Do you want to proceed with this action?","Completed")}>
+                        Mark as Completed
                     </button>
                 </div>
             )}      
@@ -443,7 +437,7 @@ const Form = ({params}) => {
             )}
 
 
-                {isLoading ? (
+            {isLoading ? (
                         ""
                 ) : data && data.Responses ? (
                         data.Responses.map((response, index) => (
@@ -456,7 +450,7 @@ const Form = ({params}) => {
             </div>
 
             {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
-                <ResponseForm />
+                <ResponseForm data={data}/>
             ) : (
                 <div className={styles.MessageFormContainer}>
                     <div className={styles.responseStatus}>Marked as {data.Status}</div>
@@ -552,6 +546,7 @@ const Form = ({params}) => {
           formData.append("Department", Department);
           formData.append("AppointmentId", AppointmentId);
           formData.append("Status", Status);
+          formData.append("Gmail", data.GoogleEmail);
     
           const response = await fetch("/api/appointments/POST_UpdateStatus", {
             method: "POST",

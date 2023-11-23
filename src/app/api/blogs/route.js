@@ -22,7 +22,8 @@ export const GET = async (request) => {
       { $match: query },
       {
         $addFields: {
-          avgRating: { $avg: "$Ratings.Rating" }
+          avgRating: { $avg: "$Ratings.Rating" },
+          totalRatings: { $size: "$Ratings" }
         }
       }
     ]);

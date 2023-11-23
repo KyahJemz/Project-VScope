@@ -33,7 +33,7 @@ const SetAppointment = ({req}) => {
     // taga bago ng arrangement
     const sortedData = data && !isLoading
   ? [...data].sort((a, b) => {
-      const statusOrder = { Approved: 1, Pending: 2, Rejected: 3, Completed: 4, Canceled: 5 };
+      const statusOrder = { Approved: 1, Advising: 1, Pending: 2, Rejected: 3, Completed: 4, Canceled: 5 };
 
       if (a.Status !== b.Status) {
         return statusOrder[a.Status] - statusOrder[b.Status];
@@ -178,9 +178,10 @@ const SetAppointment = ({req}) => {
                         <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
                         <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
                         <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
+                        <button className={`${styles.cbutton} ${filterStatus === 'Advising' ? styles.cadvising : ''}`} onClick={() => handleFilter('Advising')}>Advising</button>
                     </div>
                     {isLoading ? "Loading..." : filteredData?.length && filteredData.length === 0 ? "No appointments" : filteredData.map((appointment, index) => (
-                        <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/login/services/'+req.department+'/appointments/'+appointment._id) : null}>
+                        <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed' || appointment.Status === 'Advising') ? router.push('/login/services/'+req.department+'/appointments/'+appointment._id) : null}>
                             {appointment.Status === "Approved" && hasFalseViewedByClient(appointment.Responses) ? <div className={styles.dot}></div> : null}
                             <h4 className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a> {appointment.Status === 'Pending' ? <button className={styles.cancelBtn} onClick={()=> HandleCancelBtn(appointment._id)}>Cancel</button> : null}</h4>
                             <p className={styles.aDate}>{appointment.createdAt}</p>

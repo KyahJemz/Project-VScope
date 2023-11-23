@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import styles from './StarRating.module.css'; // Import your CSS file for styling
 
-const StarRating = ({Refresh, Email, blogId, averageRating }) => {
+const StarRating = ({Refresh, Email, blogId, averageRating, count}) => {
   const [hoveredRating, setHoveredRating] = useState(0);
 
   const handleStarHover = (rating) => {
@@ -54,7 +54,7 @@ const StarRating = ({Refresh, Email, blogId, averageRating }) => {
   return (
     <div className={styles.starRatingContainer} onMouseLeave={handleMouseLeave}>
         <div className={styles.starsContainer}>Ratings:&nbsp;&nbsp; {stars}</div>
-        <div className={styles.averageRating}>Average Rating: {averageRating}</div>
+        <div className={styles.averageRating}>Average rating of {averageRating} by {count} people.</div>
     </div>
   );
 };

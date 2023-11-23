@@ -96,6 +96,12 @@
   background-color: rgb(165, 62, 62);
 }
 
+.cadvising,
+.Advising {
+  cursor:pointer;
+  background-color: #96a59d;
+}
+
 .cancelBtn{
   cursor: pointer;
   background-color: rgb(165, 62, 62);

@@ -38,8 +38,8 @@ Local Server : [http://localhost:3000](http://localhost:3000)
 9. Paste the Collection depending on departments admin and managments
 
 ```bash
-# ROLE = ["Client","Management", "Admin"]
-# DEPARTMENT = ["Dental","Medical", "SDPC", null] 
+# ROLE = ["Client","Management", "Admin", "Administrator"]
+# DEPARTMENT = ["Dental","Medical", "SDPC", "Administrator", null] 
 # null = user
 # ONLY editable fields GoogleEmail, Role, Department. 
 
@@ -50,8 +50,8 @@ Local Server : [http://localhost:3000](http://localhost:3000)
   "GoogleName": "-",
   "GoogleFirstname": "-",
   "GoogleLastname": "-",
-  "Role": "Admin",
-  "Department": "Medical",      
+  "Role": "Administrator",
+  "Department": "Administrator",      
   "createdAt": {
     "$date": "2023-11-06T11:48:03.244Z"
   },

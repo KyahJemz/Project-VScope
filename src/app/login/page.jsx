@@ -28,7 +28,11 @@ const Login = () => {
 
   if (status === "authenticated") {
     if (session.user?.department && session.user.department != null) {
-      redirect('/login/authorized/' + session.user.department);
+      if (session.user.department === "Administrator") {
+        redirect('/login/administrator');
+      } else {
+        redirect('/login/authorized/' + session.user.department);
+      }
     } else {
       redirect('/login/services');
     }

@@ -6,52 +6,163 @@
   position: relative;
   width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 50px;
+  flex-direction: row;
+  gap: 20px;
 }
 
-.vLine{
-  position: absolute;
-  background-color: rgba(220, 220, 220, 0.500);
-  width: 5px;
-  height: 100%;
-  top: 0;
-  left: 150px;
-}
-
-.row{
-  display: flex;
-  position: relative;
-}
-
-.mark{ 
-  flex: 0 0 200px;
-  padding: 20px 0px;
-  height: fit-content;
-  position: relative;
-}
-
-.datetime{
-  font-size: small;
-  margin-left: 20px;
-}
-
-.hLine{
-  top: 30%;
-  left: 145px;
-  position: absolute;
-  background-color: gainsboro;
-  height: 15px;
-  width: 15px;
+.SideBar{
   border: 1px solid gainsboro;
+}
+
+.ProfileImage{
   border-radius: 50%;
+  margin: 50px 70px 20px 70px;
+  border: 1px solid gainsboro;
+}
+
+.ProfileName{
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}
+
+.ProfileEmail{
+  text-align: center;
+  width: 100%;
+}
+
+.SideBarContent{
+  border: 1px solid gainsboro;
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.SideBarContentHeader{
+  width: 100%;
+  text-align: center;
+}
+
+.SideBarInputContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.SideBarInput{
+  flex: 1;
+}
+
+.statusUpdate{
+  width: 100%;
+  display: flex;  
+  justify-content: space-evenly ;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  gap: 10px;
+} 
+
+.MainContent{
+  flex:1;
+  height: 100%;
+  border: 1px solid gainsboro;
+  display: flex;
+  flex-direction: column;
+}
+
+.MessagesContainer{
+  height: 100%;
+  width: 100%;
+  padding-top: 20px;  
+}
+
+.MessageFormContainer{  
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;  
+  gap: 10px;
+}
+
+.responseFormTextbox{
+  padding: 10px;
+  width: 100%;
+}
+
+.note{
+  text-align: center;
+  width: 100%;
+  font-size: small;
+  color: #53c28b;
+}
+
+.submitBtn{
+  padding: 10px 20px;
+  background-color: #53c28b;
+  color: white;
+  cursor: pointer;
+}
+
+.submitBtn:hover{
+  box-shadow: 0px 0px 2px 1px rgba(220, 220, 220, 0.500) ;
+}
+
+.submitBtn:active{  
+  box-shadow: 0px 0px 2px 1px rgb(220, 220, 220) ;
+}
+
+.MessageRow{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 5px;  
+  padding-left: 20px; 
+  padding-right: 20px;
+}
+.MessageRowReverse{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.responseTime{
+  width: 100%;
+  text-align: center;
+  font-size: small;
+}
+
+.responseImage{
+  border-radius: 50%;
+}
+
+.response{
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.responseStatus{
+  text-align: center ;
+  width: 100%;
+  font-weight: bold;
+  border-top: 1px solid gainsboro;
+  padding-top: 20px;
 }
 
 .content{
   width: 100%;
   flex: 1;
    margin-right: 20px;
-  border: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
 }
 
 .form {
@@ -103,10 +214,12 @@
 
 .smallInput {
   width: 100px;
+  min-width: 100px;
 }
 
 .fullInput {
   flex: 1;
+  min-width: 100px;
 }
 
 .textareaContainer {
@@ -124,16 +237,9 @@
   padding: 20px;
   display: flex;
   flex-direction: row-reverse;
-  text-align: right;
   gap:20px;
   border-bottom: 1px solid rgba(220, 220, 220, 0.500);
 }
-
-.responseFormTextbox{
-  padding: 10px;
-  width: 100%;
-}
-
 
 .responseHeader {
   text-align: left;
@@ -190,76 +296,34 @@
   padding: 3px 10px;
 }
 
-.responseFormContainer{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 20px;
-}
-.submitBtn{
-  padding: 5px 10px;
-  background-color: #53c28b;
-  color: white;
-
-}
 
 
 
 
-@media (min-width: 0px) and (max-width: 600px) {
-  .vLine{
-    left: 50px;
+
+
+
+
+
+@media (min-width: 0px) and (max-width: 844px) {
+  .SideBar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-
+  .SideBarContent{
+    width: 90%;
+  }
+  .ProfileImage {
+    margin-left: auto;
+    margin-right: auto;
+  }
   .mainContainer {
     gap: 75px;
-  }
-
-  .content{
-    margin-top: 25px;
-    margin-left: 100px;
-   margin-right: 20px;
-   overflow: hidden;
-  }
-  
-    
-  .mark{ 
-    width: 100%;
-    flex: 0 0 80px;
-    padding: 20px 0px;
-    height: fit-content;
-    position: absolute;
-    transform: translateY(-65%);
-  }
-
-  .datetime{
-    font-size: small;
-    margin-left: 20px;
-    position: absolute;
     display: flex;
-    flex-direction: row;
-    gap: 10px;
-    left: 60px;
-    top:12px;
+    flex-direction: column;
   }
-
-  .hLine{
-    top: 30%;
-    left: 45px;
-    position: absolute;
-    background-color: gainsboro;
-    height: 15px;
-    width: 15px;
-    border: 1px solid gainsboro;
-    border-radius: 50%;
-  }
-
-
-}
-
-@media (min-width: 0px) and (max-width: 760px) {
-
   .inputContainer{
     display: flex;
     gap: 10px;
@@ -271,14 +335,12 @@
     gap: 10px;
     flex: 1;
   }
-
   .input {
     width: 100%;
     height: fit-content;
     padding: 3px 10px;
     min-width: 100px;
   }
-  
   .smallInput {
     width: 100%;
   }
@@ -287,6 +349,7 @@
     width: 100%;
   }
 }
+
 
 @media (min-width: 0px) and (max-width: 945px) {
   .responseFormContainer{
@@ -323,3 +386,35 @@
   }
   
 }
+
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+
+
+.btnSU{
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btnSU:active{
+  border: 1px solid rgba(220, 220, 220, 0.500);
+}
+
+.maCompleted{
+  background-color: #535ac2;
+  color: white;
+}
+
+.maCanceled{
+  background-color: #c25353;
+  color: white;
+}
+
+
+
+

@@ -39,6 +39,7 @@ const sortedData = data && !isLoading
         Rejected: 3,
         Canceled: 2,
         Completed: 2,
+        Advising: 1,
         Approved: 1,
         Pending: 0,
       };
@@ -50,6 +51,8 @@ const sortedData = data && !isLoading
       if (a.Status === 'Pending') {
         return a.createdAt.localeCompare(b.createdAt);
       } else if (a.Status === 'Approved') {
+        return b.createdAt.localeCompare(a.createdAt);
+      } if (a.Status === 'Advising') {
         return b.createdAt.localeCompare(a.createdAt);
       } else {
         // For Completed, Canceled, and Rejected, present first then to older
@@ -93,10 +96,11 @@ const sortedData = data && !isLoading
             <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Advising' ? styles.cadvising : ''}`} onClick={() => handleFilter('Advising')}>Advising</button>
           </div>
           <div className={styles.AppointmentsContainer}>
             {isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((appointment, index) => (
-              <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/login/authorized/'+Department+'/consultation/'+appointment._id) : null}>
+              <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed' || appointment.Status === 'Advising') ? router.push('/login/authorized/'+Department+'/consultation/'+appointment._id) : null}>
                 {appointment.Status === "Approved" && hasFalseViewedByClient(appointment.Responses) ? <div className={styles.dot}></div> : null}
                 <h4 className={styles.aTitle}>Name: <a className={styles.id}>{appointment.Name}</a></h4>
                 <p className={styles.aDate}>{appointment.createdAt}</p>

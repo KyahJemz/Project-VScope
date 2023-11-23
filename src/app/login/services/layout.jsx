@@ -12,12 +12,17 @@ const Layout = async ({ children }) => {
         return null;
     } else {
         if (session.user?.department) {
-            redirect('/login/authorized/'+session.user.department);
+            if (session.user.department === "Administrator") {
+                redirect('/login/administrator/');
+            } else {
+                redirect('/login/authorized/' + session.user.department);
+            }
             return null;
         } else {
             return children;
         }
     }     
+    
 
     redirect('/login');
     return null;

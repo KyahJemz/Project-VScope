@@ -86,7 +86,7 @@
 
 .ccompleted,
 .Completed {
-  cursor:not-allowed;
+  cursor: pointer;
   background-color: rgb(55, 64, 187);
 }
 
@@ -96,6 +96,11 @@
   background-color: rgb(165, 62, 62);
 }
 
+.cadvising
+.Advising{
+  cursor:pointer;
+  background-color: #295f44;
+}
 .cancelBtn{
   cursor: pointer;
   background-color: rgb(165, 62, 62);
@@ -139,6 +144,11 @@
 .status {
   margin-top: 20px;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .cbutton {
@@ -148,7 +158,6 @@
   border-radius: 5px;
   width: max-content;
   align-self: flex-start;
-  margin-right: 10px;
 }
 
 
@@ -156,3 +165,30 @@
   align-self: flex-start;
 }
 
+
+.dot{
+  background-color: red;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    height: 100%;
+  }
+  .mainTitle{
+    margin-left: 20px;
+  }
+
+
+}

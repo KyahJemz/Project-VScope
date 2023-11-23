@@ -10,6 +10,8 @@ import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
 
+import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
+
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
   const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -32,6 +34,27 @@ const Dashboard = ({ params }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+
+  const [isMaxContent, setIsMaxContent] = useState([]);
+
+  const toggleMaxContent = (index) => {
+	setIsMaxContent((prev) => {
+	  const newState = [...prev];
+	  newState[index] = !newState[index];
+	  return newState;
+	});
+  };
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationData, setConfirmationData] = useState({
+      title: '',
+      content: '',
+	  type: '',
+      formData: null,
+    });
+
+  
+
   function convertNewlines(text, toHTML = false) {
     if (toHTML) {
       return text.replace(/\n/g, '<br />');
@@ -39,6 +62,40 @@ const Dashboard = ({ params }) => {
       return text.replace(/<br \/>|<br\/>|<br>|<br\s\/>/g, '\n');
     }
   }
+
+  async function Action(e){
+	if (e.currentTarget.dataset.action === "edit") {
+
+		if(e.currentTarget.dataset.type === "Blogs") {
+			router.push('/login/authorized/'+Department+'/Blog/'+e.currentTarget.dataset.identification);
+		} else if(e.currentTarget.dataset.type === "Announcements") {
+			router.push('/login/authorized/'+Department+'/Announcement/'+e.currentTarget.dataset.identification);
+		} else if(e.currentTarget.dataset.type === "FAQ") {
+			router.push('/login/authorized/'+Department+'/FAQ/'+e.currentTarget.dataset.identification);
+		}
+	} 
+
+	if (e.currentTarget.dataset.action === "delete") {
+		const formData = new FormData();
+        formData.append("id", e.currentTarget.dataset.identification);
+
+		if(e.currentTarget.dataset.type === "Blogs") {
+			setConfirmationData({ title: "Delete?", type: e.currentTarget.dataset.type, content : "Do you want to proceed with this action?", formData});
+		} else if(e.currentTarget.dataset.type === "Announcements") {
+			setConfirmationData({ title: "Delete?", type: e.currentTarget.dataset.type, content : "Do you want to proceed with this action?", formData});
+		} else if(e.currentTarget.dataset.type === "FAQ") {
+			setConfirmationData({ title: "Delete?", type: e.currentTarget.dataset.type, content : "Do you want to proceed with this action?", formData});
+		}
+		setShowConfirmation(true);
+	}
+  }
+
+  const handleConfirmationCancel = () => {
+	setShowConfirmation(false);
+};
+
+
+
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -56,6 +113,25 @@ const Dashboard = ({ params }) => {
     `/api/faqs?department=${encodeURIComponent(Department)}`,
     fetcher
   );
+
+  const handleConfirmationYes = async () => {
+	let response = null;
+	try {
+	  setShowConfirmation(false);
+	  if(confirmationData.type === "Blogs") {
+		  response = await fetch("/api/blogs/delete", { method: "POST", body: confirmationData.formData });
+		  Blogsmutate();
+	  } else if(confirmationData.type === "Announcements") {
+		  response = await fetch("/api/announcements/delete", { method: "POST", body: confirmationData.formData });
+		  Announcementsmutate();
+	  } else if(confirmationData.type === "FAQ") {
+		  response = await fetch("/api/faqs/delete", { method: "POST", body: confirmationData.formData });
+		  FAQmutate();
+	  }
+	} catch (err) {
+		console.log(err);
+	}
+  };
 
   const sorted_Blogs = Blogs && !BlogsisLoading
 	? [...Blogs].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
@@ -83,6 +159,8 @@ const Dashboard = ({ params }) => {
 
   const [activeTab, setActiveTab] = useState('Announcements');
 
+	
+
   const BlogsCode = () => {
 		return ( <div>
 			{BlogsisLoading ? "Loading..." : sorted_Blogs?.map((data, index) => (
@@ -104,6 +182,10 @@ const Dashboard = ({ params }) => {
 								data.Department === "SDPC" ? "Student Development And Placement Center" : null}</p>
 							<p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
 						</div>
+						<div className={styles.Options}>
+							{session?.user?.role === 'Admin'? <button onClick={Action} data-action="edit" data-type="Blogs" data-identification={data._id} className={styles.Option}>Edit</button> : ''}  
+							{session?.user?.role === 'Admin'? <button onClick={Action} data-action="delete" data-type="Blogs" data-identification={data._id} className={styles.Option}>Delete</button> : ''}  
+						</div>
 					</div>
 					<div className={styles.itemBodyBlogs}>
 						{data?.Image && (
@@ -114,10 +196,10 @@ const Dashboard = ({ params }) => {
 								width={250}
 							/>
 						)}
-            <div className={styles.itemBodyContent}>
-              <p className={styles.itemTitle}>{data.Title}</p>
-              <p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
-            </div>
+						<div className={`${isMaxContent[index] ? styles.itemBodyMaxContent : styles.itemBodyContent}`}onClick={() => toggleMaxContent(index)}>
+							<p className={styles.itemTitle}>{data.Title}</p>
+							<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
+						</div>
 					</div>
 				</div>
 			))}
@@ -145,6 +227,10 @@ const Dashboard = ({ params }) => {
 								<p className={styles.faqContent} dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
 							</details>
 						</div>
+						<div className={styles.Options}>
+							{session?.user?.role === 'Admin'?<button onClick={Action} data-action="edit" data-type="FAQ" data-identification={data._id} className={styles.Option}>Edit</button>: ''}  
+							{session?.user?.role === 'Admin'?<button onClick={Action} data-action="delete" data-type="FAQ" data-identification={data._id} className={styles.Option}>Delete</button>: ''}  
+						</div>
 					</div>
 				))}
 			</div>
@@ -169,6 +255,10 @@ const Dashboard = ({ params }) => {
 							<p className={styles.itemDepartment}>{data.Department}</p>
 							<p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
 						</div>
+						<div className={styles.Options}>
+							{session?.user?.role === 'Admin'? <button onClick={Action} data-action="edit" data-type="Announcements" data-identification={data._id} className={styles.Option}>Edit</button> : ''}  
+							{session?.user?.role === 'Admin'? <button onClick={Action} data-action="delete" data-type="Announcements" data-identification={data._id} className={styles.Option}>Delete</button> : ''}  
+						</div>
 					</div>
 					<div className={styles.itemBody}>
 						<p className={styles.itemTitle}>{data.Title}</p>
@@ -189,6 +279,15 @@ if (status === 'loading') {
 
   return (
     <div className={styles.mainContainer}>
+		{showConfirmation && (
+            <ActionConfirmation
+                title={confirmationData.title}
+                content={confirmationData.content}
+                onYes={handleConfirmationYes}
+                onCancel={handleConfirmationCancel}
+            />
+        )}
+
     <div className={styles.mobileLayout}>
       <div className={styles.maintab}>
         <p className={`${activeTab === 'Blogs' ? styles.active : ''} ${styles.tabbutton}`}

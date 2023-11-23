@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import styles from './StarRatingStatic.module.css'; // Import your CSS file for styling
 
-const StarRatingStatic = ({ Email, blogId, averageRating }) => {
+const StarRatingStatic = ({ Email, blogId, averageRating, count}) => {
   const [hoveredRating, setHoveredRating] = useState(0);
 
   const stars = [1, 2, 3, 4, 5].map((star, index) => {
@@ -21,7 +21,7 @@ const StarRatingStatic = ({ Email, blogId, averageRating }) => {
   return (
     <div className={styles.starRatingContainer}>
         <div className={styles.starsContainer}>Ratings:&nbsp;&nbsp; {stars}</div>
-        <div className={styles.averageRating}>Average Rating: {averageRating}</div>
+        <div className={styles.averageRating}>Average rating of {averageRating} by {count} people.</div>
     </div>
   );
 };

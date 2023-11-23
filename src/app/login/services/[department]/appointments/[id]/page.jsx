@@ -10,6 +10,8 @@ import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
 
+import { Reports } from "@/models/Reports";
+
 // functn para sa Date Formatig
 const formatDate = (timestamp) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -28,6 +30,8 @@ const Form = ({params}) => {
     const Department = params.department;
     const AppointmentId = params.id;
     var GoogleImage = "";
+    var GoogleEmail = "tstemailk";
+    var CurrentMessageDate = "";
 
     if (status === 'authenticated'){
         GoogleImage = session.user.image;
@@ -458,13 +462,12 @@ const Form = ({params}) => {
         )
     }
 
-    const ResponseForm = ({data}) => {
+    const ResponseForm = () => {
         return (
-            <form className={styles.responseFormContainer} onSubmit={HandleResponseSubmit}>
-                <p>Your response/concern:</p>
+            <form className={styles.MessageFormContainer} onSubmit={HandleResponseSubmit}>
                 <input name="GoogleEmail" value={data.GoogleEmail} type="text" hidden readOnly/>
                 <input name="Name" value={data.Name} type="text" hidden readOnly/>
-                <textarea className={styles.responseFormTextbox} name="Response" rows="3" />
+                <textarea className={styles.responseFormTextbox} name="Response" rows="2" />
                 {ResponseUploading ? 
                     <button className={styles.submitBtn} disabled>Uploading...</button>
                 :
@@ -475,43 +478,155 @@ const Form = ({params}) => {
     }
 
     const Response = ({data,response}) => {
+        let ResponseDate = "";
+        let MessageDate = new Date(response.Timestamp).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'});
+
+            if (CurrentMessageDate === MessageDate){
+                ResponseDate = "";
+            } else {
+                ResponseDate = CurrentMessageDate;
+                CurrentMessageDate = MessageDate;
+            }
+
         return (
-            <div className={styles.responseContainer}>
-                <div className={
-                    response.Name === "Dental" ? styles.responseHeader : 
-                    response.Name === "Medical" ? styles.responseHeader :
-                    response.Name === "SDPC" ? styles.responseHeader :
-                    styles.responseHeaderReverse
-                }>
-                    <Image 
-                        className={styles.responseImage}
-                        src={
-                            response.Name === "Dental" ? Dental : 
-                            response.Name === "Medical" ? Medical :
-                            response.Name === "SDPC" ? SDPC :
-                            GoogleImage
-                        }
-                        alt=""
-                        width={50}
-                        height={50}
-                    />
-                    <div className={
-                        response.Name === "Dental" ? styles.responseData : 
-                        response.Name === "Medical" ? styles.responseData :
-                        response.Name === "SDPC" ? styles.responseData :
-                        styles.responseDataReverse
-                        }>
-                        <p className={styles.responseName}>{response.Name}</p>
-                        <p className={styles.responseEmail}>{response.GoogleEmail}</p>
+            <>  
+
+            <div className={styles.responseTime}>{ResponseDate}</div>
+
+            <div className={
+                response.Name === "Dental" ? styles.MessageRow : 
+                response.Name === "Medical" ? styles.MessageRow :
+                response.Name === "SDPC" ? styles.MessageRow :
+                styles.MessageRowReverse}>
+
+                <Image 
+                    title={
+                        new Date(data.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                        })
+                    }
+                    className={styles.responseImage}
+                    src={
+                        response.Name === "Dental" ? Dental : 
+                        response.Name === "Medical" ? Medical :
+                        response.Name === "SDPC" ? SDPC :
+                        data.GoogleImage
+                    }
+                    alt=""
+                    width={50}
+                    height={50}
+                />
+                
+                <div
+                    title={
+                        new Date(data.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                        })
+                    }
+                className={styles.response}>{response.Response}</div>
+                </div> 
+            </>
+        )
+    }
+
+    const SideBar = ({data}) => {
+
+        return <div className={styles.SideBar}>
+            <Image 
+                className={styles.ProfileImage}
+                src={Department === "Dental" ? Dental : 
+                Department === "Medical" ? Medical :
+                Department === "SDPC" ? SDPC  : ""}
+                alt="ProfileImage"
+                width={200}
+                height={200}
+            />
+            
+            <p className={styles.ProfileName}>{
+                Department === "Dental" ? "Dental Health Services" : 
+                Department === "Medical" ? "Medical Health Services" :
+                Department === "SDPC" ? "Student Development And Placement Center" : null}</p>
+            <p className={styles.ProfileEmail}>{}</p>
+
+            <form className={styles.SideBarContent}>
+                <p className={styles.SideBarContentHeader}>{Department} Report</p>
+                <div className={styles.SideBarInputContainer}>
+                    <p className={styles.SideBarInputLabel}>{Reports[Department]["Question1"]}</p>
+                    <input type="text" className={styles.SideBarInput} name="R1" id="" value={data.Report1} disabled readOnly/> 
+                </div>
+                <div className={styles.SideBarInputContainer}>
+                    <p className={styles.SideBarInputLabel}>{Reports[Department]["Question2"]}</p>
+                    <input type="text" className={styles.SideBarInput} name="R2" id="" value={data.Report2} disabled readOnly/>
+                </div>
+            </form>
+
+        </div>
+    }
+
+    const MainContent = ({data}) => {
+
+        return <div className={styles.MainContent}>
+            <div className={styles.MessagesContainer}>
+
+            {isLoading ? (
+                "Loading..."
+            ) : data && data?.Details ? (  
+                <div className={styles.row}>    
+                    <div className={styles.content}>
+                        {Department === "Medical" ? (
+                            data?.Details ? (
+                                <MedicalForm data={data.Details} />
+                            ) : (
+                                <MedicalRegistrationForm />
+                            )
+                        ) : Department === "Dental" ? (
+                                data?.Details ? (
+                                <DentalForm data={data.Details} />
+                            ) : (
+                                <DentalRegistrationForm />
+                            )
+                        ) : null}
                     </div>
                 </div>
-                <div className={
-                     response.Name === "Dental" ? styles.responseresponse : 
-                     response.Name === "Medical" ? styles.responseresponse :
-                     response.Name === "SDPC" ? styles.responseresponse :
-                    styles.responseresponseReverse}>{response.Response}</div>
+
+                ) : (
+                null
+            )}
+
+
+                {isLoading ? (
+                        ""
+                ) : data && data.Responses ? (
+                        data.Responses.map((response, index) => (
+                            <Response key={index} data={data} response={response} />
+                        ))
+                    ) : (
+                    <p></p>
+                )} 
+
             </div>
-        )
+
+            {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
+                <ResponseForm />
+            ) : (
+                <div className={styles.MessageFormContainer}>
+                    <div className={styles.responseStatus}>Marked as {data.Status}</div>
+                </div>
+            )}
+        </div>
     }
 
     const { data, mutate, error, isLoading } = useSWR(
@@ -599,166 +714,16 @@ const Form = ({params}) => {
 
     return (
         <div className={styles.mainContainer}>
-            <div className={styles.vLine}></div>
 
-            {isLoading ? (
-                "Loading..."
-            ) : Department != 'SDPC' ? (  
-                <div className={styles.row}>
-                    <div className={styles.mark}>
-                        <div className={styles.datetime}>
-                            <div className={styles.date}>
-                                {new Date(data.createdAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
-                            </div>
-                            <div className={styles.time}>
-                                {new Date(data.createdAt).toLocaleTimeString('en-US', {
-                                    hour: 'numeric',
-                                    minute: '2-digit'
-                                })}
-                            </div>
-                        </div>
-                        <div className={styles.hLine}></div>
-                    </div>
-                    <div className={styles.content}>
-                        {Department === "Medical" ? (
-                            data?.Details ? (
-                                <MedicalForm data={data.Details} />
-                            ) : (
-                                <MedicalRegistrationForm />
-                            )
-                        ) : Department === "Dental" ? (
-                                data?.Details ? (
-                                <DentalForm data={data.Details} />
-                            ) : (
-                                <DentalRegistrationForm />
-                            )
-                        ) : null}
-                    </div>
-                </div>
-
-                ) : (
-                <p></p>
-            )}
-
-            {isLoading ? "Loading..." : (
-                <div className={styles.row}>
-                    <div className={styles.mark}>
-                        <div className={styles.datetime}>
-                            <div className={styles.date}>
-                                {new Date(data.createdAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
-                            </div>
-                            <div className={styles.time}>
-                                {new Date(data.createdAt).toLocaleTimeString('en-US', {
-                                    hour: 'numeric',
-                                    minute: '2-digit'
-                                })}
-                            </div>
-                        </div>
-                        <div className={styles.hLine}></div>
-                    </div>
-                    <div className={styles.content}>
-                        <div className={styles.responseContainer}>
-                            <div className={styles.responseHeaderReverse}>
-                                <Image 
-                                    className={styles.responseImage}
-                                    src={data.GoogleImage}
-                                    alt=""
-                                    width={50}
-                                    height={50}
-                                />
-                                <div className={styles.responseDataReverse}>
-                                    <p className={styles.responseName}>{data.Name}</p>
-                                    <p className={styles.responseEmail}>{data.GoogleEmail}</p>
-                                </div>
-                            </div>
-                            <div className={styles.responseresponseReverse}>{data.Consern}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-        
-            {isLoading ? (
-                ""
-            ) : data && data.Responses ? (
-                    data.Responses.map((response, index) => (
-                        <div key={index} className={styles.row}>
-                            <div className={styles.mark}>
-                                <div className={styles.datetime}>
-                                    <div className={styles.date}>
-                                        {new Date(response.Timestamp).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric'
-                                        })}
-                                    </div>
-                                    <div className={styles.time}>
-                                        {new Date(response.Timestamp).toLocaleTimeString('en-US', {
-                                            hour: 'numeric',
-                                            minute: '2-digit'
-                                        })}
-                                    </div>
-                                </div>
-                                <div className={styles.hLine}></div>
-                            </div>
-                            <div className={styles.content}>
-                                <Response data={data} response={response} />
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                <p></p>
-            )}
-
-            {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
-                <div className={styles.row}> 
-                    <div className={styles.mark}>
-                        <div className={styles.datetime}>
-                            <div className={styles.date}>Create a response</div>
-                            <div className={styles.time}>-</div>
-                        </div>
-                        <div className={styles.hLine}></div>
-                    </div>
-                    <div className={styles.content}>
-                        <ResponseForm data={data} />
-                    </div>
-                </div>
-            ) : (
-                <div className={styles.row}> 
-                    <div className={styles.mark}>
-                        <div className={styles.datetime}>
-                            <div className={styles.date}>
-                                {new Date(data.updatedAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
-                            </div>
-                            <div className={styles.time}>
-                                {new Date(data.updatedAt).toLocaleTimeString('en-US', {
-                                    hour: 'numeric',
-                                    minute: '2-digit'
-                                })}
-                            </div>
-                        </div>
-                        <div className={styles.hLine}></div>
-                    </div>
-                    <div className={styles.content}>
-                        <div className={styles.responseresponse}> Marked as {data.Status}</div>
-                    </div>
-                </div>
-                )
-            }
-
-        </div>
+        {isLoading ? (
+            "Loading..."
+        ) : (
+            <>
+                <SideBar data={data}/>
+                <MainContent data={data}/>    
+            </>
+        )}
+    </div>
     );
 };
 

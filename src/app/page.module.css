@@ -161,7 +161,7 @@
   gap: 10px;
 }
 
-.itemBody {
+.itemBody { 
   border: 1px solid gainsboro;
   padding: 10px;
   display: flex;
@@ -175,6 +175,20 @@
   flex-direction: column;
   gap: 10px;
   flex: 1;
+  max-height: 250px;
+  overflow: hidden;
+  transition: 1s;
+  cursor: pointer;
+}
+
+.itemBodyMaxContent{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  transition: 1s;
+  cursor: pointer;
 }
 
 .itemFooterBlogs{

@@ -76,10 +76,11 @@ const Appointments = ({ params }) => {
     const formData = new FormData();
     formData.append("Name", Department);
     formData.append("Email", Email);
-    formData.append("Response", e.target[0].value);
+    formData.append("Response", e.target[0].value); 
     formData.append("AppointmentId", e.target[1].value);
     formData.append("Department", Department);
     formData.append("Status", Status);
+    formData.append("ReceiverGoogleEmail", e.target[2].value);
 
     setConfirmationData({ title: "Mark as "+Status, content : "Do you want to proceed with this action?", formData});
   };
@@ -125,6 +126,7 @@ const Appointments = ({ params }) => {
                             value={data._id}
                             hidden
                           />
+                          <input value={data.GoogleEmail} type="text" hidden/>
                           <button type="submit" disabled={Uploading} onClick={() => setStatus('Approved')} className={styles.abutton}>{Uploading ? "Uploading" : "Approve"}</button>
                           <button type="submit" disabled={Uploading} onClick={() => setStatus('Rejected')} className={styles.rbutton}>{Uploading ? "Uploading" : "Reject"}</button>
                       </form>

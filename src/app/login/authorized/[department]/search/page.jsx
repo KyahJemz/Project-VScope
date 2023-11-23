@@ -77,11 +77,12 @@ const Consultation = ({ params }) => {
             <button className={`${styles.cbutton} ${filterStatus === 'Completed' ? styles.ccompleted : ''}`} onClick={() => handleFilter('Completed')}>Completed</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Canceled' ? styles.ccanceled : ''}`} onClick={() => handleFilter('Canceled')}>Canceled</button>
             <button className={`${styles.cbutton} ${filterStatus === 'Rejected' ? styles.crejected : ''}`} onClick={() => handleFilter('Rejected')}>Rejected</button>
+            <button className={`${styles.cbutton} ${filterStatus === 'Advising' ? styles.cadvising : ''}`} onClick={() => handleFilter('Advising')}>Advising</button>
             <input className={styles.searchBar} type="search" placeholder="Search..." value={searchName} onChange={handleSearch}/>
           </div>
           <div className={styles.AppointmentsContainer}>
             {isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((appointment, index) => (
-              <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed') ? router.push('/login/authorized/'+Department+'/consultation/'+appointment._id) : null}>
+              <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed' || appointment.Status === 'Advising') ? router.push('/login/authorized/'+Department+'/consultation/'+appointment._id) : null}>
                 {appointment.Status === "Approved" && hasFalseViewedByClient(appointment.Responses) ? <div className={styles.dot}></div> : null}
                 <h4 className={styles.aTitle}>Name: <a className={styles.id}>{appointment.Name}</a></h4>
                 <p className={styles.aDate}>{appointment.createdAt}</p>

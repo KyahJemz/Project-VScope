@@ -29,6 +29,17 @@ const formatDate = (timestamp) => {
 const Home = () => {
 	const { data: session, status } = useSession();
 
+	const [isMaxContent, setIsMaxContent] = useState([]);
+
+	const toggleMaxContent = (index) => {
+	  // Use the index to toggle the state for the specific blog item
+	  setIsMaxContent((prev) => {
+		const newState = [...prev];
+		newState[index] = !newState[index];
+		return newState;
+	  });
+	};
+
 	function convertNewlines(text, toHTML = false) {
 			if (toHTML) {
 				return text.replace(/\n/g, '<br />');
@@ -109,6 +120,8 @@ const Home = () => {
 							<p className={styles.itemDate}>{formatDate(data?.createdAt)}</p>
 						</div>
 					</div>
+
+					
 					<div className={styles.itemBodyBlogs}>
 						{data?.Image && (
 							<Image
@@ -119,16 +132,18 @@ const Home = () => {
 								alt="Blog Image"
 							/>
 						)}
-						<div className={styles.itemBodyContent}>
+
+						<div className={`${isMaxContent[index] ? styles.itemBodyMaxContent : styles.itemBodyContent}`}onClick={() => toggleMaxContent(index)}>
 							<p className={styles.itemTitle}>{data.Title}</p>
 							<p dangerouslySetInnerHTML={{ __html: convertNewlines(data.Content, true) }} />
 						</div>
 					</div>
+
 					<div className={styles.itemFooterBlogs}>
 						{status === "authenticated" ? (
-							<StarRating Refresh={Blogsmutate} Email={session.user.email} blogId={data.Title} averageRating={data?.avgRating ?? 0} />
+							<StarRating Refresh={Blogsmutate} Email={session.user.email} blogId={data.Title} averageRating={data?.avgRating ?? 0} count={data?.totalRatings ?? 0}/>
 						) : (
-							<StarRatingStatic Email={null} blogId={data.Title} averageRating={data?.avgRating ?? 0} />
+							<StarRatingStatic Email={null} blogId={data.Title} averageRating={data?.avgRating ?? 0} count={data?.totalRatings ?? 0}/>
 						)}
 					</div>
 				</div>
@@ -198,7 +213,7 @@ const Home = () => {
 			))}
 		</div>)
 	}
-
+					
 	return (
 		<div className={styles.mainContainer}>
 			<div className={styles.mobileLayout}>

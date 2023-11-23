@@ -5,6 +5,19 @@ import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 import { encryptText, decryptText } from "@/utils/cryptojs";
 
+import Defaults from '@/models/Defaults';
+import sendMail from '@/app/api/sendMail/route.js';
+
+async function sendEmail({ to, subject, text }) {
+  try {
+    await sendMail(to, subject, text);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+}
+
+
 export const POST = async (request) => {
     if (request.method === 'POST') {
         const body = await request.formData();
@@ -93,6 +106,30 @@ export const POST = async (request) => {
   
         if (!appointment) {
           return new NextResponse('Appointment not found', { status: 404 });
+        }
+
+        const currentTimestamp = Date.now();
+        const currentDate = new Date(currentTimestamp);
+        const formattedDate = currentDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+        });
+
+        if (Status === "Approved"){
+            const to = body.get("ReceiverGoogleEmail");
+            const subject = "Appointment Request Status";
+            const text = "We appreciate your appointment request via VScope. We are pleased to inform you that your appointment has been 'Approved' for "+formattedDate+".\n\nIf you have any further questions or need to reschedule, please contact us through our system.\n\n";
+            await sendEmail({to,subject,text});
+
+        } else if (Status === "Rejected") {
+            const to = body.get("ReceiverGoogleEmail");
+            const subject = "Appointment Request Status";
+            const text = "Thank you for using VScope for your appointment request. Unfortunately, we regret to inform you that your appointment request for "+formattedDate+" has been 'Rejected'.\n\nIf you have any concerns or would like further clarification, please feel free to reach out to us.\n\n";
+            await sendEmail({to,subject,text});
         }
 
         return new NextResponse('Success', { status: 200 });

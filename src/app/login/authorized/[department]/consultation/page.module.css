@@ -17,6 +17,8 @@
   height: 100%;
 }
 
+.mainContent
+
 
 .container > div {
   width: 100%;
@@ -98,6 +100,12 @@
 .Canceled {
   cursor:not-allowed;
   background-color: rgb(165, 62, 62);
+}
+
+.cadvising,
+.Advising {
+  cursor:pointer;
+  background-color: #96a59d;
 }
 
 .call{
