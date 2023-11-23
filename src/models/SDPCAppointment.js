@@ -41,10 +41,10 @@ const postSchema = new Schema(
       required: true,
     },
     Report1: {
-      type: Array,
+      type: String,
     },
     Report2: {
-      type: Array,
+      type: String,
     },
     Responses: {
       type: Array,

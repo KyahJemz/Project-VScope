@@ -7,6 +7,8 @@ import Image from "next/image";
 
 import { Reports } from "@/models/Reports";
 
+import { useRouter } from "next/navigation";
+
 import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
@@ -21,6 +23,20 @@ const Form = ({params}) => {
     var GoogleEmail = "";
     var CurrentMessageDate = "";
 
+    const router = useRouter();
+    
+    const formatDate = (timestamp) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+      
+        const hours = new Date(timestamp).getHours();
+        const minutes = new Date(timestamp).getMinutes();
+        const amOrPm = hours >= 12 ? 'pm' : 'am';
+        const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
+      
+        return `${formattedDate} ${formattedTime}`;
+    };
+    
     const [DetailsUploading, setDetailsUploading] = useState(false);
     const [ReportUploading, setReportUploading] = useState(false);
     const [ResponseUploading, setResponseUploading] = useState(false);
@@ -360,6 +376,8 @@ const Form = ({params}) => {
 
             <form className={styles.SideBarContent} onSubmit={HandleReportUpdate}>
                 <p className={styles.SideBarContentHeader}>{Department} Report</p>
+
+
                 <div className={styles.SideBarInputContainer}>
                     <p className={styles.SideBarInputLabel}>{Reports[Department]["Question1"]}</p>
                     <select className={styles.SideBarInput} name="R1" id="" value={data.Report1} onChange={(e) => HandleReportUpdate(e, "1")}> 
@@ -369,6 +387,8 @@ const Form = ({params}) => {
                         ))}
                     </select>
                 </div>
+
+
                 <div className={styles.SideBarInputContainer}>
                     <p className={styles.SideBarInputLabel}>{Reports[Department]["Question2"]}</p>
                     <select className={styles.SideBarInput} name="R2" id="" value={data.Report2} onChange={(e) => HandleReportUpdate(e, "2")}>
@@ -378,6 +398,7 @@ const Form = ({params}) => {
                         ))}
                     </select>
                 </div>
+
                 {ReportUploading ? (
                     <p className={styles.note}>Updating...</p>
                 ) : (
@@ -409,7 +430,20 @@ const Form = ({params}) => {
                         Mark as Completed
                     </button>
                 </div>
-            )}      
+            )}   
+
+            <div className={styles.RecentRecordsContainer}>
+                <p>Recent Appointments</p>
+                {recentIsLoading ? "Loading..." : sortedRecentData.length && sortedRecentData.length === 0 ? "No appointments" : sortedRecentData.map((appointment, index) => (
+                    <div key={index} className={`${styles.appointmentListItem} ${styles[appointment.Status]}`}  onClick={() => (appointment.Status === 'Approved' || appointment.Status === 'Completed' || appointment.Status === 'Advising') ? router.push('/login/authorized/'+Department+'/consultation/'+appointment._id) : null}>
+                        {appointment.Status === "Approved" && hasFalseViewedByClient(appointment.Responses) ? <div className={styles.dot}></div> : null}
+                        <p className={styles.aTitle}>Appointment #: <a className={styles.id}>{appointment._id}</a> {appointment.Status === 'Pending' ? <button className={styles.cancelBtn} onClick={()=> HandleCancelBtn(appointment._id)}>Cancel</button> : null}</p>
+                        <p className={styles.aDate}>{formatDate(appointment.createdAt)}</p>
+                        <p className={styles.aStatus}>Status: {appointment.Status}</p>
+                    </div>
+                ))}
+                
+            </div>
 
         </div>
     }
@@ -466,6 +500,22 @@ const Form = ({params}) => {
         fetcher
     );
 
+    const { data: recentData, mutate: recentMutate, error: recentError, isLoading: recentIsLoading } = useSWR(
+        !isLoading ? `/api/appointments?GoogleEmail=${encodeURIComponent(data?.GoogleEmail)}&Department=${encodeURIComponent(Department)}` : null,
+        fetcher
+    );
+
+    const sortedRecentData = recentData?.sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return dateB - dateA; // Descending order, change to dateA - dateB for ascending
+      });
+
+    if(!recentIsLoading) {
+        console.log(recentData);
+
+    }
+    
     const handleBeforeUnload = () => {
         const formData = new FormData();
         formData.append('Department', Department);

@@ -12,11 +12,15 @@
 
 .SideBar{
   border: 1px solid gainsboro;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
 }
 
 .ProfileImage{
   border-radius: 50%;
-  margin: 50px 70px 20px 70px;
+  margin-top: 50px;
+  margin-bottom: 10px;
   border: 1px solid gainsboro;
 }
 
@@ -38,6 +42,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 90%;
 }
 
 .SideBarContentHeader{
@@ -424,3 +429,56 @@
   color: black;
 }
 
+.appointmentListItem{
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.aDate{
+  font-style: italic;
+}
+
+.aStatus{
+  font-weight: bold;
+}
+
+.RecentRecordsContainer{
+  padding: 10px;
+}
+
+.capproved,
+.Approved {
+  cursor: pointer;
+  background-color: #53c28b;
+}
+
+.crejected,
+.Rejected {
+  cursor:not-allowed;
+  background-color: rgb(165, 62, 62);
+}
+
+.cpending,
+.Pending {
+  cursor:not-allowed;
+  background-color: rgb(199, 199, 78);
+}
+
+.ccompleted,
+.Completed {
+  cursor:pointer;
+  background-color: rgb(55, 64, 187);
+}
+
+.ccanceled,
+.Canceled {
+  cursor:not-allowed;
+  background-color: rgb(165, 62, 62);
+}
+
+.cadvising,
+.Advising {
+  cursor:pointer;
+  background-color: #96a59d;
+}

@@ -451,13 +451,7 @@ const Form = ({params}) => {
                     </div>
                 </div> 
 
-                <div className={styles.formRow}>
-                    {DetailsUploading ? 
-                        <button className={styles.submitBtn} disabled>Uploading...</button>
-                        :
-                        <button className={styles.submitBtn}>Save Details</button>
-                    } 
-                </div> 
+
             </form>
         )
     }
@@ -576,6 +570,8 @@ const Form = ({params}) => {
         </div>
     }
 
+    
+
     const MainContent = ({data}) => {
 
         return <div className={styles.MainContent}>
@@ -583,7 +579,7 @@ const Form = ({params}) => {
 
             {isLoading ? (
                 "Loading..."
-            ) : data && data?.Details ? (  
+            ) : data ? (  
                 <div className={styles.row}>    
                     <div className={styles.content}>
                         {Department === "Medical" ? (
@@ -633,6 +629,11 @@ const Form = ({params}) => {
         `/api/appointments/GET_Details?department=${encodeURIComponent(Department)}&id=${encodeURIComponent(AppointmentId)}`,
         fetcher
     );
+
+    if (!isLoading){
+        console.log(data);
+    }
+   
 
     const HandleDetailsSubmit = async (e) => {
         e.preventDefault();

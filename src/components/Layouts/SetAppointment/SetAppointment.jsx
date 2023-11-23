@@ -188,8 +188,7 @@ const SetAppointment = ({req}) => {
                             <h5 className={styles.aStatus}>Status: {appointment.Status}</h5>
                             <p className={styles.aConsern}>{appointment.Consern}</p>
                         </div>
-                    ))
-                    }
+                    ))}
                 </div>
 
                 <form className={styles.formContainer} onSubmit={handleSubmit}>
