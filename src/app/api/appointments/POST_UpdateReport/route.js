@@ -46,8 +46,7 @@ export const POST = async (request) => {
               );
             }
 
-            
-
+          
               return new NextResponse("Success", { status: 200 });
             } catch (err) {
               console.error("Database Error:", err);
