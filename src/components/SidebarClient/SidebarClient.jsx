@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import styles from "./Sidebar.module.css";
+import styles from "./SidebarClient.module.css";
 import { useSession } from "next-auth/react";
 
 const Sidebar = ({department}) => {
@@ -10,22 +10,32 @@ const Sidebar = ({department}) => {
   const ManagementLinks = [
     {
       id: 1,
-      title: "Dashboard",
+      title: "DASHBOARD",
       url: "/login/authorized/"+department,
     },
     {
       id: 2,
-      title: "Appointments",
+      title: "APPOINTMENTS",
       url: "/login/authorized/"+department+"/appointments",
     },
     {
       id: 3,
-      title: "Consultation",
+      title: "e-CARE",
       url: "/login/authorized/"+department+"/consultation",
     },
     {
       id: 4,
-      title: "Search",
+      title: "RECORDS",
+      url: "/login/authorized/"+department+"/search",
+    },
+    {
+      id: 5,
+      title: "REPORTS",
+      url: "/login/authorized/"+department+"/search",
+    },
+    {
+      id: 6,
+      title: "MANAGEMENT",
       url: "/login/authorized/"+department+"/search",
     },
   ];
@@ -37,6 +47,8 @@ const Sidebar = ({department}) => {
       url: "/login/authorized/"+department+"/analytics",
     }
   ];
+
+
   
   return (
     <div className={styles.container}>

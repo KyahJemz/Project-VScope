@@ -1,11 +1,9 @@
-
-import Sidebar from "@/components/sidebar/Sidebar";
-
+import SidebarDepartment from '@/components/SidebarDepartment';
 
 export default function RootLayout(prop) {
   return (
     <>
-        <Sidebar department={prop.params.department}/>
+        <SidebarDepartment department={prop.params.department}/>
         {prop.children}
     </>
   );

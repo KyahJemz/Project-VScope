@@ -3,7 +3,6 @@ import styles from "./page.module.css";
 import Link from "next/link";
 
 const Services = () => {
-
     return (
       <div className={styles.container}>
         <h3 className={styles.mainTitle}>Services</h3>
