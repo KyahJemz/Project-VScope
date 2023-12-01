@@ -33,6 +33,8 @@ const ecare = ({ params }) => {
     
   return (
     <div className={styles.mainContainer}>
+      <h1>{Department}</h1>
+      <h3 className={styles.title}>e-CARE</h3>
       
      
     </div>

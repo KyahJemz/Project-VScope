@@ -1,4 +1,4 @@
-import SidebarDepartment from '@/components/SidebarDepartment';
+import SidebarDepartment from '@/components/SidebarDepartment/SidebarDepartment';
 
 export default function RootLayout(prop) {
   return (

@@ -6,9 +6,8 @@ export const GET = async (request) => {
   try {
     await connect();
 
-    const departmentsToFetch = ['Dental', 'SDPC', 'Medical'];
-
-    const results = await Accounts.find({ Department: { $in: departmentsToFetch } });
+    const results = await Accounts.find({});
+    
     console.log(results.length);
     return new NextResponse(JSON.stringify(results), { status: 200 });
   } catch (err) {

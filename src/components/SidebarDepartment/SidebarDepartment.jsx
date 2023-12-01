@@ -43,8 +43,8 @@ const Sidebar = ({department}) => {
   const AdminLinks = [
     {
       id: 4,
-      title: "Analytics",
-      url: "/login/authorized/"+department+"/analytics",
+      title: "???",
+      url: "/login/authorized/"+department,
     }
   ];
   
