@@ -6,6 +6,12 @@
   flex: 1;
 }
 
+.selectTitle {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .mainContainer{
   margin-top: 40px;
   display: grid;

@@ -19,61 +19,49 @@ const Administrator = () => {
 
 	const router = useRouter();
 
-	const formatDate = (timestamp) => {
-		const options = { year: 'numeric', month: 'long', day: 'numeric' };
-		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
-	
-		const hours = new Date(timestamp).getHours();
-		const minutes = new Date(timestamp).getMinutes();
-		const amOrPm = hours >= 12 ? 'pm' : 'am';
-		const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
-	
-		return `${formattedDate} ${formattedTime}`;
-	};
-
 	const handleEdit = async (accountId) => {
 		setUpdating(false);
 		setId(accountId);
 		try {
-		const formData = new FormData();
-		formData.append("id", accountId);
-	
-		const response = await fetch("/api/accounts/find", {
-			method: "POST",
-			body: formData,
-		});
-	
-		if (response.ok) {
-			const data = await response.json();
-			setEditValue(data);
-			setUpdating(true);
-			console.log("Account find successful");
-		} else {
-			console.log("Failed to find account");
-		}
+			const formData = new FormData();
+			formData.append("id", accountId);
+		
+			const response = await fetch("/api/accounts/find", {
+				method: "POST",
+				body: formData,
+			});
+		
+			if (response.ok) {
+				const data = await response.json();
+				setEditValue(data);
+				setUpdating(true);
+				console.log("Success");
+			} else {
+				console.log("Failed");
+			}
 		} catch (err) {
-		console.log(err);
+			console.log(err);
 		}
 	};
 
 	const handleDelete = async (accountId) => {
 		try {
-		const formData = new FormData();
-		formData.append("id", accountId);
-	
-		const response = await fetch("/api/accounts/delete", {
-			method: "POST",
-			body: formData,
-		});
-	
-		if (response.ok) {
-			console.log("Account deleted successfully");
-			mutate();
-		} else {
-			console.log("Failed to delete account");
-		}
+			const formData = new FormData();
+			formData.append("id", accountId);
+		
+			const response = await fetch("/api/accounts/delete", {
+				method: "POST",
+				body: formData,
+			});
+		
+			if (response.ok) {
+				console.log("Success");
+				mutate();
+			} else {
+				console.log("Failed");
+			}	
 		} catch (err) {
-		console.log(err);
+			console.log(err);
 		}
 	};
 
@@ -98,7 +86,7 @@ const Administrator = () => {
 
 			if (response.ok) {
 				setUploading(false);
-				console.log("Complete");
+				console.log("Success");
 				mutate(); 
 			} else {
 				setUploading(false);
@@ -115,7 +103,7 @@ const Administrator = () => {
 		const Role = e.target[1].value;
 
 		try {
-		setUploadingUpdate(true);
+			setUploadingUpdate(true);
 			const formData = new FormData();
 			formData.append("id", id);
 			formData.append("Gmail", Gmail);
@@ -130,11 +118,11 @@ const Administrator = () => {
 			e.target.reset();
 
 			if (response.ok) {
-			setUploadingUpdate(false);
+				setUploadingUpdate(false);
 				console.log("Complete");
 				mutate(); // mag refresh to
 			} else {
-			setUploadingUpdate(false);
+				setUploadingUpdate(false);
 				console.log("Failed");
 			}
 		} catch (err) {
@@ -155,10 +143,6 @@ const Administrator = () => {
 		setFilterRole(role);
 	};
 
-	if (!isLoading) {
-		console.log(data);
-	}
-
 	const filteredData = data?.filter((account) => {
 		if (account.Role === "Management" || account.Role === "Admin" || account.Department === "Administrator") {
 		  	return false;
@@ -175,7 +159,11 @@ const Administrator = () => {
     	return (
 			<>
 				<h3 className={styles.mainTitle}>Administrator</h3>
-				<h3 className={styles.selectTitle}>Manage accounts below: Clients</h3>
+				<div className={styles.selectTitle}>
+					<span>Manage accounts:</span>
+					<button className={styles.cbutton} onClick={() => router.push('/login/administrator/departments')}>Management</button>
+					<button className={`${styles.cbutton} ${styles.call}`} onClick={() => router.push('/login/administrator/clients')}>Clients</button>
+				</div>
 
           		<div className={styles.mainContainer}>
 
