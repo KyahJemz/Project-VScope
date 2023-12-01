@@ -18,54 +18,50 @@ export const authOptions = {
     async signIn(user, account, profile) {
         const { email: GoogleEmail, id: GoogleId, image: GoogleImage, name: GoogleName } = user.user;
         const { given_name: GoogleFirstname, family_name: GoogleLastname } = user.profile;
-
-        if (user.account.provider === 'google') {
-          try {
-            await connect();
-            const results = await Accounts.findOne({ GoogleEmail });
-            if (results != null) {
-              console.log("--NEXTAUTH--", "Management / Admin");
-              return true
-            }
-          } catch (err) {
-              console.log(err);
-              return false;
-          }
-        }
     
-        if (user.account.provider === 'google' && user.profile.hd === 'sscr.edu') {
+        if (user.account.provider === 'google') {
+
           try {
+
             await connect();
+
             const results = await Accounts.findOne({ GoogleEmail });
+
             if (results != null) {
               console.log("--NEXTAUTH--", "Old Client");
-              return true;
-            } else {
-              console.log("--NEXTAUTH--", "New Client");
+
               try {
-                const newPost = new Accounts({
-                  GoogleId: encryptText(GoogleId),
-                  GoogleEmail: GoogleEmail,
-                  GoogleImage: encryptText(GoogleImage),
-                  GoogleName: encryptText(GoogleName),
-                  GoogleFirstname: encryptText(GoogleFirstname),
-                  GoogleLastname: encryptText(GoogleLastname),
-                  Role: "Client"
-                });
-                await newPost.save();
-          
+                await Accounts.updateOne(
+                  { GoogleEmail },
+                  {
+                    $set: {
+                      GoogleId: encryptText(GoogleId),
+                      GoogleImage: encryptText(GoogleImage),
+                      GoogleName: encryptText(GoogleName),
+                      GoogleFirstname: encryptText(GoogleFirstname),
+                      GoogleLastname: encryptText(GoogleLastname),
+                    },
+                  }
+                );
+
                 return true;
               } catch (err) {
                 console.log(err);
                 return false;
               }
+
+            } else {
+              console.log("--NEXTAUTH--", "New Client");
+              return false;
             }
+
           } catch (err) {
             console.log(err);
             return false;
           }
+        } else {
+          return false;
         }
-        return false;
       },
       async session({ session, token }) {
         try {

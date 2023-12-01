@@ -11,16 +11,31 @@ export const POST = async (request) => {
       const Department = body.get("Department");
 
       await connect();
-      const newAccount = await Accounts.create({
-        GoogleId: "-",
-        GoogleImage: "-",
-        GoogleName: "-",
-        GoogleFirstname: "-",
-        GoogleLastname: "-",
-        GoogleEmail,
-        Role,
-        Department,
-      });
+
+      console.log(Department === "");
+       if (Department === "") {
+        const newAccount = await Accounts.create({
+          GoogleId: "-",
+          GoogleImage: "-",
+          GoogleName: "-",
+          GoogleFirstname: "-",
+          GoogleLastname: "-",
+          GoogleEmail,
+          Role,
+        });
+       } else {
+        const newAccount = await Accounts.create({
+          GoogleId: "-",
+          GoogleImage: "-",
+          GoogleName: "-",
+          GoogleFirstname: "-",
+          GoogleLastname: "-",
+          GoogleEmail,
+          Role,
+          Department,
+        });
+       }
+      
 
       return new NextResponse('Success', { status: 200 });
     } catch (err) {
