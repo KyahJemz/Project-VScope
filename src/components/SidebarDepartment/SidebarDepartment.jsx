@@ -23,29 +23,24 @@ const Sidebar = ({department}) => {
       title: "e-CARE",
       url: "/login/authorized/"+department+"/ecare",
     },
-    {
-      id: 4,
-      title: "RECORDS",
-      url: "/login/authorized/"+department+"/records",
-    },
-    {
-      id: 5,
-      title: "REPORTS",
-      url: "/login/authorized/"+department+"/reports",
-    },
-    {
-      id: 6,
-      title: "MANAGEMENT",
-      url: "/login/authorized/"+department+"/management",
-    },
   ];
   
   const AdminLinks = [
     {
-      id: 4,
-      title: "???",
-      url: "/login/authorized/"+department,
-    }
+      id: 1,
+      title: "RECORDS",
+      url: "/login/authorized/"+department+"/records",
+    },
+    {
+      id: 2,
+      title: "REPORTS",
+      url: "/login/authorized/"+department+"/reports",
+    },
+    {
+      id: 3,
+      title: "MANAGEMENT",
+      url: "/login/authorized/"+department+"/management",
+    },
   ];
   
   return (

@@ -1,0 +1,127 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: fit-content;
+  width: 100%;
+  border: 2px solid #53c28b;
+  overflow: hidden;
+}
+
+.CalendarTop{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 30%;
+  background-color: #53c28b;
+  
+}
+
+.Months{
+  text-align: center;
+  padding: 20px;
+  font-size: 1.8rem;
+  background-color: transparent;
+  border: 1px solid gainsboro;
+  letter-spacing: 5px;
+  color: white;
+}
+
+.Month{
+  color: black;
+  font-size: 1rem;
+}
+
+.Years{
+  text-align: center;
+  padding: 20px;
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: 1px solid gainsboro;
+  letter-spacing: 5px;
+  color: white;
+}
+
+.Year{
+  color: black;
+  font-size: 1rem;  
+}
+
+.Weeks {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
+  text-align: center; 
+  border-bottom: 2px solid #53c28b;
+}
+
+.Week {
+  padding: 10px;
+  border: 1px solid gainsboro;
+  font-size: 1em;
+}
+
+.Days {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-row: 1fr 1fr 1fr 1fr 1fr 1fr;
+  flex: 1;
+  width: 100%;
+}
+
+.Day {
+  border: 1px solid gainsboro;
+  cursor: pointer;
+  aspect-ratio: 1/1;
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+}
+
+.Day:hover {
+  background-color: gainsboro;
+  color: black;
+}
+
+.date{
+  font-weight: bold;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+}
+
+.selectedDate{
+  border: 1px solid black;
+  background-color: #53c28b;
+  color: white;
+}
+
+.sunday {
+  cursor: not-allowed;
+  color: red;
+}
+
+.sunday:hover {
+  cursor: not-allowed;
+  color: red;
+}
+
+
+.time{
+  font-size: 0.5em;
+  text-align: center;
+}
+
+.time.notavailable{
+  background-color: rgba(255, 0, 0, 0.5);
+  color: white;
+}
+
+.time.available{
+  background-color: rgba(0, 128, 0, 0.5);
+  color: white;
+}
+
+
+@media (max-width: 640px) {
+ 
+}
