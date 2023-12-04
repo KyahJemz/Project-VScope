@@ -1,6 +1,54 @@
 .mainContainer {
   flex: 1;
+  display: grid;  
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
 }
+
+/* LAYOUT */
+
+.MiniNav{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 20px;
+  border: 1px solid gainsboro;
+}
+
+.MiniNavBot,
+.MiniNavTop{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.MiniNavButton{
+  text-align: center;
+  padding: 5px 20px;
+  background-color: gainsboro;
+  box-shadow: 0px 0px 2px 2px gainsboro;
+}
+
+.MiniNavButton:hover{
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.MiniNavButton:active{
+  box-shadow: 0px 0px 2px 2px #69c253;
+}
+
+.MiniNavButton.active{
+  background-color: #69c253;
+  color: white;
+}
+
+.MiniNavBot:last-child{
+  font-size: 0.8rem;
+}
+
+/* CONTENT */
+
 
 .container {
   display: flex;
