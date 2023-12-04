@@ -96,7 +96,7 @@ const Calendar = () => {
 								<p className={`${styles.time} ${styles.notavailable}`}>-</p>
 								<p className={`${styles.time} ${styles.notavailable}`}>-</p> */}
 							</>
-						: ""}
+						: <p className={styles.sunday}>{}</p>  }
 					</div>
 				);
 			})}
