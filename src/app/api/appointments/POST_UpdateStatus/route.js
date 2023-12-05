@@ -4,7 +4,6 @@ import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 
-import Defaults from '@/models/Defaults';
 import sendMail from '@/app/api/sendMail/route.js';
 
 async function sendEmail({ to, subject, text }) {
@@ -51,23 +50,50 @@ export const POST = async (request) => {
           return new NextResponse('Appointment not found', { status: 404 });
         }
 
-        if (Status === "Completed"){
-          const to = Gmail;
-          const subject = "Appointment Status marked as Completed";
-          const text = "We are pleased to inform you that your appointment status has been marked as complete in the VScope system. You are now clear to proceed to the school and collect your health certificate.\n\nIf you have any questions or need further assistance, please do not hesitate to contact us.\n\n";
-          await sendEmail({to,subject,text});
+        const currentTimestamp = Date.now();
+        const currentDate = new Date(currentTimestamp);
+        const formattedDate = currentDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+        });
 
-        } else if (Status === "Canceled") {
-          const to = Gmail;
-          const subject = "Appointment Status marked as Canceled";
-          const text = "We regret to inform you that your status status has been marked as cancelled in the VScope system. Kindly contact the service department at your earliest convenience to address any concerns related to your health status. \n\nIf you have any questions or need further assistance, please do not hesitate to reach out. \n\n";
-          await sendEmail({to,subject,text});
+        if (Gmail === "" || Gmail === null){
 
-        } else if (Status === "Advising") {
-          const to = Gmail;
-          const subject = "Appointment Status marked as Advising";
-          const text = "We are pleased to inform you that your appointment status has been marked as for advising in the VScope system. \n\nIf you have any questions or need further assistance, please do not hesitate to contact us.\n\n";
-          await sendEmail({to,subject,text});
+        } else {
+          if (Status === "Completed"){
+            const to = Gmail;
+            const subject = "Appointment Status";
+            const text = "We are pleased to inform you that your appointment status has been marked as complete in the VScope system. You are now clear to proceed to the school and collect your health certificate.\n\nIf you have any questions or need further assistance, please do not hesitate to contact us.\n\n";
+            await sendEmail({to,subject,text});
+
+          } else if (Status === "Canceled") {
+            const to = Gmail;
+            const subject = "Appointment Status";
+            const text = "We regret to inform you that your status status has been marked as cancelled in the VScope system. Kindly contact the service department at your earliest convenience to address any concerns related to your health status. \n\nIf you have any questions or need further assistance, please do not hesitate to reach out. \n\n";
+            await sendEmail({to,subject,text});
+
+          } else if (Status === "Advising") {
+            const to = Gmail;
+            const subject = "Appointment Status";
+            const text = "We are pleased to inform you that your appointment status has been marked as for advising in the VScope system. \n\nIf you have any questions or need further assistance, please do not hesitate to contact us.\n\n";
+            await sendEmail({to,subject,text});
+
+          } else if (Status === "Approved"){
+            const to = Gmail;
+            const subject = "Appointment Request Status";
+            const text = "We appreciate your appointment request via VScope. We are pleased to inform you that your appointment has been 'Approved' for "+formattedDate+".\n\nIf you have any further questions or need to reschedule, please contact us through our system.\n\n";
+            await sendEmail({to,subject,text});
+
+          } else if (Status === "Rejected") {
+              const to = Gmail;
+              const subject = "Appointment Request Status";
+              const text = "Thank you for using VScope for your appointment request. Unfortunately, we regret to inform you that your appointment request for "+formattedDate+" has been 'Rejected'.\n\nIf you have any concerns or would like further clarification, please feel free to reach out to us.\n\n";
+              await sendEmail({to,subject,text});
+          }
         }
 
         return new NextResponse('Success', { status: 200 });

@@ -6,23 +6,15 @@ import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
 
 
 const Pending = ({ params }) => {
 	const Department = params.department;
-	const Status = "Pending";
+	const Status = "Rejected";
 	const router = useRouter();
 
 	const [filter,setFilter] = useState("");
 	const [appointmentId,setAppintmentId] = useState("");
-	const [isApproving,setIsApproving] = useState(false);
-	const [isReScheduling,setIsReScheduling] = useState(false);
-	const [isUpdatingDetails,setUpdatingDetails] = useState(false);
-	const [selectedDate,setselectedDate] = useState(null);
-	const [selectedTime,setselectedTime] = useState(null);
 
 	const [showConfirmation,setShowConfirmation] = useState(false);
 	const [ConfirmationData, setConfirmationData] = useState({
@@ -31,8 +23,6 @@ const Pending = ({ params }) => {
 		onYes: () => {},
 		onCancel: () => {},
 	});
-
-	const [showReSchedulePanel,setShowReSchedulePanel] = useState(false);
 
 	const formatDate = (timestamp) => {
 		const options = { month: 'short', day: 'numeric', year: 'numeric' };
@@ -116,86 +106,6 @@ const Pending = ({ params }) => {
 		}
 	};
 
-	const UpdateApprove = async (e) => {
-		try {
-			setShowConfirmation(false);
-            setIsApproving(true);
-            
-            const formData = new FormData(); 
-            formData.append("AppointmentId", appointmentId);
-			formData.append("Department", Department);
-            formData.append("Status", "Approved");
-
-            const response = await fetch("/api/appointments/POST_UpdateStatus", {
-                method: "POST",
-                body: formData,
-            });
-        
-            setIsApproving(false);
-
-            mutate(); 
-           
-            if (response.ok) {
-                console.log("Complete");
-            } else {
-                console.log("Failed");
-            }
-        } catch (err) {
-            console.log(err);
-        }
-	}
-
-	const OnApprove = (e) => {
-		setConfirmationData({
-			title: "Approve Confirmation",
-			content: "Please confirm your action",
-			onYes: () => UpdateApprove(e),
-			onCancel: () => setShowConfirmation(false),
-		});
-		setShowConfirmation(true);
-	}
-
-	const OnReSchedule= (e) => {
-		if (appointmentId !== "") {
-			const details = data.find(appointment => appointment._id === appointmentId);
-			setselectedDate(e.target.dataset.date);
-			setselectedTime(e.target.dataset.time);
-			setShowReSchedulePanel(true);
-			setIsReScheduling(true);
-		}
-	}
-
-	const UpdateSchedule = async (e) => {
-		try {
-
-			const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-            const formData = new FormData(); 
-            formData.append("AppointmentId", appointmentId);
-			formData.append("Department", Department);
-            formData.append("Date", formattedDate);
-			formData.append("Time", selectedTime);
-
-            const response = await fetch("/api/appointments/POST_UpdateSchedule", {
-                method: "POST",
-                body: formData,
-            });
-        
-            setIsReScheduling(false);
-			setselectedDate(null);
-			setselectedTime(null);
-
-            mutate(); 
-           
-            if (response.ok) {
-                console.log("Complete");
-            } else {
-                console.log("Failed");
-            }
-        } catch (err) {
-            console.log(err);
-        }
-	}
-
 	const AppointmentDetails = () => {
 		if (appointmentId === "") {
 
@@ -237,17 +147,6 @@ const Pending = ({ params }) => {
 					<div className={styles.DetailsRow}>
 						<textarea className={styles.DetailsFields} defaultValue={details?.Details?.Concern??""} readOnly disabled placeholder="Concern" name="" id="" cols="30" rows="10"></textarea>
 					</div>
-					{isApproving || isReScheduling || isUpdatingDetails? (
-						<div className={styles.DetailsRow}>
-							<button className={styles.DetailsButton} disabled>Loadding...</button>
-							<button className={styles.DetailsButton} disabled>Loadding...</button>
-						</div>
-					) : (
-						<div className={styles.DetailsRow}>
-							<button className={styles.DetailsButton} data-date={details?.Details?.ScheduleDate??""} data-time={details?.Details?.ScheduleTime??""} onClick={OnReSchedule}>RE-SCHEDULE</button>
-							<button className={styles.DetailsButton} onClick={OnApprove}>APPROVED</button>
-						</div>
-					)}
 				</>
 			);
 		}
@@ -263,40 +162,6 @@ const Pending = ({ params }) => {
                     onYes={ConfirmationData.onYes}
                     onCancel={ConfirmationData.onCancel}
                 />
-            )}
-
-			{showReSchedulePanel && (
-				<div className={styles.ReSchedulePanel}>
-					<div className={styles.ReScheduleForm}>
-					<div className={styles.ReSchedulePanelRow}>
-						<p>Schedule Date:</p>
-						<DatePicker
-							className={styles.ReScheduleDate}
-							// selected={new Date(selectedDate)} CHANGE TO THIS
-							selected={null}
-							onChange={(date) => setselectedDate(date)}
-							dateFormat="MMMM d, yyyy"
-							placeholderText="Select a date"
-						/>
-					</div>
-
-					<div className={styles.ReSchedulePanelRow}>
-						<p>Schedule Time:</p>
-						<select className={styles.ReScheduleDate} name="" id="" defaultValue={selectedTime} onChange={(e)=>setselectedTime(e.target.value)}>
-							<option value="8am-10am">8am - 10am</option>
-							<option value="10am-12pm">10am - 12pm</option>
-							<option value="1pm-3pm">1pm - 3pm</option>
-							<option value="3pm-4pm">3pm - 4pm</option>
-						</select>
-					</div>
-
-					<div className={styles.ReSchedulePanelRow}>
-						<button className={styles.ReScheduleButton} onClick={()=>{setShowReSchedulePanel(false); setIsReScheduling(false)}}>Cancel</button>
-						<button className={styles.ReScheduleButton} onClick={(e)=>{UpdateSchedule(e); setShowReSchedulePanel(false)}}>Update</button>
-					</div>
-					</div>
-					
-				</div>
             )}
 		
 			<div className={styles.Header}>

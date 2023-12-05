@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Calendar.module.css";
 
-const Calendar = () => {
+const Calendar = ({callback}) => {
 	const currentDate = new Date();
 	const [Year, setYear] = useState(currentDate.getFullYear());
 	const [Month, setMonth] = useState(currentDate.getMonth() + 1);
 	const [Day, setDay] = useState(currentDate.getDate());
-	const [SelectedDay, setSelectedDay] = useState(null);
 	const [DaysInMonth, setDaysInMonth] = useState([]);
 
 	useEffect(() => {
@@ -47,7 +46,7 @@ const Calendar = () => {
 		event.currentTarget.classList.add(styles.selectedDate);
 	  
 		// Set the selected day in your state
-		setSelectedDay(clickedDate);
+		callback(clickedDate);
 	  };
 
 	const MonthSelection = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];

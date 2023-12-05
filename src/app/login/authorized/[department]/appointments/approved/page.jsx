@@ -13,12 +13,11 @@ import { format } from 'date-fns';
 
 const Pending = ({ params }) => {
 	const Department = params.department;
-	const Status = "Pending";
+	const Status = "Approved";
 	const router = useRouter();
 
 	const [filter,setFilter] = useState("");
 	const [appointmentId,setAppintmentId] = useState("");
-	const [isApproving,setIsApproving] = useState(false);
 	const [isReScheduling,setIsReScheduling] = useState(false);
 	const [isUpdatingDetails,setUpdatingDetails] = useState(false);
 	const [selectedDate,setselectedDate] = useState(null);
@@ -116,45 +115,6 @@ const Pending = ({ params }) => {
 		}
 	};
 
-	const UpdateApprove = async (e) => {
-		try {
-			setShowConfirmation(false);
-            setIsApproving(true);
-            
-            const formData = new FormData(); 
-            formData.append("AppointmentId", appointmentId);
-			formData.append("Department", Department);
-            formData.append("Status", "Approved");
-
-            const response = await fetch("/api/appointments/POST_UpdateStatus", {
-                method: "POST",
-                body: formData,
-            });
-        
-            setIsApproving(false);
-
-            mutate(); 
-           
-            if (response.ok) {
-                console.log("Complete");
-            } else {
-                console.log("Failed");
-            }
-        } catch (err) {
-            console.log(err);
-        }
-	}
-
-	const OnApprove = (e) => {
-		setConfirmationData({
-			title: "Approve Confirmation",
-			content: "Please confirm your action",
-			onYes: () => UpdateApprove(e),
-			onCancel: () => setShowConfirmation(false),
-		});
-		setShowConfirmation(true);
-	}
-
 	const OnReSchedule= (e) => {
 		if (appointmentId !== "") {
 			const details = data.find(appointment => appointment._id === appointmentId);
@@ -237,15 +197,13 @@ const Pending = ({ params }) => {
 					<div className={styles.DetailsRow}>
 						<textarea className={styles.DetailsFields} defaultValue={details?.Details?.Concern??""} readOnly disabled placeholder="Concern" name="" id="" cols="30" rows="10"></textarea>
 					</div>
-					{isApproving || isReScheduling || isUpdatingDetails? (
+					{ isReScheduling || isUpdatingDetails? (
 						<div className={styles.DetailsRow}>
-							<button className={styles.DetailsButton} disabled>Loadding...</button>
 							<button className={styles.DetailsButton} disabled>Loadding...</button>
 						</div>
 					) : (
 						<div className={styles.DetailsRow}>
 							<button className={styles.DetailsButton} data-date={details?.Details?.ScheduleDate??""} data-time={details?.Details?.ScheduleTime??""} onClick={OnReSchedule}>RE-SCHEDULE</button>
-							<button className={styles.DetailsButton} onClick={OnApprove}>APPROVED</button>
 						</div>
 					)}
 				</>
