@@ -6,7 +6,7 @@ import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 
-const Pending = ({ params }) => {
+const Schedule = ({ params }) => {
 	const Department = params.department;
 	const Status = "Pending";
 	const router = useRouter();
@@ -52,6 +52,15 @@ const Pending = ({ params }) => {
 		return true;
 	});
 
+	const UpdateRecord = (e) => {
+
+	};
+
+	const ChangeConfirmation = (e) => {
+		console.log("test");
+		console.log(e.target.dataset.value);
+	};
+
 	const AppointmentDetails = () => {
 		if (appointmentId === "") {
 
@@ -78,13 +87,13 @@ const Pending = ({ params }) => {
 						</div>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.CourseStrand??""} placeholder="Course / Strand"/>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.YearLevel??""} placeholder="Year Level"/>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.OtherEmail??""} placeholder="Any other email to contact"/>
+						<input className={styles.DetailsFields} type="search" defaultValue={details?.Details?.CourseStrand??""} data-value={details?.Details?.CourseStrand??""} onChange={ChangeConfirmation} placeholder="Course / Strand"/>
+						<input className={styles.DetailsFields} type="search" defaultValue={details?.Details?.YearLevel??""} data-value={details?.Details?.YearLevel??""} onChange={ChangeConfirmation} placeholder="Year Level"/>
+						<input className={styles.DetailsFields} type="search" defaultValue={details?.Details?.OtherEmail??""} data-value={details?.Details?.OtherEmail??""} onChange={ChangeConfirmation} placeholder="Any other email to contact"/>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.StudentNumber??""} placeholder="Student Id"/>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.ContactNumber??""} placeholder="Contact Number"/>
+						<input className={styles.DetailsFields} type="search" defaultValue={details?.Details?.StudentNumber??""} data-value={details?.Details?.StudentNumber??""} onChange={ChangeConfirmation} placeholder="Student Id"/>
+						<input className={styles.DetailsFields} type="search" defaultValue={details?.Details?.ContactNumber??""} data-value={details?.Details?.ContactNumber??""} onChange={ChangeConfirmation} placeholder="Contact Number"/>
 					</div>
 					<div className={styles.DetailsRow}>
 						<input className={styles.DetailsFields} readOnly disabled type="text" defaultValue={details?.Details?.Date??""} placeholder="Appointment Data"/>
@@ -100,13 +109,13 @@ const Pending = ({ params }) => {
 				</>
 			);
 		}
-	  };
+	};
 
 	return (
 		<div className={styles.MainContent}>	
 		
 			<div className={styles.Header}>
-				<p>Appointments {Status} List</p>
+				<p>Set Appointment Schedules</p>
 			</div>
 
 			<div className={styles.Appoitments}>
@@ -130,6 +139,6 @@ const Pending = ({ params }) => {
 	)
 };
 
-export default Pending;
+export default Schedule;
 
 

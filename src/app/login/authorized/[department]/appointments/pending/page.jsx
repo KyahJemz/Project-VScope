@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
+import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
 
 const Pending = ({ params }) => {
 	const Department = params.department;
@@ -13,6 +14,19 @@ const Pending = ({ params }) => {
 
 	const [filter,setFilter] = useState("");
 	const [appointmentId,setAppintmentId] = useState("");
+	const [isApproving,setIsApproving] = useState(false);
+	const [isReScheduling,setIsReScheduling] = useState(false);
+	const [isUpdatingDetails,setUpdatingDetails] = useState(false);
+
+	const [showConfirmation,setShowConfirmation] = useState(false);
+	const [ConfirmationData, setConfirmationData] = useState({
+		title: "",
+		content: "",
+		onYes: () => {},
+		onCancel: () => {},
+	});
+
+	const [showReSchedulePanel,setShowReSchedulePanel] = useState(false);
 
 	const formatDate = (timestamp) => {
 		const options = { month: 'short', day: 'numeric', year: 'numeric' };
@@ -52,6 +66,101 @@ const Pending = ({ params }) => {
 		return true;
 	});
 
+	const UpdateDetails = async (e) => {
+		try {
+			setShowConfirmation(false);
+			setUpdatingDetails(true)
+
+			console.log(e.target.dataset.key+" : "+e.target.value);
+            
+            const formData = new FormData(); 
+            formData.append("AppointmentId", appointmentId);
+			formData.append("Department", Department);
+			formData.append("Key", e.target.dataset.key);
+            formData.append("Value", e.target.value);
+
+            const response = await fetch("", {
+                method: "POST",
+                body: formData,
+            });
+        
+			setUpdatingDetails(false)
+
+            mutate(); 
+           
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+	};
+
+	const ChangeConfirmation = (e) => {
+		if(e.target.dataset.value !== e.target.value) {
+			setConfirmationData({
+				title: "Change Confirmation",
+				content: `Do you like to change [ ${e.target.dataset.value} ] to [ ${e.target.value} ]?`,
+				onYes: () => UpdateDetails(e),
+				onCancel: () => setShowConfirmation(false),
+			});
+			setShowConfirmation(true);
+		}
+	};
+
+	const UpdateApprove = async (e) => {
+		try {
+			setShowConfirmation(false);
+            setIsApproving(true);
+            
+            const formData = new FormData(); 
+            formData.append("AppointmentId", appointmentId);
+			formData.append("Department", Department);
+            formData.append("Status", "Approved");
+
+            const response = await fetch("/api/appointments/POST_UpdateStatus", {
+                method: "POST",
+                body: formData,
+            });
+        
+            setIsApproving(false);
+
+            mutate(); 
+           
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+	}
+
+	const OnApprove = (e) => {
+		setConfirmationData({
+			title: "Approve Confirmation",
+			content: "Please confirm your action",
+			onYes: () => UpdateApprove(e),
+			onCancel: () => setShowConfirmation(false),
+		});
+		setShowConfirmation(true);
+	}
+
+	const OnReSchedule= (e) => {
+		if (appointmentId !== "") {
+			const details = data.find(appointment => appointment._id === appointmentId);
+			setShowReSchedulePanel(true);
+			setIsReScheduling(true);
+		}
+	}
+
+	const ReSchedule = (e) => {
+		
+	}
+
 	const AppointmentDetails = () => {
 		if (appointmentId === "") {
 
@@ -78,13 +187,13 @@ const Pending = ({ params }) => {
 						</div>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.CourseStrand??""} placeholder="Course / Strand"/>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.YearLevel??""} placeholder="Year Level"/>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.OtherEmail??""} placeholder="Any other email to contact"/>
+						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.CourseStrand??""} data-value={details?.Details?.CourseStrand??""} data-key="CourseStrand" onBlur={ChangeConfirmation} placeholder="Course / Strand"/>
+						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.YearLevel??""} data-value={details?.Details?.YearLevel??""} data-key="YearLevel" onBlur={ChangeConfirmation} placeholder="Year Level"/>
+						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.OtherEmail??""} data-value={details?.Details?.OtherEmail??""} data-key="OtherEmail" onBlur={ChangeConfirmation} placeholder="Any other email to contact"/>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.StudentNumber??""} placeholder="Student Id"/>
-						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.ContactNumber??""} placeholder="Contact Number"/>
+						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.StudentNumber??""} data-value={details?.Details?.StudentNumber??""} data-key="StudentNumber" onBlur={ChangeConfirmation} placeholder="Student Id"/>
+						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.ContactNumber??""} data-value={details?.Details?.ContactNumber??""} data-key="ContactNumber" onBlur={ChangeConfirmation} placeholder="Contact Number"/>
 					</div>
 					<div className={styles.DetailsRow}>
 						<input className={styles.DetailsFields} readOnly disabled type="text" defaultValue={details?.Details?.Date??""} placeholder="Appointment Data"/>
@@ -93,10 +202,17 @@ const Pending = ({ params }) => {
 					<div className={styles.DetailsRow}>
 						<textarea className={styles.DetailsFields} defaultValue={details?.Details?.Concern??""} readOnly disabled placeholder="Concern" name="" id="" cols="30" rows="10"></textarea>
 					</div>
-					<div className={styles.DetailsRow}>
-						<button className={styles.DetailsButton}>RE-SCHEDULE</button>
-						<button className={styles.DetailsButton}>APPROVED</button>
-					</div>	
+					{isApproving || isReScheduling || isUpdatingDetails? (
+						<div className={styles.DetailsRow}>
+							<button className={styles.DetailsButton} disabled>Loadding...</button>
+							<button className={styles.DetailsButton} disabled>Loadding...</button>
+						</div>
+					) : (
+						<div className={styles.DetailsRow}>
+							<button className={styles.DetailsButton} onClick={OnReSchedule}>RE-SCHEDULE</button>
+							<button className={styles.DetailsButton} onClick={OnApprove}>APPROVED</button>
+						</div>
+					)}
 				</>
 			);
 		}
@@ -104,6 +220,21 @@ const Pending = ({ params }) => {
 
 	return (
 		<div className={styles.MainContent}>	
+
+			{showConfirmation && (
+                <ActionConfirmation
+                    title={ConfirmationData.title}
+                    content={ConfirmationData.content}
+                    onYes={ConfirmationData.onYes}
+                    onCancel={ConfirmationData.onCancel}
+                />
+            )}
+
+			{showReSchedulePanel && (
+				<div className={styles.ReSchedulePanel}>
+					test
+				</div>
+            )}
 		
 			<div className={styles.Header}>
 				<p>Appointments {Status} List</p>
