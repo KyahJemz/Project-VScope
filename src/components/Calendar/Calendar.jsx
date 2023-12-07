@@ -46,7 +46,7 @@ const Calendar = ({callback}) => {
 		event.currentTarget.classList.add(styles.selectedDate);
 	  
 		// Set the selected day in your state
-		callback(clickedDate);
+		callback(clickedDate); //YYYY-MM-DD
 	  };
 
 	const MonthSelection = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
@@ -83,7 +83,7 @@ const Calendar = ({callback}) => {
 		<div className={styles.Days}>
 			{DaysInMonth.map((value, index) => {
 				const currentDate = new Date(Year, Month - 1, value+1);
-				const formattedDate = currentDate.toISOString();
+				const formattedDate = currentDate.toISOString().split('T')[0]; // Format to YYYY-MM-DD
 				const isSunday = index % 7 === 0;
 				return (
 					<div key={index} className={`${styles.Day} ${isSunday ? styles.sunday : ''}`} value={value} data-timestamp={formattedDate} onClick={isSunday ? null : handleDayClick}>

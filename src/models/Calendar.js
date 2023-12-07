@@ -4,13 +4,16 @@ const { Schema } = mongoose;
 
 const calendarSchema = new Schema(
   {
+    Department: {
+      type: String,
+      required: true,
+    },
     Date: {
       type: String,
       required: true,
     },
-    GoogleEmail: {
+    Time: {
       type: String,
-      unique: true,
       required: true,
     },
   },

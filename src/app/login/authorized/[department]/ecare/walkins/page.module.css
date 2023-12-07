@@ -1,30 +1,92 @@
-
-
-.mainContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.MainContent{
+    padding: 20px;
+    border: 1px solid gainsboro;
+    display: grid;
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 50px 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+        "Header"
+        "Body";
+    gap: 20px;
+    position: relative;
 }
 
-.SideNavigations{
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 20px;
+.Header {
+    grid-area: Header;
+    border: 1px solid gainsboro;    
+    align-items: center;
+    padding: 20px;
+    font-weight: bold;
+    display: flex;
+    width: 100%;
+}
+
+.Body{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    border: 1px solid gainsboro;    
+    padding: 20px;
+    grid-area: Body;
 }
 
 
+.panelButton {
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 0px;
+    transition: 500ms;
+    margin-left: 10px;
+}
+
+.panelButton:hover{
+    box-shadow: 0px 0px 2px 2px gainsboro;
+}
+
+.panelButton:active{
+    background-color: #53c28b;
+    color: white;
+}
+
+.panelButton.Active{
+    background-color: #53c28b;
+    color: white;
+}
+
+.title{
+    flex: 1;
+}
 
 
+.DetailsRow{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
 
+.DetailsFields{
+    flex: 1;
+    padding: 10px;
+}
 
+.DetailsRow:last-child{
+    justify-content: center;
+}
 
+.DetailsButton{
+    padding: 5px 20px;
+    cursor: pointer;
+    border: 0px solid gainsboro;
+    transition: 200ms;
+}
 
+.DetailsButton:hover{
+    box-shadow: 0px 0px 2px 2px gainsboro;
+}
 
-
-@media (max-width: 640px) {
-  .mainContainer {
-    margin: 0px 20px;
-  }
-  
+.DetailsButton:active{
+    background-color: #69c253;
+    
 }

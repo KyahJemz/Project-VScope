@@ -1,28 +1,25 @@
 "use client"
 
-import React from "react";
 import styles from "./page.module.css";
-import Link from "next/link";
-import { useRouter  } from "next/navigation";
+import React, { useState } from "react";
 
 export default function RootLayout(prop) {
-
-const Department = params.department;
-const router = useRouter();
-
-const Layout = () => {
-    <div className={styles.SideNavigations}>
-      <Link className={`${styles.Button} ${styles.SideNavigation}`} onClick={setActivePanel("WALKINS")}>WALKINS</Link>
-      <Link className={`${styles.Button} ${styles.SideNavigation}`} onClick={setActivePanel("MESSAGES")}>MESSAGES</Link>
-      <Link className={`${styles.Button} ${styles.SideNavigation}`} onClick={setActivePanel("CLEARANCES")}>CLEARANCES</Link>
-      <Link className={`${styles.Button} ${styles.SideNavigation}`} onClick={setActivePanel("PROGRESS")}>PROGRESS</Link>
-    </div>
-  };
+  const Department = prop.params.department;
 
   return (
-    <>
-        <SideNavigation/>
+    <div className={styles.mainContainer}>
+
+        <div className={styles.MiniNav}>  
+          <div className={styles.MiniNavTop}>
+            <a href={'/login/authorized/'+Department+'/ecare/walkins'} className={`${styles.MiniNavButton}`}>WALK INS</a>
+            <a href={'/login/authorized/'+Department+'/ecare/messages'} className={`${styles.MiniNavButton}`}>MESSAGES</a>
+            <a href={'/login/authorized/'+Department+'/ecare/clearance'} className={`${styles.MiniNavButton}`}>CLEARANCE</a>
+            <a href={'/login/authorized/'+Department+'/ecare/progress'} className={`${styles.MiniNavButton}`}>PROGRESS</a>
+          </div>
+        </div>  
+
         {prop.children}
-    </>
+
+    </div>
   );
 }

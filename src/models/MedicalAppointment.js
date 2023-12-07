@@ -4,33 +4,9 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema(
   {
-    Name: {
-      type: String,
-      required: true,
-    },
-    Id: {
-      type: String,
-      required: true,
-    },
-    Category: {
-      type: String,
-      required: true,
-    },
-    Consern: {
-      type: String,
-      required: true,
-    },
-    Department: {
-      type: String,
-      required: true,
-    },
-    Status: {
-      type: String,
-      required: true,
-    },
     Account_Id: {
       type: String,
-      required: true,
+      required: false,
     },
     GoogleEmail: {
       type: String,
@@ -38,13 +14,25 @@ const postSchema = new Schema(
     },
     GoogleImage: {
       type: String,
+      required: false,
+    },
+    Department: {
+      type: String,
       required: true,
     },
-    Report1: {
+    Status: {
       type: String,
+      required: false,
     },
-    Report2: {
+    Type: {
       type: String,
+      enum: ["Appointment","WalkIn"],
+      required: true,
+    },
+    Category: {
+      type: String,
+      enum: ["Student","Lay Collaborator"],
+      required: true,
     },
     Responses: {
       type: Array,
