@@ -4,10 +4,6 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema(
   {
-    Account_Id: {
-      type: String,
-      required: false,
-    },
     GoogleEmail: {
       type: String,
       required: true,

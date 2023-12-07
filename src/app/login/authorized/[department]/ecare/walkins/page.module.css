@@ -90,3 +90,32 @@
     background-color: #69c253;
     
 }
+
+.SearchBar{
+    padding: 10px;
+}
+
+.record{
+    border: 1px solid gainsboro;
+    padding: 10px;
+    display: flex;
+}
+.recordName{
+    flex: 1;
+    text-align: center;
+}
+.recordEditBtn, 
+.recordDeleteBtn {
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 2px 10px ;
+    color: white;
+    border: 0px;
+}
+
+.recordEditBtn{
+    background-color: rgba(128, 128, 128);
+}
+.recordDeleteBtn{
+    background-color: rgba(255, 0, 0, 0.75);
+}

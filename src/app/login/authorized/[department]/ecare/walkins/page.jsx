@@ -4,21 +4,19 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
-import Image from "next/image";
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
 
 
 const Pending = ({ params }) => {
 	const Department = params.department;
-	const Status = "Approved";
 	const router = useRouter();
 
 	const [filter,setFilter] = useState("");
+	const [UploadingForm,setUploadingForm] = useState(false);
 
 	const [SelectedPanel,setSelectedPanel] = useState("WalkIn Form");
+	const [SelectedAppointmentId,setSelectedAppointmentId] = useState(null);
 
 	const [showConfirmation,setShowConfirmation] = useState(false);
 	const [ConfirmationData, setConfirmationData] = useState({
@@ -44,7 +42,7 @@ const Pending = ({ params }) => {
   	const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
 	const { data, mutate, error, isLoading } =  useSWR(
-		`/api/appointments/GET_Appointments?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status=${encodeURIComponent(Status)}`,
+		`/api/records/GET_Records?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status&Type=${encodeURIComponent("WalkIn")}`,
 		fetcher
 	);
 
@@ -62,9 +60,15 @@ const Pending = ({ params }) => {
     : [];
 
 	const filteredData = sortedData.filter((appointment) => {
-		if (filter !== "" && !appointment.Name.toLowerCase().includes(filter.toLowerCase())) return false;
+		const fullName = `${appointment.Details.FirstName} ${appointment.Details.MiddleName} ${appointment.Details.LastName}`;
+		const lowerCaseFilter = filter.toLowerCase();
+		
+		if (filter !== "" && !fullName.toLowerCase().includes(lowerCaseFilter)) {
+		  return false;
+		}
+		
 		return true;
-	});
+	  });
 
 	const ChangeConfirmation = (e) => {
 		if(e.target.dataset.value !== e.target.value) {
@@ -75,6 +79,38 @@ const Pending = ({ params }) => {
 				onCancel: () => setShowConfirmation(false),
 			});
 			setShowConfirmation(true);
+		}
+	};
+
+	const UploadWalkIn = async (e) => {
+		e.preventDefault();
+		setUploadingForm(true)
+
+		try {
+
+			const formData = new FormData(e.target);
+			formData.append("Type", "WalkIn");
+			formData.append("Status", "In Progress");
+			formData.append("Department", Department);
+			formData.append("GoogleImage", "");
+
+			const response = await fetch("/api/records/POST_AddRecord", {
+				method: "POST",
+				body: formData,
+			});
+
+			mutate(); 
+           
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+			setUploadingForm(false);
+			e.target.reset();
 		}
 	};
 
@@ -98,42 +134,52 @@ const Pending = ({ params }) => {
 						<button className={`${styles.panelButton}`} onClick={()=>{setSelectedPanel("WalkIn List")}}>Walk in List</button>
 					</div>
 
-					<div className={styles.Body}>
+					<form className={styles.Body} onSubmit={UploadWalkIn}>
 						<div className={styles.DetailsRow}>
-							<input className={styles.DetailsFields} type="text" data-key="LastName"  placeholder="LastName"/>
-							<input className={styles.DetailsFields} type="text" data-key="FirstName"  placeholder="FirstName"/>
-							<input className={styles.DetailsFields} type="text" data-key="MiddleName" placeholder="MiddleName"/>
+							<input className={styles.DetailsFields} type="text" name="LastName" data-key="LastName"  placeholder="LastName" required/>
+							<input className={styles.DetailsFields} type="text" name="FirstName" data-key="FirstName"  placeholder="FirstName" required/>
+							<input className={styles.DetailsFields} type="text" name="MiddleName" data-key="MiddleName" placeholder="MiddleName"/>
 						</div>
 						<div className={styles.DetailsRow}>
-							<input className={styles.DetailsFields} type="text" data-key="Address" placeholder="Address"/>
+							<input className={styles.DetailsFields} type="text" name="LastName" data-key="Address" placeholder="Address" required/>
 						</div>
 						<div className={styles.DetailsRow}>
-							<input className={styles.DetailsFields} type="date" data-key="Birthday" placeholder="Birthday"/>
-							<input className={styles.DetailsFields} type="text" data-key="Age" placeholder="Age"/>
-							<select className={styles.DetailsFields} type="text" placeholder="Sex"> 
+							<input className={styles.DetailsFields} type="date" name="Birthday" data-key="Birthday" placeholder="Birthday" required/>
+							<input className={styles.DetailsFields} type="text" name="Age" data-key="Age" placeholder="Age" required/>
+							<select className={styles.DetailsFields} type="text" name="Sex" placeholder="Sex" required> 
 								<option value="">Sex...</option>
 								<option value="Male">Male</option>
 								<option value="Female">Female</option>
 							</select>
+							<select className={styles.DetailsFields} type="text" name="Category" placeholder="Category" required> 
+								<option value="">Category...</option>
+								<option value="Student">Student</option>
+								<option value="Lay Collaborator">Lay Collaborator</option>
+							</select>
 						</div>
 						<div className={styles.DetailsRow}>
-							<input className={styles.DetailsFields} type="text" data-key="CourseStrand"  placeholder="Course / Strand"/>
-							<input className={styles.DetailsFields} type="text" data-key="YearLevel"  placeholder="Year Level"/>
-							<input className={styles.DetailsFields} type="text" data-key="SchoolEmail" placeholder="School Email"/>
-							<input className={styles.DetailsFields} type="text" data-key="StudentNumber" placeholder="Student Number"/>
+							<input className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand"  placeholder="Course / Strand"/>
+							<input className={styles.DetailsFields} type="text" name="YearLevel" data-key="YearLevel"  placeholder="Year Level"/>
+							<input className={styles.DetailsFields} type="text" name="GoogleEmail" data-key="GoogleEmail" placeholder="School Email" required />
+							<input className={styles.DetailsFields} type="text" name="StudentNumber" data-key="StudentNumber" placeholder="Student Number"/>
 						</div>	
 						<div className={styles.DetailsRow}>
-							<input className={styles.DetailsFields} type="text" data-key="CourseStrand"  placeholder="Contact Number"/>
-							<input className={styles.DetailsFields} type="text" data-key="InCaseOfEmergencyPerson"  placeholder="In case of emergency person"/>
-							<input className={styles.DetailsFields} type="text" data-key="InCaseOfEmergencyNumber" placeholder="In case of emergency number"/>
+							<input className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand"  placeholder="Contact Number" required />
+							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyPerson" data-key="InCaseOfEmergencyPerson"  placeholder="In case of emergency person" required />
+							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyNumber" data-key="InCaseOfEmergencyNumber" placeholder="In case of emergency number" required />
 						</div>	
 						<div className={styles.DetailsRow}>
-							<textarea className={styles.DetailsFields} placeholder="Concern" name="" id="" cols="30" rows="10"></textarea>
+							<textarea className={styles.DetailsFields} placeholder="Concern" name="Concern" id="" cols="30" rows="10" required></textarea>
 						</div>
 						<div className={styles.DetailsRow}>
-							<button className={styles.DetailsButton}>Add record</button>
+							{UploadingForm ? (
+								<button type="submit" disabled className={styles.DetailsButton}>Uploading...</button>
+							) : (
+								<button type="submit" className={styles.DetailsButton}>Add record</button>
+							)} 
+							
 						</div>
-					</div>	
+					</form>	
 				</>
 			) : SelectedPanel === "WalkIn Edit Form" ? (
 				<>
@@ -166,12 +212,13 @@ const Pending = ({ params }) => {
 
 					<div className={styles.Body}>
 
-						<input placeholder="Search..." type="search" onChange={(e)=>setFilter(e.target.value)}/>
+						<input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setFilter(e.target.value)}/>
 						
-						{isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((appointment, index) => (
-							<div key={index} className={`${styles.Appointment} ${styles.Active}`}  onClick={() => {mutate; appointmentId === appointment._id ? setAppintmentId("") : setAppintmentId(appointment._id)}}>
-								<p className={styles.aName}>Name: <a className={styles.aNameText}>{appointment.Name}</a></p>
-								<p className={styles.aDate}>Date: <a className={styles.aDateText}>{appointment.createdAt}</a></p>
+						{isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((record, index) => (
+							<div key={index} className={`${styles.record} ${styles.Active}`}  onClick={() => {mutate; SelectedAppointmentId === record._id ? setSelectedAppointmentId("") : setSelectedAppointmentId(record._id)}}>
+								<p className={styles.recordName}>{record.Details.LastName}, {record.Details.FirstName} {record.Details.MiddleName}</p>
+								<button className={styles.recordEditBtn} data-record={record._id}>Edit</button>
+								<button className={styles.recordDeleteBtn} data-record={record._id}>Delete</button>
 							</div>
 						))}
 
