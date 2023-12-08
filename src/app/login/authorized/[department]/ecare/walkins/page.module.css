@@ -111,6 +111,7 @@
     padding: 2px 10px ;
     color: white;
     border: 0px;
+    transition: 500ms;
 }
 
 .recordEditBtn{
@@ -118,4 +119,14 @@
 }
 .recordDeleteBtn{
     background-color: rgba(255, 0, 0, 0.75);
+}
+
+.recordEditBtn:hover, 
+.recordDeleteBtn:hover {
+    box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.recordEditBtn:active, 
+.recordDeleteBtn:active {
+    box-shadow: 0 0 2px 2px black;
 }

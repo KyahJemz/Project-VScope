@@ -57,6 +57,8 @@ export const POST = async (request) => {
             MiddleName: encryptText(body.get("MiddleName")),
             Address: encryptText(body.get("Address")),
             Birthday: encryptText(body.get("Birthday")),
+            Age: encryptText(body.get("Age")),
+            Sex: encryptText(body.get("Sex")),
             CourseStrand: encryptText(body.get("CourseStrand")),
             YearLevel: encryptText(body.get("YearLevel")),
             SchoolEmail: encryptText(body.get("GoogleEmail")),
