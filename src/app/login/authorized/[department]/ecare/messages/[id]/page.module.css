@@ -3,12 +3,13 @@
     border: 1px solid gainsboro;
     display: grid;
     display: grid; 
-    grid-template-columns: 250px 1fr; 
+
+    grid-template-columns: 1fr; 
     grid-template-rows: 50px 1fr; 
     gap: 0px 0px; 
     grid-template-areas: 
-        "Header Header"
-        "Appoitments AppoitmentDetails";
+        "Header"
+        "MessagesContainer";
     gap: 20px;
     position: relative;
 }
@@ -22,13 +23,15 @@
     font-weight: bold;
 }
 
-.Appoitments{
+.MessagesContainer{
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     gap:10px;
     border: 1px solid gainsboro;    
     padding: 20px;
-    grid-area: Appoitments;
+    grid-area: MessagesContainer;
+
 }
 
 
@@ -41,6 +44,7 @@
   margin-top: 5px;  
   padding-left: 20px; 
   padding-right: 20px;
+  width: 100%;
 }
 .MessageRight{
   display: flex;
@@ -51,6 +55,7 @@
   margin-top: 5px;
   padding-left: 20px;
   padding-right: 20px;
+  width: 100%;
 }
 
 .responseTime{
@@ -61,10 +66,48 @@
 
 .responseImage{
   border-radius: 50%;
+  border: 1px solid gainsboro;
 }
 
 .response{
   border: 1px solid gainsboro;
   border-radius: 5px;
   padding: 10px;
+}
+
+
+
+.MessageFormContainer{  
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;  
+  gap: 10px;
+}
+
+.responseFormTextbox{
+  padding: 10px;
+  width: 100%;
+}
+
+.note{
+  text-align: center;
+  width: 100%;
+  font-size: small;
+  color: #53c28b;
+}
+
+.submitBtn{
+  padding: 10px 20px;
+  background-color: #53c28b;
+  color: white;
+  cursor: pointer;
+}
+
+.submitBtn:hover{
+  box-shadow: 0px 0px 2px 1px rgba(220, 220, 220, 0.500) ;
+}
+
+.submitBtn:active{  
+  box-shadow: 0px 0px 2px 1px rgb(220, 220, 220) ;
 }

@@ -14,9 +14,13 @@ const postSchema = new Schema(
     },
     Department: {
       type: String,
-      required: false,
+      required: true,
     },
     Responses: {
+      type: String,
+      required: true,
+    },
+    Status: {
       type: String,
       required: true,
     },

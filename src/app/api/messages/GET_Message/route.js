@@ -6,26 +6,27 @@ import SDPCAppointment from "@/models/SDPCAppointment";
 import { encryptText, decryptText } from "@/utils/cryptojs";
 
 const decryptFields = (obj) => {
-    if (typeof obj !== "object" || obj === null) {
-      return obj;
-    }
-  
-    if (Array.isArray(obj)) {
-      return obj.map((item) => decryptFields(item));
-    }
-  
-    const decryptedObj = {};
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        if (typeof obj[key] === "object" && obj[key] !== null) {
-          decryptedObj[key] = decryptFields(obj[key]);
-        } else {
-          decryptedObj[key] = decryptText(obj[key]);
-        }
+  if (typeof obj !== "object" || obj === null) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => decryptFields(item));
+  }
+
+  const decryptedObj = {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (typeof obj[key] === "object" && obj[key] !== null) {
+        decryptedObj[key] = decryptFields(obj[key]);
+      } else {
+        // Check if the field is blank or null before decrypting
+        decryptedObj[key] = obj[key] ? decryptText(obj[key]) : obj[key];
       }
     }
-    return decryptedObj;
-  };
+  }
+  return decryptedObj;
+};
 
 export const GET = async (request) => {
     const url = new URL(request.url);
@@ -54,34 +55,33 @@ export const GET = async (request) => {
         console.log(Appointment);
 
         if (Appointment) {
-            const topLevelFieldsToDecrypt = ["Name", "Id", "Consern", "GoogleImage"];
-
-            topLevelFieldsToDecrypt.forEach((field) => {
-              Appointment[field] = decryptText(Appointment[field]);
-            });
-
-            if (Appointment.Details && Object.keys(Appointment.Details).length > 0) {
-              Appointment.Details = decryptFields(Appointment.Details);
-            }
-
-            if (Appointment.Responses && Appointment.Responses.length > 0) {
-              const decryptedResponses = Appointment.Responses.map(response => {
-                const decryptedResponse = {
-                  Name: decryptText(response.Name),
-                  GoogleEmail: decryptText(response.GoogleEmail),
-                  Response: decryptText(response.Response),
-                  Timestamp: decryptText(response.Timestamp),
-                  ViewedByDepartment: response.ViewedByDepartment,
-                  ViewedByClient: response.ViewedByClient
-                };
-                return decryptedResponse;
-              });
-              Appointment.Responses = decryptedResponses;
-            }
-          
-
-
+          const topLevelFieldsToDecrypt = ["GoogleImage"];
+        
+          topLevelFieldsToDecrypt.forEach((field) => {
+            // Check if the field is not blank or null before decrypting
+            Appointment[field] = Appointment[field] ? decryptText(Appointment[field]) : Appointment[field];
+          });
+        
+          if (Appointment.Details && Object.keys(Appointment.Details).length > 0) {
+            Appointment.Details = decryptFields(Appointment.Details);
           }
+        
+          if (Appointment.Responses && Appointment.Responses.length > 0) {
+            const decryptedResponses = Appointment.Responses.map((response) => {
+              // Check and decrypt each field in the response object
+              const decryptedResponse = {
+                Name: response.Name ? decryptText(response.Name) : response.Name,
+                GoogleEmail: response.GoogleEmail ? decryptText(response.GoogleEmail) : response.GoogleEmail,
+                Response: response.Response ? decryptText(response.Response) : response.Response,
+                Timestamp: response.Timestamp ? decryptText(response.Timestamp) : response.Timestamp,
+                ViewedByDepartment: response.ViewedByDepartment,
+                ViewedByClient: response.ViewedByClient,
+              };
+              return decryptedResponse;
+            });
+            Appointment.Responses = decryptedResponses;
+          }
+        }
 
         return new NextResponse(JSON.stringify(Appointment), { status: 200 });
     } catch (err) {

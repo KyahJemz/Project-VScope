@@ -13,9 +13,8 @@ export const POST = async (request) => {
         const Department = body.get("Department");
         const RecordId = body.get("RecordId");
         const Name = body.get("Name");
-        const GoogleEmail = body.get("GoogleEmail");
+        const GoogleEmail = body.get("SenderGoogleEmail");
         const Response = body.get("Response");
-        const Status = body.get("Status");
         const Timestamp = new Date().toISOString();
 
         const newResponse = {
@@ -33,63 +32,21 @@ export const POST = async (request) => {
         let appointment = null;
 
         if (Department === 'Medical'){
-            if (Response === '' || Response === null) {
-                if(Status === '' || Status === null) {
-                } else {
-                    appointment = await MedicalAppointment.findByIdAndUpdate(RecordId,
-                        { $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
-            } else {
-                if(Status === '' || Status === null) { 
-                    appointment = await MedicalAppointment.findByIdAndUpdate(RecordId,
-                        { $push: { Responses: newResponse } },
-                        { new: true }
-                    );
-                } else {
-                    appointment = await MedicalAppointment.findByIdAndUpdate(RecordId,
-                        { $push: { Responses: newResponse }, $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
-            }
+            appointment = await MedicalAppointment.findByIdAndUpdate(RecordId,
+                { $push: { Responses: newResponse } },
+                { new: true });
 
         } else if (Department === 'Dental'){
-            if (Response === '' || Response === null) {
-                if(Status === '' || Status === null) {
-                } else {
+
                     appointment = await DentalAppointment.findByIdAndUpdate(RecordId,
-                        { $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
-            } else {
-                if(Status === '' || Status === null) { 
-                    appointment = await DentalAppointment.findByIdAndUpdate(RecordId,
-                        { $push: { Responses: newResponse } },
-                        { new: true }
-                    );
-                } else {
-                    appointment = await DentalAppointment.findByIdAndUpdate(RecordId,
-                        { $push: { Responses: newResponse }, $set: { Status: Status }  },
-                        { new: true }
-                    );
-                }
-            }
+                        { $push: { Responses: newResponse }  },
+                        { new: true });
+
 
         } else if (Department === 'SDPC'){
-            if (Response === '' || Response === null) {
                 appointment = await SDPCAppointment.findByIdAndUpdate(RecordId,
-                    { $set: { Status: Status }  },
-                    { new: true }
-                );
-            } else {
-                appointment = await SDPCAppointment.findByIdAndUpdate(RecordId,
-                    { $push: { Responses: newResponse }, $set: { Status: Status }  },
-                    { new: true }
-                );
-            }
+                    { $push: { Responses: newResponse } },
+                    { new: true });
         } 
   
         if (!appointment) {
@@ -98,7 +55,7 @@ export const POST = async (request) => {
 
         return new NextResponse('Success', { status: 200 });
       } catch (err) {
-        return new NextResponse('Database Error', { status: 500 });
+        return new NextResponse('Database Error' + err, { status: 500 });
       }
     } else {
       return new NextResponse('Method Not Allowed', { status: 405 });

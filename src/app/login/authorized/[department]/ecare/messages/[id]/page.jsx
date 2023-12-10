@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import useSWR from "swr";
 import Image from "next/image";
@@ -23,10 +23,10 @@ const Form = ({params}) => {
     const Department = params.department;
     const RecordId = params.id;
 
-    const [SenderGoogleImage, setSenderGoogleImage] = useState("");
-    const [SenderGoogleEmail, setSenderGoogleEmail] = useState("");
-    const [ReceiverGoogleImage, setReceiverGoogleImage] = useState("");
-    const [ReceiverGoogleEmail, setReceiverGoogleEmail] = useState("");
+    var SenderGoogleImage = "";
+    var SenderGoogleEmail = "";
+    var ReceiverGoogleImage = "";
+    var ReceiverGoogleEmail = "";
 
     var CurrentMessageDate = "";
 
@@ -54,10 +54,10 @@ const Form = ({params}) => {
     );
 
     if(!isLoading) {
-        setSenderGoogleImage(Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC  : "");
-        setSenderGoogleEmail(Department === "Medical" ? Defaults.MedicalEmail : Department === "Dental" ? Defaults.DentalEmail : Department === "SDPC" ? Defaults.SDPCEmail  : "");
-        setReceiverGoogleImage(data?.GoogleImage??UserDefault);
-        setReceiverGoogleEmail(data?.GoogleEmail??"?");
+        SenderGoogleImage = Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC  : "";
+        SenderGoogleEmail = Department === "Medical" ? Defaults.MedicalEmail : Department === "Dental" ? Defaults.DentalEmail : Department === "SDPC" ? Defaults.SDPCEmail  : "";
+        ReceiverGoogleImage = data?.GoogleImage??UserDefault;
+        ReceiverGoogleEmail = data?.GoogleEmail??"?";
     }
 
     const sortedResponses = data?.Responses?.sort((a, b) => {
@@ -70,7 +70,7 @@ const Form = ({params}) => {
     const ResponseForm = ({name, receiverGmail, senderGmail}) => {
         return (
             <form className={styles.MessageFormContainer} onSubmit={HandleResponseSubmit}>
-                <input name="GoogleEmail" value={senderGmail} type="text" hidden readOnly/>
+                <input name="SenderGoogleEmail" value={senderGmail} type="text" hidden readOnly/>
                 <input name="ReceiverGoogleEmail" value={receiverGmail} type="text" hidden readOnly/>
                 <input name="Name" value={name} type="text" hidden readOnly/>
                 <textarea className={styles.responseFormTextbox} name="Response" rows="2" />
@@ -116,38 +116,42 @@ const Form = ({params}) => {
         )
     }
 
-    const handleBeforeUnload = () => {
-        const formData = new FormData();
-        formData.append('Department', Department);
-        formData.append('AppointmentId', AppointmentId);
-        formData.append('Name', Department);
-    
-        fetch('/api/messages/POST_UpdateViewed', {
-          method: 'POST',
-          body: formData,
-        })
-        .then(response => response.json())
-        .then(data => console.log('API call successful', data))
-        .catch(error => console.error('Error making API call', error));
-    };
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+          const formData = new FormData();
+          formData.append("Department", Department);
+          formData.append("RecordId", RecordId);
+          formData.append("Name", Department);
+      
+          fetch("/api/messages/POST_UpdateViewed", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .catch((error) => console.error("Error making API call", error));
+        };
+      
+        handleBeforeUnload();
+      
+        return () => {
+          window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [Department, RecordId]);
 
     const HandleResponseSubmit = async (e) => {
         e.preventDefault();
         try {
-            
             setResponseUploading(true);
-
+    
             const formData = new FormData(e.target);
             formData.append("Department", Department);
             formData.append("RecordId", RecordId);
-
-            const response = await fetch("/api/messages/GET_Message", {
+    
+            const response = await fetch("/api/messages/POST_AddMessages", {
                 method: "POST",
                 body: formData,
             });
-        
-            setResponseUploading(false);
-            
+    
             if (response.ok) {
                 console.log("Complete");
             } else {
@@ -156,12 +160,11 @@ const Form = ({params}) => {
         } catch (err) {
             console.log(err);
         } finally {
-            mutate();
+            setResponseUploading(false);
             e.target.reset();
+            mutate();
         }
-    }
-
-    handleBeforeUnload();
+    };
 
     const MainContent = () => {
         return (
@@ -196,7 +199,7 @@ const Form = ({params}) => {
                     <p></p>
                 )} 
 
-                {isLoading ? ("") : data && (data.Status != 'Completed' && data.Status != 'Canceled'  ) ? (
+                {isLoading ? ("") : data && (data?.Status !== 'Completed' && data?.Status !== 'Canceled'  ) ? (
                     <ResponseForm 
                         name={Department} 
                         receiverGmail={ReceiverGoogleEmail} 
@@ -204,21 +207,29 @@ const Form = ({params}) => {
                     />
                 ) : (
                     <div className={styles.MessageFormContainer}>
-                        <div className={styles.responseStatus}>Marked as {data.Status}</div>
+                        <div className={styles.responseStatus}>Marked as {data?.Status}</div>
                     </div>
                 )}
             </div>
         ) 
     }
 
-    return (
-        <div className={styles.mainContainer}>
+    const Header = () => {
+        return (
+            <div className={styles.Header}>
+                Messaging - {`${data?.Details?.LastName??""}, ${data?.Details?.FirstName??""} ${data?.Details?.MiddleName??""}`}
+            </div>
+        )
+    }
 
+    return (
+        <div className={styles.MainContent}>
+            <Header/>
             {isLoading ? (
                 "Loading..."
-            ) : (
+            ) : ( 
                 <>
-
+                    
                     <MainContent />    
                 </>
             )}
