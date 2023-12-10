@@ -9,17 +9,33 @@ const Page = ({ params }) => {
 	const Department = params.department;
 	const router = useRouter();
 
+	const [IsUploading, setIsUploading] = useState(false);
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		setIsUploading(true);
+		try {
+
+			router.push('/login/authorized/'+Department+'/ecare/clearance/notifications')
+			
+		} catch (error) {
+			
+		} finally {
+			setIsUploading(false);
+		}
+	}
+
 	return (
-		<form className={styles.MainContent}>	
+		<form className={styles.MainContent} onSubmit={onSubmit}>	
 			<div className={styles.Row}>
 				Add Form
 			</div>
 			<div className={styles.Row}>
 				To: 
-				<select className={styles.Input} name="Target" id="">
-					<option value="All">All</option>
-					<option value="Students">Students</option>
-					<option value="Lay Collaborators">Lay Collaborators</option>
+				<select className={styles.InputCategory} name="Target" id="">
+					<option className={styles.InputCategoryOptions} value="All">All</option>
+					<option className={styles.InputCategoryOptions} value="Students">Students</option>
+					<option className={styles.InputCategoryOptions} value="Lay Collaborators">Lay Collaborators</option>
 				</select>
 			</div>
 			<div className={styles.Row}>
@@ -35,7 +51,7 @@ const Page = ({ params }) => {
 				<input className={styles.Input} type="date" name="EndingDate"/>
 			</div>
 			<div className={styles.Row}>
-				<button>Add</button>
+				<button className={styles.FormButton} disabled={IsUploading}>{IsUploading ? "Uploading..." : "Add"}</button>
 			</div>
 		</form>
 	)
