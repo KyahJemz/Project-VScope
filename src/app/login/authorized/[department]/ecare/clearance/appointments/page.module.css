@@ -1,0 +1,34 @@
+.MainContent{
+    padding: 20px;
+    border: 1px solid gainsboro;
+    display: grid;
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 50px 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+        "Header"
+        "Body";
+    gap: 20px;
+    position: relative;
+}
+
+.Header {
+    grid-area: Header;
+    border: 1px solid gainsboro;    
+    align-items: center;
+    padding: 20px;
+    font-weight: bold;
+    display: flex;
+    width: 100%;
+}
+
+.Body{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    border: 1px solid gainsboro;    
+    padding: 20px;
+    grid-area: Body;
+}
+

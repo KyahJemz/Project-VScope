@@ -6,8 +6,6 @@ import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 import UserDefault from "/public/UserDefault.png"
-import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
-
 
 const Messages = ({ params }) => {
 	const Department = params.department;
@@ -74,12 +72,11 @@ const Messages = ({ params }) => {
 		return true;
 	});
 
-	
 	const DirectMessagesList = () => {
 		return (
 			<>
 				{DirectIsLoading && !filteredDirectData ? (
-				<p>Loading...</p>
+					"Loading..."
 				) : (
 					filteredDirectData.map((record, index) => (
 						<ListItem key={index} name={`${record?.Name??"?"}`} image={UserDefault} isNew={IsNew(record)} id={record._id} />
@@ -93,7 +90,7 @@ const Messages = ({ params }) => {
 		return (
 			<>
 				{RecordsIsLoading && !filteredRecordsData ? (
-					<p>Loading...</p>
+					"Loading..."
 				) : (
 					filteredRecordsData.map((record, index) => (
 						<ListItem key={index} name={`${record?.Details?.LastName??"?"}, ${record?.Details?.FirstName??"?"} ${record?.Details?.MiddleName??""}`} image={record?.GoogleImage??UserDefault} isNew={IsNew(record)} id={record._id} />

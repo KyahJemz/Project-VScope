@@ -6,6 +6,7 @@ const calendarSchema = new Schema(
   {
     Department: {
       type: String,
+      enum: ["Medical","Dental","SDPC"],
       required: true,
     },
     Date: {

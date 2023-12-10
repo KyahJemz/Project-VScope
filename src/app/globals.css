@@ -1,3 +1,37 @@
+:root {
+  --MedicalLightBg: lightgray;
+  --MedicalNormalBg: gray;
+  --MedicalDarkBg: rgb(78, 78, 78);
+
+  --DentalLightBg: lightgray;
+  --DentalNormalBg: gray;
+  --DentalDarkBg: rgb(78, 78, 78);
+
+  --SDPCLightBg: lightgray;
+  --SDPCNormalBg: gray;
+  --SDPCDarkBg: rgb(78, 78, 78);
+
+  --ButtonBg: lightgray;
+  --ButtonHoverBg: rgb(172, 172, 172);
+  --ButtonActiveBg: #53c28b;
+  --ButtonActiveText: white;
+
+  --LightBg: lightgray;
+  --NormalBg: gray;
+  --DarkBg: rgb(78, 78, 78);
+
+  --TextLightBg: #111;
+  --TextNormalBg: #111;
+  --TextDarkBg: white;
+
+  --White: white;
+  --Black: #111;
+
+  --HoverBorderColor: gainsboro;
+  --LinesColor: gainsboro;
+}
+
+
 * {
   box-sizing: border-box;
   padding: 0;

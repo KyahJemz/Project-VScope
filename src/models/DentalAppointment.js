@@ -14,6 +14,7 @@ const postSchema = new Schema(
     },
     Department: {
       type: String,
+      enum: ["Medical","Dental","SDPC"],
       required: true,
     },
     Status: {

@@ -1,0 +1,28 @@
+.MainContent{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 10px;
+}
+
+.Row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    
+}
+
+.Row:nth-child(1){
+    background-color: gainsboro;
+    justify-content: flex-start;
+}
+
+.Row:nth-child(2){
+    justify-content: flex-end;
+}
+
+.Input{
+    padding: 6px;
+}

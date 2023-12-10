@@ -4,43 +4,34 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema(
   {
-    Name: {
-      type: String,
-      required: true,
-    },
-    GoogleEmail: {
-      type: String,
-      required: true,
-    },
     Department: {
       type: String,
       enum: ["Medical","Dental","SDPC"],
       required: true,
     },
-    Responses: {
+    Title: {
       type: String,
       required: true,
     },
-    Status: {
+    Target: {
+      type: String,
+      enum: ["All","Students","Lay Collaborators"],
+      required: true,
+    },
+    Descriptions: {
       type: String,
       required: true,
     },
-    Timestamp: {
+    StartingDate: {
       type: String,
       required: true,
     },
-    ViewedByClient: {
-      type: Boolean,
+    EndingDate: {
+      type: String,
       required: true,
-      default: false
-    },
-    ViewedByDepartment: {
-      type: Boolean,
-      required: true,
-      default: false
     },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("direct-messages", postSchema);
+export default mongoose.model("blogs", postSchema);

@@ -15,6 +15,7 @@ const userSchema = new Schema(
     },
     Department: {
       type: String,
+      enum: ["Medical","Dental","SDPC"],
       required: true,
     },
   },
