@@ -11,17 +11,30 @@ const Page = ({ params }) => {
 
 	const [IsUploading, setIsUploading] = useState(false);
 
-	const onSubmit = (e) => {
+	const onSubmit = async (e) => {
 		e.preventDefault();
 		setIsUploading(true);
 		try {
+            const formData = new FormData(e.target); 
+			formData.append("Department", Department);
 
-			router.push('/login/authorized/'+Department+'/ecare/clearance/notifications')
-			
-		} catch (error) {
-			
+            const response = await fetch("/api/notifications/POST_AddNotification", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                console.log("Complete");
+				return router.push('/login/authorized/'+Department+'/ecare/clearance/notifications');
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+
 		} finally {
 			setIsUploading(false);
+			return
 		}
 	}
 

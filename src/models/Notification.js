@@ -34,4 +34,4 @@ const postSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("blogs", postSchema);
+export default mongoose.model("notifications", postSchema);

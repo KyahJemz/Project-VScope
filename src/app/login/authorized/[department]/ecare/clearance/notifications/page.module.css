@@ -48,10 +48,44 @@
 }
 
 .List{
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-    border: 1px solid gainsboro;    
-    padding: 20px;
     grid-area: List;
 }
+
+    .Notification{
+        display: flex;
+        padding: 15px;
+        margin-bottom: 10px;
+        gap: 10px;
+        border: 1px solid gainsboro;
+    }
+    .NotificationName{
+        flex: 1;
+        text-align: center;
+    }
+    .NotificationTarget{
+        font-size: 0.7rem;
+    }
+    .NotificationViewBtn{
+        padding: 5px 10px;
+        border: 0px;
+        cursor: pointer;
+        color: white;
+        background-color: #53c28b;
+        transition: 250ms;
+    }
+    .NotificationDeleteBtn{
+        padding: 5px 10px;
+        border: 0px;
+        cursor: pointer;
+        color: white;
+        background-color: rgba(255, 0, 0, 0.5);
+        transition: 250ms;
+    }
+    .NotificationDeleteBtn:hover,
+    .NotificationViewBtn:hover {
+        box-shadow: 0 0 2px 2px gainsboro;
+    }
+    .NotificationDeleteBtn:active,
+    .NotificationViewBtn:active {
+        box-shadow: 0 0 2px 2px black;
+    }
