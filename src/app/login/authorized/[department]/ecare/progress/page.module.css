@@ -1,98 +1,53 @@
-.MainContent{
+.MainContainer{
+    border: 1px solid gainsboro;    
     padding: 20px;
-    border: 1px solid gainsboro;
     display: grid;
-    display: grid; 
-    grid-template-columns: 280px 155px 1fr; 
-    grid-template-rows: 50px 1fr; 
-    gap: 0px 0px; 
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 50px 1fr;
     grid-template-areas: 
-        "Header Header Header"
-        "Schedules TimeSelection Calendar";
+        "Header Header"
+        "Nav Body";
     gap: 20px;
 }
-
-.Header {
+.Header{
     grid-area: Header;
     border: 1px solid gainsboro;    
     display: flex;
-    align-items: center;
     padding: 20px;
     font-weight: bold;
+    align-items: center;
 }
 
-.Schedules{
-    display: flex;
-    flex-direction: column;
-    gap:10px;
+.Nav {
+    padding: 20px;
+    grid-area: Nav;
     border: 1px solid gainsboro;    
-    padding: 20px;
-    grid-area: Schedules;
-    overflow-y: scroll;
-}
-
-.TimeSelection{
     display: flex;
+    gap: 20px;
     flex-direction: column;
-    gap:10px;
-    border: 1px solid gainsboro;    
-    padding: 20px;
-    grid-area: TimeSelection;
 }
 
-
-.AppoitmentDetails{
-    border: 1px solid gainsboro;
-    padding: 20px;
-    flex: 1;
-    grid-area: Calendar;
-    display: flex;  
-    flex-direction: column;
-    gap: 20px   ;
+.NavButton{
+    padding: 5px 10px;
+    background-color: gainsboro;
+    text-align: center;
 }
 
-
-
-
-
-
-
-.radioForm{
-    display: flex;
-    gap: 10px;
-    cursor: pointer;
+.NavButton:hover{
+    box-shadow: 0 0 2px 2px gainsboro;
 }
 
-.Schedule{
-    border: 1px solid gainsboro;
-    padding: 10px;
-    position: relative;
-}
-
-.ScheduleDate{
-    font-size: 0.9rem;
-}
-
-.ScheduleTime{
-    font-size: 0.7rem;
-}
-
-.ScheduleRemove{
-    position: absolute;
-    background-color: rgba(255, 0, 0, 0.75);
+.NavButton:active{
+    background-color: var(--ButtonActiveBg);
     color: white;
-    padding: 1px 5px;
-    cursor: pointer;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: 500ms;
 }
 
-.ScheduleRemove:hover{
-    box-shadow: 0px 0px 2px 2px gainsboro;
-}
-
-.ScheduleRemove:active{
-    border: 1px solid black;
+.Body{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    border: 1px solid gainsboro;    
+    padding: 20px;
+    grid-area: Body;
+    position: relative;
 }

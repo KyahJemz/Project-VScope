@@ -1,0 +1,88 @@
+.MainContent{
+    display: grid;
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 30px 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+        "Header"
+        "List";
+    position: relative;
+    gap: 20px;
+    height: 100%;
+}
+
+.Header {
+    grid-area: Header; 
+    display: flex;
+    gap: 10px;
+}
+    .SearchBar{
+        padding: 5px;
+        flex: 1;
+    }
+    .StatusBtn{
+        padding: 5px 10px;
+        border: 0px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 250ms;
+    }
+    .StatusBtn:hover{
+        box-shadow: 0 0 2px 2px gainsboro;
+    }
+    .StatusBtn:active{
+        background-color: var(--ButtonActiveBg);
+        color: var(--ButtonActiveText);
+    }
+    .StatusBtn.Active{
+        background-color: var(--ButtonActiveBg);
+        color: var(--ButtonActiveText);
+    }
+
+.List{
+    grid-area: List;
+}
+
+    .Record{        
+        display: flex;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        gap: 10px;
+        border: 1px solid gainsboro;
+        align-items: center;
+        cursor: pointer;
+    }
+    .Record:hover{
+        box-shadow: 0 0 2px 2px gainsboro;
+    }
+    .Record:active{
+        box-shadow: 0 0 2px 2px black;
+    }
+    .RecordName{
+        flex: 1;
+        text-align: center;
+    }
+    .RecordStatus{
+        padding: 5px 10px;
+        border: 0px;
+        font-size: 0.7rem;
+        border-radius: 5px;
+    }
+    .RecordStatus.InProgress{
+        background-color: #0D99FF;
+        color: white;
+        border: 2px solid #0969ad;
+    }
+    .RecordStatus.Advising{
+        background-color: #FFCD29;
+        border: 2px solid #a88719;
+    }
+    .RecordStatus.Completed{
+        background-color: #14AE5C;
+        color: white;
+        border: 2px solid #0c6837;
+    }
+    .RecordImage{
+        flex: 0 0 50px;
+    }

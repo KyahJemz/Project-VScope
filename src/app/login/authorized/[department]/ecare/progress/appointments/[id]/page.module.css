@@ -1,0 +1,51 @@
+.MainContent{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 10px;
+}
+
+.Row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    
+}
+
+.Row:nth-child(1){
+    background-color: gainsboro;
+    justify-content: flex-start;
+}
+
+.Row:nth-child(2){
+    justify-content: flex-end;
+}
+
+.Input{
+    flex: 1;
+    padding: 6px;
+}
+.InputCategory{
+    padding: 6px;
+    cursor: pointer;
+}
+.InputCategoryOptions{
+    padding: 6px;
+    cursor: pointer;
+}
+
+.FormButton{
+    cursor: pointer;
+    padding: 5px 20px;
+    transition: 250ms;
+}
+.FormButton:hover{
+    box-shadow: 0 0 2px 2px gainsboro;
+}
+.FormButton:active{
+    background-color: var(--ButtonActiveBg);
+    color: var(--ButtonActiveText);
+    border: 0px;
+}

@@ -52,9 +52,7 @@ export const GET = async (request) => {
 
 		if (GoogleEmail === "" || GoogleEmail === null) {
 			if(Type === "WalkIn") {
-				if (Status === "" || Status === null) {
-					results = await AppointmentModel.find();
-				} else {
+
 					let query = {};
 					if (Status) {
 						query.Status = Status;
@@ -63,11 +61,7 @@ export const GET = async (request) => {
 						query.Type = Type;
 					}
 					results = await AppointmentModel.find(query);
-				}
 			} else if(Type === "Appointment") {
-				if (Status === "" || Status === null) {
-					results = await AppointmentModel.find();
-				} else {
 					let query = {};
 					if (Status) {
 						query.Status = Status;
@@ -76,7 +70,6 @@ export const GET = async (request) => {
 						query.Type = Type;
 					}
 					results = await AppointmentModel.find(query);
-				}
 			} else {
 				if (Status === "" || Status === null) {
 					results = await AppointmentModel.find();
