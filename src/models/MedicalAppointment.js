@@ -39,6 +39,26 @@ const postSchema = new Schema(
       type: Object,
       required: false,
     },
+    Prescriptions: {
+      type: Array,
+      required: false,
+    },
+    Diagnosis: {
+      type: Array,
+      required: false,
+    },
+    Notes: {
+      type: Array,
+      required: false,
+    },
+    DateApproved: {
+      type: String,
+      required: false,
+    },
+    DateCleared: {
+      type: String,
+      required: false,
+    }
   },
   { timestamps: true }
 );

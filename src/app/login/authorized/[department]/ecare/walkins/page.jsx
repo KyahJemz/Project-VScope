@@ -243,7 +243,7 @@ const WalkIn = ({ params }) => {
 							<input className={styles.DetailsFields} type="text" name="StudentNumber" data-key="StudentNumber" placeholder="Student Number"/>
 						</div>	
 						<div className={styles.DetailsRow}>
-							<input className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand"  placeholder="Contact Number" required />
+							<input className={styles.DetailsFields} type="text" name="ContactNumber" data-key="ContactNumber"  placeholder="Contact Number" required />
 							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyPerson" data-key="InCaseOfEmergencyPerson"  placeholder="In case of emergency person" required />
 							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyNumber" data-key="InCaseOfEmergencyNumber" placeholder="In case of emergency number" required />
 						</div>	
@@ -300,7 +300,7 @@ const WalkIn = ({ params }) => {
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="StudentNumber" onBlur={ChangeConfirmation} defaultValue={details?.Details?.StudentNumber??""} data-key="StudentNumber" data-value={details?.Details?.StudentNumber??""} placeholder="Student Number"/>
 							</div>	
 							<div className={styles.DetailsRow}>
-								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="CourseStrand" onBlur={ChangeConfirmation} defaultValue={details?.Details?.CourseStrand??""} data-key="CourseStrand" data-value={details?.Details?.CourseStrand??""}  placeholder="Contact Number" required />
+								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="ContactNumber" onBlur={ChangeConfirmation} defaultValue={details?.Details?.ContactNumber??""} data-key="ContactNumber" data-value={details?.Details?.ContactNumber??""}  placeholder="Contact Number" required />
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="InCaseOfEmergencyPerson" onBlur={ChangeConfirmation} defaultValue={details?.Details?.InCaseOfEmergencyPerson??""} data-key="InCaseOfEmergencyPerson" data-value={details?.Details?.InCaseOfEmergencyPerson??""}  placeholder="In case of emergency person" required />
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="InCaseOfEmergencyNumber" onBlur={ChangeConfirmation} defaultValue={details?.Details?.InCaseOfEmergencyNumber??""} data-key="InCaseOfEmergencyNumber" data-value={details?.Details?.InCaseOfEmergencyNumber??""} placeholder="In case of emergency number" required />
 							</div>	

@@ -1,51 +1,302 @@
-.MainContent{
+
+.PasswordForm{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -100%);
     display: flex;
+    flex-direction: column ;
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+}
+    .PasswordFormInput{
+        padding: 10px;
+        letter-spacing: 3px;
+        border: 1px solid rgba(0, 0, 0, 0.596);
+        width: 300px;
+    }
+    .PasswordFormTitle{
+        margin-bottom: 15px;
+    }
+    .PasswordFormNote{
+        font-size: 0.7rem;
+        color: red;
+        margin-bottom: 3px;
+        text-align: right;
+    }
+    .PasswordFormButton{
+        margin-top: 15px;
+        cursor: pointer;
+        padding: 5px 20px;
+        transition: 250ms;
+    }
+    .PasswordFormButton:hover{
+        box-shadow: 0 0 2px 2px gainsboro;
+    }
+    .PasswordFormButton:active{
+        background-color: var(--ButtonActiveBg);
+        color: var(--ButtonActiveText);
+        border: 0px;
+    }
+
+.MainContent{
+    display: grid;
     flex-direction: column;
     position: relative;
-    gap: 10px;
+    grid-template-columns: 200px 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 5px;
+    grid-template-areas: 
+        "Profile Details Details Details"
+        "Profile Diagnosis Prescription Note"
+        "Profile Days Days Status";
+    height: 100%;
 }
+    .Profile {
+        grid-area: Profile;
+        border: 1px solid gainsboro;
+    }
+    .Details {
+        grid-area: Details;
+        border: 1px solid gainsboro;
+    }
+    .Diagnosis {
+        grid-area: Diagnosis;
+        border: 1px solid gainsboro;
+    }
+    .Prescription {
+        grid-area: Prescription;
+        border: 1px solid gainsboro;
+    }
+    .Note {
+        grid-area: Note;
+        border: 1px solid gainsboro;
+    }
+    .Days {
+        grid-area: Days;
+        border: 1px solid gainsboro;
+    }
+    .Status {
+        grid-area: Status;
+        border: 1px solid gainsboro;
+    }
 
-.Row{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
-    
-}
 
-.Row:nth-child(1){
-    background-color: gainsboro;
-    justify-content: flex-start;
-}
 
-.Row:nth-child(2){
-    justify-content: flex-end;
-}
+    .Profile {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+        .ProfileTop{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 25px;
+            gap: 10px;
+        }
+            .ProfileImage{
+                width: 150px;
+                height: 150px;
+                aspect-ratio: 1/1;
+            }
+            .ProfileName{
+                margin-top: 20px;
+                font-weight: bold;
+                text-align: center;
+            }
+            .ProfileId{
 
-.Input{
-    flex: 1;
-    padding: 6px;
-}
-.InputCategory{
-    padding: 6px;
-    cursor: pointer;
-}
-.InputCategoryOptions{
-    padding: 6px;
-    cursor: pointer;
-}
+            }
+            .ProfileEmail{
+                font-size: 0.8rem;
+            }
+        .ProfileBot{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+            gap: 10px;
+            width: 100%;
+        }
+            .HistoryBtn,
+            .ReportBtn{
+                width: 100%;
+                cursor: pointer;
+                padding: 3px 10px;
+                transition: 250ms;
+                border: 0px;
+            }
+            .HistoryBtn:hover,
+            .ReportBtn:hover{
+                box-shadow: 0 0 2px 2px gainsboro;
+            }
+            .HistoryBtn:active,
+            .ReportBtn:active{
+                background-color: #53c28b;
+                color: white;
+            }
 
-.FormButton{
-    cursor: pointer;
-    padding: 5px 20px;
-    transition: 250ms;
-}
-.FormButton:hover{
-    box-shadow: 0 0 2px 2px gainsboro;
-}
-.FormButton:active{
-    background-color: var(--ButtonActiveBg);
-    color: var(--ButtonActiveText);
-    border: 0px;
-}
+
+
+    .Details {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+        .DetailsRow{
+            display: grid;
+            gap: 10px;
+        }
+        .DetailsRow:nth-child(1){
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .DetailsRow:nth-child(2){
+            grid-template-columns: 1fr 1fr;
+        }
+        .DetailsRow:nth-child(3){
+            grid-template-columns: 1fr 1fr;
+        }
+        .DetailsRow:nth-child(4){
+            grid-template-columns: 1fr;
+        }
+        .DetailsRow:nth-child(5){
+            grid-template-columns: 1fr 1fr 1fr 2fr;
+        }
+        .DetailsRow:nth-child(6){
+            grid-template-columns: 2fr 1fr;
+        }
+            .DetailsInput{
+                padding: 5px;
+                width: 100%;
+                font-size: 0.8rem;
+            }
+
+
+
+    .Prescription,
+    .Note,
+    .Diagnosis {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        font-size: 0.8rem;
+        align-items: center;
+        gap: 5px;
+    }
+        .ListTitle{
+            font-weight: bold;
+            background-color: gainsboro;
+            color: rgba(0, 0, 0, 0.750);
+            padding: 5px;
+            text-align: center;
+            width: 100%;
+        }
+        .Line{
+            margin-top: 5px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .ListItem{
+            display: flex;
+            width: 100%;
+            align-items: center;
+            border: 1px solid gainsboro;
+            padding: 3px;
+            gap: 5px;
+        }
+            .ListItemText{
+                flex: 1;
+                width: 100%;
+            }
+            .ListItemBtn{
+                padding: 3px 5px;
+                cursor: pointer;
+                background-color: rgba(255, 0, 0, 0.750);
+                border: 0px;
+                color: white;
+                transition: 250ms;
+            }
+            .ListItemAddBtn{
+                padding: 2px 5px;
+                cursor: pointer;
+                background-color: #53c28b;
+                border: 0px;
+                color: white;
+                transition: 250ms;
+            }
+            .ListItemAddBtn:hover,
+            .ListItemBtn:hover{
+                box-shadow: 0 0 2px 2px gainsboro;
+            }
+            .ListItemAddBtn:active,
+            .ListItemBtn:active{
+                box-shadow: 0 0 2px 2px black;
+            }
+
+
+
+    .Days {
+       display: flex;
+       flex-direction: row;
+       gap: 10px;
+       align-items: center;
+       padding: 10px;
+       font-size: 0.8rem;
+    }
+        .DaysTitle{
+            font-weight: bold;
+            background-color: gainsboro;
+            color: rgba(0, 0, 0, 0.750);
+            padding: 5px 10px;
+            text-align: center;
+        }
+        .DayItem{
+            background-color: #53c28b;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 5px 5px;
+            border-radius: 5px;
+            justify-content: center;
+        }
+
+
+
+    .Status {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 10px;
+        gap: 10px;
+        align-items: center;
+    }
+
+        .StatusAdvisingBtn,
+        .StatusClearedBtn{
+            padding: 4px;
+            cursor: pointer;
+            border-radius: 3px;
+            border-width: 2px;
+        }
+        .StatusAdvisingBtn{
+            background-color: #FFCD29;
+            border-color: #b38f1c;
+        }
+        .StatusClearedBtn{
+            background-color: #14AE5C;
+            border-color: #0c6b38;
+            color: white;
+        }
+        .StatusAdvisingBtn:hover,
+        .StatusClearedBtn:hover{
+            box-shadow: 0 0 2px 2px gainsboro;
+        }
+        .StatusAdvisingBtn:active,
+        .StatusClearedBtn:active{
+            box-shadow: 0 0 2px 2px black;
+        }

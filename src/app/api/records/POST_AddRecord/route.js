@@ -69,7 +69,23 @@ export const POST = async (request) => {
             Concern: encryptText(body.get("Concern")),
           }
         } else if(Type === "Appointment"){
-          
+            Details = {
+              LastName: encryptText(body.get("LastName")),
+              FirstName: encryptText(body.get("FirstName")),
+              MiddleName: encryptText(body.get("MiddleName")),
+              Address: encryptText(body.get("Address")),
+              Birthday: encryptText(body.get("Birthday")),
+              Age: encryptText(body.get("Age")),
+              Sex: encryptText(body.get("Sex")),
+              CourseStrand: encryptText(body.get("CourseStrand")),
+              YearLevel: encryptText(body.get("YearLevel")),
+              SchoolEmail: encryptText(body.get("GoogleEmail")),
+              StudentNumber: encryptText(body.get("StudentNumber")),
+              ContactNumber: encryptText(body.get("ContactNumber")),
+              InCaseOfEmergencyPerson: encryptText(body.get("InCaseOfEmergencyPerson")),
+              InCaseOfEmergencyNumber: encryptText(body.get("InCaseOfEmergencyNumber")),
+              Concern: encryptText(body.get("Concern")),
+            }
         }
 
         if (GoogleEmail === "" || GoogleEmail === null) {
@@ -97,7 +113,9 @@ export const POST = async (request) => {
             Status,
             Type,
             Category,
-            Details
+            Details,
+            DateApproved: Type === "WalkIn" ? new Date() : "",
+            DateCleared: "",
           });
               
           await newPost.save();
