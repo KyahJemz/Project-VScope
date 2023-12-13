@@ -35,21 +35,27 @@ const Page = ({ params }) => {
 	);
 
 	if (!isLoading) {
-	  
 		let DateApproved = new Date(data.DateApproved);
-		
+  
 		let DateCleared = data.DateCleared;
+		let clearedDate;
+		
 		if (!DateCleared || DateCleared.trim() === "") {
-		  DateCleared = new Date();
+		  clearedDate = new Date();
 		} else {
-		  DateCleared = new Date(DateCleared);
+		  clearedDate = new Date(DateCleared);
 		}
 	  
-		for (let i = 0; i < 3; i++) {
-		  const currentDate = new Date(DateApproved); 
+		const timeDifference = clearedDate.getTime() - DateApproved.getTime();
+		const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+		for (let i = 0; i <= daysDifference; i++) {
+		  const currentDate = new Date(DateApproved);
 		  currentDate.setDate(DateApproved.getDate() + i);
 		  dateRange.push(currentDate);
 		}
+
+		console.log('Array of days between DateApproved and DateCleared:', dateRange);
 	}
 
 	const AddDiagnosis = async (e) => {

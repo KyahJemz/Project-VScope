@@ -37,8 +37,6 @@ export const GET = async (request) => {
         return new NextResponse("Invalid Department", { status: 400 });
     }
 
-    console.log(Department,AppointmentId)
-
     try {
         await connect();
 
@@ -51,8 +49,6 @@ export const GET = async (request) => {
         } else if (Department === 'SDPC') {
             Appointment = await SDPCAppointment.findById(AppointmentId);
         }
-
-        console.log(Appointment);
 
         if (Appointment) {
           const topLevelFieldsToDecrypt = ["GoogleImage"];

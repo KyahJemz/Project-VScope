@@ -34,8 +34,6 @@ export const GET = async (request) => {
 	const Department = url.searchParams.get("Department");
 	const Type = url.searchParams.get("Type");
 
-  console.log(GoogleEmail + Department + Type);
-
 	try {
 		await connect();
 

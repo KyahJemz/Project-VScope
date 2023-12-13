@@ -5,19 +5,7 @@ import styles from "./page.module.css";
 import useSWR from "swr";
 import { useRouter  } from "next/navigation";
 
-const formatDate = (timestamp) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
-
-  const hours = new Date(timestamp).getHours();
-  const minutes = new Date(timestamp).getMinutes();
-  const amOrPm = hours >= 12 ? 'pm' : 'am';
-  const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
-
-  return `${formattedDate} ${formattedTime}`;
-};
-
-const Consultation = ({ params }) => {
+const Page = ({ params }) => {
     const Department = params.department;
     const router = useRouter();
 
@@ -35,7 +23,7 @@ const Consultation = ({ params }) => {
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
       .map(item => ({
         ...item,
-        createdAt: formatDate(item.createdAt)
+        createdAt: item.createdAt
       }))
     : [];
 
@@ -97,4 +85,4 @@ const Consultation = ({ params }) => {
   );
 };
 
-export default Consultation;
+export default Page;

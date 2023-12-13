@@ -21,6 +21,11 @@ const postSchema = new Schema(
       type: String,
       required: false,
     },
+    ClearanceStatus: {
+      type: String,
+      required: true,
+      default: "In Progress"
+    },
     Type: {
       type: String,
       enum: ["Appointment","WalkIn"],
