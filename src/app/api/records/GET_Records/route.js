@@ -53,23 +53,25 @@ export const GET = async (request) => {
 		if (GoogleEmail === "" || GoogleEmail === null) {
 			if(Type === "WalkIn") {
 
-					let query = {};
-					if (Status) {
-						query.Status = Status;
-					}
-					if (Type) {
-						query.Type = Type;
-					}
-					results = await AppointmentModel.find(query);
+				let query = {};
+				if (Status) {
+					query.Status = Status;
+				}
+				if (Type) {
+					query.Type = Type;
+				}
+				results = await AppointmentModel.find(query);
 			} else if(Type === "Appointment") {
-					let query = {};
-					if (Status) {
-						query.Status = Status;
-					}
-					if (Type) {
-						query.Type = Type;
-					}
-					results = await AppointmentModel.find(query);
+				let query = {};
+				if (Status) {
+					query.Status = Status;
+				}
+				if (Type) {
+					query.Type = Type;
+				}
+				results = await AppointmentModel.find(query);
+			} else if (Type === "All"){
+				results = await AppointmentModel.find();
 			} else {
 				if (Status === "" || Status === null) {
 					results = await AppointmentModel.find();
