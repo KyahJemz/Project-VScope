@@ -27,6 +27,10 @@ const Dashboard = ({ params }) => {
     console.log(data);
   }
 
+  const ViewRecord = (e) => {
+    router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+e.target.dataset.value);
+  }
+
   return (
     <div className={styles.MainContent}>
       {isLoading ? "Loading..." : 
@@ -46,7 +50,18 @@ const Dashboard = ({ params }) => {
                 </div>
               </div>
           <div className={styles.HistoryContainer}>
-
+            {data.map((record, index) => (
+              <div className={styles.Record} key={index} data-value={record._id} onClick={ViewRecord}>
+                {new Date(record.createdAt).toLocaleDateString("en-US", {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                })}
+              </div>
+            ))}
           </div>
         </>
       }
