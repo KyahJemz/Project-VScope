@@ -17,7 +17,13 @@ const PieChart = ({ data }) => {
     chartRef.current.chart = new Chart(ctx, {
       type: 'pie',
       data: data,
-      options: {},
+      options: {
+        plugins: {
+          legend: {
+            display: false, 
+          },
+        },
+      },
     });
   }, [data]);
 
