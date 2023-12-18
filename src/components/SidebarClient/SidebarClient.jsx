@@ -2,69 +2,40 @@
 
 import React from "react";
 import styles from "./SidebarClient.module.css";
-import { useSession } from "next-auth/react";
 
-const Sidebar = ({department}) => {
-  const { data: session, status } = useSession();
+const Sidebar = () => {
 
-  const ManagementLinks = [
+  const Links = [
     {
       id: 1,
-      title: "DASHBOARD",
-      url: "/login/authorized/"+department,
+      title: "APPOINTMENTS",
+      url: "/login/services/appointments",
     },
     {
       id: 2,
-      title: "APPOINTMENTS",
-      url: "/login/authorized/"+department+"/appointments",
+      title: "eCARE",
+      url: "/login/services/ecare",
     },
     {
       id: 3,
-      title: "e-CARE",
-      url: "/login/authorized/"+department+"/consultation",
-    },
-    {
-      id: 4,
       title: "RECORDS",
-      url: "/login/authorized/"+department+"/search",
+      url: "/login/services/records",
     },
-    {
-      id: 5,
-      title: "REPORTS",
-      url: "/login/authorized/"+department+"/search",
-    },
-    {
-      id: 6,
-      title: "MANAGEMENT",
-      url: "/login/authorized/"+department+"/search",
-    },
-  ];
-  
-  const AdminLinks = [
     {
       id: 4,
-      title: "Analytics",
-      url: "/login/authorized/"+department+"/analytics",
-    }
+      title: "REPORTS",
+      url: "/login/services/reports",
+    },
   ];
-
-
   
   return (
     <div className={styles.container}>
         <div className={styles.links}>
-          {ManagementLinks.map((link) => (
+          {Links.map((link) => (
             <a key={link.id} href={link.url} className={styles.link}>
               {link.title}
             </a>
           ))}
-          {status === "authenticated" && session.user.role === "Admin" ? AdminLinks.map((link) => (
-            <a key={link.id} href={link.url} className={styles.link}>
-              {link.title}
-            </a>
-            )) 
-            : null
-          }
       </div>
     </div>
   );

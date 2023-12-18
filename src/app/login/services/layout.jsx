@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
+import SidebarClient from "@/components/SidebarClient/SidebarClient";
 
 const Layout = async ({ children }) => {
 
@@ -19,7 +20,12 @@ const Layout = async ({ children }) => {
             }
             return null;
         } else {
-            return children;
+            return (
+                <>
+                    <SidebarClient/>
+                    {children}
+                </>
+              );
         }
     }     
     
