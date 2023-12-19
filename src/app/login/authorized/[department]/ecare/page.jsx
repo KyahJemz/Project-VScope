@@ -8,9 +8,7 @@ const Appointments = ({ params }) => {
   redirect('/login/authorized/'+Department+'/ecare/walkins');
 
   return (
-    <>
-       
-    </>
+    <></>
   )
 };
 
