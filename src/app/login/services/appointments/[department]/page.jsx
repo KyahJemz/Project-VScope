@@ -6,8 +6,9 @@ import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 import Calendar from "@/components/Calendar/Calendar";
+import { Services } from "@/models/Services.js"
 
-const Schedule = ({ params }) => {
+const Page = ({ params }) => {
 	const Department = params.department;
 	const Status = "Pending";
 	const router = useRouter();
@@ -110,14 +111,92 @@ const Schedule = ({ params }) => {
 		}
 	}, [SelectedDay, data]);
 
+	console.log(SelectedDay, SelectedTime);
+
 	return (
 		<div className={styles.MainContent}>	
-		
-			<div className={styles.Header}>
-				<p>Set Appointment Schedules</p>
+
+			<div className={styles.CalendarConatiner}>
+				<Calendar callback={setSelectedDay} />
 			</div>
 
+			<div className={styles.TimeSummaryContainer}>
+				{SelectedDay ? 
+					<>
+						<div className={styles.TimeSummaryItem}>
+							<div className={styles.TimeSummaryDate}>8am - 10am</div>
+							<div className={`${styles.TimeSummaryTotal} ${styles.False}`}>0</div>
+						</div>
+						<div className={styles.TimeSummaryItem}>
+							<div className={styles.TimeSummaryDate}>10am - 12am</div>
+							<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+						</div>
+						<div className={styles.TimeSummaryItem}>
+							<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
+							<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+						</div>
+						<div className={styles.TimeSummaryItem}>
+							<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
+							<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+						</div>
+					</>
+					: null
+				}
+				
+			</div>
+
+			<div className={styles.TimeSelectionContainer}>
+				<p>{SelectedDay}</p>
+
+				{SelectedDay ? 
+					<>
+						<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
+						<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
+						<label className={`${styles.radioForm} ${styles.False}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
+						<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
+					</>
+					: null
+				}
+					
+			</div>
+
+			<form className={styles.ConcernContainer}>
+				<select className={styles.InputArea} name="Services" id="" required>
+					<option value="">Select services...</option>
+					{Services[Department].map((option, index) => (
+						<option key={index} value={option}>{option}</option>
+					))}
+				</select>
+				<textarea className={`${styles.ConcernTextArea} ${styles.InputArea}`} name="Concern" id="" rows={5} required placeholder="Concern..."></textarea>
+				<input type="text" className={styles.InputArea} name="" readOnly value={SelectedDay} required placeholder="Selected Date..."/>
+				<input type="text" className={styles.InputArea} name="" readOnly value={SelectedTime} required placeholder="Selected Time..."/>
+				<input type="text" hidden name="Date" value={SelectedDay} required/>
+				<input type="text" hidden name="Time" value={SelectedTime} required/>
+				<button className={styles.AppointmentSubmitBtn}>SEND APPOINTMENT</button>
+			</form>
+
+			<div className={styles.HistoryContainer}>
+				
+			</div>
+
+			<div className={styles.UnavailableContainer}>
+				
+			</div>
+
+			<div className={styles.NoteContainer}>
+				TAKE NOTE: NOT ALL APPROVED
+			</div>
+		
+
+
+
+
+
+
+{/* 		
 			<div className={styles.Schedules}>
+
+
 
 				<p style={{ fontWeight: 'bold', textAlign: 'center' }}>Schedules</p>
 				
@@ -153,16 +232,14 @@ const Schedule = ({ params }) => {
 					</>
 				}
 
-			</div>
+			</div> */}
 
-			<div className={styles.AppoitmentDetails}>
-				<Calendar callback={setSelectedDay} />
-			</div>
+			
 		
 		</div>
 	)
 };
 
-export default Schedule;
+export default Page;
 
 

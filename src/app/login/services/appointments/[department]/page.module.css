@@ -3,96 +3,155 @@
     border: 1px solid gainsboro;
     display: grid;
     display: grid; 
-    grid-template-columns: 280px 155px 1fr; 
-    grid-template-rows: 50px 1fr; 
-    gap: 0px 0px; 
+    grid-template-columns: 1fr 250px 250px; 
+    grid-template-rows: 300px 100px 150px 100px auto; 
     grid-template-areas: 
-        "Header Header Header"
-        "Schedules TimeSelection Calendar";
+        "CalendarContainer TimeSelectionContainer HistoryContainer"
+        "CalendarContainer ConcernContainer HistoryContainer"
+        "CalendarContainer ConcernContainer HistoryContainer"
+        "TimeSummaryContainer ConcernContainer UnavailableContainer"
+        "NoteContainer ConcernContainer UnavailableContainer";
     gap: 20px;
 }
 
-.Header {
-    grid-area: Header;
-    border: 1px solid gainsboro;    
+.CalendarContainer{
+    grid-area: CalendarContainer;
+    border: 1px solid gainsboro;
+}
+
+.TimeSummaryContainer{
+    grid-area: TimeSummaryContainer;
+}
+
+.TimeSelectionContainer{
+    grid-area: TimeSelectionContainer;
+    border: 1px solid gainsboro;
+}
+
+.ConcernContainer{
+    grid-area: ConcernContainer;
+    border: 1px solid gainsboro;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+    gap: 20px;
+}
+
+.HistoryContainer{
+    grid-area: HistoryContainer;
+    border: 1px solid gainsboro;
+}
+
+.UnavailableContainer{
+    grid-area: UnavailableContainer;
+    border: 1px solid gainsboro;
+}
+
+.NoteContainer{
+    grid-area: NoteContainer;
     display: flex;
     align-items: center;
-    padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.TimeSummaryContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}
+.TimeSummaryItem{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.TimeSummaryDate{
+    font-size: 0.8rem;
+    text-align: center;
     font-weight: bold;
+    background-color: #757575;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+.TimeSummaryTotal{
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+}
+.TimeSummaryTotal.True{
+    background-color: #14AE5C;
+}
+.TimeSummaryTotal.False{
+    background-color: #F24822;
 }
 
-.Schedules{
+
+
+.TimeSelectionContainer{
     display: flex;
     flex-direction: column;
     gap:10px;
     border: 1px solid gainsboro;    
     padding: 20px;
-    grid-area: Schedules;
-    overflow-y: scroll;
 }
-
-.TimeSelection{
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-    border: 1px solid gainsboro;    
-    padding: 20px;
-    grid-area: TimeSelection;
-}
-
-
-.AppoitmentDetails{
-    border: 1px solid gainsboro;
-    padding: 20px;
-    flex: 1;
-    grid-area: Calendar;
-    display: flex;  
-    flex-direction: column;
-    gap: 20px   ;
-}
-
-
-
-
-
-
 
 .radioForm{
     display: flex;
     gap: 10px;
     cursor: pointer;
-}
-
-.Schedule{
-    border: 1px solid gainsboro;
     padding: 10px;
-    position: relative;
-}
-
-.ScheduleDate{
-    font-size: 0.9rem;
-}
-
-.ScheduleTime{
-    font-size: 0.7rem;
-}
-
-.ScheduleRemove{
-    position: absolute;
-    background-color: rgba(255, 0, 0, 0.75);
     color: white;
-    padding: 1px 5px;
+    border-radius: 5px;
+}
+
+.radioForm.True{
+    background-color: #14AE5C;
+}
+.radioForm.False{
+    background-color: #F24822;
+}
+
+.ConcernTextArea{
+    width: 100%;
+}
+
+.InputArea{
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.AppointmentSubmitBtn{
+    width: 100%;
+    padding: 5px 10px ;
     cursor: pointer;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: 500ms;
+    background-color: #14AE5C;
+    color: white;
+    border-radius: 5px;
+    border: 1px gainsboro;
+    transition: 250ms;
+}
+.AppointmentSubmitBtn:hover{
+    box-shadow: 0 0 2px 2px gainsboro;
 }
 
-.ScheduleRemove:hover{
-    box-shadow: 0px 0px 2px 2px gainsboro;
+.AppointmentSubmitBtn:active{
+    background-color: white;
+    color: black;
 }
 
-.ScheduleRemove:active{
-    border: 1px solid black;
-}

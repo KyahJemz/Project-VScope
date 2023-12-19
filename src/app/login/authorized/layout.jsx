@@ -11,7 +11,7 @@ const Layout = async ({ children }) => {
         return null;
     } else {
         if (session.user?.department) {
-            return children;
+            return children({ additionalParameter });
         } else {
             console.log("--INVALID ACCESS--",session);
             redirect('/login/services');

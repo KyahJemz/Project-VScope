@@ -29,6 +29,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    Details: {
+      type: Object,
+      required: false,
+    },
     Role: {
       type: String,
       enum: ["Student","Lay Collaborator","Management", "Admin", "Administrator"],
