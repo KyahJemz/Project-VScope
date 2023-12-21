@@ -49,10 +49,16 @@ const Page = ({ params }) => {
 		fetcher
 	);
 
+	const [Status, setStatus] = useState("All");
+
 	const { data: HistoryData, mutate: HistoryMutate, error: HistoryError, isLoading: HistoryIsLoading } =  useSWR(
 		`/api/records/GET_Records?GoogleEmail=${encodeURIComponent(GoogleEmail)}&Department=${encodeURIComponent(Department)}&Status=&Type=${encodeURIComponent("Appointment")}`,
 		fetcher
 	);
+
+	const sortedData = HistoryData ? [...HistoryData].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+
+	const filteredData = Status === "All" ? sortedData.filter(record => ["Pending", "Approved", "Canceled", "Reschedule"].includes(record.Status)) : sortedData.filter(record => record.Status === Status);
 
 	useEffect(() => {
 		if (SelectedDay) {
@@ -101,7 +107,7 @@ const Page = ({ params }) => {
 		<div className={styles.MainContent}>	
 
 			<div className={styles.CalendarConatiner}>
-				<Calendar callback={setSelectedDay} />
+				<Calendar callback={setSelectedDay} Schedules={DeptData} />
 			</div>
 
 			<div className={styles.TimeSummaryContainer}>
@@ -280,25 +286,22 @@ const Page = ({ params }) => {
 			<div className={styles.HistoryContainer}>
 				<p>Hisotry</p>
 				<div className={styles.StatusContainer}>
-					<button className={`${styles.StatusBtn}`}>All</button>
-					<button className={`${styles.StatusBtn}`}>Pending</button>
-					<button className={`${styles.StatusBtn}`}>Approved</button>
-					<button className={`${styles.StatusBtn}`}>Completed</button>
-					<button className={`${styles.StatusBtn}`}>Rejected</button>
-					<button className={`${styles.StatusBtn}`}>Canceled</button>
-					<button className={`${styles.StatusBtn}`}>Advising</button>
-					<button className={`${styles.StatusBtn}`}>Rescheduled</button>
+					<button className={`${styles.StatusBtn} ${Status === "All" ? styles.Active : null}`} onClick={()=>setStatus("All")}>All</button>
+					<button className={`${styles.StatusBtn} ${Status === "Pending" ? styles.Active : null}`} onClick={()=>setStatus("Pending")}>Pending</button>
+					<button className={`${styles.StatusBtn} ${Status === "Approved" ? styles.Active : null}`} onClick={()=>setStatus("Approved")}>Approved</button>
+					<button className={`${styles.StatusBtn} ${Status === "Canceled" ? styles.Active : null}`} onClick={()=>setStatus("Canceled")}>Canceled</button>
+					<button className={`${styles.StatusBtn} ${Status === "Rescheduled" ? styles.Active : null}`} onClick={()=>setStatus("All")}>Rescheduled</button>
 				</div>
 				<div className={styles.HistoryList}>
 					{HistoryIsLoading ? (
 						<p className={styles.notes}>Loading...</p>
-					) : HistoryData ? (
-						HistoryData.length === 0 ? (
+					) : filteredData ? (
+						filteredData.length === 0 ? (
 							<p className={styles.notes}>No records</p>
 						) : (
-							HistoryData.map((history, index) => (
-								<div key={index} className={styles.HistoryData}>
-									{history.Details.Concern}
+							filteredData.map((history, index) => (
+								<div key={index} className={`${styles.HistoryData} ${styles[history.Status]}`}>
+									{formatDate(history.AppointmentDate)} | {history.AppointmentTime}
 								</div>
 							))
 						)

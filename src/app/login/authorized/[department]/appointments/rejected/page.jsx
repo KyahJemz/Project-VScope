@@ -40,7 +40,7 @@ const Pending = ({ params }) => {
   	const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
 	const { data, mutate, error, isLoading } =  useSWR(
-		`/api/appointments/GET_Appointments?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status=${encodeURIComponent(Status)}`,
+		`/records/GET_Records?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status=${encodeURIComponent(Status)}`,
 		fetcher
 	);
 

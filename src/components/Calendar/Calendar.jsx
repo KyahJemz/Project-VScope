@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Calendar.module.css";
 
-const Calendar = ({callback}) => {
+const Calendar = ({callback, Schedules}) => {
 	const currentDate = new Date();
 	const [Year, setYear] = useState(currentDate.getFullYear());
 	const [Month, setMonth] = useState(currentDate.getMonth() + 1);
@@ -88,6 +88,9 @@ const Calendar = ({callback}) => {
 				const isSunday = index % 7 === 0;
 				const isPastDate = new Date(formattedDate) <= new Date();
 
+				const matchingDeptData = Schedules && Schedules.find(Schedule => Schedule.Date === formattedDate);
+				const time = matchingDeptData ? matchingDeptData.Time : null;
+
 				return (
 					<div
 						key={index}
@@ -98,7 +101,10 @@ const Calendar = ({callback}) => {
 					>
 						{value !== null ? (
 							<>
-							<p className={styles.date}>{value}</p>
+								<p className={styles.date}>{value}</p>
+								{time && (
+									<p className={styles.time}>{time.charAt(0).toUpperCase() + time.slice(1)}</p>
+								)}
 							</>
 						) : (
 							<p className={styles.sunday}>{}</p>

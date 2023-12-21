@@ -50,7 +50,7 @@ const Pending = ({ params }) => {
   	const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
 	const { data, mutate, error, isLoading } =  useSWR(
-		`/api/appointments/GET_Appointments?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status=${encodeURIComponent(Status)}`,
+		`/api/records/GET_Records?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status=${encodeURIComponent(Status)}`,
 		fetcher
 	);
 
@@ -158,7 +158,7 @@ const Pending = ({ params }) => {
 	const OnReSchedule= (e) => {
 		if (appointmentId !== "") {
 			const details = data.find(appointment => appointment._id === appointmentId);
-			setselectedDate(e.target.dataset.date);
+			setselectedDate(new Date(e.target.dataset.date));
 			setselectedTime(e.target.dataset.time);
 			setShowReSchedulePanel(true);
 			setIsReScheduling(true);
@@ -175,7 +175,7 @@ const Pending = ({ params }) => {
             formData.append("Date", formattedDate);
 			formData.append("Time", selectedTime);
 
-            const response = await fetch("/api/appointments/POST_UpdateSchedule", {
+            const response = await fetch("/api/records/POST_UpdateSchedule", {
                 method: "POST",
                 body: formData,
             });
@@ -244,7 +244,7 @@ const Pending = ({ params }) => {
 						</div>
 					) : (
 						<div className={styles.DetailsRow}>
-							<button className={styles.DetailsButton} data-date={details?.Details?.ScheduleDate??""} data-time={details?.Details?.ScheduleTime??""} onClick={OnReSchedule}>RE-SCHEDULE</button>
+							<button className={styles.DetailsButton} data-date={details?.AppointmentDate??""} data-time={details?.AppointmentTime??""} onClick={OnReSchedule}>RE-SCHEDULE</button>
 							<button className={styles.DetailsButton} onClick={OnApprove}>APPROVED</button>
 						</div>
 					)}
@@ -272,8 +272,7 @@ const Pending = ({ params }) => {
 						<p>Schedule Date:</p>
 						<DatePicker
 							className={styles.ReScheduleDate}
-							// selected={new Date(selectedDate)} CHANGE TO THIS
-							selected={null}
+							selected={new Date(selectedDate)}
 							onChange={(date) => setselectedDate(date)}
 							dateFormat="MMMM d, yyyy"
 							placeholderText="Select a date"

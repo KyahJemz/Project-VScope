@@ -156,7 +156,7 @@ const Schedule = ({ params }) => {
 			</div>
 
 			<div className={styles.AppoitmentDetails}>
-				<Calendar callback={setSelectedDay} />
+				<Calendar callback={setSelectedDay} Schedules={data}/>
 			</div>
 		
 		</div>
