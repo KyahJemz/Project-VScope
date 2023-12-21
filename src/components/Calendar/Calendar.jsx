@@ -36,17 +36,18 @@ const Calendar = ({callback}) => {
 
 	const handleDayClick = (event) => {
 		const clickedDate = event.currentTarget.getAttribute("data-timestamp");
+
+		if (new Date(clickedDate) < currentDate) {
+			return;
+		  }
 	  
-		// Remove the selectedDate class from all elements with that class
 		document.querySelectorAll(`.${styles.selectedDate}`).forEach((element) => {
 		  element.classList.remove(styles.selectedDate);
 		});
 	  
-		// Add the selectedDate class to the parent div
 		event.currentTarget.classList.add(styles.selectedDate);
 	  
-		// Set the selected day in your state
-		callback(clickedDate); //YYYY-MM-DD
+		callback(clickedDate);
 	  };
 
 	const MonthSelection = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
@@ -85,17 +86,23 @@ const Calendar = ({callback}) => {
 				const currentDate = new Date(Year, Month - 1, value+1);
 				const formattedDate = currentDate.toISOString().split('T')[0]; // Format to YYYY-MM-DD
 				const isSunday = index % 7 === 0;
+				const isPastDate = new Date(formattedDate) <= new Date();
+
 				return (
-					<div key={index} className={`${styles.Day} ${isSunday ? styles.sunday : ''}`} value={value} data-timestamp={formattedDate} onClick={isSunday ? null : handleDayClick}>
-						{value !== null ? 
+					<div
+						key={index}
+						className={`${styles.Day} ${isSunday ? styles.sunday : ""} ${isPastDate ? styles.Disabled : ""}`}
+						value={value}
+						data-timestamp={formattedDate}
+						onClick={isSunday || isPastDate ? null : handleDayClick}
+					>
+						{value !== null ? (
 							<>
-								<p className={styles.date}>{value}</p>  
-								{/* <p className={`${styles.time} ${styles.notavailable}`}>-</p>
-								<p className={`${styles.time} ${styles.available	}`}>-</p>
-								<p className={`${styles.time} ${styles.notavailable}`}>-</p>
-								<p className={`${styles.time} ${styles.notavailable}`}>-</p> */}
+							<p className={styles.date}>{value}</p>
 							</>
-						: <p className={styles.sunday}>{}</p>  }
+						) : (
+							<p className={styles.sunday}>{}</p>
+						)}
 					</div>
 				);
 			})}
@@ -105,3 +112,9 @@ const Calendar = ({callback}) => {
 };
 
 export default Calendar;
+
+
+								{/* <p className={`${styles.time} ${styles.notavailable}`}>-</p>
+								<p className={`${styles.time} ${styles.available	}`}>-</p>
+								<p className={`${styles.time} ${styles.notavailable}`}>-</p>
+								<p className={`${styles.time} ${styles.notavailable}`}>-</p> */}

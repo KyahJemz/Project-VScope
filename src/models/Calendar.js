@@ -17,6 +17,22 @@ const calendarSchema = new Schema(
       type: String,
       required: true,
     },
+    "8am10am": {
+      type: Array,
+      required: false,
+    },
+    "10am12am": {
+      type: Array,
+      required: false,
+    },
+    "1pm3pm": {
+      type: Array,
+      required: false,
+    },
+    "3pm5pm": {
+      type: Array,
+      required: false,
+    },
   },
   { timestamps: true }
 );

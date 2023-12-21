@@ -4,7 +4,7 @@
     display: grid;
     display: grid; 
     grid-template-columns: 1fr 250px 250px; 
-    grid-template-rows: 300px 100px 150px 100px auto; 
+    grid-template-rows: 300px 150px 200px 100px auto; 
     grid-template-areas: 
         "CalendarContainer TimeSelectionContainer HistoryContainer"
         "CalendarContainer ConcernContainer HistoryContainer"
@@ -41,11 +41,19 @@
 .HistoryContainer{
     grid-area: HistoryContainer;
     border: 1px solid gainsboro;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .UnavailableContainer{
     grid-area: UnavailableContainer;
     border: 1px solid gainsboro;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .NoteContainer{
@@ -155,3 +163,15 @@
     color: black;
 }
 
+.StatusContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.StatusBtn{
+    flex: 1;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
