@@ -19,19 +19,19 @@ const calendarSchema = new Schema(
     },
     "8am10am": {
       type: Array,
-      required: false,
+      default: [],
     },
-    "10am12am": {
+    "10am12pm": {
       type: Array,
-      required: false,
+      default: [],
     },
     "1pm3pm": {
       type: Array,
-      required: false,
+      default: [],
     },
     "3pm5pm": {
       type: Array,
-      required: false,
+      default: [],
     },
   },
   { timestamps: true }

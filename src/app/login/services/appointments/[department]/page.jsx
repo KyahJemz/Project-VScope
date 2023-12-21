@@ -7,10 +7,27 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import Calendar from "@/components/Calendar/Calendar";
 import { Services } from "@/models/Services.js"
+import { useSession } from "next-auth/react";
 
 const Page = ({ params }) => {
 	const Department = params.department;
+	const { data: session, status } = useSession();
+	const [GoogleEmail, setGoogleEmail] = useState("");
+	const [GoogleImage, setGoogleImage] = useState("");
+	const [Role, setRole] = useState("");
 	const router = useRouter();
+
+	useEffect(() => {
+		if (status === "authenticated" && session?.user?.email) {
+		  setGoogleEmail(session.user.email);
+		}
+		if (status === "authenticated" && session?.user?.image) {
+			setGoogleImage(session.user.image);
+		}
+		if (status === "authenticated" && session?.user?.role) {
+			setRole(session.user.role);
+		}
+	}, [status, session]);
 
 	const [SelectedDay, setSelectedDay] = useState(null);
 	const [SelectedTime, setSelectedTime] = useState(null);
@@ -33,7 +50,7 @@ const Page = ({ params }) => {
 	);
 
 	const { data: HistoryData, mutate: HistoryMutate, error: HistoryError, isLoading: HistoryIsLoading } =  useSWR(
-		``,
+		`/api/records/GET_Records?GoogleEmail=${encodeURIComponent(GoogleEmail)}&Department=${encodeURIComponent(Department)}&Status=&Type=${encodeURIComponent("Appointment")}`,
 		fetcher
 	);
 
@@ -50,16 +67,33 @@ const Page = ({ params }) => {
 
 	console.log(SelectedDay, SelectedTime);
 
-	const OnSubmit = (e) => {
+	const OnSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			const formData = new FormData(e.target);
+			formData.append("Type", "Appointment");
+			formData.append("Status", "Pending");
+			formData.append("Department", Department);
+			formData.append("GoogleImage", GoogleImage);
+			formData.append("GoogleEmail", GoogleEmail);
+			formData.append("Category", Role);
 
+			const response = await fetch("/api/records/POST_AddRecord", {
+				method: "POST",
+				body: formData,
+			});
 
+            if (response.ok) {
+                console.log("Complete");
+				e.target.reset();
+            } else {
+                console.log("Failed");
+            }
 		} catch (error) {
 			console.log(error)
 		} finally {
-
+			HistoryMutate(); 
+			DeptMutate();
 		}
 	}
 
@@ -80,19 +114,19 @@ const Page = ({ params }) => {
 										<>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>8am - 10am</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.False}`}>{}</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? styles.False : styles.True}`}>{Schedule["8am10am"] && Schedule["8am10am"].length}</div>
 											</div>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>10am - 12am</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["10am12pm"] && Schedule["10am12pm"].length}</div>
 											</div>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["1pm3pm"] && Schedule["1pm3pm"].length}</div>
 											</div>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["3pm5pm"] && Schedule["3pm5pm"].length}</div>
 											</div>
 										</>
 									);
@@ -100,12 +134,12 @@ const Page = ({ params }) => {
 									return (
 										<>
 											<div className={styles.TimeSummaryItem}>
-											<div className={styles.TimeSummaryDate}>8am - 10am</div>
-											<div className={`${styles.TimeSummaryTotal} ${styles.False}`}>0</div>
+												<div className={styles.TimeSummaryDate}>8am - 10am</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? styles.False : styles.True}`}>{Schedule["8am10am"] && Schedule["8am10am"].length}</div>
 											</div>
 											<div className={styles.TimeSummaryItem}>
-											<div className={styles.TimeSummaryDate}>10am - 12am</div>
-											<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={styles.TimeSummaryDate}>10am - 12am</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["10am12pm"] && Schedule["10am12pm"].length}</div>
 											</div>
 										</>
 									);
@@ -113,12 +147,12 @@ const Page = ({ params }) => {
 									return (
 										<>
 											<div className={styles.TimeSummaryItem}>
-											<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
-											<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["1pm3pm"] && Schedule["1pm3pm"].length}</div>
 											</div>
 											<div className={styles.TimeSummaryItem}>
-											<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
-											<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["3pm5pm"] && Schedule["3pm5pm"].length}</div>
 											</div>
 										</>
 									);
@@ -127,7 +161,7 @@ const Page = ({ params }) => {
 										<>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>8am - 10am</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.False}`}>0</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? styles.False : styles.True}`}>{Schedule["8am10am"] && Schedule["8am10am"].length}</div>
 											</div>
 										</>
 									);
@@ -136,7 +170,7 @@ const Page = ({ params }) => {
 										<>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>10am - 12am</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["10am12pm"] && Schedule["10am12pm"].length}</div>
 											</div>
 										</>
 									);
@@ -145,7 +179,7 @@ const Page = ({ params }) => {
 										<>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["1pm3pm"] && Schedule["1pm3pm"].length}</div>
 											</div>
 										</>
 									);
@@ -154,7 +188,7 @@ const Page = ({ params }) => {
 										<>
 											<div className={styles.TimeSummaryItem}>
 												<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												<div className={`${styles.TimeSummaryTotal} ${Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? styles.False : styles.True}`}>{Schedule["3pm5pm"] && Schedule["3pm5pm"].length}</div>
 											</div>
 										</>
 									);
@@ -171,52 +205,52 @@ const Page = ({ params }) => {
 				{SelectedDay && hasSchedule ? (
 					<>
 						{(() => {
-							switch (Schedule.Time) {
+							switch (Schedule?.Time) {
 								case "wholeday":
 									return (
 										<>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
-											<label className={`${styles.radioForm} ${styles.False}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
+											<label className={`${styles.radioForm} ${Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" disabled={Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
+											<label className={`${styles.radioForm} ${Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" disabled={Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
+											<label className={`${styles.radioForm} ${Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" disabled={Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
+											<label className={`${styles.radioForm} ${Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" disabled={Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
 										</>
 									);
 								case "morning":
 									return (
 										<>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
+											<label className={`${styles.radioForm} ${Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" disabled={Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
+											<label className={`${styles.radioForm} ${Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" disabled={Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
 										</>
 									);
 								case "afternoon":
 									return (
 										<>
-											<label className={`${styles.radioForm} ${styles.False}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
+											<label className={`${styles.radioForm} ${Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" disabled={Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
+											<label className={`${styles.radioForm} ${Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" disabled={Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
 										</>
 									);
 								case "8am-10am":
 									return (
 										<>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
+											<label className={`${styles.radioForm} ${Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" disabled={Schedule["8am10am"] && Schedule["8am10am"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
 										</>
 									);
 								case "10am-12am":
 									return (
 										<>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
+											<label className={`${styles.radioForm} ${Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" disabled={Schedule["10am12pm"] && Schedule["10am12pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
 										</>
 									);
 								case "1pm-3pm":
 									return (
 										<>
-											<label className={`${styles.radioForm} ${styles.False}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
+											<label className={`${styles.radioForm} ${Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" disabled={Schedule["1pm3pm"] && Schedule["1pm3pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
 										</>
 									);
 								case "3pm-5pm":
 									return (
 										<>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
+											<label className={`${styles.radioForm} ${Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" disabled={Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
 										</>
 									);
 								default:
@@ -224,7 +258,7 @@ const Page = ({ params }) => {
 								}
 						})()}
 					</>
-				) : null}
+				) : <p className={styles.notes}>No open schedule</p>}
 					
 			</div>
 
@@ -257,19 +291,19 @@ const Page = ({ params }) => {
 				</div>
 				<div className={styles.HistoryList}>
 					{HistoryIsLoading ? (
-						"Loading..."
+						<p className={styles.notes}>Loading...</p>
 					) : HistoryData ? (
 						HistoryData.length === 0 ? (
-							"No records"
+							<p className={styles.notes}>No records</p>
 						) : (
 							HistoryData.map((history, index) => (
 								<div key={index} className={styles.HistoryData}>
-									{history.createdAt}
+									{history.Details.Concern}
 								</div>
 							))
 						)
 					) : (
-						"No records"
+						<p className={styles.notes}>No records</p>
 					)}
 				</div>
 			</div>
