@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "./page.module.css"
 
-const Layout = async ({ children }) => {
+const Layout = ({ children }) => {
   return (
     <div className={styles.mainContainer}>
         <div className={styles.MiniNav}>  

@@ -1,0 +1,52 @@
+.MainContainer{
+  flex: 1;
+  border: 1px solid gainsboro;
+  padding: 20px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.mainTitle {
+  font-size: 60px;
+}
+
+.DepartmentSelectionContainer {
+  flex: 1;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.itemcontainer{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid gainsboro;
+  padding: 20px;
+  transition: 250ms;
+  border-radius: 10px;
+}
+
+.itemcontainer:hover {
+  box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.itemcontainer:active {
+  box-shadow: 0 0 2px 2px black;
+}
+
+.title{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.Image{
+  border-radius: 50%;
+}
