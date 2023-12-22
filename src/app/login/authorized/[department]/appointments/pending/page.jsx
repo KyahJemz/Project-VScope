@@ -34,6 +34,13 @@ const Pending = ({ params }) => {
 
 	const [showReSchedulePanel,setShowReSchedulePanel] = useState(false);
 
+	const formatShortDate = (timestamp) => {
+		const options = { month: 'short', day: 'numeric', year: 'numeric' };
+		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+	  
+		return `${formattedDate}`;
+	};
+
 	const formatDate = (timestamp) => {
 		const options = { month: 'short', day: 'numeric', year: 'numeric' };
 		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
@@ -231,8 +238,8 @@ const Pending = ({ params }) => {
 						<input className={styles.DetailsFields} type="text" defaultValue={details?.Details?.ContactNumber??""} data-value={details?.Details?.ContactNumber??""} data-key="ContactNumber" onBlur={ChangeConfirmation} placeholder="Contact Number"/>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} readOnly disabled type="text" defaultValue={`${details?.Details?.ScheduleDate??""} ${details?.Details?.ScheduleTime??""}`} placeholder="Appointment Data"/>
-						<input className={styles.DetailsFields} readOnly disabled type="text" defaultValue={details?.Details?.ContactNumber??""} placeholder="Diagnosis"/>
+						<input className={styles.DetailsFields} readOnly disabled type="text" defaultValue={`${formatShortDate(details?.AppointmentDate)??""} ${details?.AppointmentTime??""}`} placeholder="Appointment Date"/>
+						<input className={styles.DetailsFields} readOnly disabled type="text" defaultValue={""} placeholder="Diagnosis"/>
 					</div>
 					<div className={styles.DetailsRow}>
 						<textarea className={styles.DetailsFields} defaultValue={details?.Details?.Concern??""} readOnly disabled placeholder="Concern" name="" id="" cols="30" rows="10"></textarea>
