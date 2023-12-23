@@ -73,9 +73,13 @@ const Messages = ({params}) => {
 				{RecordsIsLoading && !filteredRecordsData ? (
 					"Loading..."
 				) : (
-					filteredRecordsData.map((record, index) => (
-						<ListItem key={index} name={`${formatShortDate(record?.AppointmentDate)??"?"} ${record?.AppointmentTime??"?"}`} image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault} isNew={IsNew(record)} id={record._id} />
-					))
+					filteredRecordsData.length > 0 ? (
+						filteredRecordsData.map((record, index) => (
+							<ListItem key={index} name={`${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}`} image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault} isNew={IsNew(record)} id={record._id} />
+						))
+					) : (
+						"No messages yet"
+					)
 				)}
 			</>
 		);
