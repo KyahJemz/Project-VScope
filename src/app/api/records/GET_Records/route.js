@@ -31,7 +31,7 @@ const decryptFields = (obj) => {
 export const GET = async (request) => {
 	const url = new URL(request.url);
 	const GoogleEmail = url.searchParams.get("GoogleEmail");
-	const Department = url.searchParams.get("Department");
+	const Department = url.searchParams.get("Department") ?? null;
 	const Status = url.searchParams.get("Status");
 	const Type = url.searchParams.get("Type");
 
@@ -41,48 +41,53 @@ export const GET = async (request) => {
 		let results = null;
 
 		let AppointmentModel = null;
-
-		if (Department === 'Medical') {
-			AppointmentModel = MedicalAppointment;
-		} else if (Department === 'Dental') {
-			AppointmentModel = DentalAppointment;
-		} else if (Department === 'SDPC') {
-			AppointmentModel = SDPCAppointment;
-		}
-
-		if (GoogleEmail === "" || GoogleEmail === null) {
-			if(Type === "WalkIn") {
-
-				let query = {};
-				if (Status) {
-					query.Status = Status;
-				}
-				if (Type) {
-					query.Type = Type;
-				}
-				results = await AppointmentModel.find(query);
-			} else if(Type === "Appointment") {
-				let query = {};
-				if (Status) {
-					query.Status = Status;
-				}
-				if (Type) {
-					query.Type = Type;
-				}
-				results = await AppointmentModel.find(query);
-			} else if (Type === "All"){
-				results = await AppointmentModel.find();
-			} else {
-				if (Status === "" || Status === null) {
-					results = await AppointmentModel.find();
-				} else {
-					results = await AppointmentModel.find(Status && {Status});
-				}
+		if (Department !== null && Department !== "") {
+			let AppointmentModel = null;
+		  
+			if (Department === 'Medical') {
+			  AppointmentModel = MedicalAppointment;
+			} else if (Department === 'Dental') {
+			  AppointmentModel = DentalAppointment;
+			} else if (Department === 'SDPC') {
+			  AppointmentModel = SDPCAppointment;
 			}
-		} else {
-			results = await AppointmentModel.find(GoogleEmail && { GoogleEmail });
-		}
-
+		  
+			if (GoogleEmail === "" || GoogleEmail === null) {
+			  let query = {};
+		  
+			  if (Type === "WalkIn" || Type === "Appointment" || Type === "All") {
+				if (Status) {
+				  query.Status = Status;
+				}
+				if (Type !== "All") {
+				  query.Type = Type;
+				}
+			  }
+		  
+			  results = await AppointmentModel.find(query);
+			} else {
+			  results = await AppointmentModel.find({ GoogleEmail });
+			}
+		  } else {
+			results = [];
+			const AppointmentModels = [MedicalAppointment, DentalAppointment, SDPCAppointment];
+		  
+			for (const model of AppointmentModels) {
+				let query = {};
+				if (GoogleEmail !== '' || GoogleEmail !== null || Status !== "") {
+					query.GoogleEmail = GoogleEmail;
+				}
+				if (Status !== '' || Status !== null || Status !== "") {
+					query.GoogleEmail = GoogleEmail;
+				}
+				if (Type === "WalkIn" || Type === "Appointment") {
+					query.Type = Type;
+				}
+				console.log(query);
+			  results = results.concat(await model.find(query));
+			}
+		  }
+		  
 
 	if (results) {
 	

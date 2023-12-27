@@ -1,0 +1,45 @@
+.MainContent{
+    padding: 20px;
+    border: 1px solid gainsboro;
+    display: grid;
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 50px 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+        "Header"
+        "Body";
+    gap: 20px;
+    position: relative;
+}
+
+.Header {
+    grid-area: Header;
+    border: 1px solid gainsboro;    
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.Body{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gainsboro;    
+    padding: 20px;
+    grid-area: Body;
+}
+
+
+.Date{
+    font-weight: bold;
+}
+.Time{
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+.Concern{
+    padding: 10px;
+    margin-top: 20px;
+}

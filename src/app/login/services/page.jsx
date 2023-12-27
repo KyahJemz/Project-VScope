@@ -6,8 +6,13 @@ const Services = ({ params }) => {
 
   redirect('/login/services/appointments');
 
+  const mainContainerStyle = {
+    flex: 1
+  };
+
+
   return (
-    <></>
+    <div style={mainContainerStyle}></div>
   )
 };
 

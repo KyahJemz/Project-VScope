@@ -11,7 +11,7 @@ const Page = () => {
 
 	return (
 		<div className={styles.MainContainer}>
-			<h3 className={styles.selectTitle}>Select department down below:</h3>
+			<h3 className={styles.selectTitle}>Messages - Select department down below:</h3>
 			<div className={styles.items}>
 
 				<Link href="/login/services/ecare/messages/Medical"  className={styles.itemcontainer}>
