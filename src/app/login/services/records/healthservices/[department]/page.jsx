@@ -14,12 +14,14 @@ import Dental from "public/Dental.jpg";
 const Messages = ({params}) => {
 	const { data: session, status } = useSession();
 	const [GoogleEmail, setGoogleEmail] = useState("");
+	const [Role, setRole] = useState("");
 	const Department = params.department;
 	const router = useRouter();
 
 	useEffect(() => {
 		if (status === "authenticated" && session?.user?.email) {
 		  setGoogleEmail(session.user.email);
+		  setRole(session.user.role)
 		}
 	}, [status, session]);
 
@@ -94,13 +96,13 @@ const Messages = ({params}) => {
         if (NotificationFilter !== "" && !notification.Title.toLowerCase().includes(NotificationFilter.toLowerCase())) {
             return false;
         }
+		console.log(Role);
+		if (notification.Target !== "All" && notification.Target !== Role+"s"){
+			return false;
+		}
     
         return true;
     });
-
-    if(!RecordsIsLoading) {
-        console.log(sortedRecordsData)
-    }
     
 
     const Records = () => {
