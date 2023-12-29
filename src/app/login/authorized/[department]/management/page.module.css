@@ -1,9 +1,16 @@
 .mainTitle {
-  font-size: 40px;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 1px solid gainsboro;
+  padding: 10px;
+  background-color: gainsboro;
 }
 
 .container {
   flex: 1;
+  border: 1px solid gainsboro;
+  padding: 20px;
+  background-color: rgba(235, 234, 234, 0.589);
 }
 
 .selectTitle {
@@ -13,9 +20,9 @@
 }
 
 .mainContainer{
-  margin-top: 40px;
+  margin-top: 20px;
   display: grid;
-  grid-template-columns: 1fr 25%;
+  grid-template-columns: 400px 1fr;
   width: 100%;
   gap: 20px;
 }
@@ -23,14 +30,21 @@
 .formContainer{
   display: flex;
   flex-direction: column;
+  text-align: center;
   gap: 20px;
   border: 1px solid gainsboro;
+  background-color: gainsboro;
   border-radius: 5px;
   padding: 20px;
 }
 
 .input{
   padding: 10px 20px;
+}
+
+.title{
+  background-color: white;
+  padding: 10px;
 }
 
 .button{
@@ -95,23 +109,37 @@
   background-color: #2e6e4e;
 }
 
+.addAccountItem,
 .accountItem {
   background-color: gainsboro;
-  margin-top: 20px;
+  margin-bottom: 20px;
   padding: 20px;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
+  position: relative;
+}
+
+.addAccountItem{
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.addAccountBtn{
+width: 100%;
 }
 
 .accountItemLeft{
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 1;
 }
 
+.addAccountBtn,
 .accountGmail{
   font-weight: bold;
   color: #2f644a;
@@ -123,10 +151,13 @@
 }
 
 .accountItemRight {
+  position: absolute;
   display: flex;
   flex-direction: row;
-  height: fit-content;
   gap: 10px;
+  height: fit-content;
+  bottom: 15px;
+  right: 15px;
 }
 
 .accountOptions{
@@ -151,6 +182,16 @@
   gap: 20px;
 }
 
+.Description{
+  text-align: left;
+  padding: 20px;
+  background-color: white;
+}
+.DescriptionTitle{
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 
 
 
@@ -163,8 +204,8 @@
     align-items: center;
   }
   .Medical,
-.Dental,
-.SDPC {
+  .Dental,
+  .SDPC {
     width: 400px;
   }
 }

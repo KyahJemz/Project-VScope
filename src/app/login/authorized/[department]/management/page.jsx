@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
@@ -15,11 +15,23 @@ const Page = ({ params }) => {
 
 	const [isUpdating, setUpdating] = useState(false);
 
+	const [Panel, setPanel] = useState("Add");
+
+	const [SelectedRole, setSElectedRole] = useState("");
+
 	const [isUploadingUpdate, setUploadingUpdate] = useState(false);
 
 	const router = useRouter();
 
+	const Descriptions = {
+		Admin: "Admin-side limited access refers to user accounts that have restricted privileges within the Vscope system. Individuals with management-side access typically possess specific roles and responsibilities tailored to their organizational function. This limited access ensures that users can perform essential tasks related to their roles without compromising the integrity of critical system settings.",
+		Management: "Management-side limited access refers to user accounts that have restricted privileges within the Vscope system. Individuals with management-side access typically possess specific roles and responsibilities tailored to their organizational function. This limited access ensures that users can perform essential tasks related to their roles without compromising the integrity of critical system settings.",
+		"": "Select Role..."
+	}
+
 	const handleEdit = async (accountId) => {
+		setPanel("Edit");
+		setEditValue(null);
 		setUpdating(false);
 		setId(accountId);
 		try {
@@ -139,22 +151,18 @@ const Page = ({ params }) => {
 		fetcher
 	);
 
-  	const [filterDepartment, setFilterDepartment] = useState(Department);
+	useEffect(() => {
+		if (editValue?.Role) {
+		  setSElectedRole(editValue.Role);
+		} else {
+		  setSElectedRole("");
+		}
+	  }, [editValue]);
 
-	const handleFilter = (department) => {
-		setFilterDepartment(department);
-	};
 
 	const filteredData = data?.filter((account) => {
-		if (account.Department === null || account.Department === "" || account.Department === "Administrator") {
-		  	return false;
-		}
 	  
-		if (filterDepartment === null) {
-		  return account.Department !== null;
-		}
-	  
-		return account.Department === filterDepartment;
+		return account.Department === Department;
 	});
 	  
   	const DepartmentsPanel = () => {
@@ -167,9 +175,8 @@ const Page = ({ params }) => {
 						{isLoading ? "Loading..." : filteredData?.length === 0 ? "No Accounts" : filteredData?.map((account, index) => (
 							<div key={index} className={`${styles.accountItem}`}>
 								<div className={styles.accountItemLeft}>
-									<p className={styles.accountGmail}>Account: {account.GoogleEmail}</p>
+									<p className={styles.accountGmail}>{account.GoogleEmail}</p>
 									<p className={styles.accountRole}>Role: {account.Role}</p>
-									<p className={styles.accountDepartment}>Department: {account.Department}</p>
 								</div>
 								<div className={styles.accountItemRight}>
 									<button className={styles.accountOptions} onClick={() => handleDelete(account._id)}>Delete</button>
@@ -177,40 +184,51 @@ const Page = ({ params }) => {
 								</div>
 							</div>
 						))}
+
+						<div className={`${styles.addAccountItem}`} onClick={()=>setPanel("Add")}>
+							<p className={styles.addAccountBtn}>Add Account</p>
+						</div>
 					</div>
 
 					<div className={styles.forms}>
 
-						<form className={styles.formContainer} onSubmit={handleSubmit}>
-							<h3 className={styles.title}>Account Form</h3>
-							<input type="text" placeholder="Gmail Account" className={styles.input} required/>
-							<select className={styles.input} required>
-								<option className={styles.option} value="">Select role...</option>
-								<option className={styles.option} value="Management">Management Role</option>
-								<option className={styles.option} value="Admin">Admin Role</option>
-							</select>
-							<select hidden className={styles.input} id="Department" value={Department} required>
-								<option className={styles.option} value={Department}>{Department}</option>
-							</select>
-							<button className={styles.button} disabled={uploading}>{uploading ? "Uploading..." : "Add Account"}</button>
-						</form>
-
-						{isUpdating && editValue ? (
-							<form className={styles.formContainer} onSubmit={handleUpdate}>
-							<h3 className={styles.title}>Update Account Form</h3>
-							<input type="text" placeholder="Gmail Account" id="Gmail" className={styles.input} defaultValue={editValue.GoogleEmail} required/>
-							<select className={styles.input} id="Role" defaultValue={editValue.Role} required>
-								<option className={styles.option} value=""> Select role...</option>
-								<option className={styles.option} value="Management">Management Role</option>
-								<option className={styles.option} value="Admin">Admin Role </option>
-							</select>
-							<select hidden className={styles.input} id="Department" value={Department} required>
-								<option className={styles.option} value={Department}>{Department}</option>
-							</select>
-							<button className={styles.button} disabled={isUploadingUpdate} type="submit">{isUploadingUpdate ? "Uploading..." : "Update Account"}</button>
+						{Panel === "Add" ? 
+							<form className={styles.formContainer} onSubmit={handleSubmit}>
+								<h3 className={styles.title}>Add Account Form</h3>
+								<input type="text" placeholder="Gmail Account" className={styles.input} required/>
+								<select className={styles.input} defaultValue={SelectedRole} required onChange={(e)=>setSElectedRole(e.target.value)}>
+									<option className={styles.option} value="">Select role...</option>
+									<option className={styles.option} value="Management">Management Role</option>
+									<option className={styles.option} value="Admin">Admin Role</option>
+								</select>
+								<select hidden className={styles.input} id="Department" value={Department} required>
+									<option className={styles.option} value={Department}>{Department}</option>
+								</select>
+								<div className={styles.Description}>
+									<p className={styles.DescriptionTitle}>{SelectedRole} Role</p>
+									{Descriptions[SelectedRole]}
+								</div>
+								<button className={styles.button} disabled={uploading}>{uploading ? "Uploading..." : "Add Account"}</button>
 							</form>
-						) : null}
-
+						:
+							<form className={styles.formContainer} onSubmit={handleUpdate}>
+								<h3 className={styles.title}>Update Account Form</h3>
+								<input type="text" placeholder="Gmail Account" id="Gmail" className={styles.input} defaultValue={isLoading ? "Loading..." : editValue?.GoogleEmail ?? "Loading..."} required/>
+								<select className={styles.input} id="Role" defaultValue={SelectedRole}  required onChange={(e)=>setSElectedRole(e.target.value)}>
+									<option className={styles.option} value=""> Select role...</option>
+									<option className={styles.option} value="Management">Management Role</option>
+									<option className={styles.option} value="Admin">Admin Role </option>
+								</select>
+								<select hidden className={styles.input} id="Department" value={Department} required>
+									<option className={styles.option} value={Department}>{Department}</option>
+								</select>
+								<div className={styles.Description}>
+									<p className={styles.DescriptionTitle}>{SelectedRole} Role</p>
+									{Descriptions[SelectedRole]}
+								</div>
+								<button className={styles.button} disabled={isUploadingUpdate} type="submit">{isUploadingUpdate ? "Uploading..." : "Update Account"}</button>
+							</form>
+						}
             		</div>
         		</div>
     		</>
