@@ -1,0 +1,33 @@
+.mainContainer{
+    flex: 1;
+    height: 100%;
+    padding: 20px;
+    border: 1px solid gainsboro;
+}
+
+.MiniNavTop{
+    display: flex;
+    background-color: #757575;
+    padding: 10px;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+}
+
+.MiniNavText{
+    padding: 5px 10px;
+    flex: 1;
+    font-size: 1.5rem;
+}
+
+.DepartmentSelection{
+    padding: 5px 10px;
+    cursor: pointer;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+}
