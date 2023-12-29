@@ -30,6 +30,9 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+    Cleared: {
+      type: Array,
+    }
   },
   { timestamps: true }
 );
