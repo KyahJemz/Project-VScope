@@ -63,6 +63,10 @@ export const GET = async (request) => {
 				  query.Type = Type;
 				}
 			  }
+
+			  if (Status !== '' || Status !== null || Status !== "") {
+				query.Status = Status;
+				}
 		  
 			  results = await AppointmentModel.find(query);
 			} else {

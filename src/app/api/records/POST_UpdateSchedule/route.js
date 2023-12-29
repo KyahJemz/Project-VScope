@@ -3,8 +3,15 @@ import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
-import { encryptText, decryptText } from "@/utils/cryptojs";
-import { v4 as uuidv4 } from 'uuid';
+import Calendar from "@/models/Calendar";
+import sendMail from '@/app/api/sendMail/route.js';
+
+const formatShortDate = (timestamp) => {
+	const options = { month: 'short', day: 'numeric', year: 'numeric' };
+	const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+  
+	return `${formattedDate}`;
+};
 
 export const POST = async (request) => {
 	if (request.method === 'POST') {
@@ -33,38 +40,31 @@ export const POST = async (request) => {
 				AppointmentModel = SDPCAppointment;
 			}
 
-			const uniqueId = uuidv4(); 
+			const filter = { _id: AppointmentId };
+			const update = { AppointmentDate: Date, AppointmentTime: Time, ReScheduled: true };
 
-			const ValueToPush = {
-                [Key]: encryptText(Value),
-                Timestamp: encryptText(Date.now().toString()),
-                UniqueId: uniqueId, 
-            };
+			appointment = await AppointmentModel.findOneAndUpdate(filter, update);
 
-			if (Key === "Prescription") {
-				appointment = await AppointmentModel.findByIdAndUpdate(RecordId,
-					{ $push: { Prescriptions: ValueToPush } },
-					{ new: true }
-				);
-			} else if (Key === "Diagnosis") {
-				appointment = await AppointmentModel.findByIdAndUpdate(RecordId,
-					{ $push: { Diagnosis: ValueToPush } },
-					{ new: true }
-				);
-			} else if (Key === "Note") {
-				appointment = await AppointmentModel.findByIdAndUpdate(RecordId,
-					{ $push: { Notes: ValueToPush } },
-					{ new: true }
-				);
-			} else {
-				return new NextResponse("Invalid Key", { status: 400 });
-			}
+			const cleanedTime = `${body.get("Time")}`.replace("-", "");
+            
+            await Calendar.findOneAndUpdate(
+              { Date: `${body.get("Date")}` },
+              { $push: { [cleanedTime]: Time } },
+              { new: true }
+            );
 
 			if (!appointment) {
 				return new NextResponse('Record not found', { status: 404 });
 			}
 
-			return new NextResponse('Success', { status: 200 });
+			if (appointment?.GoogleEmail) {
+				const to = appointment.GoogleEmail;
+				const subject = "Appointment Re-scheduled";
+				const text = `We are pleased to inform you that your appointment status has been re-scheduled to ${formatShortDate(Date)} at ${Time} in the VScope system.\n\nIf you have any questions or need further assistance, please do not hesitate to contact us.\n\n`;
+				// await sendEmail({to,subject,text});
+			}
+
+      return new NextResponse('Success', { status: 200 });
 		} catch (err) {
 			return new NextResponse('Database Error: '+err, { status: 500 });
 		}

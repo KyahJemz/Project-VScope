@@ -51,6 +51,27 @@ const postSchema = new Schema(
       type: Array,
       required: false,
     },
+    AppointmentDate: {
+      type: String,
+      required: false,
+    },
+    AppointmentTime: {
+      type: String,
+      required: false,
+    },
+    DateApproved: {
+      type: String,
+      required: false,
+    },
+    DateCleared: {
+      type: String,
+      required: false,
+    },
+    ReScheduled: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
   },
   { timestamps: true }
 );

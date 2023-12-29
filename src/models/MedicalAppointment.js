@@ -21,11 +21,6 @@ const postSchema = new Schema(
       type: String,
       required: false,
     },
-    ClearanceStatus: {
-      type: String,
-      required: true,
-      default: "In Progress"
-    },
     Type: {
       type: String,
       enum: ["Appointment","WalkIn"],
@@ -58,11 +53,11 @@ const postSchema = new Schema(
     },
     AppointmentDate: {
       type: String,
-      required: true,
+      required: false,
     },
     AppointmentTime: {
       type: String,
-      required: true,
+      required: false,
     },
     DateApproved: {
       type: String,
@@ -71,7 +66,12 @@ const postSchema = new Schema(
     DateCleared: {
       type: String,
       required: false,
-    }
+    },
+    ReScheduled: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
   },
   { timestamps: true }
 );

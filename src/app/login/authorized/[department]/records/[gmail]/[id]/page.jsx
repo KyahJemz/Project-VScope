@@ -23,26 +23,24 @@ const Page = ({ params }) => {
 
 	if (!isLoading) {
 		let DateApproved = new Date(data.DateApproved);
-  
-		let DateCleared = data.DateCleared;
-		let clearedDate;
+		console.log(data.DateApproved);
 		
+		let DateCleared = data.DateCleared;
 		if (!DateCleared || DateCleared.trim() === "") {
-		  clearedDate = new Date();
+		  DateCleared = new Date();
 		} else {
-		  clearedDate = new Date(DateCleared);
+		  DateCleared = new Date(DateCleared);
 		}
-	  
-		const timeDifference = clearedDate.getTime() - DateApproved.getTime();
-		const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-
+	
+		const timeDifference = DateCleared.getTime() - DateApproved.getTime();
+		const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+	
 		for (let i = 0; i <= daysDifference; i++) {
 		  const currentDate = new Date(DateApproved);
 		  currentDate.setDate(DateApproved.getDate() + i);
 		  dateRange.push(currentDate);
 		}
-
-		console.log('Array of days between DateApproved and DateCleared:', dateRange);
+		console.log(dateRange);
 	}
 
 	return (

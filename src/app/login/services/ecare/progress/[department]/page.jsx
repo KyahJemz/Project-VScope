@@ -77,10 +77,26 @@ const Page = ({params}) => {
 				) : (
 					filteredRecordsData.length > 0 ? (
 						filteredRecordsData.map((record, index) => (
-							<ListItem key={index} name={`${formatShortDate(record.createdAt)} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"})`} image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault} isNew={IsNew(record)} id={record._id} />
+							<React.Fragment key={index}>
+								{record.AppointmentDate === "" ? (
+									<ListItem
+										name={`${formatShortDate(record.createdAt)} - Schedule (WalkIn)`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+								) : (
+									<ListItem
+										name={`${formatShortDate(record.createdAt)} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"})`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+								)}
+							</React.Fragment>
 						))
 					) : (
-						"No messages yet"
+						"No records yet"
 					)
 				)}
 			</>

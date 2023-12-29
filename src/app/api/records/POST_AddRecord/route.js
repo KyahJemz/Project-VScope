@@ -50,7 +50,7 @@ export const POST = async (request) => {
             Concern: encryptText(body.get("Concern")),
           }
         } else if(Type === "Appointment"){
-
+          console.log(GoogleEmail)
           const Account = await Accounts.findOne({ GoogleEmail: GoogleEmail });
 
           Details = {

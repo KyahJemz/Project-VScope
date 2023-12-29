@@ -21,8 +21,8 @@ const Page = ({ params }) => {
 	);
 
 	if (!isLoading) {
-	  
 		let DateApproved = new Date(data.DateApproved);
+		console.log(data.DateApproved);
 		
 		let DateCleared = data.DateCleared;
 		if (!DateCleared || DateCleared.trim() === "") {
@@ -30,12 +30,16 @@ const Page = ({ params }) => {
 		} else {
 		  DateCleared = new Date(DateCleared);
 		}
-	  
-		for (let i = 0; i < 3; i++) {
-		  const currentDate = new Date(DateApproved); 
+	
+		const timeDifference = DateCleared.getTime() - DateApproved.getTime();
+		const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+	
+		for (let i = 0; i <= daysDifference; i++) {
+		  const currentDate = new Date(DateApproved);
 		  currentDate.setDate(DateApproved.getDate() + i);
 		  dateRange.push(currentDate);
 		}
+		console.log(dateRange);
 	}
 
 	return (
