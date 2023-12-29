@@ -1,5 +1,6 @@
 .MainContainer{
   flex: 1;
+  width: 100%;
 }
 
 
@@ -107,7 +108,7 @@
 
 .DetailsFormContainer{
    display: grid;
-   grid-template-columns: 300px 1fr;
+   grid-template-columns: 200px 1fr;
    grid-template-rows: 1fr;
    gap: 20px;
    
@@ -144,6 +145,7 @@
   gap:10px;
   border: 1px solid gainsboro;    
   padding: 20px;
+  overflow: hidden;
 }
 
 .DetailsFormTitle{
@@ -161,6 +163,7 @@
 .DetailsFields{
   flex: 1;
   padding: 10px;
+  min-width: 0px;
 }
 
 .DetailsRow:last-child{

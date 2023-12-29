@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 
 const Administrator = () => {
   
-  redirect('/login/administrator/management/Medical');
+  redirect('/login/administrator/management/Accounts');
 
   return (
     <></>

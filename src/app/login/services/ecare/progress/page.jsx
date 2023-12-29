@@ -1,13 +1,24 @@
+"use client"
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
 import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const Page = () => {
+	const { data: session, status } = useSession();
+	const [GoogleEmail, setGoogleEmail] = useState("");
+	const [Role, setRole] = useState("");
+	useEffect(() => {
+	  if (status === "authenticated" && session?.user?.email) {
+		setGoogleEmail(session.user.email);
+		setRole(session.user.role);
+	  }
+	}, [status, session]);
 
 	return (
 		<div className={styles.MainContainer}>
@@ -37,19 +48,21 @@ const Page = () => {
 					<span className={styles.title}>Dental Health Services</span>
 					<div></div>
 				</Link>
-	
-				<Link href="/login/services/ecare/progress/SDPC" className={styles.itemcontainer}>
-					<Image 
-						className={styles.Image}
-						src={SDPC}
-						alt="SDPC"
-						height={50}
-						width={50}
-					/>
-					<span className={styles.title}>SDPC Department</span>
-					<div></div>
-				</Link>
-			
+				{Role === "Student" ?
+					<Link href="/login/services/ecare/progress/SDPC" className={styles.itemcontainer}>
+						<Image 
+							className={styles.Image}
+							src={SDPC}
+							alt="SDPC"
+							height={50}
+							width={50}
+						/>
+						<span className={styles.title}>SDPC Department</span>
+						<div></div>
+					</Link>
+				: 
+					null
+				}
 			</div>
 		</div>
 	);

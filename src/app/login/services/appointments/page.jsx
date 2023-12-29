@@ -9,14 +9,16 @@ import Image from "next/image";
 import UserDefault from "public/UserDefault.png"
 
 const Page = () => {
-	const { data: session, status } = useSession();
-	const [GoogleEmail, setGoogleEmail] = useState("");
+	
 	const [UploadingForm,setUploadingForm] = useState(false);
   
+	const { data: session, status } = useSession();
+	const [GoogleEmail, setGoogleEmail] = useState("");
+	const [Role, setRole] = useState("");
 	useEffect(() => {
 	  if (status === "authenticated" && session?.user?.email) {
-		console.log(session.user.email);
 		setGoogleEmail(session.user.email);
+		setRole(session.user.role);
 	  }
 	}, [status, session]);
   
@@ -147,13 +149,15 @@ const Page = () => {
 						<span className={styles.title}>Dental</span>
 						</Link>
 					</div>
-		
-					<div className={styles.itemcontainer}>
-						<Link href="/login/services/appointments/SDPC" className={styles.SDPC}>
-						<span className={styles.title}>SDPC</span>
-						</Link>
-					</div>
-				
+					{Role === "Student" ?
+						<div className={styles.itemcontainer}>
+							<Link href="/login/services/appointments/SDPC" className={styles.SDPC}>
+								<span className={styles.title}>SDPC</span>
+							</Link>
+						</div>
+					:
+						null
+					}
 				</div>
 			</>
 		);

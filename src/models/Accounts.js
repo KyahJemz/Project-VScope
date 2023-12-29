@@ -40,7 +40,7 @@ const userSchema = new Schema(
     },
     Department: {
       type: String,
-      enum: ["Dental","Medical", "SDPC", "Administrator", null],
+      enum: ["Dental","Medical", "SDPC", "Administrator", null, ""],
       required: false,
       default: null,
     },
