@@ -50,7 +50,6 @@ export const POST = async (request) => {
             Concern: encryptText(body.get("Concern")),
           }
         } else if(Type === "Appointment"){
-          console.log(GoogleEmail)
           const Account = await Accounts.findOne({ GoogleEmail: GoogleEmail });
 
           Details = {
@@ -87,7 +86,6 @@ export const POST = async (request) => {
 
         try {
           await connect();
-
         
             const newPost = new AppointmentModel({
               GoogleEmail,
@@ -101,6 +99,7 @@ export const POST = async (request) => {
               DateCleared: "",
               AppointmentDate: Type === "WalkIn" ? "" : body.get("Date"),
               AppointmentTime: Type === "WalkIn" ? "" : body.get("Time"),
+              ServiceOffered: Type === "WalkIn" ? "" : body.get("Services"),
             });
     
             await newPost.save();
