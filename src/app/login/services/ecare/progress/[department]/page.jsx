@@ -118,7 +118,6 @@ const Page = ({params}) => {
 					height={50}
 				/>
 				<p className={styles.ListItemName}>{name}</p>
-				<p className={styles.ListItemMark}>{isNew ? "New" : ""}</p>
 			</div>
 		)
 	}

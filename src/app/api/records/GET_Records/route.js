@@ -53,8 +53,22 @@ export const GET = async (request) => {
 			  AppointmentModel = SDPCAppointment;
 			}
 		  
-			if (!GoogleEmail || GoogleEmail === "" || GoogleEmail === null) {
+			if (!GoogleEmail) {
 			  let query = {};
+		  
+				if (Type === "WalkIn" || Type === "Appointment" || Type === "All") {
+					if (Type !== "All") {
+						query.Type = Type;
+					}
+				}
+
+			  	if (Status) {
+					query.Status = Status;
+				}
+				console.log(query);
+				results = await AppointmentModel.find(query);
+			} else {
+				let query = {};
 		  
 				if (Type === "WalkIn" || Type === "Appointment" || Type === "All") {
 					if (Type !== "All") {
@@ -65,10 +79,9 @@ export const GET = async (request) => {
 			  	if (Status !== '' && Status !== null && Status !== "" && !Status) {
 					query.Status = Status;
 				}
-		  
+				query.GoogleEmail = GoogleEmail;
+				console.log(query);
 				results = await AppointmentModel.find(query);
-			} else {
-				results = await AppointmentModel.find({ GoogleEmail });
 			}
 		  } else {
 			results = [];

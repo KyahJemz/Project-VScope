@@ -5,7 +5,6 @@ import styles from "./page.module.css";
 import useSWR from "swr";
 import Image from "next/image";
 import UserDefault from "/public/UserDefault.png";
-import { Reports } from "@/models/Reports";
 import { useRouter } from "next/navigation";
 import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
@@ -23,20 +22,6 @@ const Form = ({params}) => {
     var ReceiverGoogleImage = "";
     var ReceiverGoogleEmail = "";
     var CurrentMessageDate = "";
-
-    const router = useRouter();
-    
-    const formatDate = (timestamp) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
-      
-        const hours = new Date(timestamp).getHours();
-        const minutes = new Date(timestamp).getMinutes();
-        const amOrPm = hours >= 12 ? 'pm' : 'am';
-        const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}${amOrPm}`;
-      
-        return `${formattedDate} ${formattedTime}`;
-    };
     
     const [ResponseUploading, setResponseUploading] = useState(false);
 
@@ -78,62 +63,64 @@ const Form = ({params}) => {
         )    
     }
 
-    const Response = ({image, response, timestamp, isRight}) => {
-        let ResponseDate = "";
-        let MessageDate = new Date(timestamp).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit'});
-
-            if (CurrentMessageDate === MessageDate){
-                ResponseDate = "";
-            } else {
-                ResponseDate = CurrentMessageDate;
-                CurrentMessageDate = MessageDate;
-            }
-
+    const Response = ({ image, response, timestamp, isRight }) => {
+        const formattedDate = new Date(timestamp).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+        });
+      
+        let shouldDisplayDate = true;
+      
+        if (formattedDate === CurrentMessageDate) {
+          shouldDisplayDate = false;
+        } else {
+          CurrentMessageDate = formattedDate;
+        }
+      
         return (
-            <>  
-                <div className={styles.responseTime}>{ResponseDate}</div>
-                <div className={isRight ? styles.MessageRight :  styles.MessageLeft}>
-                    <Image 
-                        title={CurrentMessageDate}
-                        className={styles.responseImage}
-                        src={image}
-                        alt="image"
-                        width={50}
-                        height={50}
-                    />
-                    <div
-                        title={CurrentMessageDate}
-                        className={styles.response}>{response}
-                    </div>
-                </div> 
-            </>
-        )
-    }
+          <>
+            {shouldDisplayDate && (
+              <div className={styles.responseTime}>{CurrentMessageDate}</div>
+            )}
+            <div className={isRight ? styles.MessageRight : styles.MessageLeft}>
+              <Image
+                title={formattedDate}
+                className={styles.responseImage}
+                src={image}
+                alt="image"
+                width={50}
+                height={50}
+              />
+              <div title={formattedDate} className={styles.response}>
+                {response}
+              </div>
+            </div>
+          </>
+        );
+      };
 
     useEffect(() => {
         const handleBeforeUnload = () => {
-          const formData = new FormData();
-          formData.append("Department", Department);
-          formData.append("RecordId", RecordId);
-          formData.append("Name", Department);
-      
-          fetch("/api/messages/POST_UpdateViewed", {
-            method: "POST",
-            body: formData,
-          })
+            const formData = new FormData();
+            formData.append("Department", Department);
+            formData.append("RecordId", RecordId);
+            formData.append("Name", "");
+    
+            fetch("/api/messages/POST_UpdateViewed", {
+                method: "POST",
+                body: formData,
+            })
             .then((response) => response.json())
             .catch((error) => console.error("Error making API call", error));
         };
-      
+    
         handleBeforeUnload();
-      
+    
         return () => {
-          window.removeEventListener("beforeunload", handleBeforeUnload);
+            window.removeEventListener("beforeunload", handleBeforeUnload);
         };
     }, [Department, RecordId]);
 

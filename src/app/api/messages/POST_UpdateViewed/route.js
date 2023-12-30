@@ -9,7 +9,7 @@ export const POST = async (request) => {
         const body = await request.formData();
 
         const Department = body.get("Department");
-        const AppointmentId = body.get("AppointmentId");
+        const RecordId = body.get("RecordId");
         const Name = body.get("Name");
 
     try {
@@ -20,13 +20,13 @@ export const POST = async (request) => {
         if (Department === 'Medical'){
             if (Name === Department) {
                 appointment = await MedicalAppointment.findByIdAndUpdate(
-                    AppointmentId,
+                  RecordId,
                     { $set: { 'Responses.$[].ViewedByDepartment': true } },
                     { new: true }
                   );
             } else {
                 appointment = await MedicalAppointment.findByIdAndUpdate(
-                    AppointmentId,
+                  RecordId,
                     { $set: { 'Responses.$[].ViewedByClient': true } },
                     { new: true }
                   );
@@ -34,13 +34,13 @@ export const POST = async (request) => {
         } else if (Department === 'Dental'){
             if (Name === Department) {
                 appointment = await DentalAppointment.findByIdAndUpdate(
-                    AppointmentId,
+                  RecordId,
                     { $set: { 'Responses.$[].ViewedByDepartment': true } },
                     { new: true }
                   );
             } else {
                 appointment = await DentalAppointment.findByIdAndUpdate(
-                    AppointmentId,
+                  RecordId,
                     { $set: { 'Responses.$[].ViewedByClient': true } },
                     { new: true }
                   );
@@ -48,13 +48,13 @@ export const POST = async (request) => {
         } else if (Department === 'SDPC'){
             if (Name === Department) {
                 appointment = await SDPCAppointment.findByIdAndUpdate(
-                    AppointmentId,
+                  RecordId,
                     { $set: { 'Responses.$[].ViewedByDepartment': true } },
                     { new: true }
                   );
             } else {
                 appointment = await SDPCAppointment.findByIdAndUpdate(
-                    AppointmentId,
+                  RecordId,
                     { $set: { 'Responses.$[].ViewedByClient': true } },
                     { new: true }
                   );

@@ -30,12 +30,10 @@ const decryptFields = (obj) => {
 
 export const GET = async (request) => {
     const url = new URL(request.url);
-    console.log(url.searchParams);
 
     const Department = url.searchParams.get("Department");
     const Type = url.searchParams.get("Type");
     const GoogleEmail = url.searchParams.get("GoogleEmail");
-    const Time = url.searchParams.get("Time");
 
     const ProcessDepartment = async () => {
         let RecordsModel = null;
@@ -84,6 +82,30 @@ export const GET = async (request) => {
                         return decryptedResponse;
                     });
                     decryptedResult.Responses = decryptedResponses;
+                }
+
+                if (result._doc.Prescriptions && result._doc.Prescriptions.length > 0) {
+                    const decryptedResponses = result._doc.Prescriptions.map(prescriptions => {
+                        const decryptedResponse = {
+                            Prescription: decryptText(prescriptions.Prescription),
+                            Timestamp: decryptText(prescriptions.Timestamp),
+                            UniqueId: prescriptions.UniqueId,
+                        };
+                        return decryptedResponse;
+                    });
+                    decryptedResult.Prescriptions = decryptedResponses;
+                }
+    
+                if (result._doc.Diagnosis && result._doc.Diagnosis.length > 0) {
+                    const decryptedResponses = result._doc.Diagnosis.map(diagnosis => {
+                        const decryptedResponse = {
+                            Diagnosis: decryptText(diagnosis.Diagnosis),
+                            Timestamp: decryptText(diagnosis.Timestamp),
+                            UniqueId: diagnosis.UniqueId,
+                        };
+                        return decryptedResponse;
+                    });
+                    decryptedResult.Diagnosis = decryptedResponses;
                 }
     
                 return decryptedResult;
@@ -219,39 +241,224 @@ export const GET = async (request) => {
             ReportData.PatientsSummary.Year.Data[monthIndex] += 1;
         });
 
-        const prescriptionCounts = countOccurrences(Prescriptions);
-        const diagnosisCounts = countOccurrences(Diagnosis);
-        const serviceCounts = countOccurrences(Services);
-        const topPrescriptions = takeTopN(prescriptionCounts, 10);
-        const topDiagnosis = takeTopN(diagnosisCounts, 10);
-        const topServices = takeTopN(serviceCounts, 10);
-        ReportData.TopPrescriptions = topPrescriptions;
-        ReportData.TopDiagnosis = topDiagnosis;
-        ReportData.TopServices = topServices;
+        let prescriptionCounts = Prescriptions.reduce((counts, prescription) => {
+            counts[prescription.Prescription] = (counts[prescription.Prescription] || 0) + 1;
+            return counts;
+        }, {});
+        let prescriptionCountArray = Object.keys(prescriptionCounts).map(prescription => ({
+            Count: prescriptionCounts[prescription],
+            Prescription: prescription
+        }));
+        prescriptionCountArray.sort((a, b) => b.Count - a.Count);
+        ReportData.TopPrescriptions = prescriptionCountArray.slice(0, 10);
 
-        console.log(ReportData);
+
+
+        let diagnosisCounts = Diagnosis.reduce((counts, diagnosis) => {
+            counts[diagnosis.Diagnosis] = (counts[diagnosis.Diagnosis] || 0) + 1;
+            return counts;
+        }, {});
+        let diagnosisCountArray = Object.keys(diagnosisCounts).map(diagnosis => ({
+            Count: diagnosisCounts[diagnosis],
+            Diagnosis: diagnosis
+        }));
+        diagnosisCountArray.sort((a, b) => b.Count - a.Count);
+        ReportData.TopDiagnosis = diagnosisCountArray.slice(0, 10);
+
+
+
+        let serviceCounts = Services.reduce((counts, service) => {
+            counts[service] = (counts[service] || 0) + 1;
+            return counts;
+          }, {});
+        let serviceCountArray = Object.keys(serviceCounts).map(service => ({
+            Count: serviceCounts[service],
+            Service: service
+        }));
+        serviceCountArray.sort((a, b) => b.Count - a.Count);
+        ReportData.TopServices = serviceCountArray.slice(0, 10);
+
         return ReportData;
     }
 
-    const ProcessClient = () => {
-        
-// STUDENTS
-        // Top Diagnostics
-        // Top Prescription
+    const ProcessClient = async () => {
+        let RecordsModel = null;
+        switch (Department) {
+            case "Medical":
+                RecordsModel = MedicalAppointment;
+                break;
+            case "Dental":
+                RecordsModel = DentalAppointment;
+                break;
+            case "SDPC":
+                RecordsModel = SDPCAppointment;
+                break;
+            default:
+                return new NextResponse("Invalid Department", { status: 500 });
+                break;
+        }
 
-        // WPatients Total
-        // Week Month Year
+        let Records = await RecordsModel.find({ GoogleEmail: GoogleEmail });
 
-        // Successfull
-        // Advised
-        // ReScheduled
+        if (Records) {
+	
+            const topLevelFieldsToDecrypt = ["GoogleImage"];
+    
+            Records = Records.map((result) => {
+                const decryptedResult = { ...result._doc };
+    
+                topLevelFieldsToDecrypt.forEach((field) => {
+                    decryptedResult[field] = decryptText(result._doc[field]);
+                });
+    
+                if (result._doc.Details && Object.keys(result._doc.Details).length > 0) {
+                    decryptedResult.Details = decryptFields(result._doc.Details);
+                }
+    
+                if (result._doc.Responses && result._doc.Responses.length > 0) {
+                    const decryptedResponses = result._doc.Responses.map(response => {
+                        const decryptedResponse = {
+                            Name: decryptText(response.Name),
+                            GoogleEmail: decryptText(response.GoogleEmail),
+                            Response: decryptText(response.Response),
+                            Timestamp: decryptText(response.Timestamp),
+                            ViewedByDepartment: response.ViewedByDepartment,
+                            ViewedByClient: response.ViewedByClient
+                        };
+                        return decryptedResponse;
+                    });
+                    decryptedResult.Responses = decryptedResponses;
+                }
 
-        // Total 
-        // Approved
-        // Canceled
-        // Pending
+                if (result._doc.Prescriptions && result._doc.Prescriptions.length > 0) {
+                    const decryptedResponses = result._doc.Prescriptions.map(prescriptions => {
+                        const decryptedResponse = {
+                            Prescription: decryptText(prescriptions.Prescription),
+                            Timestamp: decryptText(prescriptions.Timestamp),
+                            UniqueId: prescriptions.UniqueId,
+                        };
+                        return decryptedResponse;
+                    });
+                    decryptedResult.Prescriptions = decryptedResponses;
+                }
+    
+                if (result._doc.Diagnosis && result._doc.Diagnosis.length > 0) {
+                    const decryptedResponses = result._doc.Diagnosis.map(diagnosis => {
+                        const decryptedResponse = {
+                            Diagnosis: decryptText(diagnosis.Diagnosis),
+                            Timestamp: decryptText(diagnosis.Timestamp),
+                            UniqueId: diagnosis.UniqueId,
+                        };
+                        return decryptedResponse;
+                    });
+                    decryptedResult.Diagnosis = decryptedResponses;
+                }
+    
+                return decryptedResult;
+            });
+        }
+
+        let ReportData = {
+            ChartStatus: {
+                Approved: 0,
+                Canceled: 0,
+                Pending: 0,
+            },
+            ChartSystem: {
+                Successful: 0,
+                Advised: 0,
+                ReScheduled: 0,
+            },
+            PatientsSummary: {
+                Week: {
+                    Data: Array.from({ length: 7 }, () => 0),
+                    Legend: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                },
+                Month: {
+                    Data: Array.from({ length: getDaysInMonth(new Date().getFullYear(), new Date().getMonth()) }, () => 0),
+                    Legend: Array.from({ length: getDaysInMonth(new Date().getFullYear(), new Date().getMonth()) }, (_, i) => i + 1),
+                },
+                Year: {
+                    Data: Array.from({ length: 12 }, () => 0),
+                    Legend: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                },
+            },
+            TopPrescriptions: [],
+            TopDiagnosis: [],
+        };
+
+        let Prescriptions = [];
+        let Diagnosis = [];
+
+        Records.forEach(record => {
+        // Chart Status
+            if(record.Status === "Approved") {
+                ReportData.ChartStatus.Approved += 1;
+            } else if (record.Status === "Canceled") {
+                ReportData.ChartStatus.Canceled += 1;
+            } else if (record.Status === "Pending") {
+                ReportData.ChartStatus.Pending += 1;
+            }
+        // Chart System
+            if (record.Status === "Completed") {
+                ReportData.ChartSystem.Successful += 1;
+            }
+            if (record.Status === "Advising") {
+                ReportData.ChartSystem.Advised += 1;
+            }
+            if (record.ReScheduled) {
+                ReportData.ChartSystem.ReScheduled += 1;
+            }
+        // Top Prescriptions
+            Prescriptions = Prescriptions.concat(record.Prescriptions);
+        // Top Diagnosis
+            Diagnosis = Diagnosis.concat(record.Diagnosis);
+        // Patients Summary
+            const createdAtDate1 = new Date(record.createdAt);
+            const currentDate1 = new Date();
+            const weekDay = getDayName(currentDate1.getDay());
+            if (!ReportData.PatientsSummary.Week.Legend.includes(weekDay)) {
+                ReportData.PatientsSummary.Week.Legend.push(weekDay);
+            }
+            const monthDay = createdAtDate1.getDate();
+            if (!ReportData.PatientsSummary.Month.Legend.includes(monthDay)) {
+                ReportData.PatientsSummary.Month.Legend.push(monthDay);
+            }
+            const monthIndex = createdAtDate1.getMonth();
+            const yearMonthKey = `${createdAtDate1.getFullYear()}-${monthIndex}`;
+            if (!ReportData.PatientsSummary.Year.Legend.includes(yearMonthKey)) {
+                ReportData.PatientsSummary.Year.Legend.push(yearMonthKey);
+            }
+            ReportData.PatientsSummary.Week.Data[ReportData.PatientsSummary.Week.Legend.indexOf(weekDay)] += 1;
+            ReportData.PatientsSummary.Month.Data[monthDay - 1] += 1;
+            ReportData.PatientsSummary.Year.Data[ReportData.PatientsSummary.Year.Legend.indexOf(yearMonthKey)] += 1;
+        });
+
+        let prescriptionCounts = Prescriptions.reduce((counts, prescription) => {
+            counts[prescription.Prescription] = (counts[prescription.Prescription] || 0) + 1;
+            return counts;
+        }, {});
+        let prescriptionCountArray = Object.keys(prescriptionCounts).map(prescription => ({
+            Count: prescriptionCounts[prescription],
+            Prescription: prescription
+        }));
+        prescriptionCountArray.sort((a, b) => b.Count - a.Count);
+        ReportData.TopPrescriptions = prescriptionCountArray.slice(0, 10);
 
 
+
+        let diagnosisCounts = Diagnosis.reduce((counts, diagnosis) => {
+            counts[diagnosis.Diagnosis] = (counts[diagnosis.Diagnosis] || 0) + 1;
+            return counts;
+        }, {});
+        let diagnosisCountArray = Object.keys(diagnosisCounts).map(diagnosis => ({
+            Count: diagnosisCounts[diagnosis],
+            Diagnosis: diagnosis
+        }));
+        diagnosisCountArray.sort((a, b) => b.Count - a.Count);
+        ReportData.TopDiagnosis = diagnosisCountArray.slice(0, 10);
+
+        return ReportData;
     }
 
     try {
@@ -264,29 +471,14 @@ export const GET = async (request) => {
         } else {
             return new NextResponse("Invalid Type", { status: 500 });
         }
-
+        
         return new NextResponse(JSON.stringify(Results), { status: 500 });
     } catch (err) {
         return new NextResponse("Database Error"+err, { status: 500 });
     }
-
-    
 }
 
-function countOccurrences(array) {
-    const countMap = {};
-    array.forEach(item => {
-        countMap[item] = (countMap[item] || 0) + 1;
-    });
-    return countMap;
-}
 
-function takeTopN(countMap, n) {
-    return Object.entries(countMap)
-        .map(([item, count]) => ({ item, count }))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, n);
-}
 
 function getDaysInMonth(year, monthIndex) {
     return new Date(year, monthIndex + 1, 0).getDate();

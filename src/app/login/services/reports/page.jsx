@@ -1,12 +1,22 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useSWR from "swr";
 import styles from "./page.module.css"
 import PieChart from "@/components/PieChart/PieChart";
 import LineChart from "@/components/LineChart/LineChart";
+import { useSession } from "next-auth/react";
 
 const Page = () => {
+  const { data: session, status } = useSession();
+	const [GoogleEmail, setGoogleEmail] = useState("");
+	const [Role, setRole] = useState("");
+	useEffect(() => {
+	  if (status === "authenticated" && session?.user?.email) {
+		setGoogleEmail(session.user.email);
+		setRole(session.user.role);
+	  }
+	}, [status, session]);
 
   const [Panel, setPanel] = useState("Diagnosis");
   const [Filter, setFilter] = useState("Week");
@@ -15,7 +25,7 @@ const Page = () => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   
 	const { data, mutate, error, isLoading } = useSWR(
-	  `/api/reports?Department=${encodeURIComponent(Department)}&Type=Department`,
+	  `/api/reports?Department=${encodeURIComponent(Department)}&Type=Client&GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
 	  fetcher
 	);
 
@@ -74,7 +84,7 @@ const Page = () => {
           <select className={styles.DepartmentSelection} defaultValue={Department} onChange={(e)=>setDepartment(e.target.value)}>
             <option value="Medical">Medical</option>
             <option value="Dental">Dental</option>
-            <option value="SDPC">SDPC</option>
+            {Role === "Student" ? <option value="SDPC">SDPC</option> : null}
           </select>
           {Department} Reports
         </div>

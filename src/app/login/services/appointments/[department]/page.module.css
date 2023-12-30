@@ -9,8 +9,8 @@
         "CalendarContainer TimeSelectionContainer HistoryContainer"
         "CalendarContainer ConcernContainer HistoryContainer"
         "CalendarContainer ConcernContainer HistoryContainer"
-        "TimeSummaryContainer ConcernContainer UnavailableContainer"
-        "NoteContainer ConcernContainer UnavailableContainer";
+        "TimeSummaryContainer ConcernContainer HistoryContainer"
+        "NoteContainer ConcernContainer HistoryContainer";
     gap: 20px;
 }
 
@@ -200,6 +200,7 @@
     padding: 10px;
     border-radius: 5px;
     font-size: 0.8rem;
+    position: relative;
 }
 
 .HistoryData.Pending{
@@ -221,4 +222,23 @@
 .HistoryData.Rescheduled{
     background-color: #0D99FF;
     color: white;
+}
+
+.CheckBtn,
+.CancelBtn{
+    position: absolute;
+    left: 10px;
+    font-size: 1.5rem;
+    top: 0;
+    top: 45%;
+    transform: translateY(-50%);
+}
+.CancelBtn{
+    color: red;
+    cursor: pointer;
+    transition: 250ms;
+}
+.CancelBtn:hover{
+    color: rgb(255, 115, 115);
+    cursor: pointer;
 }

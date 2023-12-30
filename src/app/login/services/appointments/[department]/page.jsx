@@ -8,6 +8,7 @@ import Image from "next/image";
 import Calendar from "@/components/Calendar/Calendar";
 import { Services } from "@/models/Services.js"
 import { useSession } from "next-auth/react";
+import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
 
 const Page = ({ params }) => {
 	const Department = params.department;
@@ -16,6 +17,14 @@ const Page = ({ params }) => {
 	const [GoogleImage, setGoogleImage] = useState("");
 	const [Role, setRole] = useState("");
 	const router = useRouter();
+
+	const [showConfirmation,setShowConfirmation] = useState(false);
+	const [ConfirmationData, setConfirmationData] = useState({
+		title: "",
+		content: "",
+		onYes: () => {},
+		onCancel: () => {},
+	});
 
 	useEffect(() => {
 		if (status === "authenticated" && session?.user?.email) {
@@ -52,13 +61,15 @@ const Page = ({ params }) => {
 	const [Status, setStatus] = useState("All");
 
 	const { data: HistoryData, mutate: HistoryMutate, error: HistoryError, isLoading: HistoryIsLoading } =  useSWR(
-		`/api/records/GET_Records?GoogleEmail=${encodeURIComponent(GoogleEmail)}&Department=${encodeURIComponent(Department)}&Status=&Type=${encodeURIComponent("Appointment")}`,
+		`/api/records/GET_Records?GoogleEmail=${encodeURIComponent(GoogleEmail)}&Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Appointment")}`,
 		fetcher
 	);
 
 	const sortedData = HistoryData ? [...HistoryData].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
 
-	const filteredData = Status === "All" ? sortedData.filter(record => ["Pending", "Approved", "Canceled", "Reschedule"].includes(record.Status)) : sortedData.filter(record => record.Status === Status);
+	const filteredData = Status === "All"
+		? sortedData.filter(record => ["Pending", "Approved", "Canceled", "Rescheduled"].includes(record.Status))
+		: Status === "Rescheduled" ? sortedData.filter(record => record.ReScheduled === true) : sortedData.filter(record => record.Status === Status);
 
 	useEffect(() => {
 		if (SelectedDay) {
@@ -70,8 +81,6 @@ const Page = ({ params }) => {
 		  console.log(hasScheduleOnSelectedDay, scheduleOnSelectedDay);
 		}
 	  }, [SelectedDay, DeptData]);
-
-	console.log(SelectedDay, SelectedTime);
 
 	const OnSubmit = async (e) => {
 		e.preventDefault();
@@ -103,8 +112,53 @@ const Page = ({ params }) => {
 		}
 	}
 
+	const ConfirmChangeStatus = (e) => {
+		setConfirmationData({
+			title: `Status cancel Confirmation`,
+			content: `Do you want to mark this schedule as [ Canceled ] ?`,
+			onYes: () => ChangeStatus(e),
+			onCancel: () => setShowConfirmation(false),
+		});
+		setShowConfirmation(true);
+	}
+
+	const ChangeStatus = async (e) => {
+		setShowConfirmation(false);
+		try {
+            const formData = new FormData(); 
+			formData.append("Department", Department);
+			formData.append("RecordId", e.target.dataset.recordid);
+			formData.append("Status", "Canceled");
+			formData.append("Gmail", GoogleEmail);
+
+            const response = await fetch("/api/records/POST_UpdateStatus", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+		} finally {
+			HistoryMutate();
+		}
+	}
+
 	return (
 		<div className={styles.MainContent}>	
+
+			{showConfirmation && (
+                <ActionConfirmation
+                    title={ConfirmationData.title}
+                    content={ConfirmationData.content}
+                    onYes={ConfirmationData.onYes}
+                    onCancel={ConfirmationData.onCancel}
+                />
+            )}
 
 			<div className={styles.CalendarConatiner}>
 				<Calendar callback={setSelectedDay} Schedules={DeptData} />
@@ -290,7 +344,7 @@ const Page = ({ params }) => {
 					<button className={`${styles.StatusBtn} ${Status === "Pending" ? styles.Active : null}`} onClick={()=>setStatus("Pending")}>Pending</button>
 					<button className={`${styles.StatusBtn} ${Status === "Approved" ? styles.Active : null}`} onClick={()=>setStatus("Approved")}>Approved</button>
 					<button className={`${styles.StatusBtn} ${Status === "Canceled" ? styles.Active : null}`} onClick={()=>setStatus("Canceled")}>Canceled</button>
-					<button className={`${styles.StatusBtn} ${Status === "Rescheduled" ? styles.Active : null}`} onClick={()=>setStatus("All")}>Rescheduled</button>
+					<button className={`${styles.StatusBtn} ${Status === "Rescheduled" ? styles.Active : null}`} onClick={()=>setStatus("Rescheduled")}>Rescheduled</button>
 				</div>
 				<div className={styles.HistoryList}>
 					{HistoryIsLoading ? (
@@ -300,7 +354,8 @@ const Page = ({ params }) => {
 							<p className={styles.notes}>No records</p>
 						) : (
 							filteredData.map((history, index) => (
-								<div key={index} className={`${styles.HistoryData} ${styles[history.Status]}`}>
+								<div key={index} className={`${styles.HistoryData} ${history.ReScheduled ? styles.Rescheduled : styles[history.Status]}`}>
+									{history.ReScheduled || history.Status === "Pending" ? <div data-recordid={history._id} className={styles.CancelBtn} title="Cancel?" onClick={ConfirmChangeStatus}>x</div> : <div className={styles.CheckBtn}>✓</div>}
 									{formatDate(history.AppointmentDate)} | {history.AppointmentTime}
 								</div>
 							))
@@ -311,64 +366,10 @@ const Page = ({ params }) => {
 				</div>
 			</div>
 
-			<div className={styles.UnavailableContainer}>
-				<p>Unavailable</p>
-				<div className={styles.UnavailableList}>
-
-				</div>
-			</div>
-
 			<div className={styles.NoteContainer}>
 				TAKE NOTE: NOT ALL APPROVED
 			</div>
 		
-
-
-
-
-
-
-{/* 		
-			<div className={styles.Schedules}>
-
-
-
-				<p style={{ fontWeight: 'bold', textAlign: 'center' }}>Schedules</p>
-				
-				{isLoading ? "Loading..." : sortedData.length === 0 ? "No results" : sortedData?.map((schedule, index) => (
-					<div key={index} className={`${styles.Schedule}`}>
-						<p className={styles.ScheduleDate}>{formatDate(schedule.Date)} || {schedule.Time}</p>
-						<div data-value={schedule._id} className={styles.ScheduleRemove} onClick={OnRemoveSchedule}>X</div>
-					</div>
-				))}
-
-			</div>
-
-			<div className={styles.TimeSelection}>
-				<p style={{ fontWeight: 'bold', textAlign: 'center' }}>Availability</p>
-
-				{hasSchedule ? "Has Schedule already" :
-					<>
-						<label className={styles.radioForm} htmlFor="schedulingtime1"><input type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
-
-						<label className={styles.radioForm} htmlFor="schedulingtime2"><input type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
-
-						<label className={styles.radioForm} htmlFor="schedulingtime3"><input type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
-
-						<label className={styles.radioForm} htmlFor="schedulingtime4"><input type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
-
-						<label className={styles.radioForm} htmlFor="schedulingtime5"><input type="radio" name="test" id="schedulingtime5" value="morning" onChange={(e)=>{setSelectedTime("morning")}}/>Morning</label>
-
-						<label className={styles.radioForm} htmlFor="schedulingtime6"><input type="radio" name="test" id="schedulingtime6" value="afternoon" onChange={(e)=>{setSelectedTime("afternoon")}}/>Afternoon</label>
-
-						<label className={styles.radioForm} htmlFor="schedulingtime7"><input type="radio" name="test" id="schedulingtime7" value="wholeday" onChange={(e)=>{setSelectedTime("wholeday")}}/>Whole Day</label>
-
-						<button disabled={isUploadingSchedule} onClick={OnAddSchedule}>{isUploadingSchedule ? "Uploading..." : "Add Schedule"}</button>
-					</>
-				}
-
-			</div> */}
-
 			
 		
 		</div>

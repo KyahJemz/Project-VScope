@@ -102,7 +102,14 @@ const Messages = ({params}) => {
 	};
 
 	const IsNew = (record) => {
-		return (true)
+		if (record?.Responses) {
+			for (const response of record.Responses) {
+				if (response.ViewedByClient === false) {
+					return true; 
+				}
+			}
+		}
+		return false; 
 	};
 	
 	const ListItem = ({key, name, image, isNew, id}) => {

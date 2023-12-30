@@ -107,20 +107,7 @@ const Page = () => {
               <button className={`${styles.FilterBtn} ${Filter === "Month" ? styles.Active : null}`} onClick={() => setFilter("Month")}>Months</button>
               <button className={`${styles.FilterBtn} ${Filter === "Year" ? styles.Active : null}`} onClick={() => setFilter("Year")}>Year</button>
             </div>
-            <div className={styles.LineChartCards}>
-              <div className={styles.LineChartCard}>
-                <div className={styles.LineChartCardTitle}>Cleared</div>
-                <div className={styles.LineChartCardValue}>{data?.ChartSystem?.Successful || 0}</div>
-              </div>
-              <div className={styles.LineChartCard}>
-                <div className={styles.LineChartCardTitle}>Advised</div>
-                <div className={styles.LineChartCardValue}>{data?.ChartSystem?.Advised || 0}</div>
-              </div>
-              <div className={styles.LineChartCard}>
-                <div className={styles.LineChartCardTitle}>Re Schedule</div>
-                <div className={styles.LineChartCardValue}>{data?.ChartSystem?.ReScheduled || 0}</div>
-              </div>
-            </div>
+            
           </div>
           <div className={styles.PieChartContainer}>
             {Panel === "Diagnosis" ? 
@@ -128,6 +115,21 @@ const Page = () => {
                 <div className={styles.PieChartData}>
                   <PieChart data={DiagnosisPieChartData} />
                 </div>
+                <div className={styles.LineChartCards}>
+                  <div className={styles.LineChartCard}>
+                    <div className={styles.LineChartCardTitle}>Cleared</div>
+                    <div className={styles.LineChartCardValue}>{data?.ChartSystem?.Successful || 0}</div>
+                  </div>
+                  <div className={styles.LineChartCard}>
+                    <div className={styles.LineChartCardTitle}>Advised</div>
+                    <div className={styles.LineChartCardValue}>{data?.ChartSystem?.Advised || 0}</div>
+                  </div>
+                  <div className={styles.LineChartCard}>
+                    <div className={styles.LineChartCardTitle}>Re Schedule</div>
+                    <div className={styles.LineChartCardValue}>{data?.ChartSystem?.ReScheduled || 0}</div>
+                  </div>
+                </div>
+                
                 <div className={styles.PieChartDataRanking}>
                   {data?.TopDiagnosis?.length > 0 ? (
                     data.TopDiagnosis.map((item, index) => (

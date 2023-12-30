@@ -80,27 +80,30 @@ const Form = ({params}) => {
     }
 
     const Response = ({image, response, timestamp, isRight}) => {
-        let ResponseDate = "";
-        let MessageDate = new Date(timestamp).toLocaleDateString('en-US', {
+        const formattedDate = new Date(timestamp).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
             hour: 'numeric',
-            minute: '2-digit'});
-
-            if (CurrentMessageDate === MessageDate){
-                ResponseDate = "";
-            } else {
-                ResponseDate = CurrentMessageDate;
-                CurrentMessageDate = MessageDate;
-            }
+            minute: '2-digit',
+          });
+        
+          let shouldDisplayDate = true;
+        
+          if (formattedDate === CurrentMessageDate) {
+            shouldDisplayDate = false;
+          } else {
+            CurrentMessageDate = formattedDate;
+          }
 
         return (
             <>  
-                <div className={styles.responseTime}>{ResponseDate}</div>
+                {shouldDisplayDate && (
+                    <div className={styles.responseTime}>{CurrentMessageDate}</div>
+                )}
                 <div className={isRight ? styles.MessageRight :  styles.MessageLeft}>
                     <Image 
-                        title={CurrentMessageDate}
+                        title={formattedDate}
                         className={styles.responseImage}
                         src={image}
                         alt="image"
@@ -108,7 +111,7 @@ const Form = ({params}) => {
                         height={50}
                     />
                     <div
-                        title={CurrentMessageDate}
+                        title={formattedDate}
                         className={styles.response}>{response}
                     </div>
                 </div> 
@@ -118,23 +121,23 @@ const Form = ({params}) => {
 
     useEffect(() => {
         const handleBeforeUnload = () => {
-          const formData = new FormData();
-          formData.append("Department", Department);
-          formData.append("RecordId", RecordId);
-          formData.append("Name", Department);
-      
-          fetch("/api/messages/POST_UpdateViewed", {
-            method: "POST",
-            body: formData,
-          })
+            const formData = new FormData();
+            formData.append("Department", Department);
+            formData.append("RecordId", RecordId);
+            formData.append("Name", Department);
+    
+            fetch("/api/messages/POST_UpdateViewed", {
+                method: "POST",
+                body: formData,
+            })
             .then((response) => response.json())
             .catch((error) => console.error("Error making API call", error));
         };
-      
+    
         handleBeforeUnload();
-      
+    
         return () => {
-          window.removeEventListener("beforeunload", handleBeforeUnload);
+            window.removeEventListener("beforeunload", handleBeforeUnload);
         };
     }, [Department, RecordId]);
 
