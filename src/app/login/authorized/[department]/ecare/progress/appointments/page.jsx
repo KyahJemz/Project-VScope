@@ -17,7 +17,7 @@ const Page = ({ params }) => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
 	const { data, mutate, error, isLoading } =  useSWR(
-		`/api/records/GET_Records?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status=&Type=${encodeURIComponent("Appointment")}`,
+		`/api/records/GET_Records?Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Appointment")}`,
 		fetcher
 	);
 
@@ -33,6 +33,10 @@ const Page = ({ params }) => {
           (record?.Details?.LastName ?? "").toLowerCase().includes(Search.toLowerCase()) ||
           (record?.Details?.FirstName ?? "").toLowerCase().includes(Search.toLowerCase()) ||
           (record?.Details?.MiddleName ?? "").toLowerCase().includes(Search.toLowerCase())
+        )
+        .filter(
+          (record) =>
+          record.Status !== "Pending" && record.Status !== "Canceled" && record.Status !== "Rejected"
         )
     : [];
 

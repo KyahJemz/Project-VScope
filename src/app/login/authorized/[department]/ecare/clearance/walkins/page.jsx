@@ -114,7 +114,7 @@ const Page = ({ params }) => {
               height={50}
             />
             <p className={styles.RecordName}>{record?.Details?.LastName ?? ""}, {record?.Details?.FirstName ?? ""} {record?.Details?.MiddleName ?? ""}</p>
-            <select className={`${styles.RecordStatus} ${styles[record.ClearanceStatus.replace(/\s+/g, '')]}`} name="ClearanceStatus" data-recordid={record._id} data-value={record.ClearanceStatus} defaultValue={record.ClearanceStatus} onChange={ConfirmChangeStatus} disabled={IsStatusChanging}>
+            <select className={`${styles.RecordStatus} ${styles[record?.ClearanceStatus?.replace(/\s+/g, '')]}`} name="ClearanceStatus" data-recordid={record._id} data-value={record?.ClearanceStatus} defaultValue={record?.ClearanceStatus} onChange={ConfirmChangeStatus} disabled={IsStatusChanging}>
               <option value="In Progress">In Progress</option>
               <option value="Cleared">Cleared</option>
             </select>

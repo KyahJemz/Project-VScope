@@ -15,7 +15,7 @@ export default function RootLayout(prop) {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
 	const { data, mutate, error, isLoading } =  useSWR(
-		`/api/records/GET_Records?GoogleEmail=&Department=${encodeURIComponent(Department)}&Status=&Type=${encodeURIComponent("All")}`,
+		`/api/records/GET_Records?Department=${encodeURIComponent(Department)}&Type=All`,
 		fetcher
 	);
 

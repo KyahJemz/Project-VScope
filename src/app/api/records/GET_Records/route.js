@@ -35,6 +35,7 @@ export const GET = async (request) => {
 	const Status = url.searchParams.get("Status");
 	const Type = url.searchParams.get("Type");
 
+
 	try {
 		await connect();
 
@@ -52,25 +53,22 @@ export const GET = async (request) => {
 			  AppointmentModel = SDPCAppointment;
 			}
 		  
-			if (GoogleEmail === "" || GoogleEmail === null) {
+			if (!GoogleEmail || GoogleEmail === "" || GoogleEmail === null) {
 			  let query = {};
 		  
-			  if (Type === "WalkIn" || Type === "Appointment" || Type === "All") {
-				if (Status) {
-				  query.Status = Status;
+				if (Type === "WalkIn" || Type === "Appointment" || Type === "All") {
+					if (Type !== "All") {
+						query.Type = Type;
+					}
 				}
-				if (Type !== "All") {
-				  query.Type = Type;
-				}
-			  }
 
-			  if (Status !== '' || Status !== null || Status !== "") {
-				query.Status = Status;
+			  	if (Status !== '' && Status !== null && Status !== "" && !Status) {
+					query.Status = Status;
 				}
 		  
-			  results = await AppointmentModel.find(query);
+				results = await AppointmentModel.find(query);
 			} else {
-			  results = await AppointmentModel.find({ GoogleEmail });
+				results = await AppointmentModel.find({ GoogleEmail });
 			}
 		  } else {
 			results = [];
