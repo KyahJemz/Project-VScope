@@ -5,6 +5,7 @@ import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 import { encryptText, decryptText } from "@/utils/cryptojs";
 
+import { writeFile } from 'fs/promises'
 
 export const POST = async (request) => {
     if (request.method === 'POST') {
@@ -16,12 +17,34 @@ export const POST = async (request) => {
         const GoogleEmail = body.get("SenderGoogleEmail");
         const Response = body.get("Response");
         const Timestamp = new Date().toISOString();
+        const file = body.get('Attachment') ?? null;
+
+
+        let AttachmentName = ''; 
+
+        if (file && typeof file.arrayBuffer === 'function') {
+          const bytes = await file.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+        
+          const randomString = Math.random().toString(36).substring(2, 8);
+
+          AttachmentName = `${randomString}-${file.name}`;
+        
+          const path = `public/uploads/messages/${AttachmentName}`;
+          await writeFile(path, buffer);
+          console.log(`open ${path} to see the uploaded file`);
+        }
+
+        if(AttachmentName==='' && Response === "") {
+          return new NextResponse('No response', { status: 404 });
+        }
 
         const newResponse = {
             Name: encryptText(Name),
             GoogleEmail: encryptText(GoogleEmail),
             Response: encryptText(Response),
             Timestamp: encryptText(Timestamp),
+            Attachment: AttachmentName, 
             ViewedByDepartment: false,
             ViewedByClient: false,
         };

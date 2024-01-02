@@ -30,6 +30,10 @@ const Form = ({params}) => {
 
     var CurrentMessageDate = "";
 
+    const [file, setFile] = useState(null);
+
+    console.log(file)
+
     const router = useRouter();
     
     const formatDate = (timestamp) => {
@@ -69,7 +73,15 @@ const Form = ({params}) => {
 
     const ResponseForm = ({name, receiverGmail, senderGmail}) => {
         return (
-            <form className={styles.MessageFormContainer} onSubmit={HandleResponseSubmit}>
+            <form className={styles.MessageFormContainer} onSubmit={HandleResponseSubmit} encType="multipart/form-data">
+                <label className={styles.FileUploadBtn}>
+                    <input
+                        type="file"
+                        onChange={(e) => setFile(e.target.files?.[0])}
+                        style={{ display: 'none' }}
+                    />
+                    {file === null ? "Upload File" : file.name }
+                </label>
                 <input name="SenderGoogleEmail" value={senderGmail} type="text" hidden readOnly/>
                 <input name="ReceiverGoogleEmail" value={receiverGmail} type="text" hidden readOnly/>
                 <input name="Name" value={name} type="text" hidden readOnly/>
@@ -79,7 +91,7 @@ const Form = ({params}) => {
         )    
     }
 
-    const Response = ({image, response, timestamp, isRight}) => {
+    const Response = ({image, response, timestamp, isRight, attachmentName }) => {
         const formattedDate = new Date(timestamp).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -110,10 +122,24 @@ const Form = ({params}) => {
                         width={50}
                         height={50}
                     />
-                    <div
-                        title={formattedDate}
-                        className={styles.response}>{response}
-                    </div>
+                    {response && (
+                        <div title={formattedDate} className={styles.response}>
+                            
+                                <p>{response}</p>
+                            
+                        </div>
+                    )}
+                    {attachmentName && (
+                        <a
+                            href={`/uploads/messages/${encodeURIComponent(attachmentName)}`}
+                            download
+                            className={styles.downloadLink}
+                            title={"Downloadable File"}
+                        >
+                            {attachmentName}
+                        </a> 
+                    )}
+                    
                 </div> 
             </>
         )
@@ -149,6 +175,7 @@ const Form = ({params}) => {
             const formData = new FormData(e.target);
             formData.append("Department", Department);
             formData.append("RecordId", RecordId);
+            formData.set("Attachment", file);
     
             const response = await fetch("/api/messages/POST_AddMessages", {
                 method: "POST",
@@ -166,6 +193,7 @@ const Form = ({params}) => {
             setResponseUploading(false);
             e.target.reset();
             mutate();
+            setFile(null);
         }
     };
 
@@ -196,6 +224,7 @@ const Form = ({params}) => {
                             response={response.Response}
                             timestamp={response.Timestamp}
                             isRight={response.Name === "Dental" || response.Name === "Medical" || response.Name === "SDPC" ? true : false}
+                            attachmentName = {response.Attachment}
                         />
                     ))
                 ) : (

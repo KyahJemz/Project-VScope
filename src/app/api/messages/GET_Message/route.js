@@ -70,6 +70,7 @@ export const GET = async (request) => {
                 GoogleEmail: response.GoogleEmail ? decryptText(response.GoogleEmail) : response.GoogleEmail,
                 Response: response.Response ? decryptText(response.Response) : response.Response,
                 Timestamp: response.Timestamp ? decryptText(response.Timestamp) : response.Timestamp,
+                Attachment: response.Attachment,
                 ViewedByDepartment: response.ViewedByDepartment,
                 ViewedByClient: response.ViewedByClient,
               };

@@ -1,4 +1,397 @@
-.MainContent{
+.MainContainer{
     flex: 1;
     border: 1px solid gainsboro;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "Header Header"
+        "StatusContainer ChartsContainer"
+    ;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #F5F5F5;
 }
+.Header{
+    grid-area: Header;
+    padding: 20px;
+    border: 1px solid gainsboro;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #757575;
+    color: white;
+    border-radius: 5px;
+    position: relative;
+}
+.StatusContainer{
+    grid-area: StatusContainer;
+    padding: 20px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background-color: #B3B3B3;
+}
+.ChartsContainer{
+    grid-area: ChartsContainer;
+    padding: 20px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr auto;
+    background-color: #B3B3B3;
+    grid-template-areas: 
+        "LineChartContainer LineChartContainer"
+        "Overview PieChartContainer"
+        ;
+
+    gap: 20px;
+}
+
+.Overview{
+    grid-area: Overview;
+    border: 1px solid gainsboro;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: 
+        "OverviewTitle OverviewTitle"
+        "OverviewTable OverviewTable"
+        "OverviewChart OverviewOthers"
+        ;
+    row-gap: 10px;
+    background-color: white;
+    border-radius: 5px;
+}
+.OverviewTitle{
+    grid-area: OverviewTitle;
+    text-align: center;
+    padding: 10px;
+    background-color: #757575;
+    border: 3px solid #464545;
+    border-radius: 5px;
+    color: white;
+}
+
+.OverviewTable{
+    grid-area: OverviewTable;
+    border: 1px solid gainsboro;
+}
+
+.OverviewChart{
+    grid-area: OverviewChart;
+    padding: 10px;
+}
+.OverviewOthers{
+    grid-area: OverviewOthers;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.OverviewOthersPieChartData{
+    width: 175px;
+    height: 175px;
+}
+.OverviewOthersMiniCard{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.OverviewOthersMiniCardTitle{
+    background-color: white;
+    font-size: 0.8rem;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid rgb(168, 168, 168);
+}
+.MiniCardDetails{
+    padding: 10px;
+    background-color: #BDE3FF;
+    border: 2px solid #809aac;
+    border-radius: 5px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto 1fr;
+}
+.MiniCardCount{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 10px;
+}
+.MiniCardButtons{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.MiniCardBtn{
+    background-color: transparent;
+    border: 0px;
+    font-size: 0.7rem;
+    text-align: left;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    cursor: pointer;
+    transition: 250ms;
+    border-radius: 5px;
+    padding: 5px;
+}
+.MiniCardBtn.Active{
+    background-color: white;
+}
+.MiniCardColor1{
+    background-color: #FFCD29;
+    width: 15px;
+    height: 15px;
+}
+.MiniCardColor2{
+    background-color: #F24822;
+    width: 15px;
+    height: 15px;
+}
+.MiniCardColor3{
+    background-color: #14AE5C;
+    width: 15px;
+    height: 15px;
+}
+
+
+
+
+
+
+.StatusPieChartData{
+    width: 200px;
+    height: 200px;
+    display: flex;
+}
+
+.StatusCountContainer{
+    display: flex;
+    justify-content: center;
+    gap:20px
+}
+.StatusName{
+    padding: 0px 5px;
+    width: 200px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+.StatusCount{
+    padding: 5px 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.StatusCountContainer:nth-child(2) > P{
+    background-color: #AFF4C6;
+    color:black;
+}
+
+.StatusCountContainer:nth-child(3) > P{
+    background-color: #F24822;
+    color:white;
+}
+
+.StatusCountContainer:nth-child(4) > P{
+    background-color: #FFCD29;
+    color:black;
+}
+
+
+
+.PieChartContainer{
+    display: grid;
+    grid-template-columns: 270px;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 20px;
+    justify-items: center;
+    grid-area: PieChartContainer;
+}
+
+.PieChartData{
+    width: 200px;
+    height: 200px;
+}
+
+.PieChartDataRankingOverviewChart,
+.PieChartDataRanking{
+    border: 1px solid gainsboro;
+    width: 100%;
+    background-color: #FFC7C2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 5px;
+    height: 100%;
+    padding-bottom: 20px;
+}
+.PieChartDataRankingOverviewChart{
+    border-width: 3px;
+    background-color: white;
+}
+
+.PieChartDataButtons{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+}
+.PanelBtn.Active{
+    background-color: #14AE5C;
+    color: white;
+}
+.PanelBtn{
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: 250ms;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+}
+.RankingRow{
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 100px 1fr 25px;
+    align-items: center;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+
+
+.LineChartContainer{
+    grid-area: LineChartContainer;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+}
+
+.FilterBtn{
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: 250ms;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    flex: 1;
+}
+.FilterBtn.Active{
+    background-color: #14AE5C;
+    color: white;
+}
+.PatientsLineChartData{
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.LineChartCards{
+    display: flex;
+    justify-content: space-around;
+    gap: 5px; 
+    margin-top: 20px;
+}
+.LineChartCard{
+    text-align: center;
+    width: 88px;
+    border-radius: 5px;
+}
+.LineChartCardTitle{
+    border: 1px solid gainsboro;
+    padding: 5px 10px;
+    background-color: white;
+    font-size: 0.65rem;
+}
+.LineChartCardValue{
+    border: 1px solid gainsboro;
+    font-size: 2.5rem;
+    padding: 20px;
+    background-color: #0D99FF;
+    color: white;
+    border-radius: 5px;
+    height: 100px;
+}
+
+.LineChartButtons{
+    display: flex;
+    gap: 20px;
+}
+
+.DepartmentSelection{
+    position: absolute;
+    padding: 5px 10px;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.PieChartDataRankingTitleOverviewChart,
+.PieChartDataRankingTitle{
+    text-align: center;
+    background-color: white;
+    padding: 10px;
+    font-size: 0.8rem;
+}
+.PieChartDataRankingTitleOverviewChart{
+    background-color: #14AE5C;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+
+
+
+.Notes{
+    padding-left: 10px;
+}
+.ProgressBar {
+    background-color: rgba(255, 255, 255, 0.5); /* Background color of the progress bar */
+    border-radius: 5px; /* Adding border-radius */
+    height: 10px;
+  }
+  
+  .ProgressBar::-webkit-progress-bar {
+    background-color: #e0e0e0; /* Background color of the container bar */
+    border-radius: 5px; /* Adding border-radius */
+    height: 10px;
+  }
+  
+  .ProgressBar::-webkit-progress-value {
+    background-color: #14AE5C; /* Color of the progress bar */
+    border-radius: 5px; /* Adding border-radius */
+    height: 10px;
+  }
+  
+  .ProgressBar::-moz-progress-bar {
+    background-color: #14AE5C; /* Color of the progress bar in Firefox */
+    border-radius: 5px; /* Adding border-radius */
+    height: 10px;
+  }

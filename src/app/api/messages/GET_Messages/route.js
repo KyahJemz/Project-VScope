@@ -103,6 +103,7 @@ export const GET = async (request) => {
 							GoogleEmail: decryptText(response.GoogleEmail),
 							Response: decryptText(response.Response),
 							Timestamp: decryptText(response.Timestamp),
+							Attachment: response.Attachment,
 							ViewedByDepartment: response.ViewedByDepartment,
 							ViewedByClient: response.ViewedByClient
 						};

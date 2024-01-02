@@ -81,6 +81,7 @@
   flex-direction: row;
   padding: 20px;  
   gap: 10px;
+  align-items: center;
 }
 
 .responseFormTextbox{
@@ -100,12 +101,41 @@
   background-color: #53c28b;
   color: white;
   cursor: pointer;
+  border: 1px solid gainsboro;
 }
 
+.FileUploadBtn {
+  display: flex;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid gainsboro;
+  background-color: #53c28b;
+  color: white;
+  font-size: 0.7rem;
+  width: 200px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.FileUploadBtn:hover,
 .submitBtn:hover{
   box-shadow: 0px 0px 2px 1px rgba(220, 220, 220, 0.500) ;
 }
-
+.FileUploadBtn:active,
 .submitBtn:active{  
-  box-shadow: 0px 0px 2px 1px rgb(220, 220, 220) ;
+  box-shadow: 0px 0px 2px 1px black ;
+}
+
+.downloadLink{
+  font-style: italic;
+  font-size: 0.7rem;
+  color: #53c28b;
+  transition: 250ms;
+}
+
+.downloadLink:hover{
+  text-shadow: 1px 1px gainsboro;
+  font-size: 0.72rem;
 }

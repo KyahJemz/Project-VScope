@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useSWR from "swr";
 import styles from "./page.module.css"
 import PieChart from "@/components/PieChart/PieChart";
@@ -8,9 +8,17 @@ import LineChart from "@/components/LineChart/LineChart";
 
 const Page = () => {
 
-  const [Panel, setPanel] = useState("Diagnosis");
+  const [Panel, setPanel] = useState("Prescription");
   const [Filter, setFilter] = useState("Week");
   const [Department, setDepartment] = useState("Medical");
+
+  const [ChartPatients, setChartPatients] = useState("All");
+  const [ChartGender, setChartGender] = useState("All");
+  const [ChartSessions, setChartSessions] = useState("All");
+
+  const [ChartPatientsCount, setChartPatientsCount] = useState("0");
+  const [ChartGenderCount, setChartGenderCount] = useState("0");
+  const [ChartSessionsCount, setChartSessionsCount] = useState("0");
 
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   
@@ -18,6 +26,14 @@ const Page = () => {
 	  `/api/reports?Department=${encodeURIComponent(Department)}&Type=Department`,
 	  fetcher
 	);
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setChartPatientsCount(data?.TotalPatients?.All);
+      setChartGenderCount(data?.TotalGender?.All);
+      setChartSessionsCount(data?.TotalServiceSession?.All);
+    }
+  }, [data, isLoading]);
 
   const StatusPieChartData = {
 		labels: ["Approved","Canceled","Pending"],
@@ -46,6 +62,17 @@ const Page = () => {
     datasets: [
       {
         data: data?.TopPrescriptions?.map(item => Number(item.Count)) ?? [],
+        backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
+        hoverBackgroundColor: "#ffffff80",
+      },
+    ],
+  };
+
+  const ServicesPieChartData = {
+    labels: data?.TopServices?.map(item => item.Service) ?? [],
+    datasets: [
+      {
+        data: data?.TopServices?.map(item => Number(item.Count)) ?? [],
         backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
         hoverBackgroundColor: "#ffffff80",
       },
@@ -98,6 +125,7 @@ const Page = () => {
         </div>
 
         <div className={styles.ChartsContainer}>
+
           <div className={styles.LineChartContainer}>
             <div className={styles.PatientsLineChartData}>
               <LineChart data ={PatientsLineChartData} />
@@ -107,14 +135,136 @@ const Page = () => {
               <button className={`${styles.FilterBtn} ${Filter === "Month" ? styles.Active : null}`} onClick={() => setFilter("Month")}>Months</button>
               <button className={`${styles.FilterBtn} ${Filter === "Year" ? styles.Active : null}`} onClick={() => setFilter("Year")}>Year</button>
             </div>
-            
           </div>
+
+          <div className={styles.Overview}>
+            <div className={styles.OverviewTitle}>
+              OVERVIEW
+            </div>
+            <div className={styles.OverviewTable}>
+
+            </div>
+            <div className={styles.OverviewChart}>
+              <div className={styles.PieChartDataRankingOverviewChart}>
+                <div className={styles.PieChartDataRankingTitleOverviewChart}>
+                    {Department === "Medical" ? "Highest Rate of Diagnosis" 
+                    : Department === "Dental" ? "Highest Rate of Oral Health Conditions" 
+                    : Department === "SDPC" ? "Highest Rate of Diagnosis" 
+                    : ""
+                    } 
+                </div>
+                {data?.TopDiagnosis?.length > 0 ? (
+                  data.TopDiagnosis.map((item, index) => (
+                    <div className={styles.RankingRow} key={index}>
+                      <div className={styles.RankingName}>{item.Diagnosis}</div>
+                      <div className={styles.RankingProgress}>
+                        <progress
+                          className={styles.ProgressBar}
+                          max={data.TopDiagnosis[0].Count || 0}
+                          value={item.Count || 0}
+                        ></progress>
+                      </div>
+                      <div className={styles.RankingValue}>{item.Count}</div>
+                    </div>
+                  ))
+                ) : (
+                  <p className={styles.Notes}>No Records to show...</p>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.OverviewOthers}>
+              <div className={styles.OverviewOthersPieChartData}>
+                <PieChart data={DiagnosisPieChartData} />
+              </div>
+
+              <div className={styles.OverviewOthersMiniCard}>
+                <p className={styles.OverviewOthersMiniCardTitle}>Total of Patients</p>
+                <div className={styles.MiniCardDetails}>
+                  <div className={styles.MiniCardCount}>{ChartPatientsCount}</div>
+                  <div className={styles.MiniCardButtons}>
+                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Students" ? styles.Active : null}`} onClick={() => {
+                      ChartPatients === "Students"
+                        ? (setChartPatients("All"), setChartPatientsCount(data?.TotalPatients?.All??0))
+                        : (setChartPatients("Students"), setChartPatientsCount(data?.TotalPatients?.Students??0));
+                    }}><div className={styles.MiniCardColor1}></div>Students</button>
+                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Lay Collaborators" ? styles.Active : null}`} onClick={() => {
+                      ChartPatients === "Lay Collaborators"
+                        ? (setChartPatients("All"), setChartPatientsCount(data?.TotalPatients?.All??0))
+                        : (setChartPatients("Lay Collaborators"), setChartPatientsCount(data?.TotalPatients["Lay Collaborators"]??0));
+                    }}><div className={styles.MiniCardColor2}></div>Lay Collaborators</button>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.OverviewOthersMiniCard}>
+                <p className={styles.OverviewOthersMiniCardTitle}>Numbers per Gender</p>
+                <div className={styles.MiniCardDetails}>
+                  <div className={styles.MiniCardCount}>{ChartGenderCount}</div>
+                  <div className={styles.MiniCardButtons}>
+                    <button className={`${styles.MiniCardBtn} ${ChartGender === "Male" ? styles.Active : null}`} onClick={() => {
+                      ChartGender === "Male"
+                        ? (setChartGender("All"), setChartGenderCount(data?.TotalGender?.All??0))
+                        : (setChartGender("Male"), setChartGenderCount(data?.TotalGender?.Male??0));
+                    }}>
+                      <div className={styles.MiniCardColor1}></div>Male</button>
+                    <button className={`${styles.MiniCardBtn} ${ChartGender === "Female" ? styles.Active : null}`} onClick={() => {
+                      ChartGender === "Female"
+                        ? (setChartGender("All"), setChartGenderCount(data?.TotalGender?.All??0))
+                        : (setChartGender("Female"), setChartGenderCount(data?.TotalGender?.Female??0));
+                    }}>
+                      <div className={styles.MiniCardColor2}></div>Female</button>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.OverviewOthersMiniCard}>
+                <p className={styles.OverviewOthersMiniCardTitle}>Service sessions per</p>
+                <div className={styles.MiniCardDetails}>
+                  <div className={styles.MiniCardCount}>{ChartSessionsCount}</div>
+                  <div className={styles.MiniCardButtons}>
+                  <button className={`${styles.MiniCardBtn} ${ChartSessions === "Week" ? styles.Active : null}`} onClick={() => {
+                      ChartSessions === "Week"
+                        ? (setChartSessions("All"), setChartSessionsCount(data?.TotalServiceSession?.All??0))
+                        : (setChartSessions("Week"), setChartSessionsCount(data?.TotalServiceSession?.Week??0));
+                    }}>
+                      <div className={styles.MiniCardColor1}></div>Week</button>
+                    <button className={`${styles.MiniCardBtn} ${ChartSessions === "Month" ? styles.Active : null}`} onClick={() => {
+                      ChartSessions === "Month"
+                        ? (setChartSessions("All"), setChartSessionsCount(data?.TotalServiceSession?.All??0))
+                        : (setChartSessions("Month"), setChartSessionsCount(data?.TotalServiceSession?.Month??0));
+                    }}>
+                      <div className={styles.MiniCardColor2}></div>Month</button>
+                    <button className={`${styles.MiniCardBtn} ${ChartSessions === "Year" ? styles.Active : null}`} onClick={() => {
+                      ChartSessions === "Year"
+                        ? (setChartSessions("All"), setChartSessionsCount(data?.TotalServiceSession?.All??0))
+                        : (setChartSessions("Year"), setChartSessionsCount(data?.TotalServiceSession?.Year??0));
+                    }}>
+                      <div className={styles.MiniCardColor3}></div>Year
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+
+          </div>
+
+
+
+
+
+
+
           <div className={styles.PieChartContainer}>
-            {Panel === "Diagnosis" ? 
+            {Panel === "Prescription" ? 
               <>
                 <div className={styles.PieChartData}>
-                  <PieChart data={DiagnosisPieChartData} />
+                  <PieChart data={PrescriptionPieChartData} />
                 </div>
+
                 <div className={styles.LineChartCards}>
                   <div className={styles.LineChartCard}>
                     <div className={styles.LineChartCardTitle}>Cleared</div>
@@ -131,32 +281,13 @@ const Page = () => {
                 </div>
                 
                 <div className={styles.PieChartDataRanking}>
-                  {data?.TopDiagnosis?.length > 0 ? (
-                    data.TopDiagnosis.map((item, index) => (
-                      <div className={styles.RankingRow} key={index}>
-                        <div className={styles.RankingName}>{item.Diagnosis}</div>
-                        <div className={styles.RankingProgress}>
-                          <progress
-                            className={styles.ProgressBar}
-                            max={data.TopDiagnosis[0].Count || 0}
-                            value={item.Count || 0}
-                          ></progress>
-                        </div>
-                        <div className={styles.RankingValue}>{item.Count}</div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No Records to show...</p>
-                  )}
-
-                </div>
-              </>
-            : 
-              <>
-                <div className={styles.PieChartData}>
-                  <PieChart data={PrescriptionPieChartData} />
-                </div>
-                <div className={styles.PieChartDataRanking}>
+                  <div className={styles.PieChartDataRankingTitle}>
+                    {Department === "Medical" ? "Most medicine prescribe by school physicians" 
+                    : Department === "Dental" ? "Most Causes of Oral Health Conditions" 
+                    : Department === "SDPC" ? "Most cases of Mental Health Issues" 
+                    : ""
+                    } 
+                  </div>
                   {data?.TopPrescriptions?.length > 0 ? (
                     data.TopPrescriptions.map((item, index) => (
                       <div className={styles.RankingRow} key={index}>
@@ -164,7 +295,56 @@ const Page = () => {
                         <div className={styles.RankingProgress}>
                           <progress
                             className={styles.ProgressBar}
-                            max={Number(data.TopPrescriptions[0].Count) || 0}
+                            max={data.TopPrescriptions[0].Count || 0}
+                            value={item.Count || 0}
+                          ></progress>
+                        </div>
+                        <div className={styles.RankingValue}>{item.Count}</div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className={styles.Notes}>No Records to show...</p>
+                  )}
+
+                </div>
+              </>
+            : 
+              <>
+                <div className={styles.PieChartData}>
+                  <PieChart data={ServicesPieChartData} />
+                </div>
+
+                <div className={styles.LineChartCards}>
+                  <div className={styles.LineChartCard}>
+                    <div className={styles.LineChartCardTitle}>Cleared</div>
+                    <div className={styles.LineChartCardValue}>{data?.ChartSystem?.Successful || 0}</div>
+                  </div>
+                  <div className={styles.LineChartCard}>
+                    <div className={styles.LineChartCardTitle}>Advised</div>
+                    <div className={styles.LineChartCardValue}>{data?.ChartSystem?.Advised || 0}</div>
+                  </div>
+                  <div className={styles.LineChartCard}>
+                    <div className={styles.LineChartCardTitle}>Re Schedule</div>
+                    <div className={styles.LineChartCardValue}>{data?.ChartSystem?.ReScheduled || 0}</div>
+                  </div>
+                </div>
+
+                <div className={styles.PieChartDataRanking}>
+                  <div className={styles.PieChartDataRankingTitle}>
+                    {Department === "Medical" ? "Top service rendered by Medical" 
+                    : Department === "Dental" ? "Top service rendered by Medical" 
+                    : Department === "SDPC" ? "Top service rendered by Dental" 
+                    : ""
+                    }
+                  </div>
+                  {data?.TopServices?.length > 0 ? (
+                    data.TopServices.map((item, index) => (
+                      <div className={styles.RankingRow} key={index}>
+                        <div className={styles.RankingName}>{item.Service}</div>
+                        <div className={styles.RankingProgress}>
+                          <progress
+                            className={styles.ProgressBar}
+                            max={Number(data.TopServices[0].Count) || 0}
                             value={Number(item.Count) || 0}
                           ></progress>
                         </div>
@@ -172,14 +352,14 @@ const Page = () => {
                       </div>
                     ))
                   ) : (
-                    <p>No Records to show...</p>
+                    <p className={styles.Notes}>No Records to show...</p>
                   )}
                 </div>
               </>
             }
             <div className={styles.PieChartDataButtons}>
-              <button className={`${styles.PanelBtn} ${Panel === "Diagnosis" ? styles.Active : null}`} onClick={() => setPanel("Diagnosis")}>Diagnosis</button>
-              <button className={`${styles.PanelBtn}  ${Panel === "Prescriptions" ? styles.Active : null}`} onClick={() => setPanel("Prescriptions")}>Prescriptions</button>
+              <button className={`${styles.PanelBtn} ${Panel === "Prescription" ? styles.Active : null}`} onClick={() => setPanel("Prescription")}>Prescription</button>
+              <button className={`${styles.PanelBtn}  ${Panel === "Services" ? styles.Active : null}`} onClick={() => setPanel("Services")}>Services</button>
             </div>
           </div>
         </div>
