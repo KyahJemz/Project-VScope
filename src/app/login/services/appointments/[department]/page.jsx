@@ -9,6 +9,7 @@ import Calendar from "@/components/Calendar/Calendar";
 import { Services } from "@/models/Services.js"
 import { useSession } from "next-auth/react";
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
+import { Data } from "@/models/Data";
 
 const Page = ({ params }) => {
 	const Department = params.department;
@@ -323,9 +324,9 @@ const Page = ({ params }) => {
 			</div>
 
 			<form className={styles.ConcernContainer} onSubmit={OnSubmit}>
-				<select className={styles.InputArea} name="Services" id="" required>
+				<select className={styles.InputArea} name="ServiceOffered" id="" required>
 					<option value="">Select services...</option>
-					{Services[Department].map((option, index) => (
+					{Data.Services[Department].map((option, index) => (
 						<option key={index} value={option}>{option}</option>
 					))}
 				</select>

@@ -29,7 +29,7 @@ export const POST = async (request) => {
 
       let updatedPost = null;
 
-      if (Key === "Category" || Key === "GoogleEmail") {
+      if (Key === "Category" || Key === "GoogleEmail" || Key === "ServiceOffered") {
         updatedPost = await AppointmentModel.findByIdAndUpdate(
           RecordId,
           { [Key]: Value },

@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import UserDefault from "public/UserDefault.png"
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
+import { Data } from "@/models/Data";
 
 const Page = () => {
 	const { data: session, status } = useSession();
@@ -124,8 +125,9 @@ const Page = () => {
 						<input className={styles.DetailsFields} type="text" name="Age" data-key="Age" placeholder="Age" defaultValue={data?.Details?.Age??""} data-value={data?.Details?.Age??""} onBlur={ChangeConfirmation}/>
 						<select className={styles.DetailsFields} type="text" name="Sex" placeholder="Sex" defaultValue={data?.Details?.Sex??""} data-value={data?.Details?.Sex??""} onChange={ChangeConfirmation}> 
 							<option value="">Sex...</option>
-							<option value="Male">Male</option>
-							<option value="Female">Female</option>
+							{Data.Gender.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
 						</select>
 						<select className={styles.DetailsFields} ype="text" name="Category" readOnly value={session.user.role} placeholder="Category" disabled> 
 							<option value="Student">Student</option>
@@ -133,8 +135,18 @@ const Page = () => {
 						</select>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand" defaultValue={data?.Details?.CourseStrand??""} data-value={data?.Details?.CourseStrand??""} placeholder="Course / Strand" onBlur={ChangeConfirmation}/>
-						<input className={styles.DetailsFields} type="text" name="YearLevel" data-key="YearLevel" defaultValue={data?.Details?.YearLevel??""} data-value={data?.Details?.YearLevel??""}  placeholder="Year Level" onBlur={ChangeConfirmation}/>
+						<select className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand" defaultValue={data?.Details?.CourseStrand??""} data-value={data?.Details?.CourseStrand??""} placeholder="Course / Strand" onChange={ChangeConfirmation}> 
+							<option value="">Course / Strand...</option>
+							{Data.Courses.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
+						<select className={styles.DetailsFields} type="text" name="YearLevel" data-key="YearLevel" defaultValue={data?.Details?.YearLevel??""} data-value={data?.Details?.YearLevel??""}  placeholder="Year Level" onChange={ChangeConfirmation}> 
+							<option value="">YearLevel....</option>
+							{Data.YearLevel.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
 						<input className={styles.DetailsFields} type="text" name="GoogleEmail" readOnly value={GoogleEmail} data-key="GoogleEmail" placeholder="School Email" disabled />
 						<input className={styles.DetailsFields} type="text" name="StudentNumber" data-key="StudentNumber" defaultValue={data?.Details?.StudentNumber??""} data-value={data?.Details?.StudentNumber??""} placeholder="Student Number" onBlur={ChangeConfirmation}/>
 					</div>	

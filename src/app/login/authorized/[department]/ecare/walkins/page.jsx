@@ -6,7 +6,7 @@ import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
 import 'react-datepicker/dist/react-datepicker.css';
-
+import { Data } from "@/models/Data";
 
 const WalkIn = ({ params }) => {
 	const Department = params.department;
@@ -227,8 +227,9 @@ const WalkIn = ({ params }) => {
 							<input className={styles.DetailsFields} type="text" name="Age" data-key="Age" placeholder="Age" required/>
 							<select className={styles.DetailsFields} type="text" name="Sex" placeholder="Sex" required> 
 								<option value="">Sex...</option>
-								<option value="Male">Male</option>
-								<option value="Female">Female</option>
+								{Data.Gender.map((element, index) => (
+									<option key={index} value={element}>{element}</option>
+								))}
 							</select>
 							<select className={styles.DetailsFields} ype="text" name="Category" placeholder="Category" required> 
 								<option value="">Category...</option>
@@ -237,8 +238,18 @@ const WalkIn = ({ params }) => {
 							</select>
 						</div>
 						<div className={styles.DetailsRow}>
-							<input className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand"  placeholder="Course / Strand"/>
-							<input className={styles.DetailsFields} type="text" name="YearLevel" data-key="YearLevel"  placeholder="Year Level"/>
+						<select className={styles.DetailsFields} title="Course / Strand" type="text" data-key="CourseStrand" placeholder="Course / Strand"> 
+							<option value="">Course / Strand...</option>
+							{Data.Courses.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
+						<select className={styles.DetailsFields} title="Year Level" type="text" data-key="YearLevel" placeholder="Year Level"> 
+							<option value="">Year Level....</option>
+							{Data.YearLevel.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
 							<input className={styles.DetailsFields} type="text" name="GoogleEmail" data-key="GoogleEmail" placeholder="School Email" required />
 							<input className={styles.DetailsFields} type="text" name="StudentNumber" data-key="StudentNumber" placeholder="Student Number"/>
 						</div>	
@@ -246,6 +257,12 @@ const WalkIn = ({ params }) => {
 							<input className={styles.DetailsFields} type="text" name="ContactNumber" data-key="ContactNumber"  placeholder="Contact Number" required />
 							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyPerson" data-key="InCaseOfEmergencyPerson"  placeholder="In case of emergency person" required />
 							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyNumber" data-key="InCaseOfEmergencyNumber" placeholder="In case of emergency number" required />
+							<select className={styles.DetailsFields} type="text" name="Services" required> 
+								<option value="">Services..</option>
+								{Data.Services[Department].map((element, index) => (
+									<option key={index} value={element}>{element}</option>
+								))}
+							</select>
 						</div>	
 						<div className={styles.DetailsRow}>
 							<textarea className={styles.DetailsFields} placeholder="Concern" name="Concern" id="" cols="30" rows="10" required></textarea>
@@ -284,8 +301,9 @@ const WalkIn = ({ params }) => {
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="Age" onBlur={ChangeConfirmation} defaultValue={details?.Details?.Age??""} data-key="Age" data-value={details?.Details?.Age??""} placeholder="Age" required/>
 								<select className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="Sex" onChange={ChangeConfirmation} defaultValue={details?.Details?.Sex??""} data-key="Sex" data-value={details?.Details?.Sex??""} placeholder="Sex" required> 
 									<option value="">Sex...</option>
-									<option value="Male">Male</option>
-									<option value="Female">Female</option>
+									{Data.Gender.map((element, index) => (
+										<option key={index} value={element}>{element}</option>
+									))}
 								</select>
 								<select className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="Category" onChange={ChangeConfirmation} defaultValue={details?.Category??""}  data-key="Category" data-value={details?.Category??""} placeholder="Category" required> 
 									<option value="">Category...</option>
@@ -294,8 +312,18 @@ const WalkIn = ({ params }) => {
 								</select>
 							</div>
 							<div className={styles.DetailsRow}>
-								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="CourseStrand" onBlur={ChangeConfirmation} defaultValue={details?.Details?.CourseStrand??""} data-key="CourseStrand" data-value={details?.Details?.CourseStrand??""}  placeholder="Course / Strand"/>
-								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="YearLevel" onBlur={ChangeConfirmation} defaultValue={details?.Details?.YearLevel??""} data-key="YearLevel" data-value={details?.Details?.YearLevel??""}  placeholder="Year Level"/>
+								<select className={styles.DetailsFields} title="Course / Strand" type="text" defaultValue={details?.Details?.CourseStrand??""} data-value={details?.Details?.CourseStrand??""} data-key="CourseStrand" onChange={ChangeConfirmation} placeholder="Course / Strand"> 
+									<option value="">Course / Strand...</option>
+									{Data.Courses.map((element, index) => (
+										<option key={index} value={element}>{element}</option>
+									))}
+								</select>
+								<select className={styles.DetailsFields} title="Year Level" type="text" defaultValue={details?.Details?.YearLevel??""} data-value={details?.Details?.YearLevel??""} data-key="YearLevel" onChange={ChangeConfirmation} placeholder="Year Level"> 
+									<option value="">Year Level....</option>
+									{Data.YearLevel.map((element, index) => (
+										<option key={index} value={element}>{element}</option>
+									))}
+								</select>
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="GoogleEmail" onBlur={ChangeConfirmation} defaultValue={details?.GoogleEmail??""} data-key="GoogleEmail" data-value={details?.GoogleEmail??""} placeholder="School Email" required />
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="StudentNumber" onBlur={ChangeConfirmation} defaultValue={details?.Details?.StudentNumber??""} data-key="StudentNumber" data-value={details?.Details?.StudentNumber??""} placeholder="Student Number"/>
 							</div>	
@@ -303,6 +331,12 @@ const WalkIn = ({ params }) => {
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="ContactNumber" onBlur={ChangeConfirmation} defaultValue={details?.Details?.ContactNumber??""} data-key="ContactNumber" data-value={details?.Details?.ContactNumber??""}  placeholder="Contact Number" required />
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="InCaseOfEmergencyPerson" onBlur={ChangeConfirmation} defaultValue={details?.Details?.InCaseOfEmergencyPerson??""} data-key="InCaseOfEmergencyPerson" data-value={details?.Details?.InCaseOfEmergencyPerson??""}  placeholder="In case of emergency person" required />
 								<input className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="InCaseOfEmergencyNumber" onBlur={ChangeConfirmation} defaultValue={details?.Details?.InCaseOfEmergencyNumber??""} data-key="InCaseOfEmergencyNumber" data-value={details?.Details?.InCaseOfEmergencyNumber??""} placeholder="In case of emergency number" required />
+								<select className={styles.DetailsFields} type="text" name="ServiceOffered" onChange={ChangeConfirmation} defaultValue={details?.ServiceOffered??""}  data-key="ServiceOffered" data-value={details?.ServiceOffered??""} placeholder="ServiceOffered" required> 
+									<option value="">Services..</option>
+									{Data.Services[Department].map((element, index) => (
+										<option key={index} value={element}>{element}</option>
+									))}
+								</select>
 							</div>	
 							<div className={styles.DetailsRow}>
 								<textarea className={styles.DetailsFields} disabled={UpdatingForm} placeholder="Concern" name="Concern" onBlur={ChangeConfirmation} defaultValue={details?.Details?.Concern??""} id="" cols="30" rows="10" required></textarea>

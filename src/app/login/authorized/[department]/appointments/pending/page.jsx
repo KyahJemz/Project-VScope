@@ -9,7 +9,7 @@ import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmati
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
-
+import { Data } from "@/models/Data";
 
 const Pending = ({ params }) => {
 	const Department = params.department;
@@ -83,16 +83,14 @@ const Pending = ({ params }) => {
 		try {
 			setShowConfirmation(false);
 			setUpdatingDetails(true)
-
-			console.log(e.target.dataset.key+" : "+e.target.value);
             
             const formData = new FormData(); 
-            formData.append("AppointmentId", appointmentId);
+            formData.append("RecordId", appointmentId);
 			formData.append("Department", Department);
 			formData.append("Key", e.target.dataset.key);
             formData.append("Value", e.target.value);
 
-            const response = await fetch("", {
+            const response = await fetch("/api/records/POST_UpdateRecordDetails", {
                 method: "POST",
                 body: formData,
             });
@@ -129,11 +127,11 @@ const Pending = ({ params }) => {
             setIsApproving(true);
             
             const formData = new FormData(); 
-            formData.append("AppointmentId", appointmentId);
+            formData.append("RecordId", appointmentId);
 			formData.append("Department", Department);
             formData.append("Status", "Approved");
 
-            const response = await fetch("/api/appointments/POST_UpdateStatus", {
+            const response = await fetch("/api/records/POST_UpdateStatus", {
                 method: "POST",
                 body: formData,
             });
@@ -217,8 +215,6 @@ const Pending = ({ params }) => {
 				return <p>Appointment not found.</p>;
 			}
 		
-			console.log(details);
-		
 			return (
 				<>
 					<div className={styles.DetailsHeader}>
@@ -229,8 +225,18 @@ const Pending = ({ params }) => {
 						</div>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} title="Course / Strand" type="text" defaultValue={details?.Details?.CourseStrand??""} data-value={details?.Details?.CourseStrand??""} data-key="CourseStrand" onBlur={ChangeConfirmation} placeholder="Course / Strand"/>
-						<input className={styles.DetailsFields} title="Year Level" type="text" defaultValue={details?.Details?.YearLevel??""} data-value={details?.Details?.YearLevel??""} data-key="YearLevel" onBlur={ChangeConfirmation} placeholder="Year Level"/>
+						<select className={styles.DetailsFields} title="Course / Strand" type="text" defaultValue={details?.Details?.CourseStrand??""} data-value={details?.Details?.CourseStrand??""} data-key="CourseStrand" onClick={ChangeConfirmation} placeholder="Course / Strand"> 
+							<option value="">Course / Strand...</option>
+							{Data.Courses.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
+						<select className={styles.DetailsFields} title="Year Level" type="text" defaultValue={details?.Details?.YearLevel??""} data-value={details?.Details?.YearLevel??""} data-key="YearLevel" onClick={ChangeConfirmation} placeholder="Year Level"> 
+							<option value="">Year Level....</option>
+							{Data.YearLevel.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
 						<input className={styles.DetailsFields} title="In Case Of Emergency Number" type="text" defaultValue={details?.Details?.InCaseOfEmergencyNumber??""} data-value={details?.Details?.InCaseOfEmergencyNumber??""} data-key="InCaseOfEmergencyNumber" onBlur={ChangeConfirmation} placeholder="Any other number to contact"/>
 					</div>
 					<div className={styles.DetailsRow}>

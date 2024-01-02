@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import UserDefault from "public/UserDefault.png";
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
+import { Data } from "@/models/Data";
 
 const Page = ({ params }) => {
 	const Department = params.department;
@@ -356,9 +357,9 @@ const Page = ({ params }) => {
 						<form className={styles.ListItem} onSubmit={AddDiagnosis}>
 							<input name="Value" className={styles.ListItemText} disabled={IsDiagnosisProcess} list="DiagnosisList" placeholder="Diagnosis" />
 								<datalist id="DiagnosisList">
-									<option value="1" />
-									<option value="2" />
-									<option value="3" />
+									{Data.Diagnosis[Department].map((element, index) => (
+										<option key={index} value={element}/>
+									))}
 								</datalist>
 							<button className={styles.ListItemAddBtn} disabled={IsDiagnosisProcess}>+</button>
 						</form>
@@ -381,9 +382,9 @@ const Page = ({ params }) => {
 						<form className={styles.ListItem} onSubmit={AddPrescriptions}>
 							<input name="Value" className={styles.ListItemText} disabled={IsPrescriptionsProcess} list="PrescriptionsList" placeholder="Prescription"/>
 								<datalist id="PrescriptionsList">
-									<option value="1" />
-									<option value="2" />
-									<option value="3" />
+									{Data.Prescriptions[Department].map((element, index) => (
+										<option key={index} value={element}/>
+									))}
 								</datalist>
 							<button className={styles.ListItemAddBtn} disabled={IsPrescriptionsProcess}>+</button>
 						</form>

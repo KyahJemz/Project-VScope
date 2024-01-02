@@ -1,0 +1,110 @@
+.MainContent{
+    padding: 20px;
+    border: 1px solid gainsboro;
+    display: grid;
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 50px 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+        "Header"
+        "Body";
+    gap: 20px;
+    position: relative;
+}
+
+.Header {
+    grid-area: Header;
+    border: 1px solid gainsboro;    
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.Body{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    border: 1px solid gainsboro;    
+    padding: 20px;
+    grid-area: Body;
+}
+
+.PanelBtn{
+    transition: 500ms;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #14AE5C;
+    border-radius: 5px;
+    border-width: 0px;
+    color: white;
+}
+
+.PanelBtn:hover{
+   box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.PanelBtn:active{
+    box-shadow: 0 0 2px 2px black;
+}
+
+.ListItem{
+    display: grid;
+    grid-template-columns: 60px  1fr 100px;
+    grid-template-rows: 1fr;
+    border: 1px solid gainsboro;
+    padding: 10px;
+    align-items: center;
+    cursor: pointer;
+    transition: 500ms;
+    border-radius: 10px;
+}
+
+.ListItem:hover {
+    box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.ListItem:active {
+    box-shadow: 0 0 2px 2px black;
+}
+
+.ListItemImage {
+    border-radius: 50%;
+    border: 1px solid gainsboro;
+}
+
+.ListItemName{
+    
+}
+
+.ListItemMark{
+    text-align: center;
+}
+
+
+.ListItemMark.Cleared{
+    background-color: #14AE5C;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid #0e7e42;
+}
+
+.ListItemMark.InProgress{
+    background-color: #0D99FF;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid #06548b;
+}
+.SearchBar{
+    padding: 10px;
+}
+
+.PanelBtn{
+   
+}

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import UserDefault from "public/UserDefault.png"
+import { Data } from "@/models/Data";
 
 const Page = () => {
 	
@@ -98,8 +99,9 @@ const Page = () => {
 						<input className={styles.DetailsFields} type="text" name="Age" data-key="Age" placeholder="Age" required/>
 						<select className={styles.DetailsFields} type="text" name="Sex" placeholder="Sex" required> 
 							<option value="">Sex...</option>
-							<option value="Male">Male</option>
-							<option value="Female">Female</option>
+							{Data.Gender.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
 						</select>
 						<select className={styles.DetailsFields} ype="text" name="Category" readOnly value={session.user.role} placeholder="Category" required> 
 							<option value="">Category...</option>
@@ -108,8 +110,18 @@ const Page = () => {
 						</select>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand"  placeholder="Course / Strand"/>
-						<input className={styles.DetailsFields} type="text" name="YearLevel" data-key="YearLevel"  placeholder="Year Level"/>
+						<select className={styles.DetailsFields} type="text" name="CourseStrand" data-key="CourseStrand" placeholder="Course / Strand"> 
+							<option value="">Course / Strand...</option>
+							{Data.Courses.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
+						<select className={styles.DetailsFields} type="text" name="YearLevel" data-key="YearLevel" placeholder="Year Level"> 
+							<option value="">YearLevel....</option>
+							{Data.YearLevel.map((element, index) => (
+								<option key={index} value={element}>{element}</option>
+							))}
+						</select>
 						<input className={styles.DetailsFields} type="text" name="GoogleEmail" readOnly value={GoogleEmail} data-key="GoogleEmail" placeholder="School Email" required />
 						<input className={styles.DetailsFields} type="text" name="StudentNumber" data-key="StudentNumber" placeholder="Student Number"/>
 					</div>	

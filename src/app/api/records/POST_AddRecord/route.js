@@ -99,7 +99,7 @@ export const POST = async (request) => {
               DateCleared: "",
               AppointmentDate: Type === "WalkIn" ? "" : body.get("Date"),
               AppointmentTime: Type === "WalkIn" ? "" : body.get("Time"),
-              ServiceOffered: Type === "WalkIn" ? "" : body.get("Services"),
+              ServiceOffered: body.get("ServiceOffered"),
             });
     
             await newPost.save();
