@@ -5,11 +5,12 @@ import useSWR from "swr";
 import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
-import UserDefault from "/public/UserDefault.png"
+
 import { useSession } from "next-auth/react";
 import Medical from "public/Medical.jpg";
 import SDPC from "public/SDPC.jpg";
 import Dental from "public/Dental.jpg";
+import UserDefault from "/public/UserDefault.png"
 
 const Page = ({params}) => {
 	const { data: session, status } = useSession();

@@ -1,0 +1,98 @@
+.MainContent{
+    padding: 20px;
+    border: 1px solid gainsboro;
+    display: grid;
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 50px 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+        "Header"
+        "Body";
+    gap: 20px;
+    position: relative;
+}
+
+.Header {
+    grid-area: Header;
+    border: 1px solid gainsboro;    
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.Body{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    border: 1px solid gainsboro;    
+    padding: 20px;
+    grid-area: Body;
+}
+
+.PanelBtn{
+    transition: 500ms;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #14AE5C;
+    border-radius: 5px;
+    border-width: 0px;
+    color: white;
+}
+
+.PanelBtn:hover{
+   box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.PanelBtn:active{
+    box-shadow: 0 0 2px 2px black;
+}
+
+.ListItem{
+    display: grid;
+    grid-template-columns: 60px  1fr 120px;
+    grid-template-rows: 1fr;
+    border: 1px solid gainsboro;
+    padding: 10px;
+    align-items: center;
+    transition: 500ms;
+    border-radius: 10px;
+}
+
+.ListItemImage {
+    border-radius: 50%;
+    border: 1px solid gainsboro;
+}
+
+.ListItemName{
+    
+}
+
+.SearchBar{
+    padding: 10px;
+}
+
+.PanelBtn{
+   
+}
+
+.Cleared,
+.InProgress{
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+
+.Cleared{
+    background-color: #14AE5C;
+    border: 2px solid #0b6435;
+}
+.InProgress{
+    background-color: #0D99FF;
+    border: 2px solid #08609e;
+}

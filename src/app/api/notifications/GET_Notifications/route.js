@@ -7,6 +7,7 @@ export const GET = async (request) => {
     const url = new URL(request.url);
 
     const Department = url.searchParams.get("Department");
+ 
 
     if (!Department) {
       return new NextResponse("Missing Department", { status: 400 });
@@ -14,7 +15,7 @@ export const GET = async (request) => {
 
     try {
       await connect();
-      
+
       const notifications = await Notification.find({ Department });
 
       return new NextResponse(JSON.stringify(notifications), { status: 200, headers: { 'Content-Type': 'application/json' } });
