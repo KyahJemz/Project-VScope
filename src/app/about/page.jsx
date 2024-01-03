@@ -7,9 +7,9 @@ import { data } from "./data.js";
 import ImageSlider from "@/components/ImageSlider/ImageSlider";
 
 const slides = [
-  { url: "/1.png", title: "beach" },
-  { url: "/2.png", title: "boat" },
-  { url: "/3.png", title: "forest" },
+  { url: "https://i.imgur.com/FWAH6wd.png", title: "beach" },
+  { url: "https://i.imgur.com/4dEzbKy.png", title: "boat" },
+  { url: "https://i.imgur.com/NEAyaf3.png", title: "forest" },
 ];
 
 const containerStyles = {
