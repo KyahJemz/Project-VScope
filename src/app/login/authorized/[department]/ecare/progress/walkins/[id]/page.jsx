@@ -36,6 +36,11 @@ const Page = ({ params }) => {
 		fetcher
 	);
 
+	const { data: PrescriptionData, mutate: Prescriptionmutate, error: Prescriptionerror, isLoading: PrescriptionisLoading } =  useSWR(
+		`/api/inventory/GET_Items?Department=${encodeURIComponent(Department)}`,
+		fetcher
+	);
+
 	if (!isLoading) {
 		let DateApproved = new Date(data.DateApproved);
 		console.log(data.DateApproved);
@@ -398,6 +403,9 @@ const Page = ({ params }) => {
 								<datalist id="PrescriptionsList">
 									{Data.Prescriptions[Department].map((element, index) => (
 										<option key={index} value={element}/>
+									))}
+									{PrescriptionData.map((element, index) => (
+										<option key={index} value={element.Name}/>
 									))}
 								</datalist>
 							<button className={styles.ListItemAddBtn} disabled={IsPrescriptionsProcess}>+</button>

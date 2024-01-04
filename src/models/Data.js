@@ -1,5 +1,5 @@
 
-export const Data = {
+export let Data = {
 
     YearLevel: [
         "G1", "G2", "G3",
@@ -14,7 +14,7 @@ export const Data = {
     ],
     
     Courses: [
-        "BSIT", "BSss", "SSC"
+        "BSIT", "BSss", "SSC" 
     ],
 
     Prescriptions: {

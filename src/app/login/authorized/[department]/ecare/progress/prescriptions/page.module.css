@@ -1,0 +1,78 @@
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 10px;
+}
+
+.Header{
+    border: 1px solid gainsboro;
+    height: fit-content;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px;
+}
+.SearchBar{
+    border: 1px solid gainsboro;
+    height: fit-content;
+    width: 100%;
+    padding: 10px;
+}
+.GridView{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.Card{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 150px;
+    gap:10px;
+    border: 2px solid gainsboro;
+    border-radius: 5px;
+    padding: 10px;
+    justify-content: space-between;
+}
+.Buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.QuantityButtons{
+    aspect-ratio: 1/1;
+    padding: 3px 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.RemoveButtons{
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    background-color: red;
+    border: 0px;
+    color: white;
+    padding: 2px 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    border-radius: 5px;
+}
+.Name{
+    font-size: 0.8rem;
+}
+.CreateButtons{
+    background-color: rgb(34, 151, 34);
+    border: 0px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+.NameInput{
+    font-size: 0.8rem;
+    padding: 5px;
+}
