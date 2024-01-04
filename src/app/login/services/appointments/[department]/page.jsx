@@ -166,10 +166,10 @@ const Page = ({ params }) => {
 			</div>
 
 			<div className={styles.TimeSummaryContainer}>
-				{SelectedDay && hasSchedule ? (
+				{SelectedDay ? (
 					<>
 						{(() => {
-							switch (Schedule.Time) {
+							switch (Schedule?.Time??"") {
 								case "wholeday":
 									return (
 										<>
@@ -254,7 +254,26 @@ const Page = ({ params }) => {
 										</>
 									);
 								default:
-									return null;
+									return (
+										<>
+											<div className={styles.TimeSummaryItem}>
+												<div className={styles.TimeSummaryDate}>8am - 10am</div>
+												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+											</div>
+											<div className={styles.TimeSummaryItem}>
+												<div className={styles.TimeSummaryDate}>10am - 12am</div>
+												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+											</div>
+											<div className={styles.TimeSummaryItem}>
+												<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
+												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+											</div>
+											<div className={styles.TimeSummaryItem}>
+												<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
+												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+											</div>
+										</>
+									);
 								}
 						})()}
 					</>
@@ -263,10 +282,10 @@ const Page = ({ params }) => {
 
 			<div className={styles.TimeSelectionContainer}>
 				<p>{formatDate(SelectedDay)}</p>
-				{SelectedDay && hasSchedule ? (
+				{SelectedDay ? (
 					<>
 						{(() => {
-							switch (Schedule?.Time) {
+							switch (Schedule?.Time??"") {
 								case "wholeday":
 									return (
 										<>
@@ -315,7 +334,14 @@ const Page = ({ params }) => {
 										</>
 									);
 								default:
-									return null;
+									return (
+										<>
+											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
+											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
+											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
+											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
+										</>
+									);
 								}
 						})()}
 					</>

@@ -110,19 +110,19 @@ export const POST = async (request) => {
             };
             
             // Remove the "-" symbol from the Time string
+            
+  
+          if (Type === "WalkIn") {
+
+          } else {
             const cleanedTime = `${body.get("Time")}`.replace("-", "");
             
             await Calendar.findOneAndUpdate(
               { Date: `${body.get("Date")}` },
-              { $push: { [cleanedTime]: newSchedule } },
-              { new: true }
+              { $push: { [cleanedTime]: newSchedule }, $set: { Department: Department } },
+              { new: true, upsert: true }
             );
-  
 
-
-          if (Type === "WalkIn") {
-
-          } else {
             const to = 
               Department === 'Dental' ? Defaults.DentalEmail : 
               Department === 'Medical' ? Defaults.MedicalEmail : 

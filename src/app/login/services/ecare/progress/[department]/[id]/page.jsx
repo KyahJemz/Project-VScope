@@ -6,6 +6,7 @@ import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 import UserDefault from "public/UserDefault.png";
+import DentalNgipinList from "public/DentalNgipinList.png";
 
 const Page = ({ params }) => {
 	const Department = params.department;

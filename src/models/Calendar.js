@@ -15,7 +15,7 @@ const calendarSchema = new Schema(
     },
     Time: {
       type: String,
-      required: true,
+      default: "wholeday",
     },
     "8am10am": {
       type: Array,

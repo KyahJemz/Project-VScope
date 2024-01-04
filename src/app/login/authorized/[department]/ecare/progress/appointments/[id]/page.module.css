@@ -47,13 +47,21 @@
     flex-direction: column;
     position: relative;
     grid-template-columns: 200px 1fr 1fr 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto 1fr auto;
     gap: 5px;
     grid-template-areas: 
+        "NgipinList NgipinList NgipinList NgipinList"
         "Profile Details Details Details"
         "Profile Diagnosis Prescription Note"
         "Profile Days Days Status";
     height: 100%;
+}
+
+.NgipinList{
+    grid-area: NgipinList;
+    align-self: center;
+    border: 1px solid gainsboro;
+    width: 100%;
 }
     .Profile {
         grid-area: Profile;
@@ -85,7 +93,9 @@
     }
 
 
-
+.NgipinList{
+    width: 100%;
+}
     .Profile {
         display: flex;
         flex-direction: column;

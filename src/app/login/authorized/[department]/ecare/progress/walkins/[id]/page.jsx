@@ -8,6 +8,7 @@ import Image from "next/image";
 import UserDefault from "public/UserDefault.png";
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
 import { Data } from "@/models/Data";
+import DentalNgipinList from "public/DentalNgipinList.png";
 
 const Page = ({ params }) => {
 	const Department = params.department;
@@ -290,6 +291,19 @@ const Page = ({ params }) => {
 				"Loading..."
 			:
 				<>
+
+					{Department === "Dental" ? 
+						<>
+							<Image 
+								className={styles.NgipinList}
+								src={DentalNgipinList}
+								alt="x"
+								width="auto"
+								height="auto"
+							/>
+						</>
+					: null}
+
 					<div className={styles.Profile}>
 						<div className={styles.ProfileTop}>
 							<Image 

@@ -46,12 +46,17 @@ export const POST = async (request) => {
 			appointment = await AppointmentModel.findOneAndUpdate(filter, update);
 
 			const cleanedTime = `${body.get("Time")}`.replace("-", "");
+
+			const newSchedule = {
+				GoogleEmail: "Rescheduled",
+				AppointmentId: AppointmentId,
+			};
             
-            await Calendar.findOneAndUpdate(
-              { Date: `${body.get("Date")}` },
-              { $push: { [cleanedTime]: Time } },
-              { new: true }
-            );
+			await Calendar.findOneAndUpdate(
+				{ Date: `${body.get("Date")}` },
+				{ $push: { [cleanedTime]: newSchedule }, $set: { Department: Department } },
+				{ new: true, upsert: true }
+			);
 
 			if (!appointment) {
 				return new NextResponse('Record not found', { status: 404 });
