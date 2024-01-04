@@ -31,6 +31,10 @@ const postSchema = new Schema(
       enum: ["Student","Lay Collaborator"],
       required: true,
     },
+    ServiceOffered: {
+      type: String,
+      required: false,
+    },
     Responses: {
       type: Array,
       required: false,

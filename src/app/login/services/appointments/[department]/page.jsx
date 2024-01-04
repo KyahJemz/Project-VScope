@@ -350,7 +350,7 @@ const Page = ({ params }) => {
 			</div>
 
 			<form className={styles.ConcernContainer} onSubmit={OnSubmit}>
-				<select className={styles.InputArea} name="ServiceOffered" id="" required>
+				<select className={styles.InputArea} name="ServiceOffered" required>
 					<option value="">Select services...</option>
 					{Data.Services[Department].map((option, index) => (
 						<option key={index} value={option}>{option}</option>

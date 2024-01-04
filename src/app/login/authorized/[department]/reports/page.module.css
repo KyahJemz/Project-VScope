@@ -81,7 +81,7 @@
 
 .OverviewTable{
     grid-area: OverviewTable;
-    border: 1px solid gainsboro;
+    border: 2px solid rgb(107, 107, 107);
 }
 
 .OverviewChart{
@@ -366,7 +366,30 @@
     font-size: 1rem;
 }
 
+.TableBorder{
+    border: 2px solid rgb(97, 97, 97);
+}
+.TableBorder2{
+    border: 2px solid gainsboro;
+    padding: 5px;
+    font-size: 0.8rem;
+}
 
+.OverviewTableElement{
+    border-collapse: collapse;
+}
+.OverviewTableHeader{
+    font-size: 0.8rem;
+    
+    padding: 5px;
+}
+.OverviewTableHeaderSelect{
+    text-align: left;
+}
+.OverviewTableHeaderSelectInput{
+    width: 100%;
+    height: 100%;
+}
 
 
 .Notes{

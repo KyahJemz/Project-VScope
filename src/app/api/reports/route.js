@@ -34,6 +34,9 @@ export const GET = async (request) => {
     const Department = url.searchParams.get("Department");
     const Type = url.searchParams.get("Type");
     const GoogleEmail = url.searchParams.get("GoogleEmail");
+    const Course = url.searchParams.get("Course") === "All" ? null : url.searchParams.get("Course");
+    const YearLevel = url.searchParams.get("YearLevel") === "All" ? null : url.searchParams.get("YearLevel");
+
 
     const ProcessDepartment = async () => {
         let RecordsModel = null;
@@ -156,6 +159,7 @@ export const GET = async (request) => {
             TopPrescriptions: [],
             TopDiagnosis: [],
             TopServices: [],
+            TableSets: [],
         };
 
         let Prescriptions = [];
@@ -220,7 +224,7 @@ export const GET = async (request) => {
         // Top Diagnosis
             Diagnosis = Diagnosis.concat(record.Diagnosis);
         // Top Services
-            Services.push(record.Services);
+            Services.push(record.ServiceOffered);
         // Patients Summary
             const createdAtDate1 = new Date(record.createdAt);
             const currentDate1 = new Date();
@@ -277,6 +281,115 @@ export const GET = async (request) => {
         }));
         serviceCountArray.sort((a, b) => b.Count - a.Count);
         ReportData.TopServices = serviceCountArray.slice(0, 10);
+
+        const filteredRecords = Records.filter((record) => {
+            const courseMatches = Course ? record.Details.CourseStrand === Course : true;
+            const yearLevelMatches = YearLevel ? record.Details.YearLevel === YearLevel : true;
+        
+            return (
+            courseMatches &&
+            yearLevelMatches &&
+            record.Department === Department
+            );
+        });
+
+        const diagnosisList = [];
+        filteredRecords.forEach((record) => {
+            record.Diagnosis.forEach((diagnosis) => {
+                if(record.Prescriptions.length>0) {
+                    record.Prescriptions.forEach((prescription) => {
+                        const data = {
+                            Diagnosis: diagnosis.Diagnosis,
+                            Patients: 1,
+                            Gender: record.Details.Sex,
+                            Service: record.ServiceOffered,
+                            Prescriptions: prescription.Prescription,
+                        };
+                
+                        diagnosisList.push(data);
+                    });
+                } else {
+                    const data = {
+                        Diagnosis: diagnosis.Diagnosis,
+                        Patients: 1,
+                        Gender: record.Details.Sex,
+                        Service: record.ServiceOffered,
+                        Prescriptions: null,
+                    };
+            
+                    diagnosisList.push(data);
+                }
+            });
+        });
+
+        const diagnosisMap = new Map();
+
+        filteredRecords.forEach((record) => {
+        record.Diagnosis.forEach((diagnosis) => {
+            const uniqueDiagnosis = diagnosis.Diagnosis;
+
+            
+            if(record.Prescriptions.length>0) {
+                record.Prescriptions.forEach((prescription) => {
+                    if (!diagnosisMap.has(uniqueDiagnosis)) {
+                        diagnosisMap.set(uniqueDiagnosis, {
+                            Patients: 1,
+                            Genders: [record.Details.Sex],
+                            Services: [record.ServiceOffered], 
+                            Prescriptions: [prescription.Prescription],
+                        });
+                    } else {
+                        const data = diagnosisMap.get(uniqueDiagnosis);
+        
+                        data.Patients++;
+                        data.Genders.push(record.Details.Sex);
+                        data.Services.push(record.ServiceOffered);
+                        data.Prescriptions.push(diagnosis.Prescription);
+                    }
+                });
+            } else {
+                if (!diagnosisMap.has(uniqueDiagnosis)) {
+                    diagnosisMap.set(uniqueDiagnosis, {
+                        Patients: 1,
+                        Genders: [record.Details.Sex],
+                        Services: [record.ServiceOffered], 
+                        Prescriptions: [record.Prescriptions].filter(Boolean),
+                    });
+                } else {
+                    const data = diagnosisMap.get(uniqueDiagnosis);
+    
+                    data.Patients++;
+                    data.Genders.push(record.Details.Sex);
+                    data.Services.push(record.ServiceOffered);
+                    data.Prescriptions.push(diagnosis.Prescription);
+                }
+            }
+        });
+        });
+
+        const tableSets = Array.from(diagnosisMap.entries()).map(([Diagnosis, data]) => {
+        return {
+            Diagnosis,
+            Patients: data.Patients,
+            Gender: getTopElement(data.Genders),
+            Service: getTopElement(data.Services),
+            Prescriptions: getTopElement(data.Prescriptions),
+        };
+        });
+
+        function getTopElement(array) {
+        const counts = array.reduce((acc, value) => {
+            acc[value] = (acc[value] || 0) + 1;
+            return acc;
+        }, {});
+
+        const maxCount = Math.max(...Object.values(counts));
+        const topElement = Object.keys(counts).find((element) => counts[element] === maxCount);
+
+        return topElement || null; 
+        }
+
+        ReportData.TableSets = tableSets
 
         return ReportData;
     }
@@ -472,7 +585,7 @@ export const GET = async (request) => {
             return new NextResponse("Invalid Type", { status: 500 });
         }
         
-        return new NextResponse(JSON.stringify(Results), { status: 500 });
+        return new NextResponse(JSON.stringify(Results), { status: 200 });
     } catch (err) {
         return new NextResponse("Database Error"+err, { status: 500 });
     }

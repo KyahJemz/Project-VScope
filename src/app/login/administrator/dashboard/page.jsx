@@ -5,12 +5,15 @@ import useSWR from "swr";
 import styles from "./page.module.css"
 import PieChart from "@/components/PieChart/PieChart";
 import LineChart from "@/components/LineChart/LineChart";
+import { Data } from "@/models/Data";
 
 const Page = () => {
 
   const [Panel, setPanel] = useState("Prescription");
   const [Filter, setFilter] = useState("Week");
   const [Department, setDepartment] = useState("Medical");
+  const [Course, setCourse] = useState("All");
+  const [YearLevel, setYearLevel] = useState("All");
 
   const [ChartPatients, setChartPatients] = useState("All");
   const [ChartGender, setChartGender] = useState("All");
@@ -23,7 +26,7 @@ const Page = () => {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   
 	const { data, mutate, error, isLoading } = useSWR(
-	  `/api/reports?Department=${encodeURIComponent(Department)}&Type=Department`,
+	  `/api/reports?Department=${encodeURIComponent(Department)}&Type=Department&Course=${encodeURIComponent(Course)}&YearLevel=${encodeURIComponent(YearLevel)}`,
 	  fetcher
 	);
 
@@ -142,12 +145,69 @@ const Page = () => {
               OVERVIEW
             </div>
             <div className={styles.OverviewTable}>
-
+                <table className={`${styles.OverviewTableElement} ${styles.TableBorder}`}>
+                  <thead>
+                    <tr key="0" className={`${styles.TableBorder}`}>
+                      <th colSpan={1} className={styles.OverviewTableHeader}>
+                        Year Level:
+                      </th>
+                      <th colSpan={1} className={styles.OverviewTableHeaderSelect}>
+                        <select value={YearLevel} onChange={(e)=>setYearLevel(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
+                          <option value="All">All</option>
+                          {Data.YearLevel.map((element, index) => (
+                            <option key={index} value={element}>{element}</option>
+                          ))}
+                        </select>
+                      </th>
+                      <th colSpan={1} className={styles.OverviewTableHeader}>
+                        Course:
+                      </th>
+                      <th colSpan={2} className={styles.OverviewTableHeaderSelect}>
+                        <select value={Course} onChange={(e)=>setCourse(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
+                          <option value="All">All</option>
+                          {Data.Courses.map((element, index) => (
+                            <option key={index} value={element}>{element}</option>
+                          ))}
+                        </select>
+                      </th>
+                    </tr>
+                    <tr key="0">
+                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Diagnosis</th>
+                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Number of Patients</th>
+                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Gender</th>
+                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Services used</th>
+                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Prescriptions</th>
+                    </tr>
+                  </thead>
+                  <tbody className={styles.TableBorder}>
+                    {data?.TableSets?.length > 0 ? (
+                      data.TableSets.map((item, index) => (
+                        <>
+                          <tr key={index} >
+                            <td className={`${styles.TableBorder2}`}>{item.Diagnosis}</td>
+                            <td className={`${styles.TableBorder2}`}>{item.Patients}</td>
+                            <td className={`${styles.TableBorder2}`}>{item.Gender}</td>
+                            <td className={`${styles.TableBorder2}`}>{item.Service}</td>
+                            <td className={`${styles.TableBorder2}`}>{item.Prescriptions}</td>
+                          </tr>
+                        </>
+                      ))
+                    ) : (
+                      <tr key="1">
+                        <td className={`${styles.TableBorder2}`}>no data</td>
+                        <td className={`${styles.TableBorder2}`}>no data</td>
+                        <td className={`${styles.TableBorder2}`}>no data</td>
+                        <td className={`${styles.TableBorder2}`}>no data</td>
+                        <td className={`${styles.TableBorder2}`}>no data</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
             </div>
             <div className={styles.OverviewChart}>
               <div className={styles.PieChartDataRankingOverviewChart}>
                 <div className={styles.PieChartDataRankingTitleOverviewChart}>
-                  {Department === "Medical" ? "Highest Rate of Diagnosis" 
+                    {Department === "Medical" ? "Highest Rate of Diagnosis" 
                     : Department === "Dental" ? "Highest Rate of Oral Health Conditions" 
                     : Department === "SDPC" ? "Highest Rate of Diagnosis" 
                     : ""
@@ -247,8 +307,6 @@ const Page = () => {
               </div>
 
             </div>
-
-
 
           </div>
 

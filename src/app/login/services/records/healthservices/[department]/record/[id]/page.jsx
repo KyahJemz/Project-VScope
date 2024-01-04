@@ -20,6 +20,10 @@ const Page = ({ params }) => {
 		fetcher
 	);
 
+	if(!isLoading) {
+        console.log(data)
+    }
+
 	if (!isLoading) {
 		let DateApproved = new Date(data.DateApproved);
 		console.log(data.DateApproved);
