@@ -24,6 +24,13 @@ const Pending = ({ params }) => {
 		return `${formattedDate} ${formattedTime}`;
 	};
 
+	const formatShortDate = (timestamp) => {
+		const options = { month: 'short', day: 'numeric', year: 'numeric' };
+		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+	  
+		return `${formattedDate}`;
+	};
+
   	const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
 	const { data, mutate, error, isLoading } =  useSWR(

@@ -18,6 +18,8 @@ const Page = ({ params }) => {
 	const [GoogleImage, setGoogleImage] = useState("");
 	const [Role, setRole] = useState("");
 	const router = useRouter();
+	
+	const [IsUploading, setIsUploading] = useState(false);
 
 	const [showConfirmation,setShowConfirmation] = useState(false);
 	const [ConfirmationData, setConfirmationData] = useState({
@@ -85,6 +87,7 @@ const Page = ({ params }) => {
 
 	const OnSubmit = async (e) => {
 		e.preventDefault();
+		setIsUploading(true);
 		try {
 			const formData = new FormData(e.target);
 			formData.append("Type", "Appointment");
@@ -110,6 +113,7 @@ const Page = ({ params }) => {
 		} finally {
 			HistoryMutate(); 
 			DeptMutate();
+			setIsUploading(false);
 		}
 	}
 
@@ -253,6 +257,11 @@ const Page = ({ params }) => {
 											</div>
 										</>
 									);
+								case "not-available":
+									return (
+										<>
+										</>
+									);
 								default:
 									return (
 										<>
@@ -333,6 +342,12 @@ const Page = ({ params }) => {
 											<label className={`${styles.radioForm} ${Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? styles.False : styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" disabled={Schedule["3pm5pm"] && Schedule["3pm5pm"].length >= 4 ? true : false} onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
 										</>
 									);
+								case "not-available":
+									return (
+										<>
+											Not Available
+										</>
+									);
 								default:
 									return (
 										<>
@@ -356,12 +371,12 @@ const Page = ({ params }) => {
 						<option key={index} value={option}>{option}</option>
 					))}
 				</select>
-				<textarea className={`${styles.ConcernTextArea} ${styles.InputArea}`} name="Concern" id="" rows={5} required placeholder="Concern..."></textarea>
-				<input type="text" className={styles.InputArea} name="" readOnly value={formatDate(SelectedDay)} required placeholder="Selected Date..."/>
-				<input type="text" className={styles.InputArea} name="" readOnly value={SelectedTime} required placeholder="Selected Time..."/>
+				<textarea disabled={IsUploading} className={`${styles.ConcernTextArea} ${styles.InputArea}`} name="Concern" id="" rows={5} required placeholder="Concern..."></textarea>
+				<input disabled={IsUploading} type="text" className={styles.InputArea} name="" readOnly value={formatDate(SelectedDay)} required placeholder="Selected Date..."/>
+				<input disabled={IsUploading} type="text" className={styles.InputArea} name="" readOnly value={SelectedTime} required placeholder="Selected Time..."/>
 				<input type="text" hidden name="Date" value={SelectedDay} required/>
 				<input type="text" hidden name="Time" value={SelectedTime} required/>
-				<button className={styles.AppointmentSubmitBtn}>SEND APPOINTMENT</button>
+				<button disabled={IsUploading} className={styles.AppointmentSubmitBtn}>{IsUploading ? "Uploading..." : "SEND APPOINTMENT"}</button>
 			</form>
 
 			<div className={styles.HistoryContainer}>

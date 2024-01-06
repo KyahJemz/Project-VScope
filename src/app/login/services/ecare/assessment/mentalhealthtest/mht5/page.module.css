@@ -1,0 +1,97 @@
+.MainContainer{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gainsboro;
+  gap: 20px;
+  align-items: center;
+}
+.Header{
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  border: 1px solid gainsboro;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: gainsboro;
+  width: 100%;
+}
+
+.Button{
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 250ms;
+  border: 0px;
+}
+.Button:hover{
+  box-shadow: 0 0 2px 2px gainsboro;
+}
+.Button:active{
+  box-shadow: 0 0 2px 2px black;
+}
+
+.Questions{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+  
+}
+.QuestionContainer{
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFE8A3;
+  align-items: center;
+}
+.Question {
+  border-radius: 10px;
+  text-align: center;
+  background-color: gainsboro;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid gainsboro;
+}
+
+.Choices {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+  width: fit-content;
+  gap: 20px;
+}
+
+.RadioBtnContainer {
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  background-color: white;
+  padding: 10px;
+}
+.RadioBtn {
+  cursor: pointer;
+  transition: 1s;
+}
+
+.Submit{
+  width: fit-content;
+  align-self: center;
+  cursor: pointer;
+  padding: 10px 60px;
+  background-color: #FFE8A3;
+  border-radius: 10px;
+  border: 2px solid #b8a673;
+}
+
+.Submit:hover{
+  box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.Submit:active{
+  box-shadow: 0 0 2px 2px black;
+}

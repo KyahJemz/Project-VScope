@@ -13,6 +13,7 @@ const formatShortDate = (timestamp) => {
 	return `${formattedDate}`;
 };
 
+
 export const POST = async (request) => {
 	if (request.method === 'POST') {
 		const body = await request.formData();
@@ -61,6 +62,15 @@ export const POST = async (request) => {
 			if (!appointment) {
 				return new NextResponse('Record not found', { status: 404 });
 			}
+
+			const sendEmail = async ({ to, subject, text }) => {
+				try {
+				  await sendMail(to, subject, text);
+				} catch (error) {
+				  console.error(error);
+				  res.status(500).json({ success: false, error: 'Internal Server Error' });
+				}
+			  }
 
 			if (appointment?.GoogleEmail) {
 				const to = appointment.GoogleEmail;

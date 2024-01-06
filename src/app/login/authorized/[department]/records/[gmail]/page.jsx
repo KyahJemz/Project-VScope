@@ -7,8 +7,6 @@ import useSWR from "swr";
 import Image from "next/image";
 import UserDefault from "public/UserDefault.png";
 
-
-
 const Dashboard = ({ params }) => {
   const Department = params.department;
   const GoogleEmail = params.gmail;
@@ -47,6 +45,9 @@ const Dashboard = ({ params }) => {
                   <p className={styles.ProfileName}>{data[0]?.Details?.FirstName??""} {data[0]?.Details?.MiddleName??""} {data[0]?.Details?.LastName??""}</p>
                   <p className={styles.ProfileId}>{data[0]?.Details?.StudentNumber??"n/a"}</p>
                   <p className={styles.ProfileEmail}>{data[0]?.GoogleEmail??"n/a"}</p>
+                </div>
+                <div className={styles.ProfileBot}>
+                  <button className={styles.AssessmentHistoryBtn} onClick={()=>router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+'assessments')}>View Assessments</button>
                 </div>
               </div>
           <div className={styles.HistoryContainer}>

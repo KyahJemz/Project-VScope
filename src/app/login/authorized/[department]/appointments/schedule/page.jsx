@@ -149,6 +149,8 @@ const Schedule = ({ params }) => {
 
 						<label className={styles.radioForm} htmlFor="schedulingtime7"><input type="radio" name="test" id="schedulingtime7" value="wholeday" onChange={(e)=>{setSelectedTime("wholeday")}}/>Whole Day</label>
 
+						<label className={styles.radioForm} htmlFor="schedulingtime8"><input type="radio" name="test" id="schedulingtime8" value="not-available" onChange={(e)=>{setSelectedTime("not-available")}}/>Not Available</label>
+
 						<button disabled={isUploadingSchedule} onClick={OnAddSchedule}>{isUploadingSchedule ? "Uploading..." : "Add Schedule"}</button>
 					</>
 				}

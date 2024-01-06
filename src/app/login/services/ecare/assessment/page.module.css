@@ -1,0 +1,74 @@
+.MainContainer{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gainsboro;
+  gap: 20px;
+}
+.Header{
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  border: 1px solid gainsboro;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: gainsboro;
+}
+.HistoryBtn{
+  width: fit-content;
+  padding: 5px 20px;
+  border-radius: 5px;
+  background-color: #14AE5C;
+  margin-left: 20px;
+  color: white;
+  cursor: pointer;
+  border: 0px;
+}
+.Cards{
+  display: flex;
+  justify-content: space-around;
+  flex: 1;
+  align-items: center;
+}
+.Card{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border: 1px solid gainsboro;
+  padding: 15px;
+  background-color: #757575;
+  border-radius: 10px;
+  height: fit-content;
+}
+.Color{
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  text-align: center;
+  border-radius: 5px;
+  width: 150px;
+}
+.Card:nth-child(1) > .Color{
+  background-color: #E4CCFF;
+}
+.Card:nth-child(2) > .Color{
+  background-color: #AFF4C6;
+}
+.Card:nth-child(3) > .Color{
+  background-color: #FFE8A3;
+}
+.Button{
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 250ms;
+  border: 0px;
+}
+.Button:hover{
+  box-shadow: 0 0 2px 2px gainsboro;
+}
+.Button:active{
+  box-shadow: 0 0 2px 2px black;
+}

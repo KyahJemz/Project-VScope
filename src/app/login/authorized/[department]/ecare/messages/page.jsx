@@ -27,6 +27,12 @@ const Messages = ({ params }) => {
 	  
 		return `${formattedDate} ${formattedTime}`;
 	};
+	const formatShortDate = (timestamp) => {
+		const options = { month: 'short', day: 'numeric', year: 'numeric' };
+		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+	  
+		return `${formattedDate}`;
+	};
 
   	const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
@@ -93,7 +99,7 @@ const Messages = ({ params }) => {
 					"Loading..."
 				) : (
 					filteredRecordsData.map((record, index) => (
-						<ListItem key={index} name={`${record?.Details?.LastName??"?"}, ${record?.Details?.FirstName??"?"} ${record?.Details?.MiddleName??""}`} image={record?.GoogleImage??UserDefault} isNew={IsNew(record)} id={record._id} />
+						<ListItem key={index} name={`${record?.Details?.LastName??"?"}, ${record?.Details?.FirstName??"?"} ${record?.Details?.MiddleName??""} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"})`} image={record?.GoogleImage??UserDefault} isNew={IsNew(record)} id={record._id} />
 					))
 				)}
 			</>

@@ -323,8 +323,7 @@ const Page = ({ params }) => {
 							<p className={styles.ProfileEmail}>{data?.GoogleEmail??"n/a"}</p>
 						</div>
 						<div className={styles.ProfileBot}>
-							<button className={`${styles.HistoryBtn}`}>History</button>
-							<button className={`${styles.ReportBtn}`}>Report</button>
+							<button className={`${styles.HistoryBtn}`} onClick={()=>router.push(`/login/authorized/SDPC/records/${data.GoogleEmail}`)}>History</button>
 						</div>
 					</div>
 
@@ -376,7 +375,7 @@ const Page = ({ params }) => {
 						<form className={styles.ListItem} onSubmit={AddDiagnosis}>
 							<input name="Value" className={styles.ListItemText} disabled={IsDiagnosisProcess} list="DiagnosisList" placeholder="Diagnosis" />
 								<datalist id="DiagnosisList">
-									{Data.Diagnosis[Department].map((element, index) => (
+									{Data?.Diagnosis[Department]?.map((element, index) => (
 										<option key={index} value={element}/>
 									))}
 								</datalist>
@@ -401,10 +400,10 @@ const Page = ({ params }) => {
 						<form className={styles.ListItem} onSubmit={AddPrescriptions}>
 							<input name="Value" className={styles.ListItemText} disabled={IsPrescriptionsProcess} list="PrescriptionsList" placeholder="Prescription"/>
 								<datalist id="PrescriptionsList">
-									{Data.Prescriptions[Department].map((element, index) => (
+									{Data?.Prescriptions[Department]?.map((element, index) => (
 										<option key={index} value={element}/>
 									))}
-									{PrescriptionData.map((element, index) => (
+									{PrescriptionData?.map((element, index) => (
 										<option key={index} value={element.Name}/>
 									))}
 								</datalist>

@@ -404,7 +404,7 @@ const Page = ({ params }) => {
 									{Data.Prescriptions[Department].map((element, index) => (
 										<option key={index} value={element}/>
 									))}
-									{PrescriptionData.map((element, index) => (
+									{PrescriptionData?.map((element, index) => (
 										<option key={index} value={element.Name}/>
 									))}
 								</datalist>

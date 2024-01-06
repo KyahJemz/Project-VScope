@@ -160,6 +160,45 @@ const Pending = ({ params }) => {
 		setShowConfirmation(true);
 	}
 
+	const UpdateRejected = async (e) => {
+		try {
+			setShowConfirmation(false);
+            setIsApproving(true);
+            
+            const formData = new FormData(); 
+            formData.append("RecordId", appointmentId);
+			formData.append("Department", Department);
+            formData.append("Status", "Rejected");
+
+            const response = await fetch("/api/records/POST_UpdateStatus", {
+                method: "POST",
+                body: formData,
+            });
+        
+            setIsApproving(false);
+
+            mutate(); 
+           
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+	}
+
+	const OnRejected = (e) => {
+		setConfirmationData({
+			title: "Reject Confirmation",
+			content: "Please confirm your action",
+			onYes: () => UpdateRejected(e),
+			onCancel: () => setShowConfirmation(false),
+		});
+		setShowConfirmation(true);
+	}
+
 	const OnReSchedule= (e) => {
 		if (appointmentId !== "") {
 			const details = data.find(appointment => appointment._id === appointmentId);
@@ -254,11 +293,13 @@ const Pending = ({ params }) => {
 						<div className={styles.DetailsRow}>
 							<button className={styles.DetailsButton} disabled>Loadding...</button>
 							<button className={styles.DetailsButton} disabled>Loadding...</button>
+							<button className={styles.DetailsButton} disabled>Loadding...</button>
 						</div>
 					) : (
 						<div className={styles.DetailsRow}>
 							<button className={styles.DetailsButton} data-date={details?.AppointmentDate??""} data-time={details?.AppointmentTime??""} onClick={OnReSchedule}>RE-SCHEDULE</button>
 							<button className={styles.DetailsButton} onClick={OnApprove}>APPROVED</button>
+							<button className={styles.DetailsButton} onClick={OnRejected}>REJECT</button>
 						</div>
 					)}
 				</>

@@ -50,7 +50,7 @@ export const POST = async (request) => {
             Concern: encryptText(body.get("Concern")),
           }
         } else if(Type === "Appointment"){
-          const Account = await Accounts.findOne({ GoogleEmail: GoogleEmail });
+          const Account = await Accounts.findOne({ GoogleEmail: GoogleEmail }).maxTimeMS(20000);
 
           Details = {
             LastName: (Account && Account.Details && Account.Details.LastName) ? Account.Details.LastName : "",

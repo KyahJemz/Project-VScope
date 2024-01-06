@@ -124,3 +124,19 @@
         padding: 10px;
         cursor: pointer;
     }
+.AssessmentHistoryBtn{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color:#53c28b;
+    border: 0px;
+    border-radius: 10px;
+    color: white;
+    transition: 250ms;
+    border: 2px solid #38865f;
+}
+.AssessmentHistoryBtn:hover {
+    box-shadow: 0 0 2px 2px gainsboro;
+}
+.AssessmentHistoryBtn:active {
+    box-shadow: 0 0 2px 2px black;
+}

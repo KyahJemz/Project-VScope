@@ -1,0 +1,60 @@
+.MainContainer{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gainsboro;
+  gap: 20px;
+  flex: 1;
+  height: 100%;
+}
+.Header{
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  border: 1px solid gainsboro;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: gainsboro;
+}
+.Type{
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.Result{
+  width: 80%;
+  align-self: center;
+  text-align: center;
+  background-color: #FFE8A3;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+}
+.ResultHeader{
+  padding: 5px;
+  background-color: white;
+  border: 2px solid gainsboro;
+  border-radius: 10px;
+}
+.MainCategory{
+  background-color: white;
+  margin: 0 20px;
+  padding: 10px;
+  font-size: 1.5rem;
+  border: 2px solid gainsboro;
+}
+.SubCategory{
+  background-color: white;
+  margin: 0 20px;
+  border: 2px solid gainsboro;
+  padding: 10px;
+}
+.Description{
+  background-color: white;
+  border: 2px solid gainsboro;
+  margin: 0 20px;
+  padding: 20px;
+}

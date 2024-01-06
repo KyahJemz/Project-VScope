@@ -7,10 +7,10 @@ export const POST = async (request) => {
         const body = await request.formData();
 
         const Name = body.get("Name");
-        const Count = body.get("Count");
+        const ItemCount = body.get("Count");
         const Department = body.get("Department");
 
-        if (!Name || !Count || !Department) {
+        if (!Name || !ItemCount || !Department) { 
             return new NextResponse("Empty", { status: 500 });
         } 
 
@@ -19,7 +19,7 @@ export const POST = async (request) => {
 
             const newInventory = new Inventory({
                 Name,
-                Count,
+                Count: ItemCount < 0 ? 0 : ItemCount, 
                 Department,
             });
 
