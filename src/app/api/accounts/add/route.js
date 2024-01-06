@@ -12,7 +12,6 @@ export const POST = async (request) => {
 
       await connect();
 
-      console.log(Department === "");
        if (Department === "") {
         const newAccount = await Accounts.create({
           GoogleId: "-",
@@ -39,8 +38,8 @@ export const POST = async (request) => {
 
       return new NextResponse('Success', { status: 200 });
     } catch (err) {
-      console.error(err);
-      return new NextResponse('Database Error', { status: 500 });
+      console.error(err.message);
+      return new NextResponse('Database Error:'+ err.message, { status: 500 });
     }
   } else {
     return new NextResponse('Method Not Allowed', { status: 405 });

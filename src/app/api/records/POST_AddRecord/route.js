@@ -109,12 +109,13 @@ export const POST = async (request) => {
               AppointmentId: newPost._id,
             };
             
-            // Remove the "-" symbol from the Time string
+           
             
   
           if (Type === "WalkIn") {
 
           } else {
+             // Remove the "-" symbol from the Time string
             const cleanedTime = `${body.get("Time")}`.replace("-", "");
             
             await Calendar.findOneAndUpdate(
@@ -129,7 +130,7 @@ export const POST = async (request) => {
               Department === 'SDPC' ? Defaults.SDPCEmail : "" ;
             const subject = "Appointment Request";
             const text = "You have received an appointment request via VScope. The request is now pending at the appointment requests page, and we will be in touch with you soon to confirm the details. ";
-            // await sendEmail({to,subject,text});
+            await sendEmail({to,subject,text});
           }
            
           return new NextResponse("Success", { status: 201 });

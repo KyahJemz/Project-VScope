@@ -25,14 +25,15 @@ export const GET = async (request) => {
   
       return new NextResponse(JSON.stringify(decryptedResults), { status: 200 });
     } catch (err) {
-      return new NextResponse("Database Error", { status: 500 });
+      console.error(err.message);
+      return new NextResponse('Database Error:'+ err.message, { status: 500 });
     }
 }
 
 export async function getAccountByEmail(GoogleEmail) {
 
     try {
-        await connect(); // Connect to your database
+        await connect();
         const results = await AccountModel.findOne(GoogleEmail && { GoogleEmail });
         const decryptedResults = results.map((result) => ({
             ...result._doc,

@@ -32,7 +32,6 @@ export const POST = async (request) => {
         
           const path = `public/uploads/messages/${AttachmentName}`;
           await writeFile(path, buffer);
-          console.log(`open ${path} to see the uploaded file`);
         }
 
         if(AttachmentName==='' && Response === "") {
@@ -56,20 +55,20 @@ export const POST = async (request) => {
 
         if (Department === 'Medical'){
             appointment = await MedicalAppointment.findByIdAndUpdate(RecordId,
-                { $push: { Responses: newResponse } },
-                { new: true });
+              { $push: { Responses: newResponse } },
+              { new: true });
 
         } else if (Department === 'Dental'){
 
-                    appointment = await DentalAppointment.findByIdAndUpdate(RecordId,
-                        { $push: { Responses: newResponse }  },
-                        { new: true });
+          appointment = await DentalAppointment.findByIdAndUpdate(RecordId,
+              { $push: { Responses: newResponse }  },
+              { new: true });
 
 
         } else if (Department === 'SDPC'){
-                appointment = await SDPCAppointment.findByIdAndUpdate(RecordId,
-                    { $push: { Responses: newResponse } },
-                    { new: true });
+          appointment = await SDPCAppointment.findByIdAndUpdate(RecordId,
+              { $push: { Responses: newResponse } },
+              { new: true });
         } 
   
         if (!appointment) {
@@ -78,7 +77,8 @@ export const POST = async (request) => {
 
         return new NextResponse('Success', { status: 200 });
       } catch (err) {
-        return new NextResponse('Database Error' + err, { status: 500 });
+        console.error(err.message);
+        return new NextResponse('Database Error:'+ err.message, { status: 500 });
       }
     } else {
       return new NextResponse('Method Not Allowed', { status: 405 });

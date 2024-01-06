@@ -1,0 +1,21 @@
+console.error(err.message);
+return new NextResponse('Database Error:'+ err.message, { status: 500 });
+
+
+import sendMail from '@/app/api/sendMail/route.js';
+
+async function sendEmail({ to, subject, text }) {
+  try {
+    await sendMail(to, subject, text);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+}
+
+if (Action === "Add") {
+        const to = GoogleEmail;
+        const subject = "Clearance Cleared";
+        const text = `Good Day,\n\nYour clearance to ${Department} department titled "${notification?.Title??"-"}" his now cleared in the VScope system .\n\nIf you have any further questions or need to reschedule, please contact us through our system.\n\n`;
+        sendEmail({to,subject,text});
+      }

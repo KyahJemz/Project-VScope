@@ -1,4 +1,4 @@
-// Import necessary modules and model
+
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import Accounts from "@/models/Accounts";
@@ -15,7 +15,6 @@ export const POST = async (request) => {
 
       await connect();
 
-      // Find and delete the account by id
       const deletedAccount = await Accounts.findByIdAndDelete(accountId);
 
       if (!deletedAccount) {
@@ -24,8 +23,8 @@ export const POST = async (request) => {
 
       return new NextResponse("Account has been deleted", { status: 200 });
     } catch (err) {
-      console.error(err);
-      return new NextResponse('Database Error', { status: 500 });
+      console.error(err.message);
+      return new NextResponse('Database Error:'+ err.message, { status: 500 });
     }
   } else {
     return new NextResponse('Method Not Allowed', { status: 405 });

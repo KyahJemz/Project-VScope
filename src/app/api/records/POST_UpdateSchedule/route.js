@@ -66,12 +66,13 @@ export const POST = async (request) => {
 				const to = appointment.GoogleEmail;
 				const subject = "Appointment Re-scheduled";
 				const text = `We are pleased to inform you that your appointment status has been re-scheduled to ${formatShortDate(Date)} at ${Time} in the VScope system.\n\nIf you have any questions or need further assistance, please do not hesitate to contact us.\n\n`;
-				// await sendEmail({to,subject,text});
+				await sendEmail({to,subject,text});
 			}
 
       return new NextResponse('Success', { status: 200 });
 		} catch (err) {
-			return new NextResponse('Database Error: '+err, { status: 500 });
+			console.error(err.message);
+			return new NextResponse('Database Error:'+ err.message, { status: 500 });
 		}
 	} else {
 		return new NextResponse('Method Not Allowed', { status: 405 });

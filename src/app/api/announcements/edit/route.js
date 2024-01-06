@@ -4,7 +4,7 @@ import Announcements from "@/models/Announcements";
 
 export const POST = async (request) => {
   if (request.method === 'POST') {
-    const formData = await request.formData(); // Use formData instead of json
+    const formData = await request.formData(); 
 
     const id = formData.get("id");
 
@@ -30,8 +30,8 @@ export const POST = async (request) => {
 
       return new NextResponse("Announcement has been updated", { status: 200 });
     } catch (err) {
-      console.error(err);
-      return new NextResponse("Database Error", { status: 500 });
+      console.error(err.message);
+      return new NextResponse('Database Error:'+ err.message, { status: 500 });
     }
   } else {
     return new NextResponse("Method Not Allowed", { status: 405 });

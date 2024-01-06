@@ -21,7 +21,7 @@ export const PUT = async (request) => {
           Role: body.get("Role"),
           Department: body.get("Department"),
         },
-        { new: true } // Return the modified document
+        { new: true } 
       );
 
       if (!updatedAccount) {
@@ -30,8 +30,8 @@ export const PUT = async (request) => {
 
       return new NextResponse("Account has been updated", { status: 200 });
     } catch (err) {
-      console.error(err);
-      return new NextResponse('Database Error', { status: 500 });
+      console.error(err.message);
+      return new NextResponse('Database Error:'+ err.message, { status: 500 });
     }
   } else {
     return new NextResponse('Method Not Allowed', { status: 405 });

@@ -32,22 +32,19 @@ export const POST = async (request) => {
     try {
       await connect();
 
-      // Find the existing account by GoogleEmail
       const existingAccount = await Accounts.findOne({ GoogleEmail });
 
       if (!existingAccount) {
         return new NextResponse("Account not found", { status: 404 });
       }
 
-      // Update the Details field of the existing account
       existingAccount.Details = updatedDetails;
 
-      // Save the changes
       await existingAccount.save();
 
       return new NextResponse("Success", { status: 201 });
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
       return new NextResponse("Database Error: " + err.message, { status: 500 });
     }
   } else {

@@ -27,7 +27,8 @@ export const POST = async (request) => {
 
             return new NextResponse("Inventory has been created", { status: 201 });
         } catch (err) {
-            return new NextResponse("Database Error", { status: 500 });
+            console.error(err.message);
+            return new NextResponse('Database Error:'+ err.message, { status: 500 });
         }
     } else {
         return new NextResponse("Method Not Allowed", { status: 405 });

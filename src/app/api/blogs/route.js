@@ -41,7 +41,7 @@ export const POST = async (request) => {
   try {
     await connect();
 
-    let imageName = ''; // Default image name
+    let imageName = ''; 
 
     if (file && typeof file.arrayBuffer === 'function') {
       const bytes = await file.arrayBuffer();
@@ -49,15 +49,14 @@ export const POST = async (request) => {
 
       const path = `public/uploads/blogs/${file.name}`;
       await writeFile(path, buffer);
-      console.log(`open ${path} to see the uploaded file`);
 
-      imageName = file.name; // Set the image name from the uploaded file
+      imageName = file.name;
     }
 
     const newBlogs = new Blogs({
       Title: data.get('Title'),
       Department: data.get('Department'),
-      Image: imageName, // Assign the image name
+      Image: imageName,
       Content: data.get('Content'),
     });
 
@@ -65,7 +64,7 @@ export const POST = async (request) => {
 
     return new NextResponse('Blog has been created', { status: 201 });
   } catch (err) {
-    console.error('Error:', err);
-    return new NextResponse('An error occurred', { status: 500 });
+    console.error(err.message);
+    return new NextResponse('Database Error:'+ err.message, { status: 500 });
   }
 };

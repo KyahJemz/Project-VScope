@@ -3,7 +3,6 @@ import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
-import { Reports } from "@/models/Reports";
 import { encryptText, decryptText } from "@/utils/cryptojs";
 
 const decryptFields = (obj) => {
@@ -587,7 +586,8 @@ export const GET = async (request) => {
         
         return new NextResponse(JSON.stringify(Results), { status: 200 });
     } catch (err) {
-        return new NextResponse("Database Error"+err, { status: 500 });
+        console.error(err.message);
+        return new NextResponse('Database Error:'+ err.message, { status: 500 });
     }
 }
 

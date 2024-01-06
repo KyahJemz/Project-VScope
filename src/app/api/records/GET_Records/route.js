@@ -65,7 +65,6 @@ export const GET = async (request) => {
 			  	if (Status) {
 					query.Status = Status;
 				}
-				console.log(query);
 				results = await AppointmentModel.find(query);
 			} else {
 				let query = {};
@@ -80,7 +79,6 @@ export const GET = async (request) => {
 					query.Status = Status;
 				}
 				query.GoogleEmail = GoogleEmail;
-				console.log(query);
 				results = await AppointmentModel.find(query);
 			}
 		  } else {
@@ -98,7 +96,6 @@ export const GET = async (request) => {
 				if (Type === "WalkIn" || Type === "Appointment") {
 					query.Type = Type;
 				}
-				console.log(query);
 			  results = results.concat(await model.find(query));
 			}
 		  }
@@ -140,6 +137,7 @@ export const GET = async (request) => {
 
 		return new NextResponse(JSON.stringify(results), { status: 200 });
 	} catch (err) {
-		return new NextResponse("Database Error" + err, { status: 500 });
+		console.error(err.message);
+		return new NextResponse('Database Error:'+ err.message, { status: 500 });
 	}
 };

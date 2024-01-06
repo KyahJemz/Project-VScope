@@ -54,7 +54,6 @@ export const GET = async (request) => {
           const topLevelFieldsToDecrypt = ["GoogleImage"];
         
           topLevelFieldsToDecrypt.forEach((field) => {
-            // Check if the field is not blank or null before decrypting
             Appointment[field] = Appointment[field] ? decryptText(Appointment[field]) : Appointment[field];
           });
         
@@ -64,7 +63,6 @@ export const GET = async (request) => {
         
           if (Appointment.Responses && Appointment.Responses.length > 0) {
             const decryptedResponses = Appointment.Responses.map((response) => {
-              // Check and decrypt each field in the response object
               const decryptedResponse = {
                 Name: response.Name ? decryptText(response.Name) : response.Name,
                 GoogleEmail: response.GoogleEmail ? decryptText(response.GoogleEmail) : response.GoogleEmail,
@@ -82,6 +80,7 @@ export const GET = async (request) => {
 
         return new NextResponse(JSON.stringify(Appointment), { status: 200 });
     } catch (err) {
-        return new NextResponse("Database Error " + err, { status: 500 });
+      console.error(err.message);
+      return new NextResponse('Database Error:'+ err.message, { status: 500 });
     }
 };
