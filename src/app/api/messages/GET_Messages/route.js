@@ -41,30 +41,30 @@ export const GET = async (request) => {
     let appointmentModel = null;
 
     if (Type === "Message"){
-      if(Department === "Medical") {
-        appointmentModel = MedicalAppointment;
-      } else if(Department === "Dental") {
-        appointmentModel = DentalAppointment;
-      } else if(Department === "SDPC") {
-        appointmentModel = SDPCAppointment;
-      } else {
-        return new NextResponse("Invalid Department", { status: 404 });
-      }
+		if(Department === "Medical") {
+			appointmentModel = MedicalAppointment;
+		} else if(Department === "Dental") {
+			appointmentModel = DentalAppointment;
+		} else if(Department === "SDPC") {
+			appointmentModel = SDPCAppointment;
+		} else {
+			return new NextResponse("Invalid Department", { status: 404 });
+		}
     }
 
-		if (GoogleEmail === "" || GoogleEmail === null) {
-      if (Type === "Direct Message") {
-        results = await DirectMessages.find({ Type, Department });
-      } else if (Type === "Message") {
-        results = await appointmentModel.find({
-          $or: [
-            { Responses: { $exists: true, $ne: [] } },
-            { Status: { $in: ["Approved", "In Progress"] } }
-          ]
-        });
-      } else {
-        return new NextResponse("Invalid Type", { status: 404 });
-      }
+	if (!GoogleEmail) {
+		if (Type === "Direct Message") {
+			results = await DirectMessages.find({ Department });
+		} else if (Type === "Message") {
+			results = await appointmentModel.find({
+			$or: [
+				{ Responses: { $exists: true, $ne: [] } },
+				{ Status: { $in: ["Approved", "In Progress", "Completed"] } }
+			]
+			});
+		} else {
+			return new NextResponse("Invalid Type", { status: 404 });
+		}
     } else {
       if (Type === "Direct Message") {
         results = await DirectMessages.find({ GoogleEmail, Department });

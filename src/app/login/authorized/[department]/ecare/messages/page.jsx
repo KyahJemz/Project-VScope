@@ -38,7 +38,7 @@ const Messages = ({ params }) => {
     
 // MESSAGES
 	const { data: RecordsData, mutate: RecordsMutate, error: RecordsError, isLoading: RecordsIsLoading } =  useSWR(
-		`/api/messages/GET_Messages?GoogleEmail=&Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Message")}`,
+		`/api/messages/GET_Messages?Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Message")}`,
 		fetcher
 	);
 

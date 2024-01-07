@@ -103,7 +103,7 @@ const Calendar = ({callback, Schedules}) => {
 							<>
 								<p className={styles.date}>{value}</p>
 								{time && (
-									<p className={styles.time}>{time.charAt(0).toUpperCase() + time.slice(1)}</p>
+									<p className={`${styles.time} ${time.charAt(0).toUpperCase() + time.slice(1) === "Not-available" ? styles.Red : null}`}>{time.charAt(0).toUpperCase() + time.slice(1) === "Wholeday" ? "" : time.charAt(0).toUpperCase() + time.slice(1)}</p>
 								)}
 							</>
 						) : (
