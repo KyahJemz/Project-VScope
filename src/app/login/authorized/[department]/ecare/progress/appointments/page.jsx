@@ -21,6 +21,13 @@ const Page = ({ params }) => {
 		fetcher
 	);
 
+  const formatShortDate = (timestamp) => {
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+    
+    return `${formattedDate}`;
+	};
+
   const sortedRecords = data && data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 	
 	const filteredRecords = sortedRecords
@@ -60,7 +67,7 @@ const Page = ({ params }) => {
               width={50}
               height={50}
             />
-            <p className={styles.RecordName}>{record?.Details?.LastName ?? ""}, {record?.Details?.FirstName ?? ""} {record?.Details?.MiddleName ?? ""}</p>
+            <p className={styles.RecordName}>{record?.Details?.LastName ?? ""}, {record?.Details?.FirstName ?? ""} {record?.Details?.MiddleName ?? ""} | ({record.Type === "WalkIn" ? "WalkIn" : formatShortDate(record?.AppointmentDate) ?? "?"} {record.Type === "WalkIn" ? "" : " "+record?.AppointmentTime ?? "?"})</p>
             <div className={`${styles.RecordStatus} ${styles[record.Status.replace(/\s+/g, '')]}`}>{record.Status}</div>
           </div>
         ))}
