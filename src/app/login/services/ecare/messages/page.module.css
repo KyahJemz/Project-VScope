@@ -23,6 +23,7 @@
 }
 
 .itemcontainer{
+  position: relative;
   display: flex;
   flex-direction: row;
   gap: 20px;

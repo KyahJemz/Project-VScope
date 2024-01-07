@@ -107,14 +107,17 @@ const Messages = ({ params }) => {
 	};
 
 	const IsNew = (record) => {
+		let unviewedCount = 0;
+
 		if (record?.Responses) {
 			for (const response of record.Responses) {
-				if (response.ViewedByDepartment === false) {
-					return true; 
-				}
+			if (response.ViewedByDepartment === false) {
+				unviewedCount++;
+			}
 			}
 		}
-		return false; 
+
+		return unviewedCount;
 	};
 	
 	const ListItem = ({key, name, image, isNew, id, isWalkIn}) => {
@@ -128,7 +131,7 @@ const Messages = ({ params }) => {
 					height={50}
 				/>
 				<p className={styles.ListItemName}>{name}</p>
-				<p className={styles.ListItemMark}>{isNew ? "New" : ""}</p>
+				<p className={styles.ListItemMark}>{isNew === 0 ? "" : isNew}</p>
 			</div>
 		)
 	}

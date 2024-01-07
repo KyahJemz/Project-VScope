@@ -26,6 +26,10 @@
   font-weight: bolder;
 }
 
+.link{
+ position: relative;
+}
+
 .logout {
   padding: 5px;
   border: none;

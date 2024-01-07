@@ -85,3 +85,13 @@ a {
     padding: 0px;
   }
 }
+
+.dot{
+  background-color: red;
+  height: 7px;
+  width: 7px;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  border-radius: 50%;
+}

@@ -40,6 +40,28 @@ export const GET = async (request) => {
 		let results = null;
     	let appointmentModel = null;
 
+		if(!Department && GoogleEmail && !Type) {
+			const results = [].concat(
+				await MedicalAppointment.find({ GoogleEmail }),
+				await DentalAppointment.find({ GoogleEmail }),
+				await SDPCAppointment.find({ GoogleEmail })
+			  );
+			return new NextResponse(JSON.stringify(results), { status: 200 });
+		}
+
+		if(Department && !GoogleEmail && !Type) {
+			if(Department === "Medical") {
+				results = await MedicalAppointment.find();
+			} else if(Department === "Dental") {
+				results = await DentalAppointment.find();
+			} else if(Department === "SDPC") {
+				results = await SDPCAppointment.find();
+			} else {
+				return new NextResponse("Invalid Department", { status: 404 });
+			}
+			return new NextResponse(JSON.stringify(results), { status: 200 });
+		}
+
 		if (Type === "Message"){
 			if(Department === "Medical") {
 				appointmentModel = MedicalAppointment;
@@ -50,6 +72,8 @@ export const GET = async (request) => {
 			} else {
 				return new NextResponse("Invalid Department", { status: 404 });
 			}
+		} else {
+			
 		}
 
 	if (!GoogleEmail) {

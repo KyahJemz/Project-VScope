@@ -6,7 +6,6 @@ import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 import Calendar from "@/components/Calendar/Calendar";
-import { Services } from "@/models/Services.js"
 import { useSession } from "next-auth/react";
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
 import { Data } from "@/models/Data";
@@ -17,6 +16,7 @@ const Page = ({ params }) => {
 	const [GoogleEmail, setGoogleEmail] = useState("");
 	const [GoogleImage, setGoogleImage] = useState("");
 	const [Role, setRole] = useState("");
+	const [HasAlreadySetSchedule, setHasAlreadySetSchedule] = useState(false);
 	const router = useRouter();
 	
 	const [IsUploading, setIsUploading] = useState(false);
@@ -73,6 +73,11 @@ const Page = ({ params }) => {
 	const filteredData = Status === "All"
 		? sortedData.filter(record => ["Pending", "Approved", "Canceled", "Rescheduled"].includes(record.Status))
 		: Status === "Rescheduled" ? sortedData.filter(record => record.ReScheduled === true) : sortedData.filter(record => record.Status === Status);
+
+	useEffect(() => {
+		const hasSetSchedule = filteredData?.some(element => SelectedDay === element.AppointmentDate && element.Status !== "Canceled" && element.Status !== "Rejected");
+		setHasAlreadySetSchedule(hasSetSchedule);
+	}, [SelectedDay, filteredData]);
 
 	useEffect(() => {
 		if (SelectedDay) {
@@ -173,6 +178,12 @@ const Page = ({ params }) => {
 				{SelectedDay ? (
 					<>
 						{(() => {
+							if (HasAlreadySetSchedule) {
+								return (
+										<>
+										</>
+								);
+							}
 							switch (Schedule?.Time??"") {
 								case "wholeday":
 									return (
@@ -263,26 +274,44 @@ const Page = ({ params }) => {
 										</>
 									);
 								default:
-									return (
-										<>
-											<div className={styles.TimeSummaryItem}>
-												<div className={styles.TimeSummaryDate}>8am - 10am</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
-											</div>
-											<div className={styles.TimeSummaryItem}>
-												<div className={styles.TimeSummaryDate}>10am - 12am</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
-											</div>
-											<div className={styles.TimeSummaryItem}>
-												<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
-											</div>
-											<div className={styles.TimeSummaryItem}>
-												<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
-												<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
-											</div>
-										</>
-									);
+									const currentDate = new Date(SelectedDay);
+									const dayOfWeek = currentDate.getDay(); 
+									const isSaturday = dayOfWeek === 6;
+									if (isSaturday) {
+										return (
+											<>
+												<div className={styles.TimeSummaryItem}>
+													<div className={styles.TimeSummaryDate}>8am - 10am</div>
+													<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												</div>
+												<div className={styles.TimeSummaryItem}>
+													<div className={styles.TimeSummaryDate}>10am - 12am</div>
+													<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												</div>
+											</>
+										);
+									} else {
+										return (
+											<>
+												<div className={styles.TimeSummaryItem}>
+													<div className={styles.TimeSummaryDate}>8am - 10am</div>
+													<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												</div>
+												<div className={styles.TimeSummaryItem}>
+													<div className={styles.TimeSummaryDate}>10am - 12am</div>
+													<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												</div>
+												<div className={styles.TimeSummaryItem}>
+													<div className={styles.TimeSummaryDate}>1pm - 3pm</div>
+													<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												</div>
+												<div className={styles.TimeSummaryItem}>
+													<div className={styles.TimeSummaryDate}>3pm - 5pm</div>
+													<div className={`${styles.TimeSummaryTotal} ${styles.True}`}>0</div>
+												</div>
+											</>
+										);
+									}
 								}
 						})()}
 					</>
@@ -290,10 +319,18 @@ const Page = ({ params }) => {
 			</div>
 
 			<div className={styles.TimeSelectionContainer}>
-				<p>{formatDate(SelectedDay)}</p>
+				{console.log(SelectedDay)}
+				<p>{formatDate(SelectedDay) === "Jan 1, 1970" ? "" : formatDate(SelectedDay)}</p>
 				{SelectedDay ? (
 					<>
 						{(() => {
+							if (HasAlreadySetSchedule) {
+								return (
+									<>
+										Already have schedule
+									</>
+								);
+							}
 							switch (Schedule?.Time??"") {
 								case "wholeday":
 									return (
@@ -349,14 +386,26 @@ const Page = ({ params }) => {
 										</>
 									);
 								default:
-									return (
-										<>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
-											<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
-										</>
-									);
+									const currentDate = new Date(SelectedDay);
+									const dayOfWeek = currentDate.getDay(); 
+									const isSaturday = dayOfWeek === 6;
+									if (isSaturday) {
+										return (
+											<>
+												<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
+												<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
+											</>
+										);
+									} else {
+										return (
+											<>
+												<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime1"><input className={styles.Radio} type="radio" name="test" id="schedulingtime1" value="8am-10am" onChange={(e)=>{setSelectedTime("8am-10am")}}/>8am-10am</label>
+												<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime2"><input className={styles.Radio} type="radio" name="test" id="schedulingtime2" value="10am-12pm" onChange={(e)=>{setSelectedTime("10am-12pm")}}/>10am-12pm</label>
+												<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime3"><input className={styles.Radio} type="radio" name="test" id="schedulingtime3" value="1pm-3pm" onChange={(e)=>{setSelectedTime("1pm-3pm")}}/>1pm-3pm</label>
+												<label className={`${styles.radioForm} ${styles.True}`} htmlFor="schedulingtime4"><input className={styles.Radio} type="radio" name="test" id="schedulingtime4" value="3pm-5pm" onChange={(e)=>{setSelectedTime("3pm-5pm")}}/>3pm-5pm</label>
+											</>
+										);
+									}
 								}
 						})()}
 					</>
