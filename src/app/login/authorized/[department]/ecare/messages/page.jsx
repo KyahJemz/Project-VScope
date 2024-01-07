@@ -99,7 +99,7 @@ const Messages = ({ params }) => {
 					"Loading..."
 				) : (
 					filteredRecordsData.map((record, index) => (
-						<ListItem key={index} name={`${record?.Details?.LastName??"?"}, ${record?.Details?.FirstName??"?"} ${record?.Details?.MiddleName??""} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"})`} image={record?.GoogleImage??UserDefault} isNew={IsNew(record)} id={record._id} />
+						<ListItem key={index} isWalkIn={record.Type === "WalkIn" ? true : false} name={`${record?.Details?.LastName??"?"}, ${record?.Details?.FirstName??"?"} ${record?.Details?.MiddleName??""} - Schedule (${record.Type === "WalkIn" ? "WalkIn" : formatShortDate(record?.AppointmentDate) ?? "?"}${record.Type === "WalkIn" ? "" : " "+record?.AppointmentTime ?? "?"})`} image={record?.GoogleImage??UserDefault} isNew={IsNew(record)} id={record._id} />
 					))
 				)}
 			</>
@@ -117,12 +117,12 @@ const Messages = ({ params }) => {
 		return false; 
 	};
 	
-	const ListItem = ({key, name, image, isNew, id}) => {
+	const ListItem = ({key, name, image, isNew, id, isWalkIn}) => {
 		return (
 			<div className={styles.ListItem} key={key} onClick={(e)=>router.push(`/login/authorized/${Department}/ecare/messages/${id}`)}>
 				<Image
 					className={styles.ListItemImage}
-					src={image??UserDefault}
+					src={isWalkIn ? UserDefault : image}
 					alt="Image"
 					width={50}
 					height={50}

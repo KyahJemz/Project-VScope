@@ -38,47 +38,47 @@ export const GET = async (request) => {
 		await connect();
 
 		let results = null;
-    let appointmentModel = null;
+    	let appointmentModel = null;
 
-    if (Type === "Message"){
-		if(Department === "Medical") {
-			appointmentModel = MedicalAppointment;
-		} else if(Department === "Dental") {
-			appointmentModel = DentalAppointment;
-		} else if(Department === "SDPC") {
-			appointmentModel = SDPCAppointment;
-		} else {
-			return new NextResponse("Invalid Department", { status: 404 });
+		if (Type === "Message"){
+			if(Department === "Medical") {
+				appointmentModel = MedicalAppointment;
+			} else if(Department === "Dental") {
+				appointmentModel = DentalAppointment;
+			} else if(Department === "SDPC") {
+				appointmentModel = SDPCAppointment;
+			} else {
+				return new NextResponse("Invalid Department", { status: 404 });
+			}
 		}
-    }
 
 	if (!GoogleEmail) {
 		if (Type === "Direct Message") {
 			results = await DirectMessages.find({ Department });
 		} else if (Type === "Message") {
 			results = await appointmentModel.find({
-			$or: [
-				{ Responses: { $exists: true, $ne: [] } },
-				{ Status: { $in: ["Approved", "In Progress", "Completed"] } }
-			]
+				$or: [
+					{ Responses: { $exists: true, $ne: [] } },
+					{ Status: { $in: ["Approved", "In Progress", "Completed"] } }
+				]
 			});
 		} else {
 			return new NextResponse("Invalid Type", { status: 404 });
 		}
     } else {
-      if (Type === "Direct Message") {
-        results = await DirectMessages.find({ GoogleEmail, Department });
-      } else if (Type === "Message") {
-        results = await appointmentModel.find({
-          GoogleEmail,
-          $or: [
-            { Responses: { $exists: true, $ne: [] } },
-            { Status: { $in: ["Approved", "In Progress"] } }
-          ]
-        });
-      } else {
-        return new NextResponse("Invalid Type", { status: 404 });
-      }
+		if (Type === "Direct Message") {
+			results = await DirectMessages.find({ GoogleEmail, Department });
+		} else if (Type === "Message") {
+			results = await appointmentModel.find({
+				GoogleEmail,
+				$or: [
+					{ Responses: { $exists: true, $ne: [] } },
+					{ Status: { $in: ["Approved", "In Progress"] } }
+				]
+			});
+		} else {
+				return new NextResponse("Invalid Type", { status: 404 });
+		}
     }
 
 	if (results && Type === "Message") {
