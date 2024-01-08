@@ -108,7 +108,7 @@ const Schedule = ({ params }) => {
 
 	useEffect(() => {
 		if (SelectedDay) {
-		  const hasScheduleOnSelectedDay = data.some(appointment => appointment.Date === SelectedDay);
+		  const hasScheduleOnSelectedDay = data?.some(appointment => appointment.Date === SelectedDay);
 		  setHasSchedule(hasScheduleOnSelectedDay);
 		  console.log(hasSchedule);
 		}

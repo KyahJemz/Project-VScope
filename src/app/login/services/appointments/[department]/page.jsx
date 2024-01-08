@@ -81,8 +81,8 @@ const Page = ({ params }) => {
 
 	useEffect(() => {
 		if (SelectedDay) {
-		  const hasScheduleOnSelectedDay = DeptData.some(appointment => appointment.Date === SelectedDay);
-		  const scheduleOnSelectedDay = DeptData.find(appointment => appointment.Date === SelectedDay);
+		  const hasScheduleOnSelectedDay = DeptData?.some(appointment => appointment.Date === SelectedDay);
+		  const scheduleOnSelectedDay = DeptData?.find(appointment => appointment.Date === SelectedDay);
 		  setSchedule(scheduleOnSelectedDay);
 		  setHasSchedule(hasScheduleOnSelectedDay);
 		  setSelectedTime("");
