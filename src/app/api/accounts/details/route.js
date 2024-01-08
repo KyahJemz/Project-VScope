@@ -56,6 +56,21 @@ export const GET = async (request) => {
         if (results._doc.Details && Object.keys(results._doc.Details).length > 0) {
           decryptedResult.Details = decryptFields(results._doc.Details);
         }
+
+        if (results._doc.MedicalDetails && Object.keys(results._doc.MedicalDetails).length > 0) {
+          decryptedResult.MedicalDetails = decryptFields(results._doc.MedicalDetails);
+          decryptedResult.MedicalDetails.Files = results._doc.MedicalDetails.Files;
+        }
+
+        if (results._doc.DentalDetails && Object.keys(results._doc.DentalDetails).length > 0) {
+          decryptedResult.DentalDetails = decryptFields(results._doc.DentalDetails);
+          decryptedResult.DentalDetails.Files = results._doc.DentalDetails.Files;
+        }
+
+        if (results._doc.SDPCDetails && Object.keys(results._doc.SDPCDetails).length > 0) {
+          decryptedResult.SDPCDetails = decryptFields(results._doc.SDPCDetails);
+          decryptedResult.SDPCDetails.Files = results._doc.SDPCDetails.Files;
+        }
   
         results = decryptedResult;
       }

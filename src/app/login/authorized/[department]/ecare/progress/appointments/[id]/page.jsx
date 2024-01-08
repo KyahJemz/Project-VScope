@@ -323,7 +323,7 @@ const Page = ({ params }) => {
 							<p className={styles.ProfileEmail}>{data?.GoogleEmail??"n/a"}</p>
 						</div>
 						<div className={styles.ProfileBot}>
-							<button className={`${styles.HistoryBtn}`} onClick={()=>router.push(`/login/authorized/SDPC/records/${data.GoogleEmail}`)}>History</button>
+							<button className={`${styles.HistoryBtn}`} onClick={()=>router.push(`/login/authorized/${Department}/records/${data.GoogleEmail}`)}>History</button>
 						</div>
 					</div>
 

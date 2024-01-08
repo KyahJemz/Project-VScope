@@ -45,8 +45,7 @@ const Dashboard = ({ params }) => {
                   <p className={styles.ProfileName}>{data[0]?.Details?.FirstName??""} {data[0]?.Details?.MiddleName??""} {data[0]?.Details?.LastName??""}</p>
                   <p className={styles.ProfileId}>{data[0]?.Details?.StudentNumber??"n/a"}</p>
                   <p className={styles.ProfileEmail}>{data[0]?.GoogleEmail??"n/a"}</p>
-                </div>
-                <div className={styles.ProfileBot}>
+                  <button className={styles.AssessmentHistoryBtn} onClick={()=>router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+'profile')}>View Profile</button>
                   <button className={styles.AssessmentHistoryBtn} onClick={()=>router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+'assessments')}>View Assessments</button>
                 </div>
               </div>
@@ -60,7 +59,7 @@ const Dashboard = ({ params }) => {
                   day: 'numeric',
                   hour: 'numeric',
                   minute: 'numeric',
-                })}
+                })} - {record.Status}
               </div>
             ))}
           </div>

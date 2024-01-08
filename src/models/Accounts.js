@@ -33,6 +33,36 @@ const userSchema = new Schema(
       type: Object,
       required: false,
     },
+    MedicalDetails: {
+      Height: {
+        type: String,
+        default: ""
+      },
+      Weight: {
+        type: String,
+        default: ""
+      },
+      BloodType: {
+        type: String,
+        default: ""
+      },
+      Files: {
+        type: Array,
+        default: []
+      },
+    },
+    DentalDetails: {
+      Files: {
+        type: Array,
+        default: []
+      },
+    },
+    SDPCDetails: {
+      Files: {
+        type: Array,
+        default: []
+      },
+    },
     Role: {
       type: String,
       enum: ["Student","Lay Collaborator","Management", "Admin", "Administrator"],
