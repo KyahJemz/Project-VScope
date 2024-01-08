@@ -62,8 +62,10 @@ const Schedule = ({ params }) => {
         
             if (response.ok) {
                 console.log("Complete");
+				alert("Schedule has been updated!")
             } else {
                 console.log("Failed");
+				alert("Connection failed. Try again! :<")
             }
         } catch (err) {
             console.log(err);
@@ -90,8 +92,10 @@ const Schedule = ({ params }) => {
         
             if (response.ok) {
                 console.log("Complete");
+				alert("Schedule has been removed!")
             } else {
                 console.log("Failed");
+				alert("Connection failed. Try again! :<")
             }
         } catch (err) {
             console.log(err);
