@@ -4,6 +4,7 @@ import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 import { encryptText, decryptText } from "@/utils/cryptojs";
+import DirectMessages from "@/models/DirectMessages";
 
 import { writeFile } from 'fs/promises'
 
@@ -18,6 +19,7 @@ export const POST = async (request) => {
         const Response = body.get("Response");
         const Timestamp = new Date().toISOString();
         const file = body.get('Attachment') ?? null;
+        const Type = body.get('Type');
 
 
         let AttachmentName = ''; 

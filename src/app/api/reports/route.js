@@ -86,29 +86,29 @@ export const GET = async (request) => {
                     decryptedResult.Responses = decryptedResponses;
                 }
 
-                if (result._doc.Prescriptions && result._doc.Prescriptions.length > 0) {
-                    const decryptedResponses = result._doc.Prescriptions.map(prescriptions => {
-                        const decryptedResponse = {
-                            Prescription: decryptText(prescriptions.Prescription),
-                            Timestamp: decryptText(prescriptions.Timestamp),
-                            UniqueId: prescriptions.UniqueId,
-                        };
-                        return decryptedResponse;
-                    });
-                    decryptedResult.Prescriptions = decryptedResponses;
-                }
+                // if (result._doc.Prescriptions && result._doc.Prescriptions.length > 0) {
+                //     const decryptedResponses = result._doc.Prescriptions.map(prescriptions => {
+                //         const decryptedResponse = {
+                //             Prescription: decryptText(prescriptions.Prescription),
+                //             Timestamp: decryptText(prescriptions.Timestamp),
+                //             UniqueId: prescriptions.UniqueId,
+                //         };
+                //         return decryptedResponse;
+                //     });
+                //     decryptedResult.Prescriptions = decryptedResponses;
+                // }
     
-                if (result._doc.Diagnosis && result._doc.Diagnosis.length > 0) {
-                    const decryptedResponses = result._doc.Diagnosis.map(diagnosis => {
-                        const decryptedResponse = {
-                            Diagnosis: decryptText(diagnosis.Diagnosis),
-                            Timestamp: decryptText(diagnosis.Timestamp),
-                            UniqueId: diagnosis.UniqueId,
-                        };
-                        return decryptedResponse;
-                    });
-                    decryptedResult.Diagnosis = decryptedResponses;
-                }
+                // if (result._doc.Diagnosis && result._doc.Diagnosis.length > 0) {
+                //     const decryptedResponses = result._doc.Diagnosis.map(diagnosis => {
+                //         const decryptedResponse = {
+                //             Diagnosis: decryptText(diagnosis.Diagnosis),
+                //             Timestamp: decryptText(diagnosis.Timestamp),
+                //             UniqueId: diagnosis.UniqueId,
+                //         };
+                //         return decryptedResponse;
+                //     });
+                //     decryptedResult.Diagnosis = decryptedResponses;
+                // }
     
                 return decryptedResult;
             });
@@ -286,9 +286,9 @@ export const GET = async (request) => {
             const yearLevelMatches = YearLevel ? record.Details.YearLevel === YearLevel : true;
         
             return (
-            courseMatches &&
-            yearLevelMatches &&
-            record.Department === Department
+                courseMatches &&
+                yearLevelMatches &&
+                record.Department === Department
             );
         });
 
@@ -442,29 +442,29 @@ export const GET = async (request) => {
                     decryptedResult.Responses = decryptedResponses;
                 }
 
-                if (result._doc.Prescriptions && result._doc.Prescriptions.length > 0) {
-                    const decryptedResponses = result._doc.Prescriptions.map(prescriptions => {
-                        const decryptedResponse = {
-                            Prescription: decryptText(prescriptions.Prescription),
-                            Timestamp: decryptText(prescriptions.Timestamp),
-                            UniqueId: prescriptions.UniqueId,
-                        };
-                        return decryptedResponse;
-                    });
-                    decryptedResult.Prescriptions = decryptedResponses;
-                }
+                // if (result._doc.Prescriptions && result._doc.Prescriptions.length > 0) {
+                //     const decryptedResponses = result._doc.Prescriptions.map(prescriptions => {
+                //         const decryptedResponse = {
+                //             Prescription: decryptText(prescriptions.Prescription),
+                //             Timestamp: decryptText(prescriptions.Timestamp),
+                //             UniqueId: prescriptions.UniqueId,
+                //         };
+                //         return decryptedResponse;
+                //     });
+                //     decryptedResult.Prescriptions = decryptedResponses;
+                // }
     
-                if (result._doc.Diagnosis && result._doc.Diagnosis.length > 0) {
-                    const decryptedResponses = result._doc.Diagnosis.map(diagnosis => {
-                        const decryptedResponse = {
-                            Diagnosis: decryptText(diagnosis.Diagnosis),
-                            Timestamp: decryptText(diagnosis.Timestamp),
-                            UniqueId: diagnosis.UniqueId,
-                        };
-                        return decryptedResponse;
-                    });
-                    decryptedResult.Diagnosis = decryptedResponses;
-                }
+                // if (result._doc.Diagnosis && result._doc.Diagnosis.length > 0) {
+                //     const decryptedResponses = result._doc.Diagnosis.map(diagnosis => {
+                //         const decryptedResponse = {
+                //             Diagnosis: decryptText(diagnosis.Diagnosis),
+                //             Timestamp: decryptText(diagnosis.Timestamp),
+                //             UniqueId: diagnosis.UniqueId,
+                //         };
+                //         return decryptedResponse;
+                //     });
+                //     decryptedResult.Diagnosis = decryptedResponses;
+                // }
     
                 return decryptedResult;
             });

@@ -2,45 +2,32 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const postSchema = new Schema(
+const userSchema = new Schema(
   {
-    Name: {
-      type: String,
-      required: true,
-    },
     GoogleEmail: {
       type: String,
+      unique: true,
       required: true,
+    },
+    FullName: {
+        type: String,
+        required: true,
     },
     Department: {
-      type: String,
-      enum: ["Medical","Dental","SDPC"],
-      required: true,
+        type: String,
+        required: true,
+    },
+    GoogleImage: {
+        type: String,
+        required: true,
     },
     Responses: {
-      type: String,
-      required: true,
-    },
-    Status: {
-      type: String,
-      required: true,
-    },
-    Timestamp: {
-      type: String,
-      required: true,
-    },
-    ViewedByClient: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    ViewedByDepartment: {
-      type: Boolean,
-      required: true,
-      default: false
+        type: Array,
+        required: false,
+        default: []
     },
   },
   { timestamps: true }
 );
 
-export default mongoose.model("direct-messages", postSchema);
+export default mongoose.model("direct-messages", userSchema);

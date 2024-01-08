@@ -51,6 +51,10 @@ const postSchema = new Schema(
       type: Array,
       required: false,
     },
+    Sickness: {
+      type: Array,
+      required: false,
+    },
     Notes: {
       type: Array,
       required: false,

@@ -31,6 +31,7 @@ const Form = ({params}) => {
     var CurrentMessageDate = "";
 
     const [file, setFile] = useState(null);
+    const [IsViewUpdate, setIsViewUpdate] = useState(false);
 
     console.log(file)
 
@@ -246,10 +247,32 @@ const Form = ({params}) => {
         ) 
     }
 
+    const formatShortDate = (timestamp) => {
+		const options = { month: 'short', day: 'numeric', year: 'numeric' };
+		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+	  
+		return `${formattedDate}`;
+	};
+
     const Header = () => {
         return (
             <div className={styles.Header}>
-                Messaging - {`${data?.Details?.LastName??""}, ${data?.Details?.FirstName??""} ${data?.Details?.MiddleName??""}`}
+                <p>Messaging - {`${data?.Details?.LastName??""}, ${data?.Details?.FirstName??""} ${data?.Details?.MiddleName??""}`}</p>
+                <button className={styles.Updates} onClick={()=>{IsViewUpdate ? setIsViewUpdate(false) : setIsViewUpdate(true)}}>View Updates</button>
+                <div className={`${styles.UpdateContainer} ${IsViewUpdate ? null  : styles.None}`}>
+                    {data?.Sickness?.length > 0 ? (
+                        data.Sickness.map((item, index) => (
+                            <div key={index} className={styles.UpdateRow}>
+                                <div className={styles.UpdateName}>{item.Name}</div>
+                                <div className={styles.UpdateDate}>{formatShortDate(item.Date)}</div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className={styles.UpdateRow}>
+                            <div className={styles.UpdateName}>No Updates</div>
+                        </div>
+                    )}
+                </div>
             </div>
         )
     }

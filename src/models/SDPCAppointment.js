@@ -21,6 +21,10 @@ const postSchema = new Schema(
       type: String,
       required: false,
     },
+    Sickness: {
+      type: Array,
+      required: false,
+    },
     Type: {
       type: String,
       enum: ["Appointment","WalkIn"],

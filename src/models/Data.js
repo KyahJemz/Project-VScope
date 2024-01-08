@@ -68,5 +68,22 @@ export let Data = {
             "Services 3",
         ],
     },
+    Sickness: {
+        SDPC: [
+            "Sickness 1",
+            "Sickness 2",
+            "Sickness 3",
+        ],
+        Dental: [
+            "Sickness 1",
+            "Sickness 2",
+            "Sickness 3",
+        ],
+        Medical: [
+            "Sickness 1",
+            "Sickness 2",
+            "Sickness 3",
+        ],
+    },
 }
 

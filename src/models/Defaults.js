@@ -5,10 +5,5 @@ export default class Defaults {
     static MedicalEmail = "stephenreganjames.layson@gmail.com";
     static SDPCEmail = "stephenreganjames.layson@gmail.com";
 
-
-
-
-    
-
 }
 

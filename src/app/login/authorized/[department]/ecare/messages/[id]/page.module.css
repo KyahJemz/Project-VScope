@@ -1,8 +1,5 @@
 .MainContent{
-    padding: 20px;
-    border: 1px solid gainsboro;
     display: grid;
-    display: grid; 
 
     grid-template-columns: 1fr; 
     grid-template-rows: 50px 1fr; 
@@ -10,7 +7,7 @@
     grid-template-areas: 
         "Header"
         "MessagesContainer";
-    gap: 20px;
+    gap: 10px;
     position: relative;
 }
 
@@ -19,8 +16,44 @@
     border: 1px solid gainsboro;    
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 20px;
     font-weight: bold;
+    position: relative;
+}
+.UpdateContainer{
+  display:block;
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  width: fit-content;
+  height: auto;
+  z-index: 1;
+  background-color: gainsboro;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-weight: normal;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #53c28b;
+  font-size: 0.8rem;
+}
+.UpdateContainer.None{
+  display: none;
+}
+.UpdateRow{
+  background-color: gainsboro;
+  display: flex;
+  gap: 10px;
+  text-align: right;
+  width: 100%;
+  justify-content: right;
+}
+.UpdateDate,
+.UpdateName{
+  text-align: right;
+
 }
 
 .MessagesContainer{
@@ -71,6 +104,7 @@
   border: 1px solid gainsboro;
   border-radius: 5px;
   padding: 10px;
+  font-size: 0.8rem;
 }
 
 
@@ -96,12 +130,19 @@
 }
 
 
+
+.Updates,
 .submitBtn{
   padding: 10px 20px;
   background-color: #53c28b;
   color: white;
   cursor: pointer;
   border: 1px solid gainsboro;
+}
+
+.Updates{
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 .FileUploadBtn {
@@ -119,10 +160,12 @@
   padding-bottom: 10px;
 }
 
+.Updates:hover,
 .FileUploadBtn:hover,
 .submitBtn:hover{
   box-shadow: 0px 0px 2px 1px rgba(220, 220, 220, 0.500) ;
 }
+.Updates:active,
 .FileUploadBtn:active,
 .submitBtn:active{  
   box-shadow: 0px 0px 2px 1px black ;

@@ -231,20 +231,20 @@ const WalkIn = ({ params }) => {
 									<option key={index} value={element}>{element}</option>
 								))}
 							</select>
-							<select className={styles.DetailsFields} ype="text" name="Category" placeholder="Category" required> 
+							<select className={styles.DetailsFields} name="Category" type="text" placeholder="Category" required> 
 								<option value="">Category...</option>
 								<option value="Student">Student</option>
 								<option value="Lay Collaborator">Lay Collaborator</option>
 							</select>
 						</div>
 						<div className={styles.DetailsRow}>
-						<select className={styles.DetailsFields} title="Course / Strand" type="text" data-key="CourseStrand" placeholder="Course / Strand"> 
+						<select className={styles.DetailsFields} name="CourseStrand" title="Course / Strand" type="text" data-key="CourseStrand" placeholder="Course / Strand"> 
 							<option value="">Course / Strand...</option>
 							{Data.Courses.map((element, index) => (
 								<option key={index} value={element}>{element}</option>
 							))}
 						</select>
-						<select className={styles.DetailsFields} title="Year Level" type="text" data-key="YearLevel" placeholder="Year Level"> 
+						<select className={styles.DetailsFields} name="YearLevel" title="Year Level" type="text" data-key="YearLevel" placeholder="Year Level"> 
 							<option value="">Year Level....</option>
 							{Data.YearLevel.map((element, index) => (
 								<option key={index} value={element}>{element}</option>
@@ -257,7 +257,7 @@ const WalkIn = ({ params }) => {
 							<input className={styles.DetailsFields} type="text" name="ContactNumber" data-key="ContactNumber"  placeholder="Contact Number" required />
 							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyPerson" data-key="InCaseOfEmergencyPerson"  placeholder="In case of emergency person" required />
 							<input className={styles.DetailsFields} type="text" name="InCaseOfEmergencyNumber" data-key="InCaseOfEmergencyNumber" placeholder="In case of emergency number" required />
-							<select className={styles.DetailsFields} type="text" name="Services" required> 
+							<select className={styles.DetailsFields} type="text" name="ServiceOffered" required> 
 								<option value="">Services..</option>
 								{Data.Services[Department].map((element, index) => (
 									<option key={index} value={element}>{element}</option>
@@ -305,7 +305,7 @@ const WalkIn = ({ params }) => {
 										<option key={index} value={element}>{element}</option>
 									))}
 								</select>
-								<select className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="Category" onChange={ChangeConfirmation} defaultValue={details?.Category??""}  data-key="Category" data-value={details?.Category??""} placeholder="Category" required> 
+								<select className={styles.DetailsFields} disabled={UpdatingForm} type="text" name="Category" onChange={ChangeConfirmation} defaultValue={details?.Role??""}  data-key="Category" data-value={details?.Role??""} placeholder="Category" required> 
 									<option value="">Category...</option>
 									<option value="Student">Student</option>
 									<option value="Lay Collaborator">Lay Collaborator</option>

@@ -109,8 +109,10 @@ const Page = ({ params }) => {
 
             if (response.ok) {
                 console.log("Complete");
+				alert("Appointment Submitted!")
 				e.target.reset();
             } else {
+				alert("Connection Failed. Try Again! :<")
                 console.log("Failed");
             }
 		} catch (error) {
@@ -460,8 +462,6 @@ const Page = ({ params }) => {
 			<div className={styles.NoteContainer}>
 				TAKE NOTE: NOT ALL APPROVED
 			</div>
-		
-			
 		
 		</div>
 	)

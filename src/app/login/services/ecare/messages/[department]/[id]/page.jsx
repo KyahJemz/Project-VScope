@@ -8,6 +8,7 @@ import UserDefault from "/public/UserDefault.png";
 import { useRouter } from "next/navigation";
 import Dental from "public/Dental.jpg";
 import Medical from "public/Medical.jpg";
+import { Data } from "@/models/Data";
 import SDPC from "public/SDPC.jpg";
 
 import Defaults from "@/models/Defaults";
@@ -24,6 +25,8 @@ const Form = ({params}) => {
     var CurrentMessageDate = "";
     
     const [file, setFile] = useState(null);
+    const [OnUpdating, setOnUpdating] = useState(false);
+    const [IsViewUpdate, setIsViewUpdate] = useState(false);
 
     console.log(file)
 
@@ -180,6 +183,70 @@ const Form = ({params}) => {
         }
     };
 
+
+    const formatShortDate = (timestamp) => {
+		const options = { month: 'short', day: 'numeric', year: 'numeric' };
+		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+	  
+		return `${formattedDate}`;
+	};
+    const OnUpdateSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            setOnUpdating(true);
+    
+            const formData = new FormData(e.target);
+            formData.append("Department", Department);
+            formData.append("RecordId", RecordId);
+            formData.append("Type", "Add");
+    
+            const response = await fetch("/api/records/POST_UpdateSickness", {
+                method: "POST",
+                body: formData,
+            });
+    
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setOnUpdating(false);
+            e.target.reset();
+            mutate();
+        }
+    }
+
+    const OnUpdateRemove = async (e) => {
+        try {
+            setOnUpdating(true);
+    
+            const formData = new FormData();
+            formData.append("Department", Department);
+            formData.append("RecordId", RecordId);
+            formData.append("UniqueId", e.target.dataset.updateid);
+            formData.append("Type", "Remove");
+    
+            const response = await fetch("/api/records/POST_UpdateSickness", {
+                method: "POST",
+                body: formData,
+            });
+    
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setOnUpdating(false);
+            mutate();
+        }
+    }
+
     const MainContent = () => {
         return (
             <div className={styles.MessagesContainer}>
@@ -232,7 +299,31 @@ const Form = ({params}) => {
     const Header = () => {
         return (
             <div className={styles.Header}>
-                <p>Messaging - {`${Department === "Dental" ? "Dental Health Services" : Department === "Medical" ? "Medical Health Services" : Department === "SDPC" ? "SDPC Department" : "?"}`}</p>
+                <p>Sickness Update - {`${Department === "Dental" ? "Dental Health Services" : Department === "Medical" ? "Medical Health Services" : Department === "SDPC" ? "SDPC Department" : "?"}`}</p>
+                <button className={styles.Updates} onClick={()=>{IsViewUpdate ? setIsViewUpdate(false) : setIsViewUpdate(true)}}>View Updates</button>
+                <div className={`${styles.UpdateContainer} ${IsViewUpdate ? null  : styles.None}`}>
+                    {data?.Sickness?.length > 0 ? (
+                        data.Sickness.map((item, index) => (
+                            <div key={index} className={styles.UpdateRow}>
+                                <input value={item.Name} className={styles.UpdateName} disabled/>
+                                <input value={formatShortDate(item.Date)} className={styles.UpdateDate} disabled/>
+                                <button onClick={OnUpdateRemove} data-updateid={item.UniqueId} disabled={OnUpdating} className={styles.UpdateRemove}>X</button>
+                            </div>
+                        ))
+                    ) : (
+                        null
+                    )}
+                    <form className={styles.UpdateRow} onSubmit={OnUpdateSubmit}>
+                        <input name="Name" className={styles.UpdateName} list="SicknessList" type="text" placeholder="Sickness" required/>
+                        <datalist id="SicknessList">
+                            {Data?.Sickness[Department]?.map((element, index) => (
+                                <option key={index} value={element}/>
+                            ))}
+                        </datalist>
+                        <input name="Date" className={styles.UpdateDate} type="date" required/>
+                        <button disabled={OnUpdating} className={styles.UpdateSave}>{OnUpdating ? "..." : "Save"}</button>
+                    </form>
+                </div>
             </div>
         )
     }

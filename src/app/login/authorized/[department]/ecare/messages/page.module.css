@@ -1,84 +1,125 @@
-.MainContent{
-    padding: 20px;
-    border: 1px solid gainsboro;
+
+.MainContainer{
     display: grid;
-    display: grid; 
+    border: 1px solid gainsboro;
+    padding: 10px;
+    grid-template-columns: 300px 1fr;
+    gap: 10px;
+}
+
+.RecordName{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "MessageImage MessageName"
+        "MessageImage MessageDetails";
+        gap: 5px;
+        border-bottom: 1px solid gainsboro;
+        padding-bottom: 5px;
+        cursor: pointer;
+}
+
+.MessageImage{
+    grid-area: MessageImage;
+    border-radius: 50%;
+}
+.MessageName{
+    grid-area: MessageName;
+    width: 100%;
+    white-space: nowrap; 
+    font-size: 0.9rem;
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+
+}
+.MessageDetails{
+    grid-area: MessageDetails;
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 150px auto;
+    width: 100%;
+}
+.MessageLatest{
+    font-size: 0.7rem;
+    text-wrap: nowrap;
+    overflow: hidden;
+    align-items: center;
+    display: flex;
+}
+.MessageTime{
+    font-size: 0.7rem;
+    align-items: center;
+    display: flex;
+}
+
+.PersonList{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid gainsboro;
+    padding: 10px;
+}
+
+.SearchList{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+.SearchBox{
+    padding: 5px;
+}
+
+.Active{
+    font-weight: bold;
+}
+.Header{
+    display: flex;
+    justify-content: space-between;
+}
+.PanelBtn{
+    background-color: #14AE5C;
+    color: white;
+    border: 0px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+.PanelBtn:hover{
+    box-shadow: 0 0 2px 2px gainsboro;
+}
+.PanelBtn:active{
+    box-shadow: 0 0 2px 2px black;
+}
+
+.NoContent{
+    display: grid;
+
     grid-template-columns: 1fr; 
     grid-template-rows: 50px 1fr; 
     gap: 0px 0px; 
     grid-template-areas: 
         "Header"
-        "Body";
-    gap: 20px;
+        "MessagesContainer";
+    gap: 10px;
     position: relative;
 }
 
-.Header {
+.NoContentHeader {
     grid-area: Header;
     border: 1px solid gainsboro;    
     display: flex;
     align-items: center;
     padding: 20px;
     font-weight: bold;
-    justify-content: space-between;
 }
 
-.Body{
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-    border: 1px solid gainsboro;    
-    padding: 20px;
-    grid-area: Body;
-}
-
-.PanelButton{
-    border: 0px;
-    padding: 5px 20px;
-    cursor: pointer;
-    transition: 500ms;
-}
-
-.PanelButton:hover{
-   box-shadow: 0 0 2px 2px gainsboro;
-}
-
-.PanelButton:active{
-    box-shadow: 0 0 2px 2px black;
-}
-
-.ListItem{
-    display: grid;
-    grid-template-columns: 60px  1fr 100px;
-    grid-template-rows: 1fr;
-    border: 1px solid gainsboro;
-    padding: 10px;
-    align-items: center;
-    cursor: pointer;
-    transition: 500ms;
-}
-
-.ListItem:hover {
-    box-shadow: 0 0 2px 2px gainsboro;
-}
-
-.ListItem:active {
-    box-shadow: 0 0 2px 2px black;
-}
-
-.ListItemImage {
-    border-radius: 50%;
-    border: 1px solid gainsboro;
-}
-
-.ListItemName{
-    
-}
-
-.ListItemMark{
-    color: red;
-}
-
-.SearchBar{
-    padding: 10px;
+.SearchTitle{
+    font-weight: bold;
 }

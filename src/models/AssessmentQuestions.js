@@ -475,8 +475,8 @@ export const AssessmentQuestions = {
     },
     "SDPC Result": {
         'BS Information Technology': 'This program equips students with the knowledge and skills needed to design, develop, and manage information systems. It covers areas such as programming, database management, network security, and software development.',
-        'BS Criminologyinology': 'Geared towards understanding the dynamics of crime and criminal behavior. Students learn about law enforcement, criminal justice systems, and crime prevention strategies.',
-        'BS Psychologyology': 'Explores the scientific study of human behavior and mental processes. Topics include cognitive processes, social interactions, and psychological disorders.',
+        'BS Criminology': 'Geared towards understanding the dynamics of crime and criminal behavior. Students learn about law enforcement, criminal justice systems, and crime prevention strategies.',
+        'BS Psychology': 'Explores the scientific study of human behavior and mental processes. Topics include cognitive processes, social interactions, and psychological disorders.',
         'BS Nursing': 'Focuses on preparing students to provide high-quality healthcare. It includes training in patient care, medical procedures, and ethical considerations in nursing.',
         'BS Computer Engineering': 'Integrates computer science and electrical engineering principles. Students learn to design and develop computer hardware and software systems.',
         'BS Electronics Engineering': 'Concentrates on the study of electronic circuits and systems. It covers topics like digital electronics, communication systems, and signal processing.',
