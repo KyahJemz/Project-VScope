@@ -36,8 +36,8 @@ export const POST = async (request) => {
 			const uniqueId = uuidv4(); 
 
 			const ValueToPush = {
-                [Key]: encryptText(Value),
-                Timestamp: encryptText(Date.now().toString()),
+                [Key]: Value,
+                Timestamp: (Date.now().toString()),
                 UniqueId: uniqueId, 
             };
 

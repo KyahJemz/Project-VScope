@@ -65,12 +65,12 @@ export const POST = async (request) => {
 
 			const sendEmail = async ({ to, subject, text }) => {
 				try {
-				  await sendMail(to, subject, text);
+				  	await sendMail(to, subject, text);
 				} catch (error) {
-				  console.error(error);
-				  res.status(500).json({ success: false, error: 'Internal Server Error' });
+				  	console.error(error);
+				  	res.status(500).json({ success: false, error: 'Internal Server Error' });
 				}
-			  }
+			}
 
 			if (appointment?.GoogleEmail) {
 				const to = appointment.GoogleEmail;

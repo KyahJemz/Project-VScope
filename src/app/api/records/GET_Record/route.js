@@ -91,41 +91,41 @@ export const GET = async (request) => {
 				decryptedResult.Responses = decryptedResponses;
 			}
 
-			if (results._doc.Prescriptions && results._doc.Prescriptions.length > 0) {
-				const decryptedResponses = results._doc.Prescriptions.map(prescriptions => {
-					const decryptedResponse = {
-						Prescription: decryptText(prescriptions.Prescription),
-						Timestamp: decryptText(prescriptions.Timestamp),
-						UniqueId: prescriptions.UniqueId,
-					};
-					return decryptedResponse;
-				});
-				decryptedResult.Prescriptions = decryptedResponses;
-			}
+			// if (results._doc.Prescriptions && results._doc.Prescriptions.length > 0) {
+			// 	const decryptedResponses = results._doc.Prescriptions.map(prescriptions => {
+			// 		const decryptedResponse = {
+			// 			Prescription: decryptText(prescriptions.Prescription),
+			// 			Timestamp: decryptText(prescriptions.Timestamp),
+			// 			UniqueId: prescriptions.UniqueId,
+			// 		};
+			// 		return decryptedResponse;
+			// 	});
+			// 	decryptedResult.Prescriptions = decryptedResponses;
+			// }
 
-			if (results._doc.Diagnosis && results._doc.Diagnosis.length > 0) {
-				const decryptedResponses = results._doc.Diagnosis.map(diagnosis => {
-					const decryptedResponse = {
-						Diagnosis: decryptText(diagnosis.Diagnosis),
-						Timestamp: decryptText(diagnosis.Timestamp),
-						UniqueId: diagnosis.UniqueId,
-					};
-					return decryptedResponse;
-				});
-				decryptedResult.Diagnosis = decryptedResponses;
-			}
+			// if (results._doc.Diagnosis && results._doc.Diagnosis.length > 0) {
+			// 	const decryptedResponses = results._doc.Diagnosis.map(diagnosis => {
+			// 		const decryptedResponse = {
+			// 			Diagnosis: decryptText(diagnosis.Diagnosis),
+			// 			Timestamp: decryptText(diagnosis.Timestamp),
+			// 			UniqueId: diagnosis.UniqueId,
+			// 		};
+			// 		return decryptedResponse;
+			// 	});
+			// 	decryptedResult.Diagnosis = decryptedResponses;
+			// }
 
-			if (results._doc.Notes && results._doc.Notes.length > 0) {
-				const decryptedResponses = results._doc.Notes.map(note => {
-					const decryptedResponse = {
-						Note: decryptText(note.Note),
-						Timestamp: decryptText(note.Timestamp),
-						UniqueId: note.UniqueId,
-					};
-					return decryptedResponse;
-				});
-				decryptedResult.Notes = decryptedResponses;
-			}
+			// if (results._doc.Notes && results._doc.Notes.length > 0) {
+			// 	const decryptedResponses = results._doc.Notes.map(note => {
+			// 		const decryptedResponse = {
+			// 			Note: decryptText(note.Note),
+			// 			Timestamp: decryptText(note.Timestamp),
+			// 			UniqueId: note.UniqueId,
+			// 		};
+			// 		return decryptedResponse;
+			// 	});
+			// 	decryptedResult.Notes = decryptedResponses;
+			// }
 
 			results = decryptedResult;
 		}
