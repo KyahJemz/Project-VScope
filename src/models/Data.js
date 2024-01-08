@@ -83,6 +83,7 @@ export let Data = {
             "Sickness 1",
             "Sickness 2",
             "Sickness 3",
+            "Sickness 4",
         ],
     },
 }
