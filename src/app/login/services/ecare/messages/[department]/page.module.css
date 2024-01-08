@@ -83,3 +83,19 @@
 .SearchBar{
     padding: 10px;
 }
+
+.PanelBtn{
+    background-color: #14AE5C;
+    color: white;
+    border: 0px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+.PanelBtn:hover{
+    box-shadow: 0 0 2px 2px gainsboro;
+}
+.PanelBtn:active{
+    box-shadow: 0 0 2px 2px black;
+}

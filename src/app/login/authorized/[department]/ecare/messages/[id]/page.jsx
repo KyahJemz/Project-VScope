@@ -63,6 +63,7 @@ const Form = ({params}) => {
         SenderGoogleEmail = Department === "Medical" ? Defaults.MedicalEmail : Department === "Dental" ? Defaults.DentalEmail : Department === "SDPC" ? Defaults.SDPCEmail  : "";
         ReceiverGoogleImage = data?.GoogleImage??UserDefault;
         ReceiverGoogleEmail = data?.GoogleEmail??"?";
+        console.log(data)
     }
 
     const sortedResponses = data?.Responses?.sort((a, b) => {
@@ -258,21 +259,27 @@ const Form = ({params}) => {
         return (
             <div className={styles.Header}>
                 <p>Messaging - {`${data?.Details?.LastName??""}, ${data?.Details?.FirstName??""} ${data?.Details?.MiddleName??""}`}</p>
-                <button className={styles.Updates} onClick={()=>{IsViewUpdate ? setIsViewUpdate(false) : setIsViewUpdate(true)}}>View Updates</button>
-                <div className={`${styles.UpdateContainer} ${IsViewUpdate ? null  : styles.None}`}>
-                    {data?.Sickness?.length > 0 ? (
-                        data.Sickness.map((item, index) => (
-                            <div key={index} className={styles.UpdateRow}>
-                                <div className={styles.UpdateName}>{item.Name}</div>
-                                <div className={styles.UpdateDate}>{formatShortDate(item.Date)}</div>
-                            </div>
-                        ))
-                    ) : (
-                        <div className={styles.UpdateRow}>
-                            <div className={styles.UpdateName}>No Updates</div>
+                {data?.Status ? (
+                    <>
+                        <button className={styles.Updates} onClick={()=>{IsViewUpdate ? setIsViewUpdate(false) : setIsViewUpdate(true)}}>View Updates</button>
+                        <div className={`${styles.UpdateContainer} ${IsViewUpdate ? null  : styles.None}`}>
+                            {data?.Sickness?.length > 0 ? (
+                                data.Sickness.map((item, index) => (
+                                    <div key={index} className={styles.UpdateRow}>
+                                        <div className={styles.UpdateName}>{item.Name}</div>
+                                        <div className={styles.UpdateDate}>{formatShortDate(item.Date)}</div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className={styles.UpdateRow}>
+                                    <div className={styles.UpdateName}>No Updates</div>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
+                    </>
+                ) : (
+                    <></>
+                )}
             </div>
         )
     }

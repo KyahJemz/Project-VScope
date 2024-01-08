@@ -135,6 +135,7 @@ const Messages = ({params}) => {
 		<div className={styles.MainContent}>
 			<div className={styles.Header}>
 				<p>Messages</p>
+				<button className={styles.PanelBtn} onClick={()=>{router.push(`/login/services/ecare/messages/${Department}/directmessage`)}}>Direct Message</button>
 			</div>
 			<div className={styles.Body}>
 				<input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setMessagesFilter(e.target.value)}/>

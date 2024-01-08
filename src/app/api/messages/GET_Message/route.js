@@ -4,6 +4,7 @@ import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 import { encryptText, decryptText } from "@/utils/cryptojs";
+import DirectMessages from "@/models/DirectMessages";
 
 const decryptFields = (obj) => {
   if (typeof obj !== "object" || obj === null) {
@@ -32,6 +33,7 @@ export const GET = async (request) => {
     const url = new URL(request.url);
     const Department = url.searchParams.get("department");
     const AppointmentId = url.searchParams.get("id");
+    const GoogleEmail = url.searchParams.get("GoogleEmail");
 
     if (Department === "" || Department === null) {
         return new NextResponse("Invalid Department", { status: 400 });
@@ -42,12 +44,20 @@ export const GET = async (request) => {
 
         let Appointment = null;
 
+        Appointment = await DirectMessages.find({Department,GoogleEmail});
+
         if (Department === 'Medical'){
             Appointment = await MedicalAppointment.findById(AppointmentId);
         } else if (Department === 'Dental') {
             Appointment = await DentalAppointment.findById(AppointmentId);
         } else if (Department === 'SDPC') {
             Appointment = await SDPCAppointment.findById(AppointmentId);
+        }
+        if (!Appointment) {
+          Appointment = await DirectMessages.findById(AppointmentId);
+        }
+        if (!Appointment) {
+          Appointment = await DirectMessages.findOne({Department, GoogleEmail});
         }
 
         if (Appointment) {

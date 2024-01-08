@@ -38,7 +38,7 @@ export default function RootLayout(prop) {
   
 // DIRECT
     const { data: DirectData, mutate: DirectMutate, error: DirectError, isLoading: DirectIsLoading } =  useSWR(
-        `/api/messages/GET_Messages?GoogleEmail=&Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Direct Message")}`,
+        `/api/messages/GET_Messages?Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Direct Message")}`,
         fetcher
     );
 

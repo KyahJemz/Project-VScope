@@ -3,11 +3,12 @@ import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
+import DirectMessages from "@/models/DirectMessages";
 
 export const POST = async (request) => {
     if (request.method === 'POST') {
         const body = await request.formData();
-
+        const GoogleEmail = body.get("GoogleEmail");
         const Department = body.get("Department");
         const RecordId = body.get("RecordId");
         const Name = body.get("Name");
@@ -17,7 +18,27 @@ export const POST = async (request) => {
 
         let appointment = null;
 
-        if (Department === 'Medical'){
+        if(!RecordId) {
+          if(!GoogleEmail || !Department) {
+            return new NextResponse('Failed', { status: 500 });
+          }
+          if(Name === Department) {
+            appointment = await DirectMessages.findOneAndUpdate(
+              {Department, GoogleEmail},
+                { $set: { 'Responses.$[].ViewedByDepartment': true } },
+                { new: true }
+              );
+          } else {
+            appointment = await DirectMessages.findOneAndUpdate(
+              {Department, GoogleEmail},
+                { $set: { 'Responses.$[].ViewedByClient': true } },
+                { new: true }
+              );
+          }
+        }
+
+        if(!appointment) {
+          if (Department === 'Medical'){
             if (Name === Department) {
                 appointment = await MedicalAppointment.findByIdAndUpdate(
                   RecordId,
@@ -59,7 +80,17 @@ export const POST = async (request) => {
                     { new: true }
                   );
             }
-        } 
+          } 
+        }
+
+        if(!appointment) {
+          appointment = await DirectMessages.findByIdAndUpdate(
+            RecordId,
+              { $set: { 'Responses.$[].ViewedByDepartment': true } },
+              { new: true }
+            );
+        }
+
 
         if (appointment) {
             return new NextResponse('Success, Updated', { status: 200 });

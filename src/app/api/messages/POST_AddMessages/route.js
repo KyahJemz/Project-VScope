@@ -21,7 +21,6 @@ export const POST = async (request) => {
         const file = body.get('Attachment') ?? null;
         const Type = body.get('Type');
 
-
         let AttachmentName = ''; 
 
         if (file && typeof file.arrayBuffer === 'function') {
@@ -39,8 +38,44 @@ export const POST = async (request) => {
         if(AttachmentName==='' && Response === "") {
           return new NextResponse('No response', { status: 404 });
         }
+        
 
-        const newResponse = {
+    try {
+        await connect();
+
+        let appointment = null;
+
+        if(Type) {
+          const HasRecord = await DirectMessages.findOne({ GoogleEmail, Department });
+
+          const newResponse = {
+            Name: encryptText(Name),
+            GoogleEmail: encryptText(GoogleEmail),
+            Response: encryptText(Response),
+            Timestamp: encryptText(Timestamp),
+            Attachment: AttachmentName,
+            ViewedByDepartment: Department === Name,
+            ViewedByClient: Department !== Name,
+          };
+
+          if (HasRecord) {
+            appointment = await DirectMessages.findOneAndUpdate(
+              { GoogleEmail, Department },
+              { $push: { Responses: newResponse } },
+              { new: true }
+            );
+          } else {
+            appointment = await DirectMessages.create({
+              GoogleEmail: GoogleEmail,
+              FullName: Name,
+              Department: Department,
+              GoogleImage: encryptText(body.get('GoogleImage')) ?? encryptText(""),
+              Responses: [newResponse],
+            });
+          }
+
+        } else {
+          const newResponse = {
             Name: encryptText(Name),
             GoogleEmail: encryptText(GoogleEmail),
             Response: encryptText(Response),
@@ -48,31 +83,31 @@ export const POST = async (request) => {
             Attachment: AttachmentName, 
             ViewedByDepartment: Department === Name ? true : false,
             ViewedByClient: Department === Name ? false : true,
-        };
-  
-    try {
-        await connect();
+          };
 
-        let appointment = null;
-
-        if (Department === 'Medical'){
+          if (Department === 'Medical'){
             appointment = await MedicalAppointment.findByIdAndUpdate(RecordId,
               { $push: { Responses: newResponse } },
               { new: true });
+          } else if (Department === 'Dental'){
+            appointment = await DentalAppointment.findByIdAndUpdate(RecordId,
+                { $push: { Responses: newResponse }  },
+                { new: true });
+          } else if (Department === 'SDPC'){
+            appointment = await SDPCAppointment.findByIdAndUpdate(RecordId,
+                { $push: { Responses: newResponse } },
+                { new: true });
+          } 
 
-        } else if (Department === 'Dental'){
-
-          appointment = await DentalAppointment.findByIdAndUpdate(RecordId,
-              { $push: { Responses: newResponse }  },
-              { new: true });
-
-
-        } else if (Department === 'SDPC'){
-          appointment = await SDPCAppointment.findByIdAndUpdate(RecordId,
+          if(!appointment){
+            appointment = await DirectMessages.findByIdAndUpdate(
+              RecordId,
               { $push: { Responses: newResponse } },
-              { new: true });
-        } 
-  
+              { new: true }
+            );
+          }
+        }
+
         if (!appointment) {
           return new NextResponse('Appointment not found', { status: 404 });
         }

@@ -6,7 +6,6 @@ const userSchema = new Schema(
   {
     GoogleEmail: {
       type: String,
-      unique: true,
       required: true,
     },
     FullName: {

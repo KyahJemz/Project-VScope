@@ -5,7 +5,6 @@ import { encryptText, decryptText } from "@/utils/cryptojs";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
 import MedicalAppointment from "@/models/MedicalAppointment";
-import DirectMessages from "@/models/DirectMessages";
 
 const decryptFields = (obj) => {
 	if (typeof obj !== "object" || obj === null) {
@@ -106,7 +105,7 @@ export const GET = async (request) => {
 		}
     }
 
-	if (results && Type === "Message") {
+	if (results) {
 	
 		const topLevelFieldsToDecrypt = ["GoogleImage"];
 
