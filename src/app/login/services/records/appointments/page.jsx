@@ -80,7 +80,7 @@ const Page = ({params}) => {
 				) : (
 					filteredRecordsData.length > 0 ? (
 						filteredRecordsData.map((record, index) => (
-							<ListItem key={index} department={record.Department} name={`${formatShortDate(record.createdAt)} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"})`} image={record?.Department === "Medical" ? Medical : record?.Department === "Dental" ? Dental : record?.Department === "SDPC" ? SDPC : UserDefault} id={record._id} status={record.Status}/>
+							<ListItem key={index} department={record.Department} name={`${formatShortDate(record.createdAt)} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record?.Department}`} image={record?.Department === "Medical" ? Medical : record?.Department === "Dental" ? Dental : record?.Department === "SDPC" ? SDPC : UserDefault} id={record._id} status={record.Status}/>
 						))
 					) : (
 						"No appointments yet"
