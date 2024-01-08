@@ -19,7 +19,7 @@ export default function RootLayout(prop) {
 
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
     
-  // MESSAGES
+// MESSAGES
     const { data: RecordsData, mutate: RecordsMutate, error: RecordsError, isLoading: RecordsIsLoading } =  useSWR(
         `/api/messages/GET_Messages?Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Message")}`,
         fetcher
@@ -31,6 +31,7 @@ export default function RootLayout(prop) {
     : [];
 
     const filteredRecordsData = sortedRecordsData.filter((record) => {
+        if (record.Status === "Completed" || record.Status === "Canceled" || record.Status === "Rejected") return false;
         const FullName = `${record?.Details?.LastName??"?"}, ${record?.Details?.FirstName??"?"} ${record?.Details?.MiddleName??""}`;
         if (MessagesFilter !== "" && !FullName.toLowerCase().includes(MessagesFilter.toLowerCase())) return false;
         return true;
@@ -71,9 +72,9 @@ export default function RootLayout(prop) {
 
 		if (record?.Responses) {
 			for (const response of record.Responses) {
-			if (response.ViewedByDepartment === false) {
-				unviewedCount++;
-			}
+                if (response.ViewedByDepartment === false) {
+                    unviewedCount++;
+                }
 			}
 		}
 
@@ -109,13 +110,12 @@ export default function RootLayout(prop) {
                                         <p data-value={item?._id} className={`${styles.MessageLatest} ${IsNew(item) ? styles.Active : null}`}>{item?.Responses[item.Responses.length - 1]?.Response ?? "..."}</p>
                                         <p data-value={item?._id} className={`${styles.MessageTime} ${IsNew(item) ? styles.Active : null}`}>{formatShortDate(item.updatedAt)}</p>
                                     </div>
-
                                 </div>
                             )
                         }
                     </div>
                 </>
-                ) : (
+            ) : (
                 <>
                     <input className={styles.SearchBox} type="search" placeholder="Search..." onChange={(e)=>setDirectMessagesFilter(e.target.value)}/>
                     <hr />
