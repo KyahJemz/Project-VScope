@@ -47,13 +47,13 @@
   flex-direction: column;
   position: relative;
   grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows: auto 1fr auto 125px;
+  grid-template-rows: auto 1fr auto;
   gap: 5px;
   grid-template-areas: 
       "Details Details Details"
       "Diagnosis Prescription Note"
       "Days Days Status"
-      "Advise Advise Advise";
+;
   height: 100%;
 }
   .Details {

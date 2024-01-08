@@ -147,7 +147,7 @@ const Schedule = ({ params }) => {
 
 						<label className={styles.radioForm} htmlFor="schedulingtime6"><input type="radio" name="test" id="schedulingtime6" value="afternoon" onChange={(e)=>{setSelectedTime("afternoon")}}/>Afternoon</label>
 
-						<label className={styles.radioForm} htmlFor="schedulingtime7"><input type="radio" name="test" id="schedulingtime7" value="wholeday" onChange={(e)=>{setSelectedTime("wholeday")}}/>Whole Day</label>
+						{/* <label className={styles.radioForm} htmlFor="schedulingtime7"><input type="radio" name="test" id="schedulingtime7" value="wholeday" onChange={(e)=>{setSelectedTime("wholeday")}}/>Whole Day</label> */}
 
 						<label className={styles.radioForm} htmlFor="schedulingtime8"><input type="radio" name="test" id="schedulingtime8" value="not-available" onChange={(e)=>{setSelectedTime("not-available")}}/>Not Available</label>
 

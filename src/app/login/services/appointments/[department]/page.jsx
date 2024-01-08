@@ -421,7 +421,7 @@ const Page = ({ params }) => {
 					))}
 				</select>
 				<textarea disabled={IsUploading} className={`${styles.ConcernTextArea} ${styles.InputArea}`} name="Concern" id="" rows={5} required placeholder="Concern..."></textarea>
-				<input disabled={IsUploading} type="text" className={styles.InputArea} name="" readOnly value={formatDate(SelectedDay)} required placeholder="Selected Date..."/>
+				<input disabled={IsUploading} type="text" className={styles.InputArea} name="" readOnly value={formatDate(SelectedDay) === "Jan 1, 1970" ? "" : formatDate(SelectedDay)} required placeholder="Selected Date..."/>
 				<input disabled={IsUploading} type="text" className={styles.InputArea} name="" readOnly value={SelectedTime} required placeholder="Selected Time..."/>
 				<input type="text" hidden name="Date" value={SelectedDay} required/>
 				<input type="text" hidden name="Time" value={SelectedTime} required/>

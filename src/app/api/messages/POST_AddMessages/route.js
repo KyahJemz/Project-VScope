@@ -44,8 +44,8 @@ export const POST = async (request) => {
             Response: encryptText(Response),
             Timestamp: encryptText(Timestamp),
             Attachment: AttachmentName, 
-            ViewedByDepartment: false,
-            ViewedByClient: false,
+            ViewedByDepartment: Department === Name ? true : false,
+            ViewedByClient: Department === Name ? false : true,
         };
   
     try {

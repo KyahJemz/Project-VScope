@@ -232,7 +232,7 @@ const Form = ({params}) => {
     const Header = () => {
         return (
             <div className={styles.Header}>
-                Messaging - {`${Department === "Dental" ? "Dental Health Services" : Department === "Medical" ? "Medical Health Services" : Department === "SDPC" ? "SDPC Department" : "?"}`}
+                <p>Messaging - {`${Department === "Dental" ? "Dental Health Services" : Department === "Medical" ? "Medical Health Services" : Department === "SDPC" ? "SDPC Department" : "?"}`}</p>
             </div>
         )
     }

@@ -147,10 +147,6 @@ const Page = ({ params }) => {
 
 
 
-					<div className={styles.Advise}>
-						<p className={styles.AdviseTitle}>Advise</p>
-						<textarea className={styles.AdviseText} name="" id="" rows="auto"></textarea>
-					</div>
 				</>
 			}	
 		</div>
