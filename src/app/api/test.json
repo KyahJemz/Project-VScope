@@ -1,0 +1,175 @@
+
+{
+    "GoogleEmail": "s.stephen.layson@sscr.edu",
+    "GoogleImage": "U2FsdGVkX1/Rq9/PJLFWsz6/fuVBA2Xdkp8LqTkjZFREeoGJLgdc84JUXVGhtnnKt0IBd8afp6vfs1z+gxvhy63TfHpG0fjJ/oyl82ASr93wUM1kQz+0O79NtpQajtuyEgnwuc6/CSPrOzXUAqe4DQ==",
+    "Department": "Medical",
+    "Status": "Approved",
+    "Type": "Appointment",
+    "Category": "Student",
+    "ServiceOffered": "Services 1",
+    "Responses": [],
+    "Details": {
+      "LastName": "U2FsdGVkX19YG26N7mW/mu7j4lPbS9jEXo0HqCooJnE=",
+      "FirstName": "U2FsdGVkX19YElXgxnmIAPGK/NMu4RM6DTORRosBkotVWQjvYdvvTPUWDFPbhJkF",
+      "MiddleName": "U2FsdGVkX1/qJbGG3Buabbhdd28hv5TCqglCSUZLrUk=",
+      "Address": "U2FsdGVkX1/d63MNvqzCg74DCh5uXS22kCzpML4cSP0yMufhC0JHn46UJi2eURwOxqO/T93PHwFLbHZWQK7UpQ==",
+      "Birthday": "U2FsdGVkX19PNL31VZU+otqwLU7CngJh/7ULOB3QxaI=",
+      "Age": "U2FsdGVkX1+j++GFLRrhlwgPCk1h4LFbSTPaBT2RkLs=",
+      "Sex": "U2FsdGVkX190/9rsxN6sicfZntxOOF7SwlNrlyvM3Ww=",
+      "CourseStrand": "U2FsdGVkX19N47tjmLORE7sKr2K2lKkQqt7OMy+TUNE=",
+      "YearLevel": "U2FsdGVkX18vWhdt2FY0sqgJ2OrVTV7b1d/bJ5urQNQ=",
+      "SchoolEmail": "U2FsdGVkX18XudiCYGeCt2spuuj/HU0Ni5FExoHDbQFYZttuZkg7/zLkJe84RKvv",
+      "StudentNumber": "U2FsdGVkX1+43E5LTHmD+E5W4oWU7877urghBCutHYU=",
+      "ContactNumber": "U2FsdGVkX19CJkFavrhaA+CZz5xsmp2iDV2TkypXlaY=",
+      "InCaseOfEmergencyPerson": "U2FsdGVkX19Nz/mWIhqgAFFpTTGZymMjIQiil7XJt3U=",
+      "InCaseOfEmergencyNumber": "U2FsdGVkX18XVfuTfhlHKUhano6zvre+Mh6+1Oc0MBI=",
+      "Concern": "U2FsdGVkX19DuDdg+VePwlvSvlAT6/IfuQcp4Hmz2r4="
+    },
+    "Prescriptions": [
+      {
+        "Prescription": "erere",
+        "Timestamp": "1704685251251",
+        "UniqueId": "f92db4bc-2b21-4a72-91d9-aeb9f3ff0ac3"
+      },
+      {
+        "Prescription": "werw",
+        "Timestamp": "1704685263781",
+        "UniqueId": "a8be2400-db56-4bcb-93f6-71c292b8e945"
+      },
+      {
+        "Prescription": "13 12312313123123 ",
+        "Timestamp": "1704685325967",
+        "UniqueId": "c659748e-41d5-4737-8d58-73f9e5326438"
+      }
+    ],
+    "Diagnosis": [
+      {
+        "Diagnosis": "test Prescriptions",
+        "Timestamp": "1704685250570",
+        "UniqueId": "d28ba401-ed72-4c2e-9a17-e08b0aede3b0"
+      },
+      {
+        "Diagnosis": "wer",
+        "Timestamp": "1704685264708",
+        "UniqueId": "dd58e695-d808-42eb-b08b-975bf64c5d3d"
+      },
+      {
+        "Diagnosis": "12313 1231231 13 312312 3123 13",
+        "Timestamp": "1704685321290",
+        "UniqueId": "82664ddd-9a90-4a1d-b731-1016ff8400e3"
+      }
+    ],
+    "Notes": [
+      {
+        "Note": "werwerwewe",
+        "Timestamp": "1704685253710",
+        "UniqueId": "83e17775-a110-4593-a37f-487c4f4f1b5f"
+      },
+      {
+        "Note": "were",
+        "Timestamp": "1704685261615",
+        "UniqueId": "870889ab-bc91-46a4-b278-7bb3213a30bb"
+      }
+    ],
+    "AppointmentDate": "2024-01-27",
+    "AppointmentTime": "10am-12pm",
+    "DateApproved": "Mon Jan 08 2024 02:34:30 GMT+0800 (Singapore Standard Time)",
+    "DateCleared": "",
+    "ReScheduled": false,
+    "createdAt": {
+      "$date": "2024-01-07T17:30:47.203Z"
+    },
+    "updatedAt": {
+      "$date": "2024-01-08T03:42:05.967Z"
+    },
+    "__v": 0
+}
+
+
+
+  
+{
+    "GoogleEmail": "s.stephen.layson@sscr.edu",
+    "GoogleImage": "",
+    "Department": "Medical",
+    "Status": "Approved",
+    "Type": "Appointment",
+    "Category": "Student",
+    "ServiceOffered": "Services 1",
+    "Responses": [],
+    "Details": {
+      "LastName": "",
+      "FirstName": "",
+      "MiddleName": "",
+      "Address": "",
+      "Birthday": "",
+      "Age": "",
+      "Sex": "",
+      "CourseStrand": "",
+      "YearLevel": "",
+      "SchoolEmail": "",
+      "StudentNumber": "",
+      "ContactNumber": "",
+      "InCaseOfEmergencyPerson": "",
+      "InCaseOfEmergencyNumber": "",
+      "Concern": ""
+    },
+    "Prescriptions": [
+      {
+        "Prescription": "erere",
+        "Timestamp": "1704685251251",
+        "UniqueId": "f92db4bc-2b21-4a72-91d9-aeb9f3ff0ac3"
+      },
+      {
+        "Prescription": "werw",
+        "Timestamp": "1704685263781",
+        "UniqueId": "a8be2400-db56-4bcb-93f6-71c292b8e945"
+      },
+      {
+        "Prescription": "13 12312313123123 ",
+        "Timestamp": "1704685325967",
+        "UniqueId": "c659748e-41d5-4737-8d58-73f9e5326438"
+      }
+    ],
+    "Diagnosis": [
+      {
+        "Diagnosis": "test Prescriptions",
+        "Timestamp": "1704685250570",
+        "UniqueId": "d28ba401-ed72-4c2e-9a17-e08b0aede3b0"
+      },
+      {
+        "Diagnosis": "wer",
+        "Timestamp": "1704685264708",
+        "UniqueId": "dd58e695-d808-42eb-b08b-975bf64c5d3d"
+      },
+      {
+        "Diagnosis": "12313 1231231 13 312312 3123 13",
+        "Timestamp": "1704685321290",
+        "UniqueId": "82664ddd-9a90-4a1d-b731-1016ff8400e3"
+      }
+    ],
+    "Notes": [
+      {
+        "Note": "werwerwewe",
+        "Timestamp": "1704685253710",
+        "UniqueId": "83e17775-a110-4593-a37f-487c4f4f1b5f"
+      },
+      {
+        "Note": "were",
+        "Timestamp": "1704685261615",
+        "UniqueId": "870889ab-bc91-46a4-b278-7bb3213a30bb"
+      }
+    ],
+    "AppointmentDate": "2024-01-27",
+    "AppointmentTime": "10am-12pm",
+    "DateApproved": "Mon Jan 08 2024 02:34:30 GMT+0800 (Singapore Standard Time)",
+    "DateCleared": "",
+    "ReScheduled": false,
+    "createdAt": {
+      "$date": "2024-01-07T17:30:47.203Z"
+    },
+    "updatedAt": {
+      "$date": "2024-01-08T03:42:05.967Z"
+    },
+    "__v": 0
+}
