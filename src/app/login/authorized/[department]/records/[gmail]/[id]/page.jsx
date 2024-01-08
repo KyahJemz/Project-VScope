@@ -11,6 +11,7 @@ import DentalNgipinList from "public/DentalNgipinList.png";
 
 const Page = ({ params }) => {
 	const Department = params.department;
+	const GoogleEmail = params.gmail;
 	const Id = params.id;
 	const router = useRouter();
 	const dateRange = [];
@@ -77,8 +78,11 @@ const Page = ({ params }) => {
 							<p className={styles.ProfileName}>{data?.Details?.FirstName??""} {data?.Details?.MiddleName??""} {data?.Details?.LastName??""}</p>
 							<p className={styles.ProfileId}>{data?.Details?.StudentNumber??"n/a"}</p>
 							<p className={styles.ProfileEmail}>{data?.GoogleEmail??"n/a"}</p>
+							{data.Status === "Pending" || data.Status === "Rejected" ? null :
+								<button className={styles.AssessmentHistoryBtn} onClick={()=>router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+Id+'/messages')}>View Messages</button>
+							}
 						</div>
-						
+
 					</div>
 
 
