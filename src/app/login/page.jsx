@@ -9,9 +9,9 @@ import Hero from "public/hero.png";
 import ImageSlider from "@/components/ImageSlider/ImageSlider";
 
 const slides = [
-  { url: "/1.png", title: "beach" },
-  { url: "/2.png", title: "boat" },
-  { url: "/3.png", title: "forest" },
+  { url: "https://i.imgur.com/4dEzbKy.png", title: "beach" },
+  { url: "https://i.imgur.com/4dEzbKy.png", title: "boat" },
+  { url: "https://i.imgur.com/FWAH6wd.png", title: "forest" },
 ];
 
 const containerStyles = {
@@ -50,7 +50,7 @@ const Login = () => {
       <div classname={styles.rightpanel}>
 
         <div className={styles.visible}>
-          <Image src={Hero} className={styles.imagelogo} alt="logo" width={100} height={100} />
+          <Image src="https://i.imgur.com/4immlsF.png" className={styles.imagelogo} alt="logo" width={100} height={100} />
           <button className={styles.googlesignin} onClick={() => {signIn("google");}}>
             Login
           </button>
