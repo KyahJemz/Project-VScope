@@ -384,34 +384,59 @@ const Page = ({ params }) => {
 					</div>
 
 
-
-					<div className={styles.Prescription}>
-						<p className={styles.ListTitle}>Prescriptions</p>
-						<hr className={styles.Line} />
-						{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
-							<div key={index} className={styles.ListItem}>
-								<p className={styles.ListItemText}>{prescription.Prescription}</p>
-								<button className={styles.ListItemBtn} disabled={IsPrescriptionsProcess} data-key={"Prescription"} data-value={prescription.UniqueId} data-text={prescription.Prescription} onClick={ConfirmRemove}>x</button>
-							</div>
-						)) : 
-							"No Records"
-						}
-						<hr className={styles.Line}/>
-						<form className={styles.ListItem} onSubmit={AddPrescriptions}>
-							<input name="Value" className={styles.ListItemText} disabled={IsPrescriptionsProcess} list="PrescriptionsList" placeholder="Prescription"/>
-								<datalist id="PrescriptionsList">
-									{Data?.Prescriptions[Department]?.map((element, index) => (
-										<option key={index} value={element}/>
-									))}
-									{PrescriptionData?.map((element, index) => (
-										<option key={index} value={element.Name}/>
-									))}
-								</datalist>
-							<button className={styles.ListItemAddBtn} disabled={IsPrescriptionsProcess}>+</button>
-						</form>
-					</div>
-
-
+					{Department === "SDPC" ? 
+						<div className={styles.Prescription}>
+							<p className={styles.ListTitle}>Service Offered</p>
+							<hr className={styles.Line} />
+							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
+								<div key={index} className={styles.ListItem}>
+									<p className={styles.ListItemText}>{prescription.Prescription}</p>
+									<button className={styles.ListItemBtn} disabled={IsPrescriptionsProcess} data-key={"Prescription"} data-value={prescription.UniqueId} data-text={prescription.Prescription} onClick={ConfirmRemove}>x</button>
+								</div>
+							)) : 
+								"No Records"
+							}
+							<hr className={styles.Line}/>
+							<form className={styles.ListItem} onSubmit={AddPrescriptions}>
+								<input name="Value" className={styles.ListItemText} disabled={IsPrescriptionsProcess} list="PrescriptionsList" placeholder="Service Offered"/>
+									<datalist id="PrescriptionsList">
+										{Data?.Services[Department]?.map((element, index) => (
+											<option key={index} value={element}/>
+										))}
+										{PrescriptionData?.map((element, index) => (
+											<option key={index} value={element.Name}/>
+										))}
+									</datalist>
+								<button className={styles.ListItemAddBtn} disabled={IsPrescriptionsProcess}>+</button>
+							</form>
+						</div>
+					:
+						<div className={styles.Prescription}>
+							<p className={styles.ListTitle}>Prescriptions</p>
+							<hr className={styles.Line} />
+							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
+								<div key={index} className={styles.ListItem}>
+									<p className={styles.ListItemText}>{prescription.Prescription}</p>
+									<button className={styles.ListItemBtn} disabled={IsPrescriptionsProcess} data-key={"Prescription"} data-value={prescription.UniqueId} data-text={prescription.Prescription} onClick={ConfirmRemove}>x</button>
+								</div>
+							)) : 
+								"No Records"
+							}
+							<hr className={styles.Line}/>
+							<form className={styles.ListItem} onSubmit={AddPrescriptions}>
+								<input name="Value" className={styles.ListItemText} disabled={IsPrescriptionsProcess} list="PrescriptionsList" placeholder="Prescription"/>
+									<datalist id="PrescriptionsList">
+										{Data?.Prescriptions[Department]?.map((element, index) => (
+											<option key={index} value={element}/>
+										))}
+										{PrescriptionData?.map((element, index) => (
+											<option key={index} value={element.Name}/>
+										))}
+									</datalist>
+								<button className={styles.ListItemAddBtn} disabled={IsPrescriptionsProcess}>+</button>
+							</form>
+						</div>
+					}
 
 					<div className={styles.Note}>
 						<p className={styles.ListTitle}>Notes</p>

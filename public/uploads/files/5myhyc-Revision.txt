@@ -1,0 +1,22 @@
+- Calendar - Halfday (saturday)
+- Alert
+- Limited to one acc appointment per time on date
+- First Friday Mass (events or holidays)
+- Change calendar (If not available, change to color red.)
+- Automatic approved if selected date is available
+- Patient side (input field of common symptoms)
+- You can go to school now
+- Marked as complete
+	- Appointment Message (different)
+	- Sickness Report (different message)
+- Request Medicine (Walk in features)
+- From Records (we must know If the history is appointments or sickness)
+- Messages (Red numbers of messages)
+- Walkins should not be in progress (current data)
+- Reports (if possible should not consider the gender or still add one).
+- Printable Reports.
+- Logs of prints or save pdfs.
+
+
+- progress/SDPC/ yung prescription replace sa data ng Service offer kasi di naman nagpe prescribe ang SDPC
+- Other / History

@@ -100,18 +100,31 @@ const Page = ({ params }) => {
 
 
 
-					<div className={styles.Prescription}>
-						<p className={styles.ListTitle}>Prescriptions</p>
-						<hr className={styles.Line} />
-						{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
-							<div key={index} className={styles.ListItem}>
-								<p className={styles.ListItemText}>{prescription.Prescription}</p>
-							</div>
-						)) : 
-							"No Records"
-						}
-						<hr className={styles.Line}/>
-					</div>
+					{Department === "SDPC" ? 
+						<div className={styles.Prescription}>
+							<p className={styles.ListTitle}>Service Offered</p>
+							<hr className={styles.Line} />
+							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
+								<div key={index} className={styles.ListItem}>
+									<p className={styles.ListItemText}>{prescription.Prescription}</p>
+								</div>
+							)) : 
+								"No Records"
+							}
+						</div>
+					:
+						<div className={styles.Prescription}>
+							<p className={styles.ListTitle}>Prescriptions</p>
+							<hr className={styles.Line} />
+							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
+								<div key={index} className={styles.ListItem}>
+									<p className={styles.ListItemText}>{prescription.Prescription}</p>
+								</div>
+							)) : 
+								"No Records"
+							}
+						</div>
+					}
 
 
 

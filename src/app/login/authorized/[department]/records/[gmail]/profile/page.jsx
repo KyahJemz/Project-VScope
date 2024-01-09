@@ -7,7 +7,6 @@ import Image from "next/image";
 import UserDefault from "public/UserDefault.png"
 import ActionConfirmation from "@/components/ActionConfirmation/ActionConfirmation";
 import { Data } from "@/models/Data";
-import Department from "@/app/information/[department]/page";
 
 const Page = ({params}) => {
 	const GoogleEmail = params.gmail;
@@ -235,7 +234,7 @@ const Page = ({params}) => {
 							<div className={styles.FilesRow}>
 								<p className={styles.FilesHeader}>Other History / Records</p>
 								<input className={styles.AddFile} type="file" title="Auto Upload" onChange={UploadFile}/>
-								{data?.MedicalDetails?.Files?.map((element, index) => (
+								{data?.DentalDetails?.Files?.map((element, index) => (
 									<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
 								))}
 							</div>	
@@ -246,7 +245,7 @@ const Page = ({params}) => {
 							<div className={styles.FilesRow}>
 								<p className={styles.FilesHeader}>Other History / Records</p>
 								<input className={styles.AddFile} type="file" title="Auto Upload" onChange={UploadFile}/>
-								{data?.MedicalDetails?.Files?.map((element, index) => (
+								{data?.SDPCDetails?.Files?.map((element, index) => (
 									<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
 								))}
 							</div>	
