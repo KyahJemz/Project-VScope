@@ -156,6 +156,7 @@ const Page = ({ params }) => {
 
 					<div className={styles.Status}>
 						{data.Status}
+						<button className={styles.messagesBtn} onClick={()=>router.push(`/login/services/records/healthservices/${Department}/record/${Id}/messages`)}>View Messages</button>
 					</div>
 
 

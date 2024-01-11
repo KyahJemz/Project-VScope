@@ -42,12 +42,36 @@ const Layout = ({ children }) => {
 		return unviewedCount;
 	};
 
+  const { data, mutate, error, isLoading } = useSWR(
+    `/api/messages/GET_Message?GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
+    fetcher
+);
+
+const HasDirectMessages = (record) => {
+let unviewedCount = 0;
+
+if (record) {
+  for (const item of record) {
+    if (item?.Responses) {
+    for (const response of item.Responses) {
+      if (response.ViewedByClient === false) {
+      unviewedCount++;
+      }
+    }
+    }
+  }
+  }
+
+return unviewedCount;
+};
+
+
 
   return (
     <div className={styles.mainContainer}>
         <div className={styles.MiniNav}>  
           <div className={styles.MiniNavTop}>
-            <a href={'/login/services/ecare/messages'} className={`${styles.MiniNavButton}`}>Messages {IsNew(RecordsData) > 0 ? <div className="dot"></div> : null}</a>
+            <a href={'/login/services/ecare/messages'} className={`${styles.MiniNavButton}`}>Messages {(Number(IsNew(RecordsData)) + Number(HasDirectMessages(data))) > 0 ? <div className="dot"></div> : null}</a>
             <a href={'/login/services/ecare/details'} className={`${styles.MiniNavButton}`}>Details</a>
             <a href={'/login/services/ecare/progress'} className={`${styles.MiniNavButton}`}>Progress</a>
             {Role === "Student" ? <a href={'/login/services/ecare/assessment'} className={`${styles.MiniNavButton}`}>SDPC Assessments</a> : null}

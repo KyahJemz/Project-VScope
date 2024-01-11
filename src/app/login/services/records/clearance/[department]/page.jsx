@@ -13,11 +13,13 @@ import Dental from "public/Dental.jpg";
 import UserDefault from "/public/UserDefault.png"
 
 const Page = ({params}) => {
+	
+	const Department = params.department;
+	const router = useRouter();
+
 	const { data: session, status } = useSession();
 	const [GoogleEmail, setGoogleEmail] = useState("");
 	const [Role, setRole] = useState("");
-	const Department = params.department;
-	const router = useRouter();
 
 	useEffect(() => {
 		if (status === "authenticated" && session?.user?.email) {

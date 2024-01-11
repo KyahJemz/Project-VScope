@@ -14,22 +14,25 @@ const Page = () => {
 	const { data: session, status } = useSession();
 	const [GoogleEmail, setGoogleEmail] = useState("");
 	const [Role, setRole] = useState("");
+	
 	useEffect(() => {
-	  if (status === "authenticated" && session?.user?.email) {
-		setGoogleEmail(session.user.email);
-		setRole(session.user.role);
-	  }
-	}, [status, session]);
+		if (status === "authenticated" && session?.user?.email) {
+		  setGoogleEmail(session.user.email);
+		  setRole(session.user.role);
+		}
+	  }, [status, session]);
+
+
 
 	const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 	const { data: RecordsData, mutate: RecordsMutate, error: RecordsError, isLoading: RecordsIsLoading } =  useSWR(
 		  `/api/messages/GET_Messages?GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
 		  fetcher
-	  );
+	);
   
 	const IsNew = (record, department) => {
-		  let unviewedCount = 0;
+		let unviewedCount = 0;
   
 	  if (record) {
 		for (const item of record) {
@@ -46,6 +49,30 @@ const Page = () => {
 		  return unviewedCount;
 	  };
 
+
+	const { data, mutate, error, isLoading } = useSWR(
+        `/api/messages/GET_Message?GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
+        fetcher
+    );
+	
+	const HasDirectMessages = (record, department) => {
+		let unviewedCount = 0;
+
+		if (record) {
+			for (const item of record) {
+			  if (item?.Responses) {
+				for (const response of item.Responses) {
+				  if (response.ViewedByClient === false && item.Department === department) {
+					unviewedCount++;
+				  }
+				}
+			  }
+			}
+		  }
+
+		return unviewedCount;
+	};
+
 	return (
 		<div className={styles.MainContainer}>
 			<h3 className={styles.selectTitle}>Messages - Select department down below:</h3>
@@ -60,7 +87,7 @@ const Page = () => {
 						width={50}
 					/>
 					<span className={styles.title}>Medical Health Services</span>
-					{IsNew(RecordsData,"Medical") > 0 ? <><div className="dot"></div><div></div></> : <div></div>}
+					{(Number(IsNew(RecordsData,"Medical")) + Number(HasDirectMessages(data, "Medical"))) > 0 ? <><div className="dot"></div><div></div></> : <div></div>}
 				</Link>
 	
 				<Link href="/login/services/ecare/messages/Dental" className={styles.itemcontainer}>
@@ -72,7 +99,7 @@ const Page = () => {
 						width={50}
 					/>
 					<span className={styles.title}>Dental Health Services</span>
-					{IsNew(RecordsData,"Dental") > 0 ? <><div className="dot"></div><div></div></> : <div></div>}
+					{(Number(IsNew(RecordsData,"Dental")) + Number(HasDirectMessages(data, "Dental"))) > 0 ? <><div className="dot"></div><div></div></> : <div></div>}
 				</Link>
 				{Role === "Student" ?
 					<Link href="/login/services/ecare/messages/SDPC" className={styles.itemcontainer}>
@@ -84,7 +111,7 @@ const Page = () => {
 							width={50}
 						/>
 						<span className={styles.title}>SDPC Department</span>
-						{IsNew(RecordsData,"SDPC") > 0 ? <><div className="dot"></div><div></div></> : <div></div>}
+						{(Number(IsNew(RecordsData,"SDPC")) + Number(HasDirectMessages(data, "SDPC"))) > 0 ? <><div className="dot"></div><div></div></> : <div></div>}
 					</Link>
 				: 
 					null

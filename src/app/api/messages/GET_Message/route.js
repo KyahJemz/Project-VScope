@@ -35,10 +35,6 @@ export const GET = async (request) => {
     const AppointmentId = url.searchParams.get("id");
     const GoogleEmail = url.searchParams.get("GoogleEmail");
 
-    if (Department === "" || Department === null) {
-        return new NextResponse("Invalid Department", { status: 400 });
-    }
-
     try {
         await connect();
 
@@ -52,6 +48,16 @@ export const GET = async (request) => {
             Appointment = await DentalAppointment.findById(AppointmentId);
         } else if (Department === 'SDPC') {
             Appointment = await SDPCAppointment.findById(AppointmentId);
+        } else {
+          Appointment = await DirectMessages.findOne({Department, GoogleEmail});
+          if (!Appointment) {
+            const results = [].concat(
+              await DirectMessages.find({ Department: "Medical", GoogleEmail }),
+              await DirectMessages.find({ Department: "Dental", GoogleEmail }),
+              await DirectMessages.find({ Department: "SDPC", GoogleEmail })
+              );
+            return new NextResponse(JSON.stringify(results), { status: 200 });
+          }
         }
         if (!Appointment) {
           Appointment = await DirectMessages.findById(AppointmentId);

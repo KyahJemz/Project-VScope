@@ -85,6 +85,7 @@
 }
 
 .PanelBtn{
+    position: relative;
     background-color: #14AE5C;
     color: white;
     border: 0px;

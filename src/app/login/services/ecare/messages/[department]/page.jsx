@@ -52,6 +52,29 @@ const Messages = ({params}) => {
 		fetcher
 	);
 
+	const { data, mutate, error, isLoading } = useSWR(
+        `/api/messages/GET_Message?department=${encodeURIComponent(Department)}&GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
+        fetcher
+    );
+
+	if (!isLoading){
+		console.log(data)
+	}
+
+	const HasDirectMessages = (record) => {
+		let unviewedCount = 0;
+
+			if (record?.Responses) {
+				for (const response of record.Responses) {
+					if (response.ViewedByClient === false) {
+						unviewedCount++;
+					}
+				}
+			}
+
+		return unviewedCount;
+	};
+
 	const sortedRecordsData = RecordsData && !RecordsIsLoading
     ? [...RecordsData]
 		.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
@@ -62,6 +85,7 @@ const Messages = ({params}) => {
     : [];
 
 	const filteredRecordsData = sortedRecordsData.filter((record) => {
+		if (record.Status === "Completed" || record.Status === "Rejected" || record.Status === "Canceled") return false;
 		const FullName = `${record?.Details?.LastName??"?"}, ${record?.Details?.FirstName??"?"} ${record?.Details?.MiddleName??""}`;
 		if (MessagesFilter !== "" && !FullName.toLowerCase().includes(MessagesFilter.toLowerCase())) return false;
 		return true;
@@ -135,7 +159,7 @@ const Messages = ({params}) => {
 		<div className={styles.MainContent}>
 			<div className={styles.Header}>
 				<p>Messages</p>
-				<button className={styles.PanelBtn} onClick={()=>{router.push(`/login/services/ecare/messages/${Department}/directmessage`)}}>Direct Message</button>
+				<button className={styles.PanelBtn} onClick={()=>{router.push(`/login/services/ecare/messages/${Department}/directmessage`)}}>Direct Message {HasDirectMessages(data) > 0 ? <div className="dot"></div>:null}</button>
 			</div>
 			<div className={styles.Body}>
 				<input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setMessagesFilter(e.target.value)}/>

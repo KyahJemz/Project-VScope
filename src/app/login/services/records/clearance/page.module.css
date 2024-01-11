@@ -30,6 +30,7 @@
   }
 
   .MiniNavButton{
+    position: relative;
     text-align: center;
     padding: 5px 20px;
     background-color: gainsboro;
