@@ -15,11 +15,13 @@ const Page = ({ params }) => {
   const [Course, setCourse] = useState("All");
   const [YearLevel, setYearLevel] = useState("All");
 
-  const [ChartPatients, setChartPatients] = useState("All");
+  const [ChartSystemPatients, setChartSystemPatients] = useState("All");
+  const [ChartWalkInPatients, setChartWalkInPatients] = useState("All");
   const [ChartGender, setChartGender] = useState("All");
   const [ChartSessions, setChartSessions] = useState("All");
 
-  const [ChartPatientsCount, setChartPatientsCount] = useState("0");
+  const [ChartSystemPatientsCount, setChartSystemPatientsCount] = useState("0");
+  const [ChartWalkInPatientsCount, setChartWalkInPatientsCount] = useState("0");
   const [ChartGenderCount, setChartGenderCount] = useState("0");
   const [ChartSessionsCount, setChartSessionsCount] = useState("0");
 
@@ -32,7 +34,8 @@ const Page = ({ params }) => {
 
   useEffect(() => {
     if (!isLoading && data) {
-      setChartPatientsCount(data?.TotalPatients?.All);
+      setChartSystemPatientsCount(data?.TotalSystemPatients?.All);
+      setChartWalkInPatientsCount(data?.TotalWalkInPatients?.All);
       setChartGenderCount(data?.TotalGender?.All);
       setChartSessionsCount(data?.TotalServiceSession?.All);
     }
@@ -234,24 +237,44 @@ const Page = ({ params }) => {
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Total service to Patients</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>System service to Patients</p>
                 <div className={styles.MiniCardDetails}>
-                  <div className={styles.MiniCardCount}>{ChartPatientsCount}</div>
+                  <div className={styles.MiniCardCount}>{ChartSystemPatientsCount}</div>
                   <div className={styles.MiniCardButtons}>
-                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Students" ? styles.Active : null}`} onClick={() => {
-                      ChartPatients === "Students"
-                        ? (setChartPatients("All"), setChartPatientsCount(data?.TotalPatients?.All??0))
-                        : (setChartPatients("Students"), setChartPatientsCount(data?.TotalPatients?.Students??0));
+                    <button className={`${styles.MiniCardBtn} ${ChartSystemPatients === "Students" ? styles.Active : null}`} onClick={() => {
+                      ChartSystemPatients === "Students"
+                        ? (setChartSystemPatients("All"), setChartSystemPatientsCount(data?.TotalSystemPatients?.All??0))
+                        : (setChartSystemPatients("Students"), setChartSystemPatientsCount(data?.TotalSystemPatients?.Students??0));
                     }}><div className={styles.MiniCardColor1}></div>Students</button>
-                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Lay Collaborators" ? styles.Active : null}`} onClick={() => {
-                      ChartPatients === "Lay Collaborators"
-                        ? (setChartPatients("All"), setChartPatientsCount(data?.TotalPatients?.All??0))
-                        : (setChartPatients("Lay Collaborators"), setChartPatientsCount(data?.TotalPatients["Lay Collaborators"]??0));
+                    <button className={`${styles.MiniCardBtn} ${ChartSystemPatients === "Lay Collaborators" ? styles.Active : null}`} onClick={() => {
+                      ChartSystemPatients === "Lay Collaborators"
+                        ? (setChartSystemPatients("All"), setChartSystemPatientsCount(data?.TotalSystemPatients?.All??0))
+                        : (setChartSystemPatients("Lay Collaborators"), setChartSystemPatientsCount(data?.TotalSystemPatients["Lay Collaborators"]??0));
                     }}><div className={styles.MiniCardColor2}></div>Lay Collaborators</button>
                   </div>
                 </div>
               </div>
 
+              <div className={styles.OverviewOthersMiniCard}>
+                <p className={styles.OverviewOthersMiniCardTitle}>Walk In service to Patients</p>
+                <div className={styles.MiniCardDetails}>
+                  <div className={styles.MiniCardCount}>{ChartWalkInPatientsCount}</div>
+                  <div className={styles.MiniCardButtons}>
+                    <button className={`${styles.MiniCardBtn} ${ChartWalkInPatients === "Students" ? styles.Active : null}`} onClick={() => {
+                      ChartWalkInPatients === "Students"
+                        ? (setChartWalkInPatients("All"), setChartWalkInPatientsCount(data?.TotalWalkInPatients?.All??0))
+                        : (setChartWalkInPatients("Students"), setChartWalkInPatientsCount(data?.TotalWalkInPatients?.Students??0));
+                    }}><div className={styles.MiniCardColor1}></div>Students</button>
+                    <button className={`${styles.MiniCardBtn} ${ChartWalkInPatients === "Lay Collaborators" ? styles.Active : null}`} onClick={() => {
+                      ChartWalkInPatients === "Lay Collaborators"
+                        ? (setChartWalkInPatients("All"), setChartWalkInPatientsCount(data?.TotalWalkInPatients?.All??0))
+                        : (setChartWalkInPatients("Lay Collaborators"), setChartWalkInPatientsCount(data?.TotalWalkInPatients["Lay Collaborators"]??0));
+                    }}><div className={styles.MiniCardColor2}></div>Lay Collaborators</button>
+                  </div>
+                </div>
+              </div>
+
+              
               <div className={styles.OverviewOthersMiniCard}>
                 <p className={styles.OverviewOthersMiniCardTitle}>Gender / Sex</p>
                 <div className={styles.MiniCardDetails}>

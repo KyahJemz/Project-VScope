@@ -11,6 +11,7 @@ const Page = () => {
   const { data: session, status } = useSession();
 	const [GoogleEmail, setGoogleEmail] = useState("");
 	const [Role, setRole] = useState("");
+
 	useEffect(() => {
 	  if (status === "authenticated" && session?.user?.email) {
 		setGoogleEmail(session.user.email);
@@ -19,6 +20,7 @@ const Page = () => {
 	}, [status, session]);
 
   const [Panel, setPanel] = useState("Diagnosis");
+  const [PatientsPanel, setPatientsPanel] = useState("System");
   const [Filter, setFilter] = useState("Week");
   const [Department, setDepartment] = useState("Medical");
 

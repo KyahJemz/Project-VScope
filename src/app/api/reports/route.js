@@ -125,7 +125,12 @@ export const GET = async (request) => {
                 Advised: 0,
                 ReScheduled: 0,
             },
-            TotalPatients:{
+            TotalWalkInPatients:{
+                Students: 0,
+                "Lay Collaborators": 0,
+                All: 0,
+            },
+            TotalSystemPatients:{
                 Students: 0,
                 "Lay Collaborators": 0,
                 All: 0,
@@ -184,13 +189,25 @@ export const GET = async (request) => {
             if (record.ReScheduled) {
                 ReportData.ChartSystem.ReScheduled += 1;
             }
-        // Total Patients 
-            if(record.Category && record.Category === "Student") {
-                ReportData.TotalPatients.Students += 1;
-                ReportData.TotalPatients.All += 1;
-            } else if (record.Category && record.Category === "Lay Collaborator") {
-                ReportData.TotalPatients["Lay Collaborators"] += 1;
-                ReportData.TotalPatients.All += 1;
+        // Total System Patients 
+            if(record.Type === "Appointment") {
+                if(record.Category && record.Category === "Student") {
+                    ReportData.TotalSystemPatients.Students += 1;
+                    ReportData.TotalSystemPatients.All += 1;
+                } else if (record.Category && record.Category === "Lay Collaborator") {
+                    ReportData.TotalSystemPatients["Lay Collaborators"] += 1;
+                    ReportData.TotalSystemPatients.All += 1;
+                }
+            }
+        // Total WalkIn Patients 
+            if(record.Type === "WalkIn") {
+                if(record.Category && record.Category === "Student") {
+                    ReportData.TotalWalkInPatients.Students += 1;
+                    ReportData.TotalWalkInPatients.All += 1;
+                } else if (record.Category && record.Category === "Lay Collaborator") {
+                    ReportData.TotalWalkInPatients["Lay Collaborators"] += 1;
+                    ReportData.TotalWalkInPatients.All += 1;
+                }
             }
         // Total Gender
             if(record.Details.Sex && record.Details.Sex === "Male") {
