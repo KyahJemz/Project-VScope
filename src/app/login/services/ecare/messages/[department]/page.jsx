@@ -90,6 +90,7 @@ const Messages = ({params}) => {
 		if (MessagesFilter !== "" && !FullName.toLowerCase().includes(MessagesFilter.toLowerCase())) return false;
 		return true;
 	});
+
 	  
 	const MessagesList = () => {
 		return (

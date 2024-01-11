@@ -15,7 +15,7 @@ export default function RootLayout(prop) {
 
         <div className={styles.Nav}>  
           <a href={'/login/authorized/'+Department+'/ecare/progress/walkins'} className={`${styles.NavButton}`}>Walk Ins</a>
-          <a href={'/login/authorized/'+Department+'/ecare/progress/appointments'} className={`${styles.NavButton}`}>Appointments</a>
+          <a href={'/login/authorized/'+Department+'/ecare/progress/appointments'} className={`${styles.NavButton}`}>System</a>
           {Department !== "SDPC" ?
             <a href={'/login/authorized/'+Department+'/ecare/progress/prescriptions'} className={`${styles.NavButton}`}>Prescriptions</a> 
           :

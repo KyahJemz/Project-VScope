@@ -15,6 +15,31 @@ export default function RootLayout(prop) {
 		fetcher
 	);
 
+  const { data: DirectData, mutate: DirectMutate, error: DirectError, isLoading: DirectIsLoading } =  useSWR(
+    `/api/messages/GET_Messages?Department=${encodeURIComponent(Department)}&Type=${encodeURIComponent("Direct Message")}`,
+    fetcher
+);
+
+const HasDirectMessages = (record) => {
+  let unviewedCount = 0;
+  
+  if (record) {
+    for (const item of record) {
+      if (item?.Responses) {
+      for (const response of item.Responses) {
+        if (response.ViewedByDepartment === false) {
+        unviewedCount++;
+        }
+      }
+      }
+    }
+    }
+  
+  return unviewedCount;
+};
+
+
+
   const IsNew = (record) => {
 		let unviewedCount = 0;
 
@@ -39,7 +64,7 @@ export default function RootLayout(prop) {
         <div className={styles.MiniNav}>  
           <div className={styles.MiniNavTop}>
             <a href={'/login/authorized/'+Department+'/ecare/walkins'} className={`${styles.MiniNavButton}`}>WALK INS</a>
-            <a href={'/login/authorized/'+Department+'/ecare/messages'} className={`${styles.MiniNavButton}`}>MESSAGES {IsNew(RecordsData) > 0 ? <div className="dot"></div> : null}</a>
+            <a href={'/login/authorized/'+Department+'/ecare/messages'} className={`${styles.MiniNavButton}`}>MESSAGES {IsNew(RecordsData) > 0 || HasDirectMessages(DirectData) > 0? <div className="dot"></div> : null}</a>
             <a href={'/login/authorized/'+Department+'/ecare/clearance'} className={`${styles.MiniNavButton}`}>CLEARANCE</a>
             <a href={'/login/authorized/'+Department+'/ecare/progress'} className={`${styles.MiniNavButton}`}>PROGRESS</a>
           </div>

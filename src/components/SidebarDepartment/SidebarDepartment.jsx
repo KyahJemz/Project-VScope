@@ -47,7 +47,29 @@ const Sidebar = ({department}) => {
       return unviewedCount;
     };
 
-
+    const { data: DirectData, mutate: DirectMutate, error: DirectError, isLoading: DirectIsLoading } =  useSWR(
+      `/api/messages/GET_Messages?Department=${encodeURIComponent(department)}&Type=${encodeURIComponent("Direct Message")}`,
+      fetcher
+  );
+  
+  const HasDirectMessages = (record) => {
+    let unviewedCount = 0;
+    
+    if (record) {
+      for (const item of record) {
+        if (item?.Responses) {
+        for (const response of item.Responses) {
+          if (response.ViewedByDepartment === false) {
+          unviewedCount++;
+          }
+        }
+        }
+      }
+      }
+    
+    return unviewedCount;
+  };
+  
 
 
   const ManagementLinks = [
@@ -66,7 +88,7 @@ const Sidebar = ({department}) => {
       id: 3,
       title: "e-CARE",
       url: "/login/authorized/"+department+"/ecare",
-      active: IsNew(RecordsData) > 0 ? true : false
+      active: IsNew(RecordsData) > 0 || HasDirectMessages(DirectData) > 0? true : false
     },
   ];
   

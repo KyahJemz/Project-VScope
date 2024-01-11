@@ -11,6 +11,8 @@ export default function RootLayout(prop) {
     const Department = prop.params.department
     const router = useRouter();
 
+    const [HasDirectMessageAlert, setHasDirectMessageAlert] = useState(false);
+
     const [MessagesFilter, setMessagesFilter] = useState("");
 	const [DirectMessagesFilter, setDirectMessagesFilter] = useState("");
 
@@ -81,12 +83,49 @@ export default function RootLayout(prop) {
 		return (unviewedCount > 0);
 	};
 
+    const HasDirectMessages = (record) => {
+        let unviewedCount = 0;
+        
+        if (record) {
+          for (const item of record) {
+            if (item?.Responses) {
+            for (const response of item.Responses) {
+              if (response.ViewedByDepartment === false) {
+              unviewedCount++;
+              }
+            }
+            }
+          }
+          }
+        
+        return unviewedCount;
+    };
+
+    const HasMessages = (record) => {
+        let unviewedCount = 0;
+        
+        if (record) {
+          for (const item of record) {
+            if (item?.Responses) {
+            for (const response of item.Responses) {
+              if (response.ViewedByDepartment === false) {
+              unviewedCount++;
+              }
+            }
+            }
+          }
+        }
+        
+        return unviewedCount;
+    };
+        
+
   return (
     <div className={styles.MainContainer}>
         <div className={styles.PersonList}>
             <div className={styles.Header}>
                 <p className={styles.SearchTitle}>{SelectedPanel}</p>
-                <button className={styles.PanelBtn} onClick={()=>{SelectedPanel === "Sickness Update" ? setSelectedPanel("Direct Messages") : setSelectedPanel("Sickness Update")}}>Switch</button>
+                <button className={styles.PanelBtn} onClick={()=>{SelectedPanel === "Sickness Update" ? setSelectedPanel("Direct Messages") : setSelectedPanel("Sickness Update")}}>Switch{SelectedPanel === "Sickness Update" && HasDirectMessages(DirectData) > 0 ? <div className="dot"></div>  : null}{SelectedPanel === "Direct Messages" && HasMessages(RecordsData) > 0 ? <div className="dot"></div>  : null} </button>
             </div>
             <hr />
             {SelectedPanel === "Sickness Update" ? (

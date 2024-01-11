@@ -61,7 +61,7 @@ const Form = ({params}) => {
     if(!isLoading) {
         SenderGoogleImage = Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC  : "";
         SenderGoogleEmail = Department === "Medical" ? Defaults.MedicalEmail : Department === "Dental" ? Defaults.DentalEmail : Department === "SDPC" ? Defaults.SDPCEmail  : "";
-        ReceiverGoogleImage = data?.GoogleImage??UserDefault;
+        ReceiverGoogleImage = data?.Type === "WalkIn" ? UserDefault : data?.GoogleImage??UserDefault;
         ReceiverGoogleEmail = data?.GoogleEmail??"?";
         console.log(data)
     }
