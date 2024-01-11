@@ -139,65 +139,61 @@ const Page = ({ params }) => {
             <div className={styles.OverviewTitle}>
               OVERVIEW
             </div>
-            <div className={styles.OverviewTable}>
-                <table className={`${styles.OverviewTableElement} ${styles.TableBorder}`}>
-                  <thead>
-                    <tr key="0" className={`${styles.TableBorder}`}>
-                      <th colSpan={1} className={styles.OverviewTableHeader}>
-                        Year Level:
-                      </th>
-                      <th colSpan={1} className={styles.OverviewTableHeaderSelect}>
-                        <select value={YearLevel} onChange={(e)=>setYearLevel(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
-                          <option value="All">All</option>
-                          {Data.YearLevel.map((element, index) => (
-                            <option key={index} value={element}>{element}</option>
-                          ))}
-                        </select>
-                      </th>
-                      <th colSpan={1} className={styles.OverviewTableHeader}>
-                        Course:
-                      </th>
-                      <th colSpan={2} className={styles.OverviewTableHeaderSelect}>
-                        <select value={Course} onChange={(e)=>setCourse(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
-                          <option value="All">All</option>
-                          {Data.Courses.map((element, index) => (
-                            <option key={index} value={element}>{element}</option>
-                          ))}
-                        </select>
-                      </th>
-                    </tr>
-                    <tr key="0">
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Diagnosis</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Number of Patients</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Gender</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Services used</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Prescriptions</th>
-                    </tr>
-                  </thead>
-                  <tbody className={styles.TableBorder}>
+            <div className={styles.OverviewTableContainer}>
+
+                <div className={`${styles.OverviewTable} ${styles.TableBorder}`}>
+                  <div className={styles.OverviewYearLevel}>
+                    <p>Year Level:</p>
+                    <select value={YearLevel} onChange={(e)=>setYearLevel(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
+                      <option value="All">All</option>
+                      {Data.YearLevel.map((element, index) => (
+                        <option key={index} value={element}>{element}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles.OverviewCourse}>
+                    <p>Course:</p>
+                    <select value={Course} onChange={(e)=>setCourse(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
+                      <option value="All">All</option>
+                      {Data.Courses.map((element, index) => (
+                        <option key={index} value={element}>{element}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles.OverviewHeader}>
+                    <p className={``}>Diagnosis</p>
+                    <p className={``}>Number of Patients</p>
+                    <p className={``}>Gender</p>
+                    <p className={``}>Services used</p>
+                    <p className={`${styles.OverviewHeaderLast}`}>Top Prescriptions</p>
+                  </div>
+                  <div className={styles.OverviewBody}>
                     {data?.TableSets?.length > 0 ? (
-                      data.TableSets.map((item, index) => (
+                        data.TableSets.map((item, index) => (
+                          <>
+                            <p className={``}>{item.Diagnosis}</p>
+                            <p className={``}>{item.Patients}</p>
+                            <p className={``}>{item.Gender}</p>
+                            <p className={``}>{item.Service}</p>
+                            <p className={``}>{item.Prescriptions}</p>
+
+                          </>
+                        ))
+                      ) : (
                         <>
-                          <tr key={index} >
-                            <td className={`${styles.TableBorder2}`}>{item.Diagnosis}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Patients}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Gender}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Service}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Prescriptions}</td>
-                          </tr>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
                         </>
-                      ))
-                    ) : (
-                      <tr key="1">
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                  </div>
+
+                </div>
+
+
+
             </div>
             <div className={styles.OverviewChart}>
               <div className={styles.PieChartDataRankingOverviewChart}>
@@ -234,7 +230,7 @@ const Page = ({ params }) => {
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Total of Patients</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>Total service to Patients</p>
                 <div className={styles.MiniCardDetails}>
                   <div className={styles.MiniCardCount}>{ChartPatientsCount}</div>
                   <div className={styles.MiniCardButtons}>
@@ -253,7 +249,7 @@ const Page = ({ params }) => {
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Numbers per Gender</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>Gender / Sex</p>
                 <div className={styles.MiniCardDetails}>
                   <div className={styles.MiniCardCount}>{ChartGenderCount}</div>
                   <div className={styles.MiniCardButtons}>
