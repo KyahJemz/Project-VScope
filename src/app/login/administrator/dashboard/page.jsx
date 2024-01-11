@@ -15,11 +15,13 @@ const Page = () => {
   const [Course, setCourse] = useState("All");
   const [YearLevel, setYearLevel] = useState("All");
 
-  const [ChartPatients, setChartPatients] = useState("All");
+  const [ChartSystemPatients, setChartSystemPatients] = useState("All");
+  const [ChartWalkInPatients, setChartWalkInPatients] = useState("All");
   const [ChartGender, setChartGender] = useState("All");
   const [ChartSessions, setChartSessions] = useState("All");
 
-  const [ChartPatientsCount, setChartPatientsCount] = useState("0");
+  const [ChartSystemPatientsCount, setChartSystemPatientsCount] = useState("0");
+  const [ChartWalkInPatientsCount, setChartWalkInPatientsCount] = useState("0");
   const [ChartGenderCount, setChartGenderCount] = useState("0");
   const [ChartSessionsCount, setChartSessionsCount] = useState("0");
 
@@ -32,7 +34,8 @@ const Page = () => {
 
   useEffect(() => {
     if (!isLoading && data) {
-      setChartPatientsCount(data?.TotalPatients?.All);
+      setChartSystemPatientsCount(data?.TotalSystemPatients?.All);
+      setChartWalkInPatientsCount(data?.TotalWalkInPatients?.All);
       setChartGenderCount(data?.TotalGender?.All);
       setChartSessionsCount(data?.TotalServiceSession?.All);
     }
@@ -101,7 +104,7 @@ const Page = () => {
       <div className={styles.MainContainer}>
 
         <div className={styles.Header}>
-          <select className={styles.DepartmentSelection} defaultValue={Department} onChange={(e)=>setDepartment(e.target.value)}>
+        <select className={styles.DepartmentSelection} defaultValue={Department} onChange={(e)=>setDepartment(e.target.value)}>
             <option value="Medical">Medical</option>
             <option value="Dental">Dental</option>
             <option value="SDPC">SDPC</option>
@@ -144,65 +147,65 @@ const Page = () => {
             <div className={styles.OverviewTitle}>
               OVERVIEW
             </div>
-            <div className={styles.OverviewTable}>
-                <table className={`${styles.OverviewTableElement} ${styles.TableBorder}`}>
-                  <thead>
-                    <tr key="0" className={`${styles.TableBorder}`}>
-                      <th colSpan={1} className={styles.OverviewTableHeader}>
-                        Year Level:
-                      </th>
-                      <th colSpan={1} className={styles.OverviewTableHeaderSelect}>
-                        <select value={YearLevel} onChange={(e)=>setYearLevel(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
-                          <option value="All">All</option>
-                          {Data.YearLevel.map((element, index) => (
-                            <option key={index} value={element}>{element}</option>
-                          ))}
-                        </select>
-                      </th>
-                      <th colSpan={1} className={styles.OverviewTableHeader}>
-                        Course:
-                      </th>
-                      <th colSpan={2} className={styles.OverviewTableHeaderSelect}>
-                        <select value={Course} onChange={(e)=>setCourse(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
-                          <option value="All">All</option>
-                          {Data.Courses.map((element, index) => (
-                            <option key={index} value={element}>{element}</option>
-                          ))}
-                        </select>
-                      </th>
-                    </tr>
-                    <tr key="0">
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Diagnosis</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Number of Patients</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Gender</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Services used</th>
-                      <th className={`${styles.TableBorder} ${styles.OverviewTableHeader}`}>Top Prescriptions</th>
-                    </tr>
-                  </thead>
-                  <tbody className={styles.TableBorder}>
+            <div className={styles.OverviewTableContainer}>
+
+                <div className={`${styles.OverviewTable} ${styles.TableBorder}`}>
+                  <div className={styles.OverviewYearLevel}>
+                    <p>Year Level:</p>
+                    <select value={YearLevel} onChange={(e)=>setYearLevel(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
+                      <option value="All">All</option>
+                      {Data.YearLevel.map((element, index) => (
+                        <option key={index} value={element}>{element}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles.OverviewCourse}>
+                    <p>Course:</p>
+                    <select value={Course} onChange={(e)=>setCourse(e.target.value)} className={styles.OverviewTableHeaderSelectInput}>
+                      <option value="All">All</option>
+                      {Data.Courses.map((element, index) => (
+                        <option key={index} value={element}>{element}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles.OverviewHeader}>
+                    <p className={``}>Diagnosis</p>
+                    <p className={``}>Number of Patients</p>
+                    <p className={``}>Gender</p>
+                    <p className={``}>Services used</p>
+                    <p className={`${styles.OverviewHeaderLast}`}>Top Prescriptions</p>
+                  </div>
+                  <div className={styles.OverviewBody}>
+                    <div className={styles.OverviewBodyScroll}>
                     {data?.TableSets?.length > 0 ? (
-                      data.TableSets.map((item, index) => (
+                        data.TableSets.map((item, index) => (
+                          <>
+                            <p className={``}>{item.Diagnosis}</p>
+                            <p className={``}>{item.Patients}</p>
+                            <p className={``}>{item.Gender}</p>
+                            <p className={``}>{item.Service}</p>
+                            <p className={``}>{item.Prescriptions}</p>
+
+
+                          </>
+                        ))
+                      ) : (
                         <>
-                          <tr key={index} >
-                            <td className={`${styles.TableBorder2}`}>{item.Diagnosis}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Patients}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Gender}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Service}</td>
-                            <td className={`${styles.TableBorder2}`}>{item.Prescriptions}</td>
-                          </tr>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
+                          <p className={``}>no data</p>
                         </>
-                      ))
-                    ) : (
-                      <tr key="1">
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                        <td className={`${styles.TableBorder2}`}>no data</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </div>
+                    
+                  </div>
+
+                </div>
+
+
+
             </div>
             <div className={styles.OverviewChart}>
               <div className={styles.PieChartDataRankingOverviewChart}>
@@ -239,26 +242,46 @@ const Page = () => {
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Total of Patients</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>System service to Patients</p>
                 <div className={styles.MiniCardDetails}>
-                  <div className={styles.MiniCardCount}>{ChartPatientsCount}</div>
+                  <div className={styles.MiniCardCount}>{ChartSystemPatientsCount}</div>
                   <div className={styles.MiniCardButtons}>
-                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Students" ? styles.Active : null}`} onClick={() => {
-                      ChartPatients === "Students"
-                        ? (setChartPatients("All"), setChartPatientsCount(data?.TotalPatients?.All??0))
-                        : (setChartPatients("Students"), setChartPatientsCount(data?.TotalPatients?.Students??0));
+                    <button className={`${styles.MiniCardBtn} ${ChartSystemPatients === "Students" ? styles.Active : null}`} onClick={() => {
+                      ChartSystemPatients === "Students"
+                        ? (setChartSystemPatients("All"), setChartSystemPatientsCount(data?.TotalSystemPatients?.All??0))
+                        : (setChartSystemPatients("Students"), setChartSystemPatientsCount(data?.TotalSystemPatients?.Students??0));
                     }}><div className={styles.MiniCardColor1}></div>Students</button>
-                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Lay Collaborators" ? styles.Active : null}`} onClick={() => {
-                      ChartPatients === "Lay Collaborators"
-                        ? (setChartPatients("All"), setChartPatientsCount(data?.TotalPatients?.All??0))
-                        : (setChartPatients("Lay Collaborators"), setChartPatientsCount(data?.TotalPatients["Lay Collaborators"]??0));
+                    <button className={`${styles.MiniCardBtn} ${ChartSystemPatients === "Lay Collaborators" ? styles.Active : null}`} onClick={() => {
+                      ChartSystemPatients === "Lay Collaborators"
+                        ? (setChartSystemPatients("All"), setChartSystemPatientsCount(data?.TotalSystemPatients?.All??0))
+                        : (setChartSystemPatients("Lay Collaborators"), setChartSystemPatientsCount(data?.TotalSystemPatients["Lay Collaborators"]??0));
                     }}><div className={styles.MiniCardColor2}></div>Lay Collaborators</button>
                   </div>
                 </div>
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Numbers per Gender</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>Walk In service to Patients</p>
+                <div className={styles.MiniCardDetails}>
+                  <div className={styles.MiniCardCount}>{ChartWalkInPatientsCount}</div>
+                  <div className={styles.MiniCardButtons}>
+                    <button className={`${styles.MiniCardBtn} ${ChartWalkInPatients === "Students" ? styles.Active : null}`} onClick={() => {
+                      ChartWalkInPatients === "Students"
+                        ? (setChartWalkInPatients("All"), setChartWalkInPatientsCount(data?.TotalWalkInPatients?.All??0))
+                        : (setChartWalkInPatients("Students"), setChartWalkInPatientsCount(data?.TotalWalkInPatients?.Students??0));
+                    }}><div className={styles.MiniCardColor1}></div>Students</button>
+                    <button className={`${styles.MiniCardBtn} ${ChartWalkInPatients === "Lay Collaborators" ? styles.Active : null}`} onClick={() => {
+                      ChartWalkInPatients === "Lay Collaborators"
+                        ? (setChartWalkInPatients("All"), setChartWalkInPatientsCount(data?.TotalWalkInPatients?.All??0))
+                        : (setChartWalkInPatients("Lay Collaborators"), setChartWalkInPatientsCount(data?.TotalWalkInPatients["Lay Collaborators"]??0));
+                    }}><div className={styles.MiniCardColor2}></div>Lay Collaborators</button>
+                  </div>
+                </div>
+              </div>
+
+              
+              <div className={styles.OverviewOthersMiniCard}>
+                <p className={styles.OverviewOthersMiniCardTitle}>Gender / Sex</p>
                 <div className={styles.MiniCardDetails}>
                   <div className={styles.MiniCardCount}>{ChartGenderCount}</div>
                   <div className={styles.MiniCardButtons}>

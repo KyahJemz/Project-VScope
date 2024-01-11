@@ -62,7 +62,7 @@
     grid-template-rows: auto auto 1fr;
     grid-template-areas: 
         "OverviewTitle OverviewTitle"
-        "OverviewTable OverviewTable"
+        "OverviewTableContainer OverviewTableContainer"
         "OverviewChart OverviewOthers"
         ;
     row-gap: 10px;
@@ -79,9 +79,8 @@
     color: white;
 }
 
-.OverviewTable{
-    grid-area: OverviewTable;
-    border: 2px solid rgb(107, 107, 107);
+.OverviewTableContainer{
+    grid-area: OverviewTableContainer;
 }
 
 .OverviewChart{
@@ -366,21 +365,19 @@
     font-size: 1rem;
 }
 
-.TableBorder{
-    border: 2px solid rgb(97, 97, 97);
-}
-.TableBorder2{
-    border: 2px solid gainsboro;
-    padding: 5px;
-    font-size: 0.8rem;
-}
+
 
 .OverviewTableElement{
+    position: relative;
     border-collapse: collapse;
+    overflow-y:scroll;
+
+    height:75px;
+    width: 100%;
 }
+
 .OverviewTableHeader{
     font-size: 0.8rem;
-    
     padding: 5px;
 }
 .OverviewTableHeaderSelect{
@@ -391,6 +388,10 @@
     height: 100%;
 }
 
+.TableBody{
+    overflow-y:scroll;
+    height:20px;
+}
 
 .Notes{
     padding-left: 10px;
@@ -417,4 +418,89 @@
     background-color: #14AE5C; /* Color of the progress bar in Firefox */
     border-radius: 5px; /* Adding border-radius */
     height: 10px;
+  }
+
+
+
+
+  .OverviewTable{
+    border: 3px solid rgb(112, 112, 112);
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    column-gap: 10px;
+    grid-template-rows: auto auto 200px;
+    grid-template-areas: 
+        "OverviewYearLevel OverviewCourse"
+        "OverviewHeader OverviewHeader"
+        "OverviewBody OverviewBody";
+        font-size: 0.8rem;
+  }
+
+  
+  .OverviewYearLevel{
+    grid-area: OverviewYearLevel;
+    display: flex;
+    gap: 10px;
+    text-wrap: nowrap;
+    font-weight: bold;
+  }
+
+  .OverviewHeader > *,
+  .OverviewCourse > *,
+  .OverviewYearLevel > * {
+    padding: 5px;
+  }
+
+  .OverviewHeader > * {
+    border-top: 3px solid rgb(112, 112, 112);
+    border-bottom: 3px solid rgb(112, 112, 112);
+    border-right: 3px solid rgb(112, 112, 112);
+    font-weight: bold;
+  }
+
+  .OverviewHeaderLast{
+    border-right: 0px;
+  }
+
+  .OverviewCourse{
+    font-weight: bold;
+    border-left: 0px;
+    border-bottom: 0px;
+    grid-area: OverviewCourse;
+    display: flex;
+    gap: 10px;
+    text-wrap: nowrap;
+  }
+  .OverviewHeader{
+    overflow-y: scroll;
+    grid-area: OverviewHeader;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    text-align: center;
+  }
+  .OverviewBody{
+    grid-area: OverviewBody;
+
+    justify-content: flex-start;
+    height: 200px;
+    align-items: start; 
+    overflow-y: scroll;
+  }
+
+  .OverviewBodyScroll{
+    grid-area: OverviewBody;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    justify-content: flex-start;
+    height: fit-content;
+    align-items: start; 
+  }
+
+  .OverviewBodyScroll > *{
+    border-bottom: 2px solid gainsboro;
+    border-right: 2px solid gainsboro;
+    height: fit-content;
+    padding: 3px;
+    height: 100%;
   }
