@@ -495,7 +495,6 @@
     justify-content: flex-start;
     height: fit-content;
     align-items: start; 
-
   }
 
   .OverviewBodyScroll > *{
@@ -503,4 +502,5 @@
     border-right: 2px solid gainsboro;
     height: fit-content;
     padding: 3px;
+    height: 100%;
   }
