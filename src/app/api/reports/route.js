@@ -188,7 +188,7 @@ export const GET = async (request) => {
             if(record.Category && record.Category === "Student") {
                 ReportData.TotalPatients.Students += 1;
                 ReportData.TotalPatients.All += 1;
-            } else if (record.Details.Sex && record.Details.Sex === "Lay Collaborator") {
+            } else if (record.Category && record.Category === "Lay Collaborator") {
                 ReportData.TotalPatients["Lay Collaborators"] += 1;
                 ReportData.TotalPatients.All += 1;
             }
