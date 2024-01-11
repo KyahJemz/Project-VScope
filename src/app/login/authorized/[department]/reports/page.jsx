@@ -168,6 +168,7 @@ const Page = ({ params }) => {
                     <p className={`${styles.OverviewHeaderLast}`}>Top Prescriptions</p>
                   </div>
                   <div className={styles.OverviewBody}>
+                    <div className={styles.OverviewBodyScroll}>
                     {data?.TableSets?.length > 0 ? (
                         data.TableSets.map((item, index) => (
                           <>
@@ -176,7 +177,6 @@ const Page = ({ params }) => {
                             <p className={``}>{item.Gender}</p>
                             <p className={``}>{item.Service}</p>
                             <p className={``}>{item.Prescriptions}</p>
-
                           </>
                         ))
                       ) : (
@@ -188,6 +188,8 @@ const Page = ({ params }) => {
                           <p className={``}>no data</p>
                         </>
                       )}
+                    </div>
+                    
                   </div>
 
                 </div>

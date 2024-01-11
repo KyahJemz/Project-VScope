@@ -481,14 +481,24 @@
   }
   .OverviewBody{
     grid-area: OverviewBody;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
     justify-content: flex-start;
     height: 200px;
+    align-items: start; 
     overflow-y: scroll;
   }
 
-  .OverviewBody > *{
+  .OverviewBodyScroll{
+    grid-area: OverviewBody;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    justify-content: flex-start;
+    height: fit-content;
+    align-items: start; 
+
+  }
+
+  .OverviewBodyScroll > *{
     border-bottom: 2px solid gainsboro;
     border-right: 2px solid gainsboro;
     height: fit-content;
