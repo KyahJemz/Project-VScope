@@ -109,12 +109,56 @@ const Messages = ({params}) => {
 										id={record._id}
 									/>
 								) : (
+									<>
 									<ListItem
 										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
 										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
 										isNew={IsNew(record)}
 										id={record._id}
 									/>
+									<ListItem
+										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+									<ListItem
+										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+									<ListItem
+										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+									<ListItem
+										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+									<ListItem
+										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+									<ListItem
+										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+									<ListItem
+										name={`${record.createdAt} - Schedule (${formatShortDate(record?.AppointmentDate) ?? "?"} ${record?.AppointmentTime ?? "?"}) - ${record.Status}`}
+										image={Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC : UserDefault}
+										isNew={IsNew(record)}
+										id={record._id}
+									/>
+									</>
 								)}
 							</React.Fragment>
 						))

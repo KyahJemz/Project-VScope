@@ -102,7 +102,7 @@ const Page = () => {
 
     return (
       <div className={styles.MainContainer}>
-
+        
         <div className={styles.Header}>
         <select className={styles.DepartmentSelection} defaultValue={Department} onChange={(e)=>setDepartment(e.target.value)}>
             <option value="Medical">Medical</option>
@@ -111,7 +111,7 @@ const Page = () => {
           </select>
           {Department} Reports
         </div>
-
+      
         <div className={styles.StatusContainer}>
           <div className={styles.StatusPieChartData}>
             <PieChart data={StatusPieChartData} />

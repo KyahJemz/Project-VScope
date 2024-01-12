@@ -8,13 +8,17 @@
         "Header Header"
         "StatusContainer ChartsContainer"
     ;
-    flex-direction: column;
     gap: 20px;
     padding: 20px;
     border-radius: 5px;
     background-color: #F5F5F5;
+    height: 100%;
+    position: relative;
+    overflow-y: scroll;
 }
 .Header{
+    position: sticky;
+    top: 0;
     grid-area: Header;
     padding: 20px;
     border: 1px solid gainsboro;

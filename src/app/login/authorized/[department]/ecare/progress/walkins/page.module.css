@@ -40,9 +40,11 @@
         color: var(--ButtonActiveText);
     }
 
-.List{
-    grid-area: List;
-}
+    .List{
+        grid-area: List;
+        overflow-y: scroll;
+        height: 55vh;
+    }
 
     .Record{        
         display: flex;

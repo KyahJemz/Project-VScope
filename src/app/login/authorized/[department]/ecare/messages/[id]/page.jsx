@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 import useSWR from "swr";
 import Image from "next/image";
@@ -87,7 +87,7 @@ const Form = ({params}) => {
                 <input name="SenderGoogleEmail" value={senderGmail} type="text" hidden readOnly/>
                 <input name="ReceiverGoogleEmail" value={receiverGmail} type="text" hidden readOnly/>
                 <input name="Name" value={name} type="text" hidden readOnly/>
-                <textarea className={styles.responseFormTextbox} name="Response" rows="2" />
+                <textarea className={styles.responseFormTextbox} name="Response" rows="2" placeholder="Response..."/>
                 <button className={styles.submitBtn} disabled={ResponseUploading}>{ResponseUploading ? "Uploading..." : "Send"}</button>
             </form>
         )    
@@ -199,9 +199,19 @@ const Form = ({params}) => {
         }
     };
 
+    const Messages = useRef(null);
+
+    useEffect(() => {
+        const element = Messages.current;
+        if (element) {
+          element.scrollTop = element.scrollHeight;
+        }
+    }, [Messages, data, file, ResponseUploading]);
+
     const MainContent = () => {
         return (
             <div className={styles.MessagesContainer}>
+                <div className={styles.Messages} ref={Messages}>
 
                 {isLoading ? (
                     null
@@ -232,7 +242,7 @@ const Form = ({params}) => {
                 ) : (
                     <p></p>
                 )} 
-
+            </div>
                 {isLoading ? ("") : data && (data?.Status !== 'Completed' && data?.Status !== 'Canceled'  ) ? (
                     <ResponseForm 
                         name={Department} 

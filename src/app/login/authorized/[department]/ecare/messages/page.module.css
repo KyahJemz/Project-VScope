@@ -40,7 +40,7 @@
     grid-area: MessageDetails;
     display: grid;
     justify-content: space-between;
-    grid-template-columns: 150px auto;
+    grid-template-columns: 120px auto;
     width: 100%;
 }
 .MessageLatest{
@@ -70,6 +70,8 @@
     display: flex;
     gap: 10px;
     flex-direction: column;
+    overflow-y: scroll;
+    height: 63vh;
 }
 .SearchBox{
     padding: 5px;

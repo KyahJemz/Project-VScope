@@ -42,6 +42,8 @@
 
 .List{
     grid-area: List;
+    overflow-y: scroll;
+    height: 55vh;
 }
 
     .Record{        

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 import useSWR from "swr";
 import Image from "next/image";
@@ -247,22 +247,32 @@ const Form = ({params}) => {
         }
     }
 
+    const Messages = useRef(null);
+
+    useEffect(() => {
+        const element = Messages.current;
+        if (element) {
+          element.scrollTop = element.scrollHeight;
+        }
+    }, [Messages, data, file, ResponseUploading]);
+
     const MainContent = () => {
         return (
             <div className={styles.MessagesContainer}>
-
-                {isLoading ? (
-                    null
-                ) : data?.Details?.Concern ? (
-                    <Response 
-                        image={SenderGoogleImage}
-                        response={data?.Details?.Concern??""}
-                        timestamp={data.createdAt}
-                        isRight={true}
-                    />
-                ) : (
-                    null
-                )}
+                <div className={styles.Messages} ref={Messages}>
+                    {isLoading ? (
+                        null
+                    ) : data?.Details?.Concern ? (
+                        <Response 
+                            image={SenderGoogleImage}
+                            response={data?.Details?.Concern??""}
+                            timestamp={data.createdAt}
+                            isRight={true}
+                        />
+                    ) : (
+                        null
+                    )}
+                    
 
                 {isLoading ? (
                     null
@@ -280,6 +290,7 @@ const Form = ({params}) => {
                 ) : (
                     <p></p>
                 )} 
+                </div>
 
                 {isLoading ? ("") : data && (data?.Status !== 'Completed' && data?.Status !== 'Canceled'  ) ? (
                     <ResponseForm 

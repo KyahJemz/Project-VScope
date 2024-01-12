@@ -11,6 +11,7 @@
         "Body";
     gap: 20px;
     position: relative;
+    overflow-y: hidden;
 }
 
 .Header {
@@ -24,12 +25,15 @@
 }
 
 .Body{
+    position: relative;
     display: flex;
     flex-direction: column;
     gap:20px;
     border: 1px solid gainsboro;    
     padding: 20px;
     grid-area: Body;
+    height: 65vh;
+    overflow-y: scroll;
 }
 
 .PanelButton{

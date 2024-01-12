@@ -363,6 +363,7 @@ const Page = ({ params }) => {
 					<div className={styles.Diagnosis}>
 						<p className={styles.ListTitle}>Diagnosis</p>
 						<hr className={styles.Line}/>
+						<div className={styles.list}>
 						{data && data?.Diagnosis && data.Diagnosis.length > 0 ? data.Diagnosis.map((diagnosis, index) => (
 							<div key={index} className={styles.ListItem}>
 								<p className={styles.ListItemText}>{diagnosis.Diagnosis}</p>
@@ -381,6 +382,7 @@ const Page = ({ params }) => {
 								</datalist>
 							<button className={styles.ListItemAddBtn} disabled={IsDiagnosisProcess}>+</button>
 						</form>
+						</div>
 					</div>
 
 
@@ -388,6 +390,7 @@ const Page = ({ params }) => {
 						<div className={styles.Prescription}>
 							<p className={styles.ListTitle}>Service Offered</p>
 							<hr className={styles.Line} />
+							<div className={styles.list}>
 							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
 								<div key={index} className={styles.ListItem}>
 									<p className={styles.ListItemText}>{prescription.Prescription}</p>
@@ -409,11 +412,13 @@ const Page = ({ params }) => {
 									</datalist>
 								<button className={styles.ListItemAddBtn} disabled={IsPrescriptionsProcess}>+</button>
 							</form>
+							</div>
 						</div>
 					:
 						<div className={styles.Prescription}>
 							<p className={styles.ListTitle}>Prescriptions</p>
 							<hr className={styles.Line} />
+							<div className={styles.list}>
 							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
 								<div key={index} className={styles.ListItem}>
 									<p className={styles.ListItemText}>{prescription.Prescription}</p>
@@ -435,12 +440,14 @@ const Page = ({ params }) => {
 									</datalist>
 								<button className={styles.ListItemAddBtn} disabled={IsPrescriptionsProcess}>+</button>
 							</form>
+							</div>
 						</div>
 					}
 
 					<div className={styles.Note}>
 						<p className={styles.ListTitle}>Notes</p>
 						<hr className={styles.Line}/>
+						<div className={styles.list}>
 						{data && data?.Notes && data.Notes.length > 0 ? data.Notes.map((note, index) => (
 							<div key={index} className={styles.ListItem}>
 								<p className={styles.ListItemText}>{note.Note}</p>
@@ -454,6 +461,7 @@ const Page = ({ params }) => {
 							<input name="Value" className={styles.ListItemText} disabled={IsNotesProcess} type="text" placeholder="Note"/>
 							<button className={styles.ListItemAddBtn} disabled={IsNotesProcess}>+</button>
 						</form>
+						</div>
 					</div>
 					
 

@@ -24,6 +24,17 @@
   gap: 50px;
 }
 
+.FileList{
+  overflow-y: scroll;
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+  flex-direction: column;
+
+}
 .setAppointment {
   text-align: center;
   background-color: #53c28b;

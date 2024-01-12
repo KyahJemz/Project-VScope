@@ -49,6 +49,8 @@
 
 .List{
     grid-area: List;
+    overflow-y: scroll;
+    height: 50vh;
 }
 
     .Notification{

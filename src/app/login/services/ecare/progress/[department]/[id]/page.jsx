@@ -140,6 +140,7 @@ const Page = ({ params }) => {
 							)) : 
 								"No Records"
 							}
+							<hr className={styles.Line}/>
 						</div>
 					}
 

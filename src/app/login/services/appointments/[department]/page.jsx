@@ -75,9 +75,9 @@ const Page = ({ params }) => {
 		: Status === "Rescheduled" ? sortedData.filter(record => record.ReScheduled === true) : sortedData.filter(record => record.Status === Status);
 
 	useEffect(() => {
-		const hasSetSchedule = filteredData?.some(element => SelectedDay === element.AppointmentDate && element.Status !== "Canceled" && element.Status !== "Rejected");
+		const hasSetSchedule = HistoryData?.some(element => SelectedDay === element.AppointmentDate && element.Status !== "Canceled" && element.Status !== "Rejected");
 		setHasAlreadySetSchedule(hasSetSchedule);
-	}, [SelectedDay, filteredData]);
+	}, [SelectedDay, HistoryData]);
 
 	useEffect(() => {
 		if (SelectedDay) {

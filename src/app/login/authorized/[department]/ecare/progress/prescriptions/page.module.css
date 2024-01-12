@@ -21,9 +21,12 @@
     padding: 10px;
 }
 .GridView{
+    padding-top: 10px;
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    overflow-y: scroll;
+    height: 35vh;
 }
 
 .Card{

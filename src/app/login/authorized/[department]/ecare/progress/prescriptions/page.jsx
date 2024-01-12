@@ -114,6 +114,7 @@ const Page = ({ params }) => {
     <div className={styles.mainContainer}>
        <div className={styles.Header}>Inventory</div>
        <input className={styles.SearchBar} type="search" onChange={(e)=>setSearch(e.target.value)} placeholder="Search..."/>
+       <CreateCardForm />
        <div className={styles.GridView}>
         {isLoading ? (
           "loadding..."
@@ -125,7 +126,7 @@ const Page = ({ params }) => {
           "No results..."
         )}
        </div>
-       <CreateCardForm />
+       
     </div>
   )
 };

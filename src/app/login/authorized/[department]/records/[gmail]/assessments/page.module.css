@@ -1,7 +1,5 @@
 .MainContent{
-    padding: 20px;
-    border: 1px solid gainsboro;
-    display: grid;
+    padding-bottom: 20px;
     display: grid; 
     grid-template-columns: 1fr; 
     grid-template-rows: 50px 1fr; 
@@ -30,6 +28,8 @@
     border: 1px solid gainsboro;    
     padding: 20px;
     grid-area: Body;
+    overflow-y: scroll;
+    height: 63vh;
 }
 
 .PanelButton{

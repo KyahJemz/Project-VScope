@@ -223,9 +223,13 @@ const Page = ({params}) => {
 							<div className={styles.FilesRow}>
 								<p className={styles.FilesHeader}>Other History / Records</p>
 								<input className={styles.AddFile} type="file" title="Auto Upload" onChange={UploadFile}/>
-								{data?.MedicalDetails?.Files?.map((element, index) => (
-									<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
-								))}
+								<div className={styles.FileList}>
+									{data?.MedicalDetails?.Files?.map((element, index) => (
+										<>
+											<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
+										</>
+									))}
+								</div>
 							</div>	
 						</>
 					: null}
@@ -234,9 +238,11 @@ const Page = ({params}) => {
 							<div className={styles.FilesRow}>
 								<p className={styles.FilesHeader}>Other History / Records</p>
 								<input className={styles.AddFile} type="file" title="Auto Upload" onChange={UploadFile}/>
-								{data?.DentalDetails?.Files?.map((element, index) => (
-									<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
-								))}
+								<div className={styles.FileList}>
+									{data?.DentalDetails?.Files?.map((element, index) => (
+										<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
+									))}
+								</div>
 							</div>	
 						</>
 					: null}
@@ -245,9 +251,11 @@ const Page = ({params}) => {
 							<div className={styles.FilesRow}>
 								<p className={styles.FilesHeader}>Other History / Records</p>
 								<input className={styles.AddFile} type="file" title="Auto Upload" onChange={UploadFile}/>
-								{data?.SDPCDetails?.Files?.map((element, index) => (
-									<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
-								))}
+								<div className={styles.FileList}>
+									{data?.SDPCDetails?.Files?.map((element, index) => (
+										<div key={index} title={"Downloadable File"} className={styles.FileContainer}><a href={`/uploads/files/${element.FileName}`} download>{element.FileName}</a><button data-filename={element.FileName} className={styles.RemoveFile} onClick={RemoveConfirmation}>Remove</button></div>
+									))}
+								</div>
 							</div>	
 						</>
 					: null}

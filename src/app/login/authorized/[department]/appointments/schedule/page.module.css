@@ -19,16 +19,28 @@
     align-items: center;
     padding: 20px;
     font-weight: bold;
+    gap: 20px;
 }
 
 .Schedules{
     display: flex;
     flex-direction: column;
-    gap:10px;
+    grid-area: Schedules;
+    padding: 10px;
     border: 1px solid gainsboro;    
-    padding: 20px;
+    overflow: hidden;
+    gap:10px;
+}
+
+.ScheduleList{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    
+    
     grid-area: Schedules;
     overflow-y: scroll;
+    height: 65vh;
 }
 
 .TimeSelection{

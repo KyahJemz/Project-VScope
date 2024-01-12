@@ -124,13 +124,22 @@ const Schedule = ({ params }) => {
 			<div className={styles.Schedules}>
 
 				<p style={{ fontWeight: 'bold', textAlign: 'center' }}>Schedules</p>
-				
-				{isLoading ? "Loading..." : sortedData.length === 0 ? "No results" : sortedData?.map((schedule, index) => (
-					<div key={index} className={`${styles.Schedule}`}>
-						<p className={styles.ScheduleDate}>{formatDate(schedule.Date)} || {schedule.Time}</p>
-						<div data-value={schedule._id} className={styles.ScheduleRemove} onClick={OnRemoveSchedule}>X</div>
+
+				<div className={styles.ScheduleList}>
+					
+					{isLoading ? "Loading..." : sortedData.length === 0 ? "No results" : sortedData?.map((schedule, index) => (
+						schedule.Time === "wholeday" ? 
+							null
+						:
+						<>
+							<div key={index} className={`${styles.Schedule}`}>
+								<p className={styles.ScheduleDate}>{formatDate(schedule.Date)} || {schedule.Time}</p>
+								<div data-value={schedule._id} className={styles.ScheduleRemove} onClick={OnRemoveSchedule}>X</div>
+							</div>
+						
+						</>
+					))}
 					</div>
-				))}
 
 			</div>
 

@@ -20,6 +20,7 @@ const Department = ({ params }) => {
   const data = getData(params.department);
   return (
     <div className={styles.container}>
+       <div className={styles.ScrollContainer}>
       <h3 className={styles.mainTitle}>Services</h3>
       <h1 className={styles.catTitle}>{params.department}</h1>
       {/* <div className={styles.appointmentBtn} ><a className={styles.appointmentBtntext} href={`/login/services/${params.department}/appointments`}> Set Appointment</a></div> */}
@@ -43,7 +44,7 @@ const Department = ({ params }) => {
     </div>
   </div>
 ))}
-
+</div>
     </div>
   );
 };

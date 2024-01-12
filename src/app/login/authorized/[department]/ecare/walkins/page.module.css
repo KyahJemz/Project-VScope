@@ -30,6 +30,15 @@
     border: 1px solid gainsboro;    
     padding: 20px;
     grid-area: Body;
+    overflow: hidden;
+}
+
+.WalkInList{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    height: 55vh;
+    overflow-y: scroll;
 }
 
 
@@ -63,7 +72,7 @@
 .DetailsRow{
     display: flex;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .DetailsFields{

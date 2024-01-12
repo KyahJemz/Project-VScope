@@ -357,14 +357,23 @@ const WalkIn = ({ params }) => {
 					<div className={styles.Body}>
 
 						<input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setFilter(e.target.value)}/>
+
+						<div className={styles.WalkInList}>
+							{isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((record, index) => (
+								<>
+									<div key={index} className={`${styles.record} ${styles.Active}`}>
+										<p className={styles.recordName}>{record.Details.LastName}, {record.Details.FirstName} {record.Details.MiddleName}</p>
+										<button disabled={DeletingRecord} className={styles.recordEditBtn} data-record={record._id} onClick={() => {mutate; SelectedRecordId === record._id ? null : setSelectedRecordId(record._id); setSelectedPanel("WalkIn Edit Form")}}>Edit</button>
+										<button disabled={DeletingRecord} className={styles.recordDeleteBtn} data-record={record._id} data-name={`${record.Details.LastName}, ${record.Details.FirstName} ${record.Details.MiddleName}`} onClick={DeleteConfirmation}>Delete</button>
+									</div>
+									
+
+								</>
+								
+							))}
+						</div>
 						
-						{isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((record, index) => (
-							<div key={index} className={`${styles.record} ${styles.Active}`}>
-								<p className={styles.recordName}>{record.Details.LastName}, {record.Details.FirstName} {record.Details.MiddleName}</p>
-								<button disabled={DeletingRecord} className={styles.recordEditBtn} data-record={record._id} onClick={() => {mutate; SelectedRecordId === record._id ? null : setSelectedRecordId(record._id); setSelectedPanel("WalkIn Edit Form")}}>Edit</button>
-								<button disabled={DeletingRecord} className={styles.recordDeleteBtn} data-record={record._id} data-name={`${record.Details.LastName}, ${record.Details.FirstName} ${record.Details.MiddleName}`} onClick={DeleteConfirmation}>Delete</button>
-							</div>
-						))}
+						
 
 					</div>
 				</>

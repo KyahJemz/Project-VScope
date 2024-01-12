@@ -5,6 +5,10 @@
   padding: 10px;
   background-color: gainsboro;
 }
+.AccountList{
+  height: 65vh;
+  overflow-y: scroll;
+}
 
 .container {
   flex: 1;

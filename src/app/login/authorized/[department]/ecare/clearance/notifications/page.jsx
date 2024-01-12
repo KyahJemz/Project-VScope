@@ -106,11 +106,13 @@ const Page = ({ params }) => {
 				</div>
 				<div className={styles.List}>
 					{isLoading ? "Loading..." : filteredNotifications.length === 0 ? "No results" : filteredNotifications?.map((notification, index) => (
-						<div key={index} className={styles.Notification}>
-							<p className={styles.NotificationName}>{notification.Title} <a className={styles.NotificationTarget}>({notification.Target === "All" ? "Everyone" : notification.Target})</a></p>
-							<button className={styles.NotificationViewBtn} disabled={IsDeleting} onClick={()=>router.push('/login/authorized/'+Department+'/ecare/clearance/notifications/'+notification._id)}>View</button>
-							<button data-id={notification._id} data-name={notification.Title} className={styles.NotificationDeleteBtn} disabled={IsDeleting} onClick={DeleteConfirmation}>Delete</button>
-						</div>
+						<>
+							<div key={index} className={styles.Notification}>
+								<p className={styles.NotificationName}>{notification.Title} <a className={styles.NotificationTarget}>({notification.Target === "All" ? "Everyone" : notification.Target})</a></p>
+								<button className={styles.NotificationViewBtn} disabled={IsDeleting} onClick={()=>router.push('/login/authorized/'+Department+'/ecare/clearance/notifications/'+notification._id)}>View</button>
+								<button data-id={notification._id} data-name={notification.Title} className={styles.NotificationDeleteBtn} disabled={IsDeleting} onClick={DeleteConfirmation}>Delete</button>
+							</div>
+						</>
 					))}
 				</div>
 			</div>

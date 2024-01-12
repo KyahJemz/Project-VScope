@@ -71,7 +71,9 @@ const Page = ({params}) => {
 			</div>
 			<div className={styles.Body}>
 				<input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setAccountsFilter(e.target.value)}/>
-				<AccountList />
+				<div className={styles.AccountList}>
+					<AccountList />
+				</div>
 			</div>
 		</div>
 	)

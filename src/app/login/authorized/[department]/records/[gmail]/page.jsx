@@ -46,21 +46,29 @@ const Dashboard = ({ params }) => {
                   <p className={styles.ProfileId}>{data[0]?.Details?.StudentNumber??"n/a"}</p>
                   <p className={styles.ProfileEmail}>{data[0]?.GoogleEmail??"n/a"}</p>
                   <button className={styles.AssessmentHistoryBtn} onClick={()=>router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+'profile')}>View Profile</button>
-                  <button className={styles.AssessmentHistoryBtn} onClick={()=>router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+'assessments')}>View Assessments</button>
+                  {Department === "SDPC" ? 
+                    <button className={styles.AssessmentHistoryBtn} onClick={()=>router.push('/login/authorized/'+Department+'/records/'+GoogleEmail+'/'+'assessments')}>View Assessments</button>
+                    :
+                    null
+                  }
                 </div>
               </div>
           <div className={styles.HistoryContainer}>
             {data.map((record, index) => (
-              <div className={styles.Record} key={index} data-value={record._id} onClick={ViewRecord}>
-                {new Date(record.createdAt).toLocaleDateString("en-US", {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  hour: 'numeric',
-                  minute: 'numeric',
-                })} - {record.Status}
-              </div>
+              <>
+                <div className={styles.Record} key={index} data-value={record._id} onClick={ViewRecord}>
+                  {new Date(record.createdAt).toLocaleDateString("en-US", {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })} - {record.Status}
+                </div>
+                
+              </>
+              
             ))}
           </div>
         </>

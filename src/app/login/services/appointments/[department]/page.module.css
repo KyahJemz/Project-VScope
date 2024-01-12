@@ -4,7 +4,7 @@
     display: grid;
     display: grid; 
     grid-template-columns: 1fr 250px 250px; 
-    grid-template-rows: 300px 150px 200px 100px auto; 
+    grid-template-rows: 300px auto 250px auto auto; 
     grid-template-areas: 
         "CalendarContainer TimeSelectionContainer HistoryContainer"
         "CalendarContainer ConcernContainer HistoryContainer"
@@ -12,6 +12,8 @@
         "TimeSummaryContainer ConcernContainer HistoryContainer"
         "NoteContainer ConcernContainer HistoryContainer";
     gap: 20px;
+    height: 90vh;
+    overflow-y: scroll;
 }
 
 .CalendarContainer{

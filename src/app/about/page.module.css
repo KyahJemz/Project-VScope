@@ -1,6 +1,13 @@
 .container {
-  flex: 1;
   padding: 0 100px ;
+  height: 80vh;
+  width: 100%;
+}
+
+.ScrollContainer{
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 }
 
 .imgContainer {
@@ -30,6 +37,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: fit-content;
 }
 
 .header{

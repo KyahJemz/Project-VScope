@@ -361,10 +361,12 @@ const Pending = ({ params }) => {
 				<input placeholder="Search..." type="search" onChange={(e)=>setFilter(e.target.value)}/>
 				
 				{isLoading ? "Loading..." : filteredData.length === 0 ? "No results" : filteredData?.map((appointment, index) => (
-					<div key={index} className={`${styles.Appointment} ${styles.Active}`}  onClick={() => {mutate; appointmentId === appointment._id ? setAppintmentId("") : setAppintmentId(appointment._id)}}>
-						<p className={styles.aName}>Name: <a className={styles.aNameText}>{appointment.Details.LastName}, {appointment.Details.FirstName}</a></p>
-						<p className={styles.aDate}>Date: <a className={styles.aDateText}>{appointment.createdAt}</a></p>
-					</div>
+					<>
+						<div key={index} className={`${styles.Appointment} ${styles.Active}`}  onClick={() => {mutate; appointmentId === appointment._id ? setAppintmentId("") : setAppintmentId(appointment._id)}}>
+							<p className={styles.aName}>Name: <a className={styles.aNameText}>{appointment.Details.LastName}, {appointment.Details.FirstName}</a></p>
+							<p className={styles.aDate}>Date: <a className={styles.aDateText}>{appointment.createdAt}</a></p>
+						</div>
+					</>
 				))}
 
 			</div>

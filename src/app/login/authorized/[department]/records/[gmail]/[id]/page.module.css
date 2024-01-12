@@ -54,7 +54,8 @@
             "Profile Details Details Details"
             "Profile Diagnosis Prescription Note"
             "Profile Days Days Status";
-        height: 100%;
+        height: 73vh;
+        overflow-y: scroll;
     }
     
     .NgipinList{

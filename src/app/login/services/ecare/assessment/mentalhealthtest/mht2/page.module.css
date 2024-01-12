@@ -4,6 +4,8 @@
   border: 1px solid gainsboro;
   gap: 20px;
   align-items: center;
+  height: 100%;
+  overflow: hidden;
 }
 .Header{
   padding: 10px 20px;
@@ -32,12 +34,15 @@
 }
 
 .Questions{
-  width: 80%;
+  padding-left: 15%;
+  padding-right: 15%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding-bottom: 20px;
-  
+  overflow-y: scroll;
+  height: 60vh;
 }
 .QuestionContainer{
   border-radius: 10px;

@@ -120,7 +120,9 @@ const Page = ({params}) => {
 			</div>
 			<div className={styles.Body}>
 				<input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setNotificationFilter(e.target.value)}/>
-				<NotificationList />
+				<div className={styles.NotificationList}>
+					<NotificationList />
+				</div>
 			</div>
 		</div>
 	)

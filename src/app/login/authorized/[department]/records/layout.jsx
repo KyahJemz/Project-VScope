@@ -47,9 +47,12 @@ export default function RootLayout(prop) {
           <div className={styles.SearchList}>
             {isLoading ? "Loading..." :
               filteredRecordsData.map((item, index) => 
-                <div className={styles.RecordName} key={index} data-value={item.GoogleEmail} onClick={ViewHistory}>
-                  {`${item?.Details?.LastName??"?"}, ${item?.Details?.FirstName??"?"} ${item?.Details?.MiddleName??""}`}
-                </div>
+                <>
+                  <div className={styles.RecordName} key={index} data-value={item.GoogleEmail} onClick={ViewHistory}>
+                    {`${item?.Details?.LastName??"?"}, ${item?.Details?.FirstName??"?"} ${item?.Details?.MiddleName??""}`}
+                  </div>
+                </>
+                
               )
             }
           </div>

@@ -1,6 +1,4 @@
 .MainContent{
-    padding: 20px;
-    border: 1px solid gainsboro;
     display: grid;
     display: grid; 
     grid-template-columns: 1fr; 
@@ -11,6 +9,14 @@
         "Body";
     gap: 20px;
     position: relative;
+}
+
+.NotificationList{
+    height: 42vh;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    overflow-y: scroll;
 }
 
 .Header {
