@@ -272,8 +272,6 @@ export const GET = async (request) => {
         prescriptionCountArray.sort((a, b) => b.Count - a.Count);
         ReportData.TopPrescriptions = prescriptionCountArray.slice(0, 10);
 
-
-
         let diagnosisCounts = Diagnosis.reduce((counts, diagnosis) => {
             counts[diagnosis.Diagnosis] = (counts[diagnosis.Diagnosis] || 0) + 1;
             return counts;
@@ -284,8 +282,6 @@ export const GET = async (request) => {
         }));
         diagnosisCountArray.sort((a, b) => b.Count - a.Count);
         ReportData.TopDiagnosis = diagnosisCountArray.slice(0, 10);
-
-
 
         let serviceCounts = Services.reduce((counts, service) => {
             counts[service] = (counts[service] || 0) + 1;
@@ -319,7 +315,7 @@ export const GET = async (request) => {
                             Patients: 1,
                             Gender: record.Details.Sex,
                             Service: record.ServiceOffered,
-                            Prescriptions: prescription.Prescription,
+                            Prescriptions: prescription?.Prescription,
                         };
                 
                         diagnosisList.push(data);
@@ -338,75 +334,103 @@ export const GET = async (request) => {
             });
         });
 
-        const diagnosisMap = new Map();
+        const diagnosisTable = {};
 
         filteredRecords.forEach((record) => {
-        record.Diagnosis.forEach((diagnosis) => {
-            const uniqueDiagnosis = diagnosis.Diagnosis;
+            if (!diagnosisTable[record._id]) {
+                diagnosisTable[record._id] = [];
+            }
 
-            
-            if(record.Prescriptions.length>0) {
-                record.Prescriptions.forEach((prescription) => {
-                    if (!diagnosisMap.has(uniqueDiagnosis)) {
-                        diagnosisMap.set(uniqueDiagnosis, {
-                            Patients: 1,
-                            Genders: [record.Details.Sex],
-                            Services: [record.ServiceOffered], 
-                            Prescriptions: [prescription.Prescription],
+            record.Diagnosis.forEach((diagnosis) => {
+                if (record?.Prescriptions?.length > 0) {
+                    record.Prescriptions.forEach((prescription) => {
+                        const prescriptionName = prescription.Prescription || "";
+                        diagnosisTable[record._id].push({
+                            Diagnosis: diagnosis.Diagnosis,
+                            Prescriptions: prescriptionName,
+                            Gender: record.Details.Sex,
+                            Service: record.ServiceOffered,
                         });
-                    } else {
-                        const data = diagnosisMap.get(uniqueDiagnosis);
-        
-                        data.Patients++;
-                        data.Genders.push(record.Details.Sex);
-                        data.Services.push(record.ServiceOffered);
-                        data.Prescriptions.push(diagnosis.Prescription);
-                    }
-                });
-            } else {
-                if (!diagnosisMap.has(uniqueDiagnosis)) {
-                    diagnosisMap.set(uniqueDiagnosis, {
-                        Patients: 1,
-                        Genders: [record.Details.Sex],
-                        Services: [record.ServiceOffered], 
-                        Prescriptions: [record.Prescriptions].filter(Boolean),
                     });
                 } else {
-                    const data = diagnosisMap.get(uniqueDiagnosis);
-    
-                    data.Patients++;
-                    data.Genders.push(record.Details.Sex);
-                    data.Services.push(record.ServiceOffered);
-                    data.Prescriptions.push(diagnosis.Prescription);
+                    if (record?.ServiceOffered) {
+                        diagnosisTable[record._id].push({
+                            Diagnosis: diagnosis.Diagnosis,
+                            Prescriptions: "",
+                            Gender: record.Details.Sex,
+                            Service: record.ServiceOffered,
+                        });
+                    }
                 }
+            });
+        });
+
+
+        const uniqueDiagnosesArray = [...new Set(Object.values(diagnosisTable)
+            .flatMap(record => record.map(entry => entry.Diagnosis)))];
+
+            const DiagnosisTableSets = {};
+
+            uniqueDiagnosesArray.forEach((uniqueDiagnosis) => {
+                if (!DiagnosisTableSets[uniqueDiagnosis]) {
+                    DiagnosisTableSets[uniqueDiagnosis] = {
+                        Genders: [],
+                        Prescription: [],
+                        ServiceUsed: [],
+                        Patients: 0,
+                    };
+                }
+                Object.entries(diagnosisTable).forEach(([patientId, records]) => {
+                    DiagnosisTableSets[uniqueDiagnosis].Patients += records.filter(item => item.Diagnosis === uniqueDiagnosis).length;
+                    records.forEach((item) => {
+                        if (item.Diagnosis === uniqueDiagnosis) {
+                            DiagnosisTableSets[uniqueDiagnosis].Genders.push(item.Gender)
+                            if (item.Prescriptions !== "") {
+                                DiagnosisTableSets[uniqueDiagnosis].Prescription.push(item.Prescriptions)
+                            }
+                            DiagnosisTableSets[uniqueDiagnosis].ServiceUsed.push(item.Service)
+                        }
+                    })
+                })
+            })
+            
+            const finalDiagnosisArray = [];
+
+            Object.entries(DiagnosisTableSets).forEach(([diagnosis, data]) => {
+                const topPrescription = findTopItem(data.Prescription);
+                const topGender = findTopItem(data.Genders);
+                const topServiceUsed = findTopItem(data.ServiceUsed);
+            
+                finalDiagnosisArray.push({
+                    Diagnosis: diagnosis,
+                    Prescriptions: topPrescription,
+                    Gender: topGender,
+                    Service: topServiceUsed,
+                    Patients: data.Patients,
+                });
+            });
+            
+            console.log(finalDiagnosisArray);
+            
+            function findTopItem(array) {
+                const countMap = {};
+                let maxCount = 0;
+                let topItem = null;
+            
+                array.forEach((item) => {
+                    countMap[item] = (countMap[item] || 0) + 1;
+            
+                    if (countMap[item] > maxCount) {
+                        maxCount = countMap[item];
+                        topItem = item;
+                    }
+                });
+            
+                return topItem;
             }
-        });
-        });
 
-        const tableSets = Array.from(diagnosisMap.entries()).map(([Diagnosis, data]) => {
-        return {
-            Diagnosis,
-            Patients: data.Patients,
-            Gender: getTopElement(data.Genders),
-            Service: getTopElement(data.Services),
-            Prescriptions: getTopElement(data.Prescriptions),
-        };
-        });
-
-        function getTopElement(array) {
-        const counts = array.reduce((acc, value) => {
-            acc[value] = (acc[value] || 0) + 1;
-            return acc;
-        }, {});
-
-        const maxCount = Math.max(...Object.values(counts));
-        const topElement = Object.keys(counts).find((element) => counts[element] === maxCount);
-
-        return topElement || null; 
-        }
-
-        ReportData.TableSets = tableSets
-
+        ReportData.TableSets = finalDiagnosisArray;
+        
         return ReportData;
     }
 
