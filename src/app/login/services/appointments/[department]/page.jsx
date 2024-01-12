@@ -431,7 +431,7 @@ const Page = ({ params }) => {
 			</form>
 
 			<div className={styles.HistoryContainer}>
-				<p>Hisotry</p>
+				<p>History</p>
 				<div className={styles.StatusContainer}>
 					<button className={`${styles.StatusBtn} ${Status === "All" ? styles.Active : null}`} onClick={()=>setStatus("All")}>All</button>
 					<button className={`${styles.StatusBtn} ${Status === "Pending" ? styles.Active : null}`} onClick={()=>setStatus("Pending")}>Pending</button>
