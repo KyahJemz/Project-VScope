@@ -216,6 +216,8 @@ export const GET = async (request) => {
             } else if (record.Details.Sex && record.Details.Sex === "Female") {
                 ReportData.TotalGender.Female += 1;
                 ReportData.TotalGender.All += 1;
+            } else {
+                console.log("Undetected Gender = "+record.Details.Sex )
             }
         // Total Service Session
             const createdAtDate = new Date(record.createdAt);
@@ -410,7 +412,6 @@ export const GET = async (request) => {
                 });
             });
             
-            console.log(finalDiagnosisArray);
             
             function findTopItem(array) {
                 const countMap = {};
