@@ -31,6 +31,13 @@
     padding: 20px;
     grid-area: Body;
 }
+.List{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 55vh;
+    overflow-y: scroll;
+}
 
 .PanelButton{
     border: 0px;

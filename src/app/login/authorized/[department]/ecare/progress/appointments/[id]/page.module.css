@@ -220,7 +220,6 @@
             overflow-y: scroll;
             align-items: center;
             gap: 5px;
-            max-height: 20vh;
         }
         .ListItem{
             display: flex;
@@ -229,6 +228,7 @@
             border: 1px solid gainsboro;
             padding: 3px;
             gap: 5px;
+            overflow: hidden;
         }
             .ListItemText{
                 flex: 1;

@@ -1,6 +1,4 @@
 .MainContent{
-    padding: 20px;
-    border: 1px solid gainsboro;
     display: grid;
     display: grid; 
     grid-template-columns: 1fr; 
@@ -30,6 +28,14 @@
     border: 1px solid gainsboro;    
     padding: 20px;
     grid-area: Body;
+}
+.list{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    overflow-y: scroll;
+    height: 50vh;
+
 }
 
 .PanelBtn{

@@ -12,9 +12,6 @@
     padding: 20px;
     border-radius: 5px;
     background-color: #F5F5F5;
-    height: 100%;
-    position: relative;
-    overflow-y: scroll;
 }
 .Header{
     position: sticky;
@@ -56,6 +53,9 @@
         ;
 
     gap: 20px;
+    height: 64vh;
+    position: relative;
+    overflow-y: scroll;
 }
 
 .Overview{

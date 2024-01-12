@@ -122,7 +122,9 @@ const Page = ({params}) => {
 			</div>
 			<div className={styles.Body}>
 				<input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setRecordFilter(e.target.value)}/>
-				<Clearances />
+				<div className={styles.list}>
+					<Clearances />
+				</div>
 			</div>
 		</div>
 	)

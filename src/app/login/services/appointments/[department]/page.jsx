@@ -447,10 +447,12 @@ const Page = ({ params }) => {
 							<p className={styles.notes}>No records</p>
 						) : (
 							filteredData.map((history, index) => (
-								<div key={index} className={`${styles.HistoryData} ${history.ReScheduled ? styles.Rescheduled : styles[history.Status]}`}>
-									{history.ReScheduled || history.Status === "Pending" ? <div data-recordid={history._id} className={styles.CancelBtn} title="Cancel?" onClick={ConfirmChangeStatus}>x</div> : <div className={styles.CheckBtn}>✓</div>}
-									{formatDate(history.AppointmentDate)} | {history.AppointmentTime}
-								</div>
+								<>
+									<div key={index} className={`${styles.HistoryData} ${history.ReScheduled ? styles.Rescheduled : styles[history.Status]}`}>
+										{history.ReScheduled || history.Status === "Pending" ? <div data-recordid={history._id} className={styles.CancelBtn} title="Cancel?" onClick={ConfirmChangeStatus}>x</div> : <div className={styles.CheckBtn}>✓</div>}
+										{formatDate(history.AppointmentDate)} | {history.AppointmentTime}
+									</div>
+								</>
 							))
 						)
 					) : (

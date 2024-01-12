@@ -167,7 +167,9 @@ const Messages = ({params}) => {
                     </div>
                     <div className={styles.Body}>
                         <input className={styles.SearchBar} placeholder="Search..." type="date" onChange={(e)=>setRecordFilter(e.target.value)}/>
-                        <Records />
+						<div className={styles.list}>
+							<Records />
+						</div>
                     </div>
                 </>
             :   
@@ -178,7 +180,9 @@ const Messages = ({params}) => {
                     </div>
                     <div className={styles.Body}>
                         <input className={styles.SearchBar} placeholder="Search..." type="search" onChange={(e)=>setNotificationFilter(e.target.value)}/>
-                        <Notifications />
+						<div className={styles.list}>
+                        	<Notifications />
+						</div>
                     </div>
                 </>
             }

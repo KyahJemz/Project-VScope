@@ -88,6 +88,7 @@ const Page = ({ params }) => {
 					<div className={styles.Diagnosis}>
 						<p className={styles.ListTitle}>Diagnosis</p>
 						<hr className={styles.Line}/>
+						<div className={styles.list}>
 						{data && data?.Diagnosis && data.Diagnosis.length > 0 ? data.Diagnosis.map((diagnosis, index) => (
 							<div key={index} className={styles.ListItem}>
 								<p className={styles.ListItemText}>{diagnosis.Diagnosis}</p>
@@ -95,6 +96,7 @@ const Page = ({ params }) => {
 						)) : 
 							"No Records"
 						}
+						</div>
 						<hr className={styles.Line}/>
 					</div>
 
@@ -104,6 +106,7 @@ const Page = ({ params }) => {
 						<div className={styles.Prescription}>
 							<p className={styles.ListTitle}>Service Offered</p>
 							<hr className={styles.Line} />
+							<div className={styles.list}>
 							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
 								<div key={index} className={styles.ListItem}>
 									<p className={styles.ListItemText}>{prescription.Prescription}</p>
@@ -111,11 +114,14 @@ const Page = ({ params }) => {
 							)) : 
 								"No Records"
 							}
+							</div>
+							<hr className={styles.Line}/>
 						</div>
 					:
 						<div className={styles.Prescription}>
 							<p className={styles.ListTitle}>Prescriptions</p>
 							<hr className={styles.Line} />
+							<div className={styles.list}>
 							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (
 								<div key={index} className={styles.ListItem}>
 									<p className={styles.ListItemText}>{prescription.Prescription}</p>
@@ -123,6 +129,8 @@ const Page = ({ params }) => {
 							)) : 
 								"No Records"
 							}
+							</div>
+							<hr className={styles.Line}/>
 						</div>
 					}
 
@@ -131,6 +139,7 @@ const Page = ({ params }) => {
 					<div className={styles.Note}>
 						<p className={styles.ListTitle}>Notes</p>
 						<hr className={styles.Line}/>
+						<div className={styles.list}>
 						{data && data?.Notes && data.Notes.length > 0 ? data.Notes.map((note, index) => (
 							<div key={index} className={styles.ListItem}>
 								<p className={styles.ListItemText}>{note.Note}</p>
@@ -138,6 +147,7 @@ const Page = ({ params }) => {
 						)) : 
 							"No Records"
 						}
+						</div>
 						<hr className={styles.Line}/>
 					</div>
 					
