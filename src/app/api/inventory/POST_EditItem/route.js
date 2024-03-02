@@ -51,6 +51,17 @@ export const POST = async (request) => {
 
         case "Remove":
           updatedInventory = await Inventory.findByIdAndDelete(Id);
+
+          const newInventoryHistorys = new InventoryHistory({
+            Name: Department + " - Cleared",
+            GoogleEmail: "",
+            Count: "0",
+            ItemName,
+            Notes: "",
+            Department,
+          });
+          await newInventoryHistorys.save();
+
           break;
       
         default:

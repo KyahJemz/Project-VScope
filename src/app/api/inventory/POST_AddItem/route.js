@@ -28,7 +28,7 @@ export const POST = async (request) => {
                 await existingInventory.save();
 
                 const newInventoryHistory = new InventoryHistory({
-                    Name: Department,
+                    Name: Department + " - ReStock",
                     GoogleEmail: "",
                     Count: ItemCount,
                     ItemName: Name,
@@ -46,7 +46,7 @@ export const POST = async (request) => {
                 });
 
                 const newInventoryHistory = new InventoryHistory({
-                    Name: Department,
+                    Name: Department + " - Added new item",
                     GoogleEmail: "",
                     Count: ItemCount,
                     ItemName: Name,

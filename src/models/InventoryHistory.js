@@ -10,7 +10,7 @@ const userSchema = new Schema(
     },
     GoogleEmail: {
       type: String,
-      required: true,
+      required: false,
     },
     ItemName: {
       type: String,

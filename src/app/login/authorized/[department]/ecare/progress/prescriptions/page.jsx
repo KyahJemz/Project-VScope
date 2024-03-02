@@ -76,7 +76,7 @@ const Page = ({ params }) => {
     setIsEditing(true);
 		try {
 			formData.append("Department", Department);
-      formData.append("ItemName", Item?.Name ?? "");
+      formData.append("ItemName", Item?.Name ?? e?.target?.dataset?.name ?? "");
       formData.append("Id", Item?.Id ?? e?.target?.dataset?.id ?? "");
       formData.append("Action", Item?.Action ?? e.target.dataset.action ?? "");
 
@@ -121,7 +121,7 @@ const Page = ({ params }) => {
     return (
       <div className={styles.Card}>
         <p className={styles.Name}>{name}</p>
-        <button className={styles.RemoveButtons} data-id={id} data-action="Remove" disabled={IsEditing} onClick={onEdit}>x</button>
+        <button className={styles.RemoveButtons} data-id={id} data-name={name} data-action="Remove" disabled={IsEditing} onClick={onEdit}>x</button>
         <div className={styles.Buttons}>
           <p>{count}</p>
           <button className={styles.QuantityButtons} data-action="Give" disabled={IsEditing} onClick={(e)=> {setItem({Name: name, Id: id, Count: count, Action: "Give"}); setOpenRequestForm(true)}}>Give</button>
