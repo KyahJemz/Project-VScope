@@ -126,6 +126,47 @@ const Pending = ({ params }) => {
 		}
 	}
 
+	const OnCancel = (e) => {
+		if (appointmentId !== "") {
+			setShowConfirmation(true);
+			setConfirmationData({
+				title: "Change Confirmation",
+				content: `Do you like to change cancel this appointment?`,
+				onYes: () => cancelAppointment(),
+				onCancel: () => setShowConfirmation(false),
+			});
+		}
+	}
+
+	const cancelAppointment = async () => {
+		try {
+			setShowConfirmation(false);
+			setUpdatingDetails(true)
+            
+            const formData = new FormData(); 
+            formData.append("RecordId", appointmentId);
+			formData.append("Department", Department);
+			formData.append("Status", "Canceled");
+			
+            const response = await fetch("/api/records/POST_UpdateStatus", {
+                method: "POST",
+                body: formData,
+            });
+        
+			setUpdatingDetails(false)
+
+            mutate(); 
+           
+            if (response.ok) {
+                console.log("Complete");
+            } else {
+                console.log("Failed");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+	}
+
 	const UpdateSchedule = async (e) => {
 		try {
 
@@ -215,6 +256,7 @@ const Pending = ({ params }) => {
 					) : (
 						<div className={styles.DetailsRow}>
 							<button className={styles.DetailsButton} data-date={details?.AppointmentDate??""} data-time={details?.AppointmentTime??""} onClick={OnReSchedule}>RE-SCHEDULE</button>
+							<button className={styles.DetailsButton} onClick={OnCancel}>Cancel</button>
 						</div>
 					)}
 				</>

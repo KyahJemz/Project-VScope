@@ -48,6 +48,11 @@ export const POST = async (request) => {
             { $set: { Status: Status, DateApproved: new Date() }  },
             { new: true }
           );
+        } else  if (Status === "Canceled") {
+          appointment = await AppointmentModel.findByIdAndUpdate(RecordId,
+            { $set: { Status: Status, DateCleared: new Date() }  },
+            { new: true }
+          );
         } else {
           appointment = await AppointmentModel.findByIdAndUpdate(RecordId,
             { $set: { Status: Status }  },

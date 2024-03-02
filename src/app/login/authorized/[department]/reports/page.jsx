@@ -237,7 +237,7 @@ const Page = ({ params }) => {
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>System service to Patients</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>Records of Patients</p>
                 <div className={styles.MiniCardDetails}>
                   <div className={styles.MiniCardCount}>{ChartSystemPatientsCount}</div>
                   <div className={styles.MiniCardButtons}>
@@ -256,7 +256,7 @@ const Page = ({ params }) => {
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Walk In service to Patients</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>Service to Patients</p>
                 <div className={styles.MiniCardDetails}>
                   <div className={styles.MiniCardCount}>{ChartWalkInPatientsCount}</div>
                   <div className={styles.MiniCardButtons}>

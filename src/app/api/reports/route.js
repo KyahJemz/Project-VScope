@@ -633,8 +633,6 @@ export const GET = async (request) => {
     }
 }
 
-
-
 function getDaysInMonth(year, monthIndex) {
     return new Date(year, monthIndex + 1, 0).getDate();
 }

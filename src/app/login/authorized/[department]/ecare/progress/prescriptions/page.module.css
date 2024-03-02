@@ -1,9 +1,11 @@
 .mainContainer{
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 59vh;
     width: 100%;
     gap: 10px;
+    position: relative;
+    overflow: hidden;
 }
 
 .Header{
@@ -13,6 +15,8 @@
     font-size: 1rem;
     font-weight: bold;
     padding: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 .SearchBar{
     border: 1px solid gainsboro;
@@ -22,13 +26,13 @@
 }
 .GridView{
     padding-top: 10px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 20px;
-    flex-wrap: wrap;
     overflow-y: scroll;
-    height: 35vh;
+    overflow-x: hidden;
+    padding-right: 5px;
 }
-
 .Card{
     display: flex;
     flex-direction: column;
@@ -47,10 +51,11 @@
     gap: 10px;
 }
 .QuantityButtons{
-    aspect-ratio: 1/1;
-    padding: 3px 6px;
+    aspect-ratio: 2/1;
+    padding: 3px 10px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 0.7rem;
 }
 .RemoveButtons{
     position: absolute;
@@ -78,4 +83,97 @@
 .NameInput{
     font-size: 0.8rem;
     padding: 5px;
+}
+
+.SwitchBtn{
+    background-color: rgb(34, 151, 34);
+    border: 0px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    margin-left: auto;
+}
+.addLabel{
+    font-size: small;
+}
+.addLabel:last-child{
+    padding-left: 10px;
+}
+.addForm{
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid gainsboro;
+    border-radius: 3px;
+}
+
+.requestForm{
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    border: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: -20px;
+    
+}
+.Buttons2{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.Button{
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 170px;
+    border: 0px;
+    border-radius: 5px;
+    border: 1px solid rgb(34, 151, 34);
+}
+.ButtonActive{
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 170px;
+    background-color: rgb(34, 151, 34);
+    color: white;
+    border: 0px;
+    border-radius: 5px;
+}
+.requestFormInputText{
+    font-size: 0.9rem;
+}
+.requestFormLight{
+    font-size: 0.7rem;padding-left: 5px;
+}
+.ListItem{
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr auto auto;
+    padding: 10px;
+    border: 1px solid gainsboro;
+}
+.ListView{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: scroll;
+}
+.ListName{
+    font-size: 0.9rem;
+}
+.ListDate{
+    font-size: 0.7rem;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.ListCount{
+    font-size: 0.7rem;
 }

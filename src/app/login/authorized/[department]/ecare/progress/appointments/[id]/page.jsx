@@ -388,7 +388,7 @@ const Page = ({ params }) => {
 
 					{Department === "SDPC" ? 
 						<div className={styles.Prescription}>
-							<p className={styles.ListTitle}>Service Offered</p>
+							<p className={styles.ListTitle}>Most mental health causes</p>
 							<hr className={styles.Line} />
 							<div className={styles.list}>
 							{data && data?.Prescriptions && data.Prescriptions.length > 0 ? data.Prescriptions.map((prescription, index) => (

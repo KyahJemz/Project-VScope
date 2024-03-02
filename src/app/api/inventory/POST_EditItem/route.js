@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import Inventory from "@/models/Inventory";
+import InventoryHistory from "@/models/InventoryHistory";
 
 export const POST = async (request) => {
   if (request.method === 'POST') {
     const formData = await request.formData(); 
 
+    const Name = formData.get("Name");
+    const Email = formData.get("Email");
+    const Notes = formData.get("Notes");
+    const Count = formData.get("Count");
+    const ItemName = formData.get("ItemName");
     const Department = formData.get("Department");
     const Action = formData.get("Action");
     const Id = formData.get("Id");
@@ -19,18 +25,10 @@ export const POST = async (request) => {
       
       let updatedInventory = null;
       switch (Action) {
-        case "Add":
+        case "Give":
           updatedInventory = await Inventory.findByIdAndUpdate(
             Id,
-            { $inc: { Count: 1 } },
-            { new: true }
-          );
-          break;
-        
-        case "Less":
-          updatedInventory = await Inventory.findByIdAndUpdate(
-            Id,
-            { $inc: { Count: -1 } },
+            { $inc: { Count: -Count } },
             { new: true, runValidators: true }
           );
           if (updatedInventory && updatedInventory.Count < 0) {
@@ -40,6 +38,15 @@ export const POST = async (request) => {
               { new: true }
             );
           }
+          const newInventoryHistory = new InventoryHistory({
+            Name,
+            GoogleEmail: Email,
+            Count,
+            ItemName,
+            Notes,
+            Department,
+          });
+          await newInventoryHistory.save();
           break;
 
         case "Remove":
@@ -50,8 +57,6 @@ export const POST = async (request) => {
           return new NextResponse("Invalid Action", { status: 500 });
           break;
       }
-
-      
 
       if (!updatedInventory) {
         return new NextResponse("Inventory not found", { status: 404 });
