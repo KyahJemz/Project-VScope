@@ -7,7 +7,7 @@ export const POST = async (request) => {
     if (request.method === 'POST') {
         const body = await request.formData();
 
-        const Name = body.get("Name").trim();
+        const Name = body.get("Name");
         const Department = body.get("Department");
         let ItemCount = parseInt(body.get("Count"));
         if (isNaN(ItemCount)) {
@@ -20,9 +20,9 @@ export const POST = async (request) => {
 
         try {
             await connect();
-
-            let existingInventory = await Inventory.findOne({ Name: { $regex: new RegExp(`^${Name}$`, 'i') } });
-
+            console.log("---TEST---", Name)
+            let existingInventory = await Inventory.findOne({ Name: Name });
+            console.log("---TEST---", existingInventory)
             if (existingInventory) {
                 existingInventory.Count += ItemCount;
                 await existingInventory.save();

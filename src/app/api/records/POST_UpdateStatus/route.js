@@ -53,6 +53,7 @@ export const POST = async (request) => {
             { $set: { Status: Status, DateCleared: new Date() }  },
             { new: true }
           );
+          console.log("---TEST---", appointment)
         } else {
           appointment = await AppointmentModel.findByIdAndUpdate(RecordId,
             { $set: { Status: Status }  },

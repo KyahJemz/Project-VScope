@@ -72,7 +72,7 @@ const Page = ({ params }) => {
 
 	const filteredData = Status === "All"
 		? sortedData.filter(record => ["Pending", "Approved", "Canceled", "Rescheduled"].includes(record.Status))
-		: Status === "Rescheduled" ? sortedData.filter(record => record.ReScheduled === true) : sortedData.filter(record => record.Status === Status);
+		: Status === "Rescheduled"  ? sortedData.filter(record => record.ReScheduled === true && record.Status !== "Canceled") : sortedData.filter(record => record.Status === Status);
 
 	useEffect(() => {
 		const hasSetSchedule = HistoryData?.some(element => SelectedDay === element.AppointmentDate && element.Status !== "Canceled" && element.Status !== "Rejected");
@@ -150,6 +150,8 @@ const Page = ({ params }) => {
 
             if (response.ok) {
                 console.log("Complete");
+				alert("Appointment Canceled!");
+				HistoryMutate();
             } else {
                 console.log("Failed");
             }
@@ -157,6 +159,7 @@ const Page = ({ params }) => {
             console.log(err);
 		} finally {
 			HistoryMutate();
+			DeptMutate();
 		}
 	}
 
@@ -448,8 +451,8 @@ const Page = ({ params }) => {
 						) : (
 							filteredData.map((history, index) => (
 								<>
-									<div key={index} className={`${styles.HistoryData} ${history.ReScheduled ? styles.Rescheduled : styles[history.Status]}`}>
-										{history.ReScheduled || history.Status === "Pending" ? <div data-recordid={history._id} className={styles.CancelBtn} title="Cancel?" onClick={ConfirmChangeStatus}>x</div> : <div className={styles.CheckBtn}>✓</div>}
+									<div key={index} className={`${styles.HistoryData} ${history.ReScheduled && history.Status !== "Canceled" ? styles.Rescheduled : styles[history.Status]}`}>
+										{(history.ReScheduled && history.Status !== "Canceled") || history.Status === "Pending" ? <div data-recordid={history._id} className={styles.CancelBtn} title="Cancel?" onClick={ConfirmChangeStatus}>x</div> : <div className={styles.CheckBtn}>✓</div>}
 										{formatDate(history.AppointmentDate)} | {history.AppointmentTime}
 									</div>
 								</>

@@ -168,7 +168,7 @@ const Page = ({ params }) => {
                     <p className={``}>Number of Patients</p>
                     <p className={``}>Gender</p>
                     <p className={``}>Services used</p>
-                    <p className={`${styles.OverviewHeaderLast}`}>Top Prescriptions</p>
+                    <p className={`${styles.OverviewHeaderLast}`}>{Department === "SDPC" ? "Causes" : "Top Prescriptions"}</p>
                   </div>
                   <div className={styles.OverviewBody}>
                     <div className={styles.OverviewBodyScroll}>

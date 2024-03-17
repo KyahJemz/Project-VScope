@@ -87,8 +87,8 @@ const Page = () => {
 						<p className={styles.DetailsFormTitle}>Please update your details.</p>
 					</div>
 					<div className={styles.DetailsRow}>
-						<input className={styles.DetailsFields} type="text" name="LastName" data-key="LastName"  placeholder="LastName" required/>
-						<input className={styles.DetailsFields} type="text" name="FirstName" data-key="FirstName"  placeholder="FirstName" required/>
+						<input className={styles.DetailsFields} type="text" name="LastName" data-key="LastName" defaultValue={session.user.name.split(' ').slice(-1)}  placeholder="LastName" required/>
+						<input className={styles.DetailsFields} type="text" name="FirstName" data-key="FirstName" defaultValue={session.user.name.split(' ')[0]}  placeholder="FirstName" required/>
 						<input className={styles.DetailsFields} type="text" name="MiddleName" data-key="MiddleName" placeholder="MiddleName"/>
 					</div>
 					<div className={styles.DetailsRow}>
