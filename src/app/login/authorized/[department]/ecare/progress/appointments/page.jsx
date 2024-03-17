@@ -43,7 +43,7 @@ const Page = ({ params }) => {
         )
         .filter(
           (record) =>
-          record.Status !== "Pending" && record.Status !== "Canceled" && record.Status !== "Rejected"
+          record.Status !== "Pending" && record.Status !== "Canceled" && record.Status !== "Rejected"  && record.Status !== "Completed"
         )
     : [];
 
@@ -55,7 +55,6 @@ const Page = ({ params }) => {
         <button className={`${styles.StatusBtn} ${Status === "All" ? styles.Active : null}`} onClick={()=>setStatus("All")}>All</button>
         <button className={`${styles.StatusBtn} ${Status === "Approved" ? styles.Active : null}`} onClick={()=>setStatus("Approved")}>Approved</button>
         <button className={`${styles.StatusBtn} ${Status === "Advising" ? styles.Active : null}`} onClick={()=>setStatus("Advising")}>Advising</button>
-        <button className={`${styles.StatusBtn} ${Status === "Completed" ? styles.Active : null}`} onClick={()=>setStatus("Completed")}>Cleared</button>
       </div>
       <div className={styles.List}>
         {isLoading ? "Loading..." : filteredRecords.length === 0 ? "No results" : filteredRecords?.map((record, index) => (
@@ -67,7 +66,7 @@ const Page = ({ params }) => {
               width={50}
               height={50}
             />
-            <p className={styles.RecordName}>{record?.Details?.LastName ?? ""}, {record?.Details?.FirstName ?? ""} {record?.Details?.MiddleName ?? ""} | ({record.Type === "WalkIn" ? "WalkIn" : formatShortDate(record?.AppointmentDate) ?? "?"} {record.Type === "WalkIn" ? "" : " "+record?.AppointmentTime ?? "?"})</p>
+            <p className={styles.RecordName}>{record?.Details?.LastName === "" ? record.GoogleEmail : record?.Details?.LastName }, {record?.Details?.FirstName ?? ""} {record?.Details?.MiddleName ?? ""} | ({record.Type === "WalkIn" ? "WalkIn" : formatShortDate(record?.AppointmentDate) ?? "?"} {record.Type === "WalkIn" ? "" : " "+record?.AppointmentTime ?? "?"})</p>
             <div className={`${styles.RecordStatus} ${styles[record.Status.replace(/\s+/g, '')]}`}>{record.Status}</div>
           </div>
         ))}

@@ -117,13 +117,17 @@ const Page = ({ params }) => {
       )
     : [];
 
+    const formatNumber = (number) => {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
   const CreateCard = ({name, count, id}) => {
     return (
       <div className={styles.Card}>
         <p className={styles.Name}>{name}</p>
         <button className={styles.RemoveButtons} data-id={id} data-name={name} data-action="Remove" disabled={IsEditing} onClick={onEdit}>x</button>
         <div className={styles.Buttons}>
-          <p>{count}</p>
+          <p className={styles.count}>{formatNumber(count)}</p>
           <button className={styles.QuantityButtons} data-action="Give" disabled={IsEditing} onClick={(e)=> {setItem({Name: name, Id: id, Count: count, Action: "Give"}); setOpenRequestForm(true)}}>Give</button>
         </div>
       </div>
@@ -236,6 +240,8 @@ const Page = ({ params }) => {
   
     return `${formattedDate} ${formattedTime}`;
 };
+
+
 
   return (
     <>

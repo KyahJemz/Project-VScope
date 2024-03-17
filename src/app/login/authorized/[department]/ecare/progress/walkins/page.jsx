@@ -34,6 +34,10 @@ const Page = ({ params }) => {
           (record?.Details?.FirstName ?? "").toLowerCase().includes(Search.toLowerCase()) ||
           (record?.Details?.MiddleName ?? "").toLowerCase().includes(Search.toLowerCase())
         )
+        .filter(
+          (record) =>
+          record.Status !== "Pending" && record.Status !== "Canceled" && record.Status !== "Rejected"  && record.Status !== "Completed"
+        )
     : [];
 
 
@@ -44,7 +48,6 @@ const Page = ({ params }) => {
         <button className={`${styles.StatusBtn} ${Status === "All" ? styles.Active : null}`} onClick={()=>setStatus("All")}>All</button>
         <button className={`${styles.StatusBtn} ${Status === "In Progress" ? styles.Active : null}`} onClick={()=>setStatus("In Progress")}>In Progress</button>
         <button className={`${styles.StatusBtn} ${Status === "Advising" ? styles.Active : null}`} onClick={()=>setStatus("Advising")}>Advising</button>
-        <button className={`${styles.StatusBtn} ${Status === "Completed" ? styles.Active : null}`} onClick={()=>setStatus("Completed")}>Cleared</button>
       </div>
       <div className={styles.List}>
         {isLoading ? "Loading..." : filteredRecords.length === 0 ? "No results" : filteredRecords?.map((record, index) => (

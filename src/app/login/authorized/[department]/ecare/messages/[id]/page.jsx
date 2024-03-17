@@ -32,6 +32,7 @@ const Form = ({params}) => {
 
     const [file, setFile] = useState(null);
     const [IsViewUpdate, setIsViewUpdate] = useState(false);
+    const [IsViewCreateRecord, setIsViewCreateRecord] = useState(false);
 
     console.log(file)
 
@@ -199,6 +200,41 @@ const Form = ({params}) => {
         }
     };
 
+    const HandleCreateRecordSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            setResponseUploading(true);
+    
+            const formData = new FormData(e.target);
+            formData.append("Department", Department);
+            formData.append("Type", "Appointment");
+            formData.append("ServiceOffered", "Direct Consultation");
+            formData.append("Date", new Date().toISOString().split('T')[0]);
+            formData.append("Time", "Direct");
+
+            const response = await fetch("/api/records/POST_AddRecord", {
+                method: "POST",
+                body: formData,
+            });
+    
+            if (response.ok) {
+                console.log("Complete");
+                alert("Record Created!");
+            } else {
+                console.log("Failed");
+                alert("Record Failed to Create, Try Again!");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setResponseUploading(false);
+            e.target.reset();
+            mutate();
+            setFile(null);
+        }
+    };
+
+
     const Messages = useRef(null);
 
     useEffect(() => {
@@ -206,7 +242,14 @@ const Form = ({params}) => {
         if (element) {
           element.scrollTop = element.scrollHeight;
         }
-    }, [Messages, data, file, ResponseUploading]);
+    }, []);
+
+    useEffect(() => {
+        const element = Messages.current;
+        if (element) {
+          element.scrollTop = element.scrollHeight;
+        }
+    }, [Messages, data, file, ResponseUploading, IsViewUpdate, IsViewCreateRecord]);
 
     const MainContent = () => {
         return (
@@ -268,7 +311,7 @@ const Form = ({params}) => {
     const Header = () => {
         return (
             <div className={styles.Header}>
-                <p>Messaging - {`${data?.Details?.LastName??""}, ${data?.Details?.FirstName??""} ${data?.Details?.MiddleName??""}`}</p>
+                <p>Messaging - {`${data?.FullName?? ReceiverGoogleEmail}`}</p>
                 {data?.Status ? (
                     <>
                         <button className={styles.Updates} onClick={()=>{IsViewUpdate ? setIsViewUpdate(false) : setIsViewUpdate(true)}}>View Updates</button>
@@ -288,7 +331,26 @@ const Form = ({params}) => {
                         </div>
                     </>
                 ) : (
-                    <></>
+                    <>
+                        <button className={styles.Updates} onClick={()=>{IsViewCreateRecord ? setIsViewCreateRecord(false) : setIsViewCreateRecord(true)}}>Create Record</button>
+                        <div className={`${styles.UpdateContainer} ${IsViewCreateRecord ? null  : styles.None}`}>
+                            <form onSubmit={HandleCreateRecordSubmit} method="post" className={styles.CreateRecord}>
+                                <input name="GoogleEmail" value={ReceiverGoogleEmail} placeholder="Email" type="text" required className={styles.CreateRecordInput}/>
+                                <textarea name="Concern" id="" cols="" rows="10" required placeholder="Concern" className={styles.CreateRecordInput}></textarea>
+                                <select name="Status" id="" className={styles.CreateRecordInput} required>
+                                    <option value="Advising">Mark as Advising</option>
+                                    <option value="Approved">Mark as Approved</option>
+                                    <option value="Completed">Mark as Completed</option>
+                                </select>
+                                <select name="Category" id="" className={styles.CreateRecordInput} required>
+                                    <option value="Student">Student</option>
+                                    <option value="Lay Collaborator">Lay Collaborator</option>
+                                </select>
+                                <input name="GoogleImage" value={ReceiverGoogleImage} hidden type="text" required className={styles.CreateRecordInput}/>
+                                <button type="submit" className={styles.CreateRecordInput}>Create</button>
+                            </form>
+                        </div>
+                    </>
                 )}
             </div>
         )

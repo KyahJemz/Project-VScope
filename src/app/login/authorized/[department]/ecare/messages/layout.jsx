@@ -144,7 +144,7 @@ export default function RootLayout(prop) {
                                         height={50}
                                         width={50}
                                     />
-                                    <p data-value={item?._id} className={`${styles.MessageName} ${IsNew(item) ? styles.Active : null}`}>{`${item?.Details?.LastName??"?"}, ${item?.Details?.FirstName??"?"} ${item?.Details?.MiddleName??""}`}</p>
+                                    <p data-value={item?._id} className={`${styles.MessageName} ${IsNew(item) ? styles.Active : null}`}>{`${item?.Details?.LastName === "" ? item.GoogleEmail : item?.Details?.LastName }, ${item?.Details?.FirstName??"?"} ${item?.Details?.MiddleName??""}`}</p>
                                     <div data-value={item?._id} className={styles.MessageDetails}>
                                         <p data-value={item?._id} className={`${styles.MessageLatest} ${IsNew(item) ? styles.Active : null}`}>{item?.Responses[item.Responses.length - 1]?.Response ?? "..."}</p>
                                         <p data-value={item?._id} className={`${styles.MessageTime} ${IsNew(item) ? styles.Active : null}`}>{formatShortDate(item.updatedAt)}</p>

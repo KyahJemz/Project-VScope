@@ -95,8 +95,8 @@ export const POST = async (request) => {
               Type,
               Category,
               Details,
-              DateApproved: Type === "WalkIn" ? new Date() : "",
-              DateCleared: "",
+              DateApproved: Type === "WalkIn" ? new Date() : (body?.get("ServiceOffered")?? "" === "Direct Consultation") ? new Date() : "",
+              DateCleared: Status === "Complete" ? new Date() : "",
               AppointmentDate: Type === "WalkIn" ? "" : body.get("Date"),
               AppointmentTime: Type === "WalkIn" ? "" : body.get("Time"),
               ServiceOffered: body.get("ServiceOffered"),
@@ -116,21 +116,24 @@ export const POST = async (request) => {
 
           } else {
              // Remove the "-" symbol from the Time string
-            const cleanedTime = `${body.get("Time")}`.replace("-", "");
-            
-            await Calendar.findOneAndUpdate(
-              { Date: `${body.get("Date")}` },
-              { $push: { [cleanedTime]: newSchedule }, $set: { Department: Department } },
-              { new: true, upsert: true }
-            );
+             if (body?.get("ServiceOffered")?? "" !== "Direct Consultation"){
 
-            const to = 
-              Department === 'Dental' ? Defaults.DentalEmail : 
-              Department === 'Medical' ? Defaults.MedicalEmail : 
-              Department === 'SDPC' ? Defaults.SDPCEmail : "" ;
-            const subject = "Appointment Request";
-            const text = "You have received an appointment request via VScope. The request is now pending at the appointment requests page, and we will be in touch with you soon to confirm the details. ";
-            await sendEmail({to,subject,text});
+              const cleanedTime = `${body.get("Time")}`.replace("-", "");
+              
+              await Calendar.findOneAndUpdate(
+                { Date: `${body.get("Date")}` },
+                { $push: { [cleanedTime]: newSchedule }, $set: { Department: Department } },
+                { new: true, upsert: true }
+              );
+
+              const to = 
+                Department === 'Dental' ? Defaults.DentalEmail : 
+                Department === 'Medical' ? Defaults.MedicalEmail : 
+                Department === 'SDPC' ? Defaults.SDPCEmail : "" ;
+              const subject = "Appointment Request";
+              const text = "You have received an appointment request via VScope. The request is now pending at the appointment requests page, and we will be in touch with you soon to confirm the details. ";
+              await sendEmail({to,subject,text});
+            }
           }
            
           return new NextResponse("Success", { status: 201 });

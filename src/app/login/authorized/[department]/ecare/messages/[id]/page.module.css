@@ -229,3 +229,13 @@ transition: 250ms;
 text-shadow: 1px 1px gainsboro;
 font-size: 0.72rem;
 }
+
+.CreateRecord{
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.CreateRecordInput{
+  padding: 5px;
+}

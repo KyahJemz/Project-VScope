@@ -107,7 +107,9 @@
     border: 1px solid gainsboro;
     border-radius: 3px;
 }
-
+.count{
+    font-size: 0.8rem;
+}
 .requestForm{
     height: 100%;
     width: 100%;
@@ -175,5 +177,5 @@
     padding-right: 10px;
 }
 .ListCount{
-    font-size: 0.7rem;
+    font-size: 0.6rem;
 }

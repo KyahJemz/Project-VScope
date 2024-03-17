@@ -87,6 +87,7 @@
     .Days {
         grid-area: Days;
         border: 1px solid gainsboro;
+        overflow: hidden;
     }
     .Status {
         grid-area: Status;

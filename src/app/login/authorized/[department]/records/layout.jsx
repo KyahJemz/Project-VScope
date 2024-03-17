@@ -49,7 +49,7 @@ export default function RootLayout(prop) {
               filteredRecordsData.map((item, index) => 
                 <>
                   <div className={styles.RecordName} key={index} data-value={item.GoogleEmail} onClick={ViewHistory}>
-                    {`${item?.Details?.LastName??"?"}, ${item?.Details?.FirstName??"?"} ${item?.Details?.MiddleName??""}`}
+                    {`${item?.Details?.LastName === "" ? item.GoogleEmail : item?.Details?.LastName }, ${item?.Details?.FirstName??"?"} ${item?.Details?.MiddleName??""}`}
                   </div>
                 </>
                 
