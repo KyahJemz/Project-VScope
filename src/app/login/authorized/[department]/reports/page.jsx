@@ -41,48 +41,100 @@ const Page = ({ params }) => {
     }
   }, [data, isLoading]);
 
-  const StatusPieChartData = {
-		labels: ["Approved","Canceled","Pending"],
-		datasets: [
-		{
-			data: [data?.ChartStatus?.Approved??0, data?.ChartStatus?.Canceled??0, data?.ChartStatus?.Pending??0],
-			backgroundColor: ['#AFF4C6', '#F24822', '#FFCD29'], 
-			hoverBackgroundColor: ['#AFF4C67c','#F248227c','#FFCD297c'],
-		},
-		],
-	};
-
-  const DiagnosisPieChartData = {
-    labels: data?.TopDiagnosis?.map(item => item.Diagnosis) ?? [],
-    datasets: [
-      {
-        data: data?.TopDiagnosis?.map(item => item.Count) ?? [],
-        backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
-        hoverBackgroundColor: "#ffffff80",
-      },
-    ],
+  const StatusPieChartData = () => {
+    if (data?.ChartStatus) {
+        const { Approved, Canceled, Pending } = data.ChartStatus;
+        if (Approved || Canceled || Pending) {
+            return {
+                labels: ["Approved", "Canceled", "Pending"],
+                datasets: [{
+                    data: [Approved ?? 0, Canceled ?? 0, Pending ?? 0],
+                    backgroundColor: ['#AFF4C6', '#F24822', '#FFCD29'],
+                    hoverBackgroundColor: ['#AFF4C67c', '#F248227c', '#FFCD297c'],
+                }],
+            };
+        }
+    }
+    return {
+        labels: ["No data"],
+        datasets: [{
+            data: [1], 
+            backgroundColor: ['#E8E8E8'],
+            hoverBackgroundColor: ['#CECECE'],
+        }],
+    };
   };
 
-  const PrescriptionPieChartData = {
-    labels: data?.TopPrescriptions?.map(item => item.Prescription) ?? [],
-    datasets: [
-      {
-        data: data?.TopPrescriptions?.map(item => Number(item.Count)) ?? [],
-        backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
-        hoverBackgroundColor: "#ffffff80",
-      },
-    ],
+  const DiagnosisPieChartData = () => {
+    if (data?.TopDiagnosis) {
+        const topDiagnostics = data.TopDiagnosis;
+        if (topDiagnostics && topDiagnostics.length !== 0) {
+            return {
+                labels: data?.TopDiagnosis?.map(item => item.Diagnosis) ?? [],
+                datasets: [{
+                    data: data?.TopDiagnosis?.map(item => item.Count) ?? [],
+                    backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
+                    hoverBackgroundColor: "#ffffff80",
+                }],
+            };
+        }
+    }
+    return {
+        labels: ["No data"],
+        datasets: [{
+            data: [1], 
+            backgroundColor: ['#E8E8E8'],
+            hoverBackgroundColor: ['#CECECE'],
+        }],
+    };
   };
 
-  const ServicesPieChartData = {
-    labels: data?.TopServices?.map(item => item.Service) ?? [],
-    datasets: [
-      {
-        data: data?.TopServices?.map(item => Number(item.Count)) ?? [],
-        backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
-        hoverBackgroundColor: "#ffffff80",
-      },
-    ],
+  const PrescriptionPieChartData = () => {
+    if (data?.TopPrescriptions) {
+        const TopPrescriptions = data.TopPrescriptions;
+        if (TopPrescriptions && TopPrescriptions.length !== 0) {
+            return {
+                labels: data?.TopPrescriptions?.map(item => item.Prescription) ?? [],
+                datasets: [{
+                    data: data?.TopPrescriptions?.map(item => Number(item.Count)) ?? [],
+                    backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
+                    hoverBackgroundColor: "#ffffff80",
+                }],
+            };
+        }
+    }
+    return {
+        labels: ["No data"],
+        datasets: [{
+            data: [1], 
+            backgroundColor: ['#E8E8E8'],
+            hoverBackgroundColor: ['#CECECE'],
+        }],
+    };
+  };
+
+  const ServicesPieChartData = () => {
+    if (data?.TopServices) {
+        const TopServices = data.TopServices;
+        if (TopServices && TopServices.length !== 0) {
+            return {
+                labels: data?.TopServices?.map(item => item.Service) ?? [],
+                datasets: [{
+                  data: data?.TopServices?.map(item => Number(item.Count)) ?? [],
+                  backgroundColor: Array.from({ length: 10 }, (_, index) => `#${Math.floor(Math.random()*16777215).toString(16)}`),
+                  hoverBackgroundColor: "#ffffff80",
+                }],
+            };
+        }
+    }
+    return {
+        labels: ["No data"],
+        datasets: [{
+            data: [1], 
+            backgroundColor: ['#E8E8E8'],
+            hoverBackgroundColor: ['#CECECE'],
+        }],
+    };
   };
 
   const PatientsLineChartData = {
@@ -109,7 +161,7 @@ const Page = ({ params }) => {
 
         <div className={styles.StatusContainer}>
           <div className={styles.StatusPieChartData}>
-            <PieChart data={StatusPieChartData} />
+            <PieChart data={StatusPieChartData()} />
           </div>
           <div className={styles.StatusCountContainer}>
             <p className={styles.StatusName}>Approved</p>
@@ -233,11 +285,11 @@ const Page = ({ params }) => {
 
             <div className={styles.OverviewOthers}>
               <div className={styles.OverviewOthersPieChartData}>
-                <PieChart data={DiagnosisPieChartData} />
+                <PieChart data={DiagnosisPieChartData()} />
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Records of Patients</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>System service to Patients</p>
                 <div className={styles.MiniCardDetails}>
                   <div className={styles.MiniCardCount}>{ChartSystemPatientsCount}</div>
                   <div className={styles.MiniCardButtons}>
@@ -256,7 +308,7 @@ const Page = ({ params }) => {
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
-                <p className={styles.OverviewOthersMiniCardTitle}>Service to Patients</p>
+                <p className={styles.OverviewOthersMiniCardTitle}>Walk In service to Patients</p>
                 <div className={styles.MiniCardDetails}>
                   <div className={styles.MiniCardCount}>{ChartWalkInPatientsCount}</div>
                   <div className={styles.MiniCardButtons}>
@@ -338,7 +390,7 @@ const Page = ({ params }) => {
             {Panel === "Prescription" ? 
               <>
                 <div className={styles.PieChartData}>
-                  <PieChart data={PrescriptionPieChartData} />
+                  <PieChart data={PrescriptionPieChartData()} />
                 </div>
 
                 <div className={styles.LineChartCards}>
@@ -387,7 +439,7 @@ const Page = ({ params }) => {
             : 
               <>
                 <div className={styles.PieChartData}>
-                  <PieChart data={ServicesPieChartData} />
+                  <PieChart data={ServicesPieChartData()} />
                 </div>
 
                 <div className={styles.LineChartCards}>
