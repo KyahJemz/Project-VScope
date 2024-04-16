@@ -15,13 +15,17 @@ const Page = ({ params }) => {
   const [Course, setCourse] = useState("All");
   const [YearLevel, setYearLevel] = useState("All");
 
+  const [TotalPatientsData, setTotalPatientsData] = useState(null);
+
   const [ChartSystemPatients, setChartSystemPatients] = useState("All");
   const [ChartWalkInPatients, setChartWalkInPatients] = useState("All");
+  const [ChartPatients, setChartPatients] = useState("All");
   const [ChartGender, setChartGender] = useState("All");
   const [ChartSessions, setChartSessions] = useState("All");
 
   const [ChartSystemPatientsCount, setChartSystemPatientsCount] = useState("0");
   const [ChartWalkInPatientsCount, setChartWalkInPatientsCount] = useState("0");
+  const [ChartPatientsCount, setChartPatientsCount] = useState("0");
   const [ChartGenderCount, setChartGenderCount] = useState("0");
   const [ChartSessionsCount, setChartSessionsCount] = useState("0");
 
@@ -34,8 +38,20 @@ const Page = ({ params }) => {
 
   useEffect(() => {
     if (!isLoading && data) {
+      const patientsAll = (data?.TotalSystemPatients?.All??0) + (data?.TotalWalkInPatients?.All??0) ;
+      const patientsOnline = data?.TotalSystemPatients?.All??0;
+      const patientsWalkIn = data?.TotalWalkInPatients?.All??0;
+      const TotalPatients = {
+        All: patientsAll,
+        Online: patientsOnline,
+        Walkins: patientsWalkIn,
+      }
+      console.log(TotalPatients)
+      setTotalPatientsData(TotalPatients);
+
       setChartSystemPatientsCount(data?.TotalSystemPatients?.All);
       setChartWalkInPatientsCount(data?.TotalWalkInPatients?.All);
+      setChartPatientsCount(TotalPatients.All);
       setChartGenderCount(data?.TotalGender?.All);
       setChartSessionsCount(data?.TotalServiceSession?.All);
     }
@@ -286,6 +302,25 @@ const Page = ({ params }) => {
             <div className={styles.OverviewOthers}>
               <div className={styles.OverviewOthersPieChartData}>
                 <PieChart data={DiagnosisPieChartData()} />
+              </div>
+
+              <div className={styles.OverviewOthersMiniCard}>
+                <p className={styles.OverviewOthersMiniCardTitle}>Service offered to patients thru</p>
+                <div className={styles.MiniCardDetails}>
+                  <div className={styles.MiniCardCount}>{ChartPatientsCount}</div>
+                  <div className={styles.MiniCardButtons}>
+                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Online" ? styles.Active : null}`} onClick={() => {
+                      ChartPatients === "Online"
+                        ? (setChartPatients("All"), setChartPatientsCount(TotalPatientsData?.All??0))
+                        : (setChartPatients("Online"), setChartPatientsCount(TotalPatientsData?.Online??0));
+                    }}><div className={styles.MiniCardColor1}></div>Online</button>
+                    <button className={`${styles.MiniCardBtn} ${ChartPatients === "Walk ins" ? styles.Active : null}`} onClick={() => {
+                      ChartPatients === "Walk ins"
+                        ? (setChartPatients("All"), setChartPatientsCount(TotalPatientsData?.All??0))
+                        : (setChartPatients("Walk ins"), setChartPatientsCount(TotalPatientsData?.Walkins??0));
+                    }}><div className={styles.MiniCardColor2}></div>Walk ins</button>
+                  </div>
+                </div>
               </div>
 
               <div className={styles.OverviewOthersMiniCard}>
