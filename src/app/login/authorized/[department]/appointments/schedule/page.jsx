@@ -109,8 +109,12 @@ const Schedule = ({ params }) => {
 	useEffect(() => {
 		if (SelectedDay) {
 		  const hasScheduleOnSelectedDay = data?.some(appointment => appointment.Date === SelectedDay);
-		  setHasSchedule(hasScheduleOnSelectedDay);
-		  console.log(hasSchedule);
+		  if(appointment.Time === "wholeday"){
+			console.log(hasSchedule);
+		  } else {
+			setHasSchedule(hasScheduleOnSelectedDay);
+			console.log(hasSchedule);
+		  }
 		}
 	}, [SelectedDay, data]);
 

@@ -164,7 +164,9 @@ const Page = ({ params }) => {
 		}
 	}
 
-	alert("Remember, approved appointments are essential to ensure you receive timely care when you need it most. Simply making a request doesn't guarantee immediate service. Healthcare providers may have busy schedules, so even if you have/haven't received approval, your preferred time slot may not be available.");
+	useEffect(()=>{
+		alert("Remember, approved appointments are essential to ensure you receive timely care when you need it most. Simply making a request doesn't guarantee immediate service. Healthcare providers may have busy schedules, so even if you have/haven't received approval, your preferred time slot may not be available.");
+	},[])
 
 	return (
 		<div className={styles.MainContent}>	
