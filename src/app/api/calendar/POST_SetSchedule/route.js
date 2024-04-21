@@ -27,18 +27,22 @@ export const POST = async (request) => {
       
       const existingRecord = await Calendar.findOne({ Department, Date });
 
+      // if (existingRecord) {
+      //   return new NextResponse("Record already exists", { status: 200 });
+      // }
+
       if (existingRecord) {
-        return new NextResponse("Record already exists", { status: 200 });
+        existingRecord.Time = Time
+        await existingRecord.save();
+      } else {
+        const newSchedule = new Calendar({
+          Department: Department,
+          Date: Date,
+          Time: Time
+        });
+        await newSchedule.save();
       }
-
-      const newSchedule = new Calendar({
-        Department: Department,
-        Date: Date,
-        Time: Time
-      });
-  
-      await newSchedule.save();
-
+      
       return new NextResponse("Success", { status: 200 });
       
     } catch (err) {
