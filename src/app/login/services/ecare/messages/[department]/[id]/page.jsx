@@ -331,7 +331,7 @@ const Form = ({params}) => {
                                 <option key={index} value={element}/>
                             ))}
                         </datalist>
-                        <input name="datetime-local" className={styles.UpdateDate} type="date" required/>
+                        <input name="Date" className={styles.UpdateDate} type="datetime-local" required/>
                         <button disabled={OnUpdating} className={styles.UpdateSave}>{OnUpdating ? "..." : "Save"}</button>
                     </form>
                 </div>
