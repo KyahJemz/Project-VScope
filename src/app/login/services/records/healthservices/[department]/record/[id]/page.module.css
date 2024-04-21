@@ -203,6 +203,8 @@
      align-items: center;
      padding: 10px;
      font-size: 0.8rem;
+     overflow: hidden;
+     overflow-x: scroll;
   }
       .DaysTitle{
           font-weight: bold;

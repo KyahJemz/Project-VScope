@@ -63,10 +63,6 @@ const Page = ({ params }) => {
 							<p className={styles.ProfileId}>{data?.Details?.StudentNumber??"n/a"}</p>
 							<p className={styles.ProfileEmail}>{data?.GoogleEmail??"n/a"}</p>
 						</div>
-						<div className={styles.ProfileBot}>
-							<button className={`${styles.HistoryBtn}`}>History</button>
-							<button className={`${styles.ReportBtn}`}>Report</button>
-						</div>
 					</div>
 
 
