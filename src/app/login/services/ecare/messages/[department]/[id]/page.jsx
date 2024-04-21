@@ -185,11 +185,11 @@ const Form = ({params}) => {
 
 
     const formatShortDate = (timestamp) => {
-		const options = { month: 'short', day: 'numeric', year: 'numeric' };
-		const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
-	  
-		return `${formattedDate}`;
-	};
+        const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' };
+        const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+    
+        return `${formattedDate}`; // Removing comma after the day
+    };
     const OnUpdateSubmit = async (e) => {
         e.preventDefault();
         try {
