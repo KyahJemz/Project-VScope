@@ -71,7 +71,7 @@ const Page = ({ params }) => {
 	const sortedData = HistoryData ? [...HistoryData].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
 
 	const filteredData = Status === "All"
-		? sortedData.filter(record => ["Pending", "Approved", "Canceled", "Rescheduled"].includes(record.Status))
+		? sortedData.filter(record => ["Pending", "Approved", "Canceled", "Rescheduled", "Rejected"].includes(record.Status))
 		: Status === "Rescheduled"  ? sortedData.filter(record => record.ReScheduled === true && record.Status !== "Canceled") : sortedData.filter(record => record.Status === Status);
 
 	useEffect(() => {
@@ -110,6 +110,7 @@ const Page = ({ params }) => {
             if (response.ok) {
                 console.log("Complete");
 				alert("Appointment Submitted!")
+				alert("Thank you for understanding the importance of approved appointments in securing timely healthcare. Your cooperation ensures smoother access to the care you deserve. Remember, your health matters, and we're here to support you every step of the way. Wishing you good health and well-being always. God bless you! ");
 				e.target.reset();
             } else {
 				alert("Connection Failed. Try Again! :<")
@@ -163,6 +164,8 @@ const Page = ({ params }) => {
 		}
 	}
 
+	alert("Remember, approved appointments are essential to ensure you receive timely care when you need it most. Simply making a request doesn't guarantee immediate service. Healthcare providers may have busy schedules, so even if you have/haven't received approval, your preferred time slot may not be available.");
+
 	return (
 		<div className={styles.MainContent}>	
 
@@ -183,12 +186,6 @@ const Page = ({ params }) => {
 				{SelectedDay ? (
 					<>
 						{(() => {
-							if (HasAlreadySetSchedule) {
-								return (
-										<>
-										</>
-								);
-							}
 							switch (Schedule?.Time??"") {
 								case "wholeday":
 									return (
@@ -441,6 +438,7 @@ const Page = ({ params }) => {
 					<button className={`${styles.StatusBtn} ${Status === "Approved" ? styles.Active : null}`} onClick={()=>setStatus("Approved")}>Approved</button>
 					<button className={`${styles.StatusBtn} ${Status === "Canceled" ? styles.Active : null}`} onClick={()=>setStatus("Canceled")}>Canceled</button>
 					<button className={`${styles.StatusBtn} ${Status === "Rescheduled" ? styles.Active : null}`} onClick={()=>setStatus("Rescheduled")}>Rescheduled</button>
+					<button className={`${styles.StatusBtn} ${Status === "Rejected" ? styles.Active : null}`} onClick={()=>setStatus("Rejected")}>Rejected</button>
 				</div>
 				<div className={styles.HistoryList}>
 					{HistoryIsLoading ? (
@@ -465,7 +463,7 @@ const Page = ({ params }) => {
 			</div>
 
 			<div className={styles.NoteContainer}>
-				TAKE NOTE: NOT ALL APPROVED
+				Remember, approved appointments are essential to ensure you receive timely care when you need it most. Simply making a request doesn't guarantee immediate service. Healthcare providers may have busy schedules, so even if you have/haven't received approval, your preferred time slot may not be available.
 			</div>
 		
 		</div>
