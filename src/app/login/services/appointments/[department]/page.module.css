@@ -219,6 +219,10 @@
     background-color: #F24822;
     color: white;
 }
+.HistoryData.Rejected{
+    background-color: #F24822;
+    color: white;
+}
 .HistoryData.Advising{
     background-color: #555555;
     color: white;
