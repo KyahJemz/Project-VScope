@@ -85,15 +85,28 @@
     padding: 5px;
 }
 
+.PanelBtns{
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+
 .SwitchBtn{
-    background-color: rgb(34, 151, 34);
+    background-color: gainsboro;
     border: 0px;
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-    color: white;
     margin-left: auto;
+    transition: 0.5s;
 }
+
+.SwitchBtnActive {
+    background-color: rgb(34, 151, 34);
+    color: white;
+}
+
 .addLabel{
     font-size: small;
 }
@@ -178,4 +191,75 @@
 }
 .ListCount{
     font-size: 0.6rem;
+}
+
+.medicineReqList{
+    padding: 10px;
+    border: 1px solid gainsboro;
+    width: 100%;
+    cursor: pointer;
+}
+
+.requestContainer{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 100%;
+}
+
+.viewOfMedicineRequest{
+    width: 25%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.viewOfMedicineRequest{
+    font-size: 0.8rem;
+    text-align: center;
+}
+.MedicineReqHeader{
+    background-color: gainsboro;
+    padding: 10px;
+}
+.MedicalReqImage{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 1px solid gainsboro;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: gainsboro;
+}
+
+.MedicineReqConcern{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 5px;
+}
+
+.medicineCounter{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    align-items: center;
+    border-bottom: 1px solid gainsboro;
+    padding-bottom: 10px;
+}
+.MedicineMainBtns{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.medicineCounterBox{
+    text-align: center;
+    text-decoration: none;
+}
+
+.MedicineMainBtns .SwitchBtn {
+    width: 100%;
 }

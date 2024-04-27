@@ -2,18 +2,75 @@
     padding: 20px;
     border: 1px solid gainsboro;
     display: grid;
-    display: grid; 
-
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr 25%; 
     grid-template-rows: 50px 1fr; 
     gap: 0px 0px; 
     grid-template-areas: 
-        "Header"
-        "MessagesContainer";
+        "Header HeaderSickness"
+        "MessagesContainer SicknessContainer";
     gap: 20px;
     position: relative;
     height: 100%;
     overflow: hidden;
+}
+
+.SicknessContainer{
+  border: 1px solid gainsboro;    
+  grid-area: SicknessContainer;
+  height: 65vh;
+  overflow: hidden;
+}
+
+.SicknessContent2{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap:10px;
+  width: 100%;
+  height: 100%;
+}
+
+.SicknessContent1{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap:10px;
+}
+
+
+.sicknessBtns{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  gap: 10px;
+  padding: 10px;
+}
+.sicknessTop{
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+.sicknessBtn{
+  padding: 10px 20px;
+  background-color: gainsboro;
+  cursor: pointer;
+  border: 1px solid gainsboro;
+  width: 100%;
+  border-radius: 5px;
+}
+.sicknessBtn:hover{
+  box-shadow: 0 0 1px 1px gainsboro;
+}
+
+.headerSickness2{
+  background-color: gainsboro;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  overflow: hidden;
 }
 
 
@@ -39,6 +96,114 @@
   flex-direction: column-reverse;
 }
 
+.listDiagnosis{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  height: 100%;
+  padding-bottom: 20px;
+}
+.ListDiagnosisItem{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  border: 1px solid gainsboro;
+  padding: 3px;
+  gap: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+  .ListDiagnosisItemText{
+      flex: 1;
+      width: 100%;
+      padding: 5px;
+  }
+
+  .ListDiagnosisItemBtn{
+      padding: 3px 5px;
+      cursor: pointer;
+      background-color: rgba(255, 0, 0, 0.750);
+      border: 0px;
+      color: white;
+      transition: 250ms;
+  }
+  .ListDiagnosisItemAddBtn{
+      padding: 5px 7px;
+      cursor: pointer;
+      background-color: #53c28b;
+      border: 0px;
+      color: white;
+      transition: 250ms;
+  }
+  .ListDiagnosisItemAddBtn:hover,
+  .ListDiagnosisItemBtn:hover{
+      box-shadow: 0 0 2px 2px gainsboro;
+  }
+  .ListDiagnosisItemAddBtn:active,
+  .ListDiagnosisItemBtn:active{
+      box-shadow: 0 0 2px 2px black;
+  }
+
+
+  .sicknessTop{
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+  .listMedicine{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    height: 75%;
+    padding-bottom: 20px;
+    border: 1px solid gainsboro;
+  }
+  .ListMedicineItem{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    border: 1px solid gainsboro;
+    padding: 3px;
+    gap: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+    .ListMedicineItemText{
+        flex: 1;
+        width: 100%;
+        padding: 5px;
+    }
+  
+    .ListMedicineItemBtn{
+        padding: 3px 5px;
+        cursor: pointer;
+        background-color: rgba(255, 0, 0, 0.750);
+        border: 0px;
+        color: white;
+        transition: 250ms;
+    }
+    .ListMedicineItemAddBtn{
+        padding: 5px 7px;
+        cursor: pointer;
+        background-color: #53c28b;
+        border: 0px;
+        color: white;
+        transition: 250ms;
+    }
+    .ListMedicineItemAddBtn:hover,
+    .ListMedicineItemBtn:hover{
+        box-shadow: 0 0 2px 2px gainsboro;
+    }
+    .ListMedicineItemAddBtn:active,
+    .ListMedicineItemBtn:active{
+        box-shadow: 0 0 2px 2px black;
+    }
+
 
 .Header {
   grid-area: Header;
@@ -50,6 +215,17 @@
   font-weight: bold;
   position: relative;
 }
+.HeaderSickness{
+  grid-area: HeaderSickness;
+  border: 1px solid gainsboro;    
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  font-weight: bold;
+  position: relative;
+}
+
 .UpdateContainer{
 display:block;
 position: absolute;
@@ -227,4 +403,92 @@ button.UpdateRemove:active,
 .downloadLink:hover{
   text-shadow: 1px 1px gainsboro;
   font-size: 0.72rem;
+}
+
+.ConcernContent{
+  width: 100%;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+
+
+.viewStatusPanelButtons{
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  justify-content: space-evenly;
+}
+
+.viewStatusBtn{
+  flex: 1;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  border-width: 0px;
+  background-color: gainsboro;
+  transition: 0.5s;
+}
+
+.viewStatusActive{
+  background-color: #53c28b;
+  color: white;
+}
+
+
+.viewStatusPanels{
+  overflow-y: scroll;
+  height: 100%;
+  width: 100%;
+  padding-bottom: 100px;
+}
+
+.viewStatusItem{
+  font-size: 0.8rem;
+  text-align: center;
+  border: 1px solid gainsboro;
+  padding: 5px;
+  padding-top: 10px;
+  padding-bottom: 35px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  position: relative;
+
+}
+
+.viewStatusItemDate{
+  font-size: 0.7rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: gainsboro;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.ListSymptomsItem{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid gainsboro;
+  margin-bottom: 20px;
+}
+
+.listSymptoms{
+  overflow-y: scroll;
+    overflow-x: hidden;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 20px;
+    border: 1px solid gainsboro;
+    margin-top: 10px;
+
+}
+
+.HealthReportItemHeader{
+  padding: 5px;
+  background-color: gainsboro;
+  font-size: 0.8rem;
 }

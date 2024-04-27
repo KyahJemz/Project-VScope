@@ -3,6 +3,8 @@
 import React, {useState} from "react";
 import useSWR from "swr";
 import styles from "./page.module.css";
+import UserDefault from "/public/UserDefault.png";
+import Image from "next/image";
 
 const Page = ({ params }) => {
   const Department = params.department;
@@ -13,6 +15,8 @@ const Page = ({ params }) => {
 
   const [IsUploading, setIsUploading] = useState(false);
   const [IsEditing, setIsEditing] = useState(false);
+  const [CurrentMedicine, setCurrentMedicine] = useState(null);
+  const [CurrentMedicineStatus, setCurrentMedicineStatus] = useState(null);
 
   const [Item, setItem] = useState(null);
   const [OpenRequestForm, setOpenRequestForm] = useState(false);
@@ -26,6 +30,11 @@ const Page = ({ params }) => {
 
   const { data: historyData, mutate: historyMutate, error: historyError, isLoading: historyIsLoading } =  useSWR(
 		`/api/inventory/GET_ItemsHistory?Department=${encodeURIComponent(Department)}`,
+		fetcher
+	);
+
+  const { data: medicineData, mutate: medicineMutate, error: medicineError, isLoading: medicineIsLoading } =  useSWR(
+		`/api/sickness/medicine/GET_requestMedicine?Department=${encodeURIComponent(Department)}`,
 		fetcher
 	);
 
@@ -114,6 +123,13 @@ const Page = ({ params }) => {
     ? historyData.filter((item) =>
         item.Name.toLowerCase().includes(Search.toLowerCase()) ||
         item.ItemName.toLowerCase().includes(Search.toLowerCase())
+      )
+    : [];
+
+    const filterMedicine = medicineData
+    ? medicineData.filter((item) =>
+        item.Name.toLowerCase().includes(Search.toLowerCase()) ||
+        item.GoogleEmail.toLowerCase().includes(Search.toLowerCase())
       )
     : [];
 
@@ -241,6 +257,131 @@ const Page = ({ params }) => {
     return `${formattedDate} ${formattedTime}`;
 };
 
+const formatShortDate = (timestamp) => {
+  const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+  const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
+
+  return formattedDate;
+};
+
+const getCountInInventory = (itemName) => {
+  const formatedItemName = data.filter((item)=>item.Name.toLowerCase().includes(itemName.toLowerCase()));
+  return parseInt(formatedItemName?.[0]?.Count??0)
+}
+
+
+const getIdInInventory = (itemName) => {
+  const formatedItemName = data.filter((item)=>item.Name.toLowerCase().includes(itemName.toLowerCase()));
+  return formatedItemName?.[0]?._id??"";
+}
+
+const medicineProcess = async (e) => {
+  e.preventDefault();
+  let type = CurrentMedicineStatus;
+  let data = [];
+  const formElements = e.target.elements;
+  const elementsArray = Array.from(formElements);
+  console.log(e)
+  elementsArray.forEach(element => {
+    if (element.tagName.toLowerCase() === 'input') {
+      if(parseInt(element?.dataset?.maxitem??0) >= parseInt(element?.value??0)){
+        data.push({name: element?.dataset?.itemname??"", count: parseInt(element?.value??0), itemId: element?.dataset?.itemid??""})
+      } else {
+        alert(`${element?.dataset?.itemname??""} exceeds the maximum item count!`)
+        return
+      }
+    }
+  });
+  console.log(type, data)
+  try {
+    const formData = new FormData(e.target);
+    formData.append("Id", CurrentMedicine._id);
+    formData.append("Medicine", JSON.stringify(data));
+    formData.append("Status", type);
+
+    const response = await fetch("/api/sickness/medicine/POST_updateStatus", {
+        method: "POST",
+        body: formData,
+    });
+
+    if (response.ok) {
+        console.log("Complete");
+        setCurrentMedicine(null);
+        alert("Success, request has status been saved")
+    } else {
+        console.log("Failed");
+        alert("Failed, Try Again")
+    }
+  } catch (err) {
+      console.log(err);
+  } finally {
+  }
+
+};
+const Request = () => {
+  return (
+    <>
+      <hr />
+      <div className={styles.requestContainer}>
+        <div className={styles.ListView}>
+            {filterMedicine && filterMedicine.map((item)=>{
+              return (
+                <div className={styles.medicineReqList} width={100}>
+                  <p className={styles.Name} onClick={()=>{setCurrentMedicine(item)}}>{`${item.Name} [${item.GoogleEmail}] - ${formatShortDate(item.updatedAt)}`}</p>
+                </div>
+              )
+            })}
+          </div>
+          <div className={styles.viewOfMedicineRequest}>
+            <div className={styles.MedicineReqHeader}>Clearance</div>
+            <div className={styles.MedicalReqImage}>
+              <img src={CurrentMedicine?.GoogleImage === null || CurrentMedicine?.GoogleImage === "" ? UserDefault : CurrentMedicine?.GoogleImage} alt="" />
+            </div>
+            <div className={styles.MedicineReqName}>{CurrentMedicine?.Name??""}</div>
+            <div className={styles.MedicineReqEmail}>{CurrentMedicine?.GoogleEmail??""}</div>
+            <textarea className={styles.MedicineReqConcern} rows={4} disabled>{CurrentMedicine?.Concern??""}</textarea>
+            <form className={styles.MedicineReqRequests} onSubmit={medicineProcess}>
+              {CurrentMedicine && CurrentMedicine.Medicines.map((item)=>{
+                return (
+                  <div className={styles.medicineCounter}>
+                  {item}
+                  {CurrentMedicine && CurrentMedicine?.Status === "In Progress" ? 
+                  <>
+                    <input
+                          data-itemname={item}
+                          data-maxitem={getCountInInventory(item)}
+                          data-itemid={getIdInInventory(item)}
+                          className={styles.medicineCounterBox}
+                          type="number"
+                          min={0}
+                          max={getCountInInventory(item)}
+                          defaultValue={0}
+                          required
+                      />
+                    {`[${getCountInInventory(item)}]`}
+                  </>
+                   : null}
+              </div>
+                )
+              })}
+              <div className={styles.MedicineMainBtns}>
+                {CurrentMedicine && CurrentMedicine?.Status === "In Progress" ?
+                  <>
+                    <button type="submit" onClick={()=>setCurrentMedicineStatus("reject")} data-type="reject" className={`${styles.SwitchBtn}`}>Reject</button>
+                    <button type="submit" onClick={()=>setCurrentMedicineStatus("approve")} data-type="approve" className={`${styles.SwitchBtn}`}>Approve</button>
+                  </>
+                :
+                  null
+                }
+                
+              </div>
+            </form>
+          </div>
+        </div>
+    </>
+  )
+}
+
 
 
   return (
@@ -248,9 +389,23 @@ const Page = ({ params }) => {
     {OpenRequestForm ? <RequestForm /> : null}
     <div className={styles.mainContainer}>
       
-      <div className={styles.Header}>{ActivePanel} <button className={styles.SwitchBtn} onClick={()=>{ActivePanel === "Inventory" ? setActivePanel("History") : setActivePanel("Inventory")}}>View {ActivePanel === "Inventory" ? "History" : "Inventory"}</button></div>
+      <div className={styles.Header}>
+        {ActivePanel}
+        <div className={styles.PanelBtns}>
+          <button className={`${styles.SwitchBtn} ${ActivePanel === "Inventory" ? styles.SwitchBtnActive : null}`} onClick={()=>setActivePanel("Inventory")}>Inventory</button>
+          <button className={`${styles.SwitchBtn} ${ActivePanel === "History" ? styles.SwitchBtnActive : null}`} onClick={()=>setActivePanel("History")}>History</button>
+          <button className={`${styles.SwitchBtn} ${ActivePanel === "Requests" ? styles.SwitchBtnActive : null}`} onClick={()=>setActivePanel("Requests")}>Requests</button>
+        </div>
+      </div>
       <input className={styles.SearchBar} type="search" onChange={(e)=>setSearch(e.target.value)} placeholder={`Search ${ActivePanel}...`}/>
-      {ActivePanel === "Inventory" ? <Inventory /> : <History />}
+      {ActivePanel === "Inventory" 
+        ? <Inventory /> 
+        : ActivePanel === "History" 
+        ? <History />
+        : ActivePanel === "Requests" 
+        ? <Request />
+        : null
+      }
     </div>
     </>
   )

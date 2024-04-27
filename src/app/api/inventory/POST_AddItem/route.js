@@ -20,9 +20,7 @@ export const POST = async (request) => {
 
         try {
             await connect();
-            console.log("---TEST---", Name)
             let existingInventory = await Inventory.findOne({ Name: Name });
-            console.log("---TEST---", existingInventory)
             if (existingInventory) {
                 existingInventory.Count += ItemCount;
                 await existingInventory.save();

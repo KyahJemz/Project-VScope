@@ -63,6 +63,20 @@ const userSchema = new Schema(
         default: []
       },
     },
+    SicknessReport:{
+      Medical: {
+        type: Array,
+        default: []
+      },
+      Dental: {
+        type: Array,
+        default: []
+      },
+      SDPC: {
+        type: Array,
+        default: []
+      },
+    },
     Role: {
       type: String,
       enum: ["Student","Lay Collaborator","Management", "Admin", "Administrator"],

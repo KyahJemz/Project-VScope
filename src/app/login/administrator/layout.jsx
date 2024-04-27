@@ -16,7 +16,7 @@ const Layout = async ({ children }) => {
                 return (
                     <div className={styles.mainContainer}>
                         <div className={styles.MiniNavTop}>
-                            <a href={'/login/administrator/dashboard'} className={`${styles.MiniNavButton}`}>Dashboard</a>
+                            {/* <a href={'/login/administrator/dashboard'} className={`${styles.MiniNavButton}`}>Dashboard</a> */}
                             <a href={'/login/administrator/management'} className={`${styles.MiniNavButton}`}>Account Management</a>
                         </div>
 
