@@ -167,6 +167,17 @@ const Page = ({ params }) => {
 		alert("Remember, approved appointments are essential to ensure you receive timely care when you need it most. Simply making a request doesn't guarantee immediate service. Healthcare providers may have busy schedules, so even if you have/haven't received approval, your preferred time slot may not be available.");
 	},[])
 
+	const parseClientSched = () => {
+		const arrayOfScheds = HistoryData && HistoryData?.length > 0 && HistoryData?.map((item)=>{
+			return ({
+				Date: item.AppointmentDate,
+				Text: item.Status
+			})
+		});
+		console.log("arrayOfScheds", arrayOfScheds);
+		return arrayOfScheds;
+	};
+
 	return (
 		<div className={styles.MainContent}>	
 
@@ -180,7 +191,7 @@ const Page = ({ params }) => {
             )}
 
 			<div className={styles.CalendarConatiner}>
-				<Calendar callback={setSelectedDay} Schedules={DeptData} />
+				<Calendar callback={setSelectedDay} Schedules={DeptData} ClientSchedules={parseClientSched()}/>
 			</div>
 
 			<div className={styles.TimeSummaryContainer}>

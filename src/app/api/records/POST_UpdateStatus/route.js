@@ -3,6 +3,7 @@ import connect from "@/utils/db";
 import MedicalAppointment from "@/models/MedicalAppointment";
 import DentalAppointment from "@/models/DentalAppointment";
 import SDPCAppointment from "@/models/SDPCAppointment";
+import Calendar from "@/models/Calendar";
 
 import sendMail from '@/app/api/sendMail/route.js';
 
@@ -52,6 +53,12 @@ export const POST = async (request) => {
           appointment = await AppointmentModel.findByIdAndUpdate(RecordId,
             { $set: { Status: Status, DateCleared: new Date() }  },
             { new: true }
+          );
+          const cleanedTime = `${appointment.AppointmentTime}`.replace("-", "");
+          await Calendar.findOneAndUpdate(
+            { Date: `${appointment.AppointmentDate}` },
+            { $pull: { [cleanedTime]: { /* condition to identify the value to remove */ } } },
+            { new: true, upsert: true }
           );
           console.log("---TEST---", appointment)
         } else {

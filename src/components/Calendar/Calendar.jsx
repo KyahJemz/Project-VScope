@@ -91,6 +91,10 @@ const Calendar = ({callback, Schedules, ClientSchedules = []}) => {
 				const matchingDeptData = Schedules && Schedules.find(Schedule => Schedule.Date === formattedDate);
 				const time = matchingDeptData ? matchingDeptData.Time : null;
 
+				const matchingClientSchedule = ClientSchedules && ClientSchedules.length > 0 && ClientSchedules.filter(Schedule => Schedule.Date === formattedDate);
+				console.log("matchres", matchingClientSchedule);
+				const clientScheduleTextArray = matchingClientSchedule ? matchingClientSchedule.map(schedule => schedule.Text) : [];
+
 				return (
 					<div
 						key={index}
@@ -98,13 +102,16 @@ const Calendar = ({callback, Schedules, ClientSchedules = []}) => {
 						value={value}
 						data-timestamp={formattedDate}
 						onClick={isSunday || isPastDate ? null : handleDayClick}
-					>
+					>	
 						{value !== null ? (
 							<>
 								<p className={styles.date}>{value}</p>
 								{time && (
 									<p className={`${styles.time} ${time.charAt(0).toUpperCase() + time.slice(1) === "Not-available" ? styles.Red : null}`}>{time.charAt(0).toUpperCase() + time.slice(1) === "Wholeday" ? "" : time.charAt(0).toUpperCase() + time.slice(1)}</p>
 								)}
+								{clientScheduleTextArray && clientScheduleTextArray.length > 0 && clientScheduleTextArray.map((text)=>(
+									<p className={styles.clientScheduleText}>{text}</p>
+								))}
 							</>
 						) : (
 							<p className={styles.sunday}>{}</p>
