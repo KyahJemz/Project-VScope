@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { Data as Datasets } from "@/models/Data";
 
 import Defaults from "@/models/Defaults";
+import Google from "next-auth/providers/google";
 
 
 const Form = ({params}) => {
@@ -64,11 +65,17 @@ const Form = ({params}) => {
     console.log(file)
 
     const [ResponseUploading, setResponseUploading] = useState(false);
+    const [HasActiveSicknessReport, setHasActiveSicknessReport] = useState(false);
 
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
     const { data, mutate, error, isLoading } = useSWR(
         `/api/messages/GET_Message?department=${encodeURIComponent(Department)}&GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
+        fetcher
+    );
+
+    const { data: accountData, mutate: accountMutate, error: accountError, isLoading: accountIsLoading } = useSWR(
+        `/api/accounts/details?&GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
         fetcher
     );
 
@@ -259,24 +266,20 @@ const Form = ({params}) => {
     }
 
 
+
+   
+
     useEffect(() => {
         const getSicknessStatus = async () => {
-            const formData = new FormData();
-            formData.append("Department", Department);
-            formData.append("GoogleEmail", GoogleEmail);
-            try {
-                let response = await fetch(`/api/sickness/medicine/GET_requestMedicine?Department=${encodeURIComponent(Department)}&GoogleEmail=${encodeURIComponent(GoogleEmail)}`, {
-                    method: "GET",
+            if (accountData && accountData?.SicknessReport?.[Department]) {
+                const sortedSicknessList = accountData?.SicknessReport[Department].sort((a, b) => {
+                    return new Date(b.updatedAt) - new Date(a.updatedAt);
                 });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch medicine status');
-                }
-                const data = await response.json();
-                setStatusSicknessList(data)
-            } catch (error) {
-                console.error("Error making API call", error);
+        
+                setStatusSicknessList(sortedSicknessList);
             }
         };
+
         const getMedicineStatus = async () => {
             const formData = new FormData();
             formData.append("Department", Department);
@@ -289,7 +292,10 @@ const Form = ({params}) => {
                     throw new Error('Failed to fetch medicine status');
                 }
                 const data = await response.json();
-                setStatusMedicineList(data)
+                const dataSorted = data.sort((a, b) => {
+                    return new Date(b.updatedAt) - new Date(a.updatedAt);
+                });
+                setStatusMedicineList(dataSorted)
             } catch (error) {
                 console.error("Error making API call", error);
             }
@@ -298,51 +304,85 @@ const Form = ({params}) => {
         getSicknessStatus();
         getMedicineStatus();
 
-        setSymptoms([
-            {
-                id: 234,
-                symptom: "test",
-                date: "2024-01-06T19:00:34.070+00:00"
-            },
-            {
-                id: 234,
-                symptom: "test",
-                date: "2024-01-06T19:00:34.070+00:00"
-            },
-            {
-                id: 234,
-                symptom: "test",
-                date: "2024-01-06T19:00:34.070+00:00"
-            },
-        ])
+
+
+
     }, [ViewStatusPanel]);
 
 
+    useEffect(()=>{
+        const hasActiveSicknessReport = (e) => {
+            if (accountData && accountData?.SicknessReport?.[Department]){
+             accountData?.SicknessReport[Department].map((item)=>{
+                 if(item.Status === "In Progress" || item.Status === "Approved"){
+                    setHasActiveSicknessReport(true);
+                    return true;
+                 } else {
+                    setHasActiveSicknessReport(false);
+                 }
+             })
+            }else {
+                setHasActiveSicknessReport(false);
+            }
+        }
+        const getSymptomsToday = async () => {
+            if (accountData && accountData?.SicknessReport?.[Department]) {
+                accountData?.SicknessReport[Department].map((item)=>{
+                    if(item.Status === "In Progress" || item.Status === "Approved"){
+                        const sortedSicknessUpdateList = item?.Updates??[].sort((a, b) => {
+                            return new Date(b.Date) - new Date(a.Date);
+                        });
+                        setSymptoms(sortedSicknessUpdateList??[]);
+                    }
+                })
+                console.log("Symptoms",Symptoms)
+            }
+        };
+        getSymptomsToday();
+        hasActiveSicknessReport();
+    }, [accountData])
+
+    const [DiagnosisUploading, setDiagnosisUploading] = useState(false);
     // Diagnostics
     const sendDiagnostics = async (e) => {
         e.preventDefault();
+        if(!Diagnosis.length > 0) {
+            alert("Cannot add empty diagnosis")
+            return
+        }
+        if(DiagnosisUploading){
+            return
+        }
         try {
+            setDiagnosisUploading(true)
             const formData = new FormData();
-            formData.append("Diagnosis", Diagnosis);
+            formData.append("Diagnosis", await JSON.stringify(Diagnosis));
             formData.append("Department", Department);
-            formData.append("Type", "SendDiagnostics");
-            const response = await fetch("/api/", {
+            formData.append("GoogleEmail", GoogleEmail);
+            formData.append("GoogleImage", GoogleImage);
+            formData.append("Name", GoogleName);
+            const response = await fetch("/api/sickness/sickness/POST_addSickness", {
                 method: "POST",
                 body: formData,
             });
             if (response.ok) {
                 console.log("Complete");
+                setDiagnosis([]);
+                setSicknessWindow('');
+                alert("Uploaded successfully")
             } else {
                 console.log("Failed");
+                alert("Failed, Try again!")
             }
         } catch (err) {
             console.log(err);
         } finally {
+            setDiagnosisUploading(false)
         }
     }
     const addDiagnosis = async (e) => {
         e.preventDefault();
-        if (e.target.value.value == "") return 
+        if (e.target.value.value === "") return 
         const initialDiagnosis = Array.isArray(Diagnosis) ? Diagnosis : [];
         const newDiagnosis = [...initialDiagnosis, e.target.value.value];
         setDiagnosis(newDiagnosis);
@@ -410,32 +450,92 @@ const Form = ({params}) => {
     // Health Report
     const addHealthReport = async (e) => {
         e.preventDefault();
+
+        if (e.target.values.value === "") return 
+        if (e.target.dates.value === "") return 
+
+        const HealthReportValue = e.target.values.value;
+        const HealthReportDate = e.target.dates.value;
+
         try {
             const formData = new FormData();
-            formData.append("healthreport", Prescription);
-            formData.append("Concern", PrescriptionConcern);
+            formData.append("HealthReportValue", HealthReportValue);
+            formData.append("HealthReportDate", HealthReportDate);
             formData.append("Department", Department);
-            formData.append("Type", "SendPrescription");
-            const response = await fetch("/api/", {
+            formData.append("GoogleEmail", GoogleEmail);
+            const response = await fetch("/api/sickness/sickness/POST_addSickness", {
                 method: "POST",
                 body: formData,
             });
             if (response.ok) {
                 console.log("Complete");
+                alert("Successfully Added")
             } else {
                 console.log("Failed");
+                alert("Failed, Try Again!")
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            e.target.reset();
+        }
+    }
+    const removeHealthReport= async (e) => {
+        try {
+            const formData = new FormData();
+            formData.append("Department", Department);
+            formData.append("GoogleEmail", GoogleEmail);
+            formData.append("Id", e.target.dataset.symptomid);
+            const response = await fetch("/api/sickness/sickness/POST_removeUpdate", {
+                method: "POST",
+                body: formData,
+            });
+            if (response.ok) {
+                console.log("Complete");
+                alert("Successfully Removed")
+            } else {
+                console.log("Failed");
+                alert("Failed, Try Again!")
             }
         } catch (err) {
             console.log(err);
         } finally {
         }
     }
-    const removeHealthReport= async (e) => {
-       
-    }
     const UpdateHealthReport = async (e) => {
-       
+        const values = e.target.closest('.parentClass').querySelector('.values').value;
+        const dates = e.target.closest('.parentClass').querySelector('.dates').value;
+        if(!values || !dates){
+            alert("No empty fields!")
+            return 
+        }
+        try {
+            const formData = new FormData();
+            formData.append("HealthReportValue", values);
+            formData.append("HealthReportDate", dates);
+            formData.append("Department", Department);
+            formData.append("GoogleEmail", GoogleEmail);
+            formData.append("Id", e.target.dataset.symptomid);
+            const response = await fetch("/api/sickness/sickness/POST_updateUpdate", {
+                method: "POST",
+                body: formData,
+            });
+            if (response.ok) {
+                console.log("Complete");
+                alert("Successfully Updated")
+            } else {
+                console.log("Failed");
+                alert("Failed, Try Again!")
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+        }
     }
+
+
+
+
 
 
     return (
@@ -514,17 +614,17 @@ const Form = ({params}) => {
                                         </div>
                                         {ViewStatusPanel === "Sickness" ? 
                                             <div className={styles.viewStatusPanels}>
-                                                {StatusSicknessList && StatusSicknessList.map((item)=>{
+                                                {StatusSicknessList && StatusSicknessList.map((item, index)=>{
                                                     return (
-                                                        <div className={styles.viewStatusItem}>{`Your sickness report is [${item.status}]`}<div className={styles.viewStatusItemDate}>{formatShortDate(item.date)}</div></div>
+                                                        <div key={index} className={styles.viewStatusItem}>{`Your sickness report is [${item.Status}]`}<div className={styles.viewStatusItemDate}>{formatShortDate(item.updatedAt)}</div></div>
                                                     )
                                                 })}
                                             </div>
                                         : ViewStatusPanel === "Medicine" ?
                                             <div className={styles.viewStatusPanels}>
-                                                {StatusMedicineList && StatusMedicineList.map((item)=>{
+                                                {StatusMedicineList && StatusMedicineList.map((item, index)=>{
                                                     return (
-                                                        <div className={styles.viewStatusItem}>{`Your request is [${item.Status}]`}<div className={styles.viewStatusItemDate}>{formatShortDate(item.createdAt)}</div></div>
+                                                        <div key={index} className={styles.viewStatusItem}>{`Your request is [${item.Status}]`}<div className={styles.viewStatusItemDate}>{formatShortDate(item.updatedAt)}</div></div>
                                                     )
                                                 })}
                                             </div>
@@ -541,33 +641,33 @@ const Form = ({params}) => {
                                         <div className={styles.headerSickness2}>Health Report</div>
                                         <div className={styles.listSymptoms}>
                                             <div className={styles.HealthReportItemHeader}>Symptoms Today</div>
-                                            {Symptoms && Symptoms?.map((symptom, index) => {
+                                            {Symptoms && Symptoms.length > 0 && Symptoms?.map((symptom, index) => {
+                                                console.log("symptom 1",symptom)
                                                 return (
-                                                    <div key={index} className={styles.ListSymptomsItem} >
-                                                        <input name="value" className={styles.ListDiagnosisItemText} list="SymptomsList"  defaultValue={symptom?.symptom??""} placeholder="Symptoms" required/>
-                                                        <input name="date" className={styles.UpdateDate} type="datetime-local" defaultValue={symptom?.date??""} required/>
+                                                    <div key={index} className={`${styles.ListSymptomsItem} parentClass`} >
+                                                        <input name="value" className={`${styles.ListDiagnosisItemText} values`} list="SymptomsList"  defaultValue={symptom?.Symptoms??""} placeholder="Symptoms" required/>
+                                                        <input name="date" className={`${styles.UpdateDateSymptom} dates`} type="datetime-local" defaultValue={symptom?.Date??""} required/>
                                                         <datalist id="SymptomsList">
                                                             {Datasets?.Diagnosis[Department]?.map((element, index) => (
                                                                 <option key={index} value={element}/>
                                                             ))}
                                                         </datalist>
-                                                        <div className={styles.symptomsBtns}>
-                                                            <button data-symptomid={symptom?.id??""} onClick={removeHealthReport} className={styles.ListDiagnosisItemAddBtn}>Remove</button>
-                                                            <button data-symptomid={symptom?.id??""} onClick={UpdateHealthReport} className={styles.ListDiagnosisItemAddBtn}>Update</button>
+                                                        <div className={`${styles.symptomsBtns}`}>
+                                                            <button data-symptomid={symptom?._id??""} onClick={removeHealthReport} className={styles.ListDiagnosisItemAddBtn}>Remove</button>
+                                                            <button data-symptomid={symptom?._id??""} onClick={UpdateHealthReport} className={styles.ListDiagnosisItemAddBtn}>Update</button>
                                                         </div>
                                                     </div> 
                                                 )
                                             })}
                                             <form className={styles.ListSymptomsItem} onSubmit={addHealthReport} >
-                                                <input name="value" className={styles.ListDiagnosisItemText} list="DiagnosisList" placeholder="Symptoms" required/>
-                                                <input name="date" className={styles.UpdateDate} type="datetime-local" required/>
-                                                <datalist id="DiagnosisList">
+                                                <input name="values" className={styles.ListDiagnosisItemText} list="Diagnosis2List" placeholder="Symptoms" required/>
+                                                <input name="dates" className={styles.UpdateDateSymptom} type="datetime-local" required/>
+                                                <datalist id="Diagnosis2List">
                                                     {Datasets?.Diagnosis[Department]?.map((element, index) => (
                                                         <option key={index} value={element}/>
                                                     ))}
                                                 </datalist>
                                                 <div className={styles.symptomsBtns}>
-                                                    <button className={styles.ListDiagnosisItemAddBtn}>Remove</button>
                                                     <button className={styles.ListDiagnosisItemAddBtn}>Add</button>
                                                 </div>
                                             </form> 
@@ -613,11 +713,12 @@ const Form = ({params}) => {
                                 </div>
                             : 
                             <div className={styles.SicknessContent1}>
-                                <button className={styles.sicknessBtn} onClick={()=>setSicknessWindow("AddConcern")}>Add Concern</button>
+                                {console.log("HasActiveSicknessReport", HasActiveSicknessReport)}
+                                {HasActiveSicknessReport ? null : <button className={styles.sicknessBtn} onClick={()=>setSicknessWindow("AddConcern")}>Add Concern</button>}
                                 <button className={styles.sicknessBtn} onClick={()=>setSicknessWindow("ViewStatus")}>View Status</button>
                                 <button className={styles.sicknessBtn} onClick={()=>setSicknessWindow("RequestMedicine")}>Request Medicine</button>
                                 <button className={styles.sicknessBtn} onClick={()=>router.push('/login/services/appointments/'+Department)}>Set Appointment</button>
-                                <button className={styles.sicknessBtn} onClick={()=>setSicknessWindow("HealthReport")}>Health Report</button>
+                                {HasActiveSicknessReport ? <button className={styles.sicknessBtn} onClick={()=>setSicknessWindow("HealthReport")}>Health Report</button> : null}
                             </div>
                             }
                     </div>

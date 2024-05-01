@@ -324,9 +324,10 @@ const Request = () => {
       <hr />
       <div className={styles.requestContainer}>
         <div className={styles.ListView}>
-            {filterMedicine && filterMedicine.map((item)=>{
+            {filterMedicine && filterMedicine.map((item, index)=>{
               return (
-                <div className={styles.medicineReqList} width={100}>
+
+                <div className={styles.medicineReqList} key={index} width={100}>
                   <p className={styles.Name} onClick={()=>{setCurrentMedicine(item)}}>{`${item.Name} [${item.GoogleEmail}] - ${formatShortDate(item.updatedAt)}`}</p>
                 </div>
               )
@@ -348,16 +349,16 @@ const Request = () => {
                   {CurrentMedicine && CurrentMedicine?.Status === "In Progress" ? 
                   <>
                     <input
-                          data-itemname={item}
-                          data-maxitem={getCountInInventory(item)}
-                          data-itemid={getIdInInventory(item)}
-                          className={styles.medicineCounterBox}
-                          type="number"
-                          min={0}
-                          max={getCountInInventory(item)}
-                          defaultValue={0}
-                          required
-                      />
+                        data-itemname={item}
+                        data-maxitem={getCountInInventory(item)}
+                        data-itemid={getIdInInventory(item)}
+                        className={styles.medicineCounterBox}
+                        type="number"
+                        min={0}
+                        max={getCountInInventory(item)}
+                        defaultValue={0}
+                        required
+                    />
                     {`[${getCountInInventory(item)}]`}
                   </>
                    : null}

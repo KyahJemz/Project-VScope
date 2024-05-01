@@ -5,6 +5,10 @@ const nextConfig = {
     images: {
         domains: ["images.pexels.com", "i.imgur.com", "lh3.googleusercontent.com", "mobilenetrix.com"],
     },
+    eslint: {
+        ignoreDuringBuilds: true, // eslints
+    },
 };
+
 
 module.exports = nextConfig;

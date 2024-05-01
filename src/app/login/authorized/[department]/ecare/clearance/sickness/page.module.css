@@ -1,0 +1,237 @@
+.MainContent{
+    display: grid;
+    grid-template-columns: 60% 1fr; 
+    grid-template-rows: 50px 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+        "Header Header"
+        "Body Sickness";
+    gap: 20px;
+    position: relative;
+}
+
+.Header {
+    grid-area: Header;
+    border: 1px solid gainsboro;    
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.Body{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    border: 1px solid gainsboro;    
+    padding: 20px;
+    grid-area: Body;
+}
+
+.Sickness{
+    grid-area: Sickness;
+}
+
+.AccountList{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    overflow-y: scroll;
+    height: 40vh;
+}
+
+.PanelBtn{
+    transition: 500ms;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #14AE5C;
+    border-radius: 5px;
+    border-width: 0px;
+    color: white;
+}
+
+.PanelBtn:hover{
+   box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.PanelBtn:active{
+    box-shadow: 0 0 2px 2px black;
+}
+
+.ListItem{
+    display: grid;
+    grid-template-columns: 60px  1fr 1fr;
+    grid-template-rows: 1fr;
+    border: 1px solid gainsboro;
+    padding: 10px;
+    align-items: center;
+    cursor: pointer;
+    transition: 500ms;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.ListItem:hover {
+    box-shadow: 0 0 2px 2px gainsboro;
+}
+
+.ListItem:active {
+    box-shadow: 0 0 2px 2px black;
+}
+
+.ListItemImage {
+    border-radius: 50%;
+    border: 1px solid gainsboro;
+}
+
+.ListItemName{
+    
+}
+.ListItemEmail{
+    font-size: 0.8rem;
+}
+.ListItemLast{
+    font-size: 0.8rem;
+}
+.ListItemDate{
+    font-size: 0.8rem;
+}
+
+.ListItemMark{
+    text-align: center;
+}
+
+.StatusFilterBtn{
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 0px;
+    transition: 0.5s;
+    border-radius: 5px;
+}
+.FilterActive {
+    background-color: #14AE5C;
+    color: white;
+}
+
+.ListItemMark.Cleared{
+    background-color: #14AE5C;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid #0e7e42;
+}
+
+.ListItemMark.InProgress{
+    background-color: #0D99FF;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid #06548b;
+}
+.SearchBar{
+    padding: 10px;
+}
+
+.PanelBtn{
+   
+}
+
+.Sickness{
+    border: 1px solid gainsboro;
+}
+
+.SicknessHeader{
+    display: flex;
+    gap: 10px;
+    font-size: 0.9rem;
+    align-items: center;
+    padding: 10px;
+}
+
+.SicknessMain{
+    background-color: gainsboro;
+    padding: 10px ;
+    overflow: hidden;
+}
+.SicknessStatus{
+    padding: 10px ;
+    font-size: 0.8rem;
+}
+
+
+.InProgress{    
+    padding: 5px 8px;
+    background-color: #0D99FF;
+    color: white;
+    border-radius: 5px;
+}   
+.Approved{
+    padding: 5px 8px;
+    border-radius: 5px;
+    background-color: #0e7e42;
+    color: white;
+}
+.Rejected{
+    padding: 5px 8px;
+    background-color: #F24822;
+    color: white;
+    border-radius: 5px;
+}
+.Cleared{
+    padding: 5px 8px;
+    background-color: #14AE5C;
+    color: white;
+    border-radius: 5px;
+}
+.Advising{
+    padding: 5px 8px;
+    background-color: #FFA629;
+    border-radius: 5px;
+}
+.SicknessBody{
+    overflow-y: scroll;
+    height: 40vh;
+    padding: 10px;
+}
+.DiagnosisItem{
+    font-size: 0.8rem;
+    padding: 5px;
+}
+.Date{
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    background-color: #14AE5C;
+    width: fit-content;
+    border-radius: 5px;
+    color: white;
+}
+.days{
+    
+    margin-top: 10px;
+}
+.symptoms{
+    border-radius: 5px;
+    background-color: gainsboro;
+}
+.DiagnosisDate{
+    font-size: 0.7rem;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+.SicknessFooter{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    align-items: center;
+    padding: 10px;
+}
+.StatusActionBtn{
+    width: 100%;
+    padding: 5px;
+    cursor: pointer;
+}

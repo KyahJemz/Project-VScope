@@ -2,6 +2,30 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
+const SicknessReportUpdates = new Schema({
+  Symptoms: String,
+  Date: String,
+}, { timestamps: true });
+
+
+const SicknessReportEntrySchema = new Schema({
+  Diagnosis: [String],
+  Updates: [SicknessReportUpdates],
+  Department: String,
+  GoogleEmail: String,
+  GoogleImage: String,
+  Name: String,
+  Status: String,
+  IsRequestCleared: {
+      type: Boolean,
+      default: false,
+  },
+  IsNew: {
+      type: Boolean,
+      default: true,
+  }
+}, { timestamps: true });
+
 const userSchema = new Schema(
   {
     GoogleId: {
@@ -63,20 +87,11 @@ const userSchema = new Schema(
         default: []
       },
     },
-    SicknessReport:{
-      Medical: {
-        type: Array,
-        default: []
-      },
-      Dental: {
-        type: Array,
-        default: []
-      },
-      SDPC: {
-        type: Array,
-        default: []
-      },
-    },
+    SicknessReport: {
+      Medical: [SicknessReportEntrySchema],
+      Dental: [SicknessReportEntrySchema], 
+      SDPC: [SicknessReportEntrySchema],
+  },
     Role: {
       type: String,
       enum: ["Student","Lay Collaborator","Management", "Admin", "Administrator"],

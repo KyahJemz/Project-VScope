@@ -28,11 +28,19 @@ const Form = ({params}) => {
     var ReceiverGoogleImage = "";
     var ReceiverGoogleEmail = "";
 
+    
+
     var CurrentMessageDate = "";
 
     const [file, setFile] = useState(null);
     const [IsViewUpdate, setIsViewUpdate] = useState(false);
     const [IsViewCreateRecord, setIsViewCreateRecord] = useState(false);
+
+    const [GoogleEmail, setGoogleEmail] = useState("");
+    const [HasActiveSicknessReport, setHasActiveSicknessReport] = useState(false);
+    const [HasSicknessReportNewUpdate, setHasSicknessReportNewUpdate] = useState(false);
+    const [SicknessReport, setSicknessReport] = useState({});
+    const [Symptoms, setSymptoms] = useState([]);
 
     console.log(file)
 
@@ -58,6 +66,11 @@ const Form = ({params}) => {
         `/api/messages/GET_Message?department=${encodeURIComponent(Department)}&id=${encodeURIComponent(RecordId)}`,
         fetcher
     );
+        
+    const { data: accountData, mutate: accountMutate, error: accountError, isLoading: accountIsLoading } = useSWR(
+        `/api/accounts/details?&GoogleEmail=${encodeURIComponent(GoogleEmail)}`,
+        fetcher
+    );
 
     if(!isLoading) {
         SenderGoogleImage = Department === "Medical" ? Medical : Department === "Dental" ? Dental : Department === "SDPC" ? SDPC  : "";
@@ -66,6 +79,11 @@ const Form = ({params}) => {
         ReceiverGoogleEmail = data?.GoogleEmail??"?";
         console.log(data)
     }
+
+    useEffect(()=>{
+        setGoogleEmail(data?.GoogleEmail??"");
+    },[ReceiverGoogleEmail])
+
 
     const sortedResponses = data?.Responses?.sort((a, b) => {
         const dateA = new Date(a.createdAt).getTime();
@@ -245,6 +263,42 @@ const Form = ({params}) => {
     }, []);
 
     useEffect(() => {
+        const hasActiveSicknessReport = (e) => {
+            if (accountData && accountData?.SicknessReport?.[Department]){
+             accountData?.SicknessReport[Department].map((item)=>{
+                if(item.Status === "In Progress" || item.Status === "Approved"){
+                    setHasActiveSicknessReport(true);
+                    if(item.IsNew === true) {
+                        setHasSicknessReportNewUpdate(true);
+                    }
+                    setSicknessReport(item);
+                    return true;
+                } else {
+                    setHasActiveSicknessReport(false);
+                }
+             })
+            }else {
+                setHasActiveSicknessReport(false);
+            }
+        }
+        const getSymptomsToday = async () => {
+            if (accountData && accountData?.SicknessReport?.[Department]) {
+                accountData?.SicknessReport[Department].map((item)=>{
+                    if(item.Status === "In Progress" || item.Status === "Approved"){
+                        const sortedSicknessUpdateList = item?.Updates??[].sort((a, b) => {
+                            return new Date(b.Date) - new Date(a.Date);
+                        });
+                        setSymptoms(sortedSicknessUpdateList??[]);
+                    }
+                })
+                console.log("Symptoms",Symptoms)
+            }
+        };
+        getSymptomsToday();
+        hasActiveSicknessReport();
+    }, [accountData]);
+
+    useEffect(() => {
         const element = Messages.current;
         if (element) {
           element.scrollTop = element.scrollHeight;
@@ -305,8 +359,58 @@ const Form = ({params}) => {
         const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' };
         const formattedDate = new Date(timestamp).toLocaleDateString(undefined, options);
     
-        return `${formattedDate}`; // Removing comma after the day
+        return `${formattedDate}`;
     };
+
+    const onApproveSicknessReport = async (e) => {
+        try {
+            const formData = new FormData();
+            formData.append("Department", Department);
+            formData.append("GoogleEmail", GoogleEmail);
+            formData.append("Status", "Approved");
+
+            const response = await fetch("/api/sickness/sickness/POST_updateSicknessStatus", {
+                method: "POST",
+                body: formData,
+            });
+    
+            if (response.ok) {
+                console.log("Complete");
+                alert("Approved Complete!");
+            } else {
+                console.log("Failed");
+                alert("Approved Failed, Try Again!");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+        }
+    }
+
+    const onRejectSicknessReport = async (e) => {
+        try {
+            const formData = new FormData();
+            formData.append("Department", Department);
+            formData.append("GoogleEmail", GoogleEmail);
+            formData.append("Status", "Rejected");
+
+            const response = await fetch("/api/sickness/sickness/POST_updateSicknessStatus", {
+                method: "POST",
+                body: formData,
+            });
+    
+            if (response.ok) {
+                console.log("Complete");
+                alert("Rejecting Complete!");
+            } else {
+                console.log("Failed");
+                alert("Rejecting Failed, Try Again!");
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+        }
+    }
 
     const Header = () => {
         return (
@@ -332,24 +436,42 @@ const Form = ({params}) => {
                     </>
                 ) : (
                     <>
-                        <button className={styles.Updates} onClick={()=>{IsViewCreateRecord ? setIsViewCreateRecord(false) : setIsViewCreateRecord(true)}}>Create Record</button>
-                        <div className={`${styles.UpdateContainer} ${IsViewCreateRecord ? null  : styles.None}`}>
-                            <form onSubmit={HandleCreateRecordSubmit} method="post" className={styles.CreateRecord}>
-                                <input name="GoogleEmail" value={ReceiverGoogleEmail} placeholder="Email" type="text" required className={styles.CreateRecordInput}/>
-                                <textarea name="Concern" id="" cols="" rows="10" required placeholder="Concern" className={styles.CreateRecordInput}></textarea>
-                                <select name="Status" id="" className={styles.CreateRecordInput} required>
-                                    <option value="Advising">Mark as Advising</option>
-                                    <option value="Approved">Mark as Approved</option>
-                                    <option value="Completed">Mark as Completed</option>
-                                </select>
-                                <select name="Category" id="" className={styles.CreateRecordInput} required>
-                                    <option value="Student">Student</option>
-                                    <option value="Lay Collaborator">Lay Collaborator</option>
-                                </select>
-                                <input name="GoogleImage" value={ReceiverGoogleImage} hidden type="text" required className={styles.CreateRecordInput}/>
-                                <button type="submit" className={styles.CreateRecordInput}>Create</button>
-                            </form>
-                        </div>
+                        {HasActiveSicknessReport ? 
+                            <>
+                                <button className={`${styles.Updates} ${styles.sicknessreportbtn}`} onClick={()=>{IsViewCreateRecord ? setIsViewCreateRecord(false) : setIsViewCreateRecord(true)}}>Sickness Report{HasSicknessReportNewUpdate ? <div className="dot"></div> : null}</button>
+                                <div className={`${styles.UpdateContainer} ${styles.UpdateContainerSickness} ${IsViewCreateRecord ? null  : styles.None}`}>
+                                    <p><center>{formatShortDate(SicknessReport.createdAt)}</center></p>
+                                    <hr />
+                                    {SicknessReport && SicknessReport?.Diagnosis 
+                                    ? SicknessReport?.Diagnosis.map((sickness)=>{
+                                        return (<p>{"- "+sickness}</p>)
+                                    })
+                                    : null }
+                                    <hr />
+                                    {SicknessReport && SicknessReport?.Updates 
+                                    ? SicknessReport?.Updates.map((updates)=>{
+                                        return (<p>{"- "+updates.Symptoms}</p>)
+                                    })
+                                    : null }
+                                    <hr />
+                                    <p>Status: {SicknessReport.Status}</p>
+                                    <p>Last Update: {formatShortDate(SicknessReport.updatedAt)}</p>
+                                    {SicknessReport.Status === "In Progress" ? (
+                                        <div className={styles.sicknessActionBtn}>
+                                            <button data-sicknessid={SicknessReport._id} onClick={onRejectSicknessReport} className={styles.sicknesreportactionBtn}>Reject</button>
+                                            <button data-sicknessid={SicknessReport._id} onClick={onApproveSicknessReport} className={styles.sicknesreportactionBtn}>Accept</button>
+                                        </div>
+                                    ) : SicknessReport.Status === "Approved" ? (
+                                        <div className={styles.sicknessActionBtn}>
+                                            <button data-sicknessid={SicknessReport._id} onClick={()=>router.push()} className={styles.sicknesreportactionBtn}>View</button>
+                                        </div>
+                                    ) : null }
+                                    
+                                </div>
+                            </>
+                            :
+                            null
+                        }
                     </>
                 )}
             </div>

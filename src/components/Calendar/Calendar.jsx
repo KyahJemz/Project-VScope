@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Calendar.module.css";
 
-const Calendar = ({callback, Schedules}) => {
+const Calendar = ({callback, Schedules, ClientSchedules = []}) => {
 	const currentDate = new Date();
 	const [Year, setYear] = useState(currentDate.getFullYear());
 	const [Month, setMonth] = useState(currentDate.getMonth() + 1);

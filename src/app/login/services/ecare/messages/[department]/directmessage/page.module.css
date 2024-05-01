@@ -492,3 +492,15 @@ button.UpdateRemove:active,
   background-color: gainsboro;
   font-size: 0.8rem;
 }
+
+.symptomsBtns{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.UpdateDateSymptom{
+  width: 100%;
+  padding: 5px;
+  cursor: pointer;
+}

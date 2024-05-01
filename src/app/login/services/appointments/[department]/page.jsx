@@ -109,7 +109,6 @@ const Page = ({ params }) => {
 
             if (response.ok) {
                 console.log("Complete");
-				alert("Appointment Submitted!")
 				alert("Thank you for understanding the importance of approved appointments in securing timely healthcare. Your cooperation ensures smoother access to the care you deserve. Remember, your health matters, and we're here to support you every step of the way. Wishing you good health and well-being always. God bless you! ");
 				e.target.reset();
             } else {

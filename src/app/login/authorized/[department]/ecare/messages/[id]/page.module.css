@@ -16,6 +16,9 @@
   overflow: hidden;
 }
 
+.sicknessreportbtn{
+  position: relative;
+}
 
 .MessagesContainer{
 display: flex;
@@ -238,4 +241,20 @@ font-size: 0.72rem;
 
 .CreateRecordInput{
   padding: 5px;
+}
+
+.UpdateContainerSickness{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sicknessActionBtn{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.sicknesreportactionBtn{
+  width: 100%;
+  cursor: pointer;
 }
