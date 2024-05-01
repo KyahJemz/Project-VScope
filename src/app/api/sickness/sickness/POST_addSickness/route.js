@@ -8,32 +8,46 @@ export const POST = async (request) => {
 	if (request.method === 'POST') {
 		const body = await request.formData();
 
-		const HealthReportValue = body.get("HealthReportValue");
-		const HealthReportDate = body.get("HealthReportDate");
+		let Diagnosis = body.get("Diagnosis");
 		const Department = body.get("Department");
 		const GoogleEmail = body.get("GoogleEmail");
-
-		if (!HealthReportValue || !HealthReportDate){
+		const GoogleImage = body.get("GoogleImage");
+		const Name = body.get("GoogleEmail");
+	
+		if (!Diagnosis || !Name){
 			return new NextResponse('Missing parameters', { status: 404 });
 		}
 
 		try {
 			await connect();
+
+			Diagnosis = JSON.parse(Diagnosis);
+
 			const result = await Accounts.findOneAndUpdate(
-				{ 
-				  GoogleEmail: GoogleEmail, 
-				  [`SicknessReport.${Department}.Status`]: "In Progress" 
-				},
-				{ 
-				  $push: { [`SicknessReport.${Department}.$[elem].Updates`]: { 
-					Symptoms: HealthReportValue,
-					Date: HealthReportDate
-				  }}
-				},
+				{ GoogleEmail: GoogleEmail },
 				{
-				  arrayFilters: [{ "elem.Status": "In Progress" }] 
-				}
+				  $push: {
+					[`SicknessReport.${Department}`]: {
+					  Diagnosis,
+					  Department,
+					  GoogleEmail,
+					  GoogleImage,
+					  Name,
+					  Status: "In Progress",
+					  IsRequestCleared: false,
+					  IsNew: true,
+					  Updates: []
+					}
+				  }
+				},
+				{ new: true } 
 			  );
+
+			let Counts = [];
+
+			
+			await result.save();
+
 
 			if (!result) {
 				return new NextResponse('Failed to save', { status: 404 });

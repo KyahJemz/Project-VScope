@@ -463,7 +463,7 @@ const Form = ({params}) => {
                                         </div>
                                     ) : SicknessReport.Status === "Approved" ? (
                                         <div className={styles.sicknessActionBtn}>
-                                            <button data-sicknessid={SicknessReport._id} onClick={()=>router.push()} className={styles.sicknesreportactionBtn}>View</button>
+                                            <button data-sicknessid={SicknessReport._id} onClick={()=>router.push(`/login/authorize/${Department}/ecare/clearance/sickness`)} className={styles.sicknesreportactionBtn}>View</button>
                                         </div>
                                     ) : null }
                                     
