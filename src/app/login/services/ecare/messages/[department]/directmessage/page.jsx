@@ -463,7 +463,7 @@ const Form = ({params}) => {
             formData.append("HealthReportDate", HealthReportDate);
             formData.append("Department", Department);
             formData.append("GoogleEmail", GoogleEmail);
-            const response = await fetch("/api/sickness/sickness/POST_updateUpdate", {
+            const response = await fetch("/api/sickness/sickness/POST_addSicknessUpdate", {
                 method: "POST",
                 body: formData,
             });
