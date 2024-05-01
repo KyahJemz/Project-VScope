@@ -20,27 +20,28 @@ export const POST = async (request) => {
 			await connect();
 			const result = await Accounts.findOneAndUpdate(
 				{ 
-				  GoogleEmail: GoogleEmail, 
-				  [`SicknessReport.${Department}`]: {
-					$elemMatch: {
-					  "Updates._id": Id,
-					  $or: [
-						{ "Status": "In Progress" },
-						{ "Status": "Approved" }
-					  ]
+					GoogleEmail: GoogleEmail, 
+					[`SicknessReport.${Department}`]: {
+						$elemMatch: {
+							"Updates._id": Id,
+							$or: [
+								{ "Status": "In Progress" },
+								{ "Status": "Approved" }
+							]
+						}
 					}
-				  }
 				},
 				{ 
-				  $pull: { [`SicknessReport.${Department}.$[elem].Updates`]: { _id: Id } },
+					$pull: { [`SicknessReport.${Department}.$[elem].Updates`]: { _id: Id } },
 				},
 				{
-				  arrayFilters: [
-					{ "elem.Status": "In Progress" },
-					{ "elem.Status": "Approved" }
-				  ]
+					arrayFilters: [
+						{ "elem.Status": "In Progress" },
+						{ "elemStatus": "Approved" } 
+					]
 				}
-			  );
+			);
+			
 
 			if (!result) {
 				return new NextResponse('Failed to save', { status: 404 });

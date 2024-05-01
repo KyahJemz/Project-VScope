@@ -20,23 +20,24 @@ export const POST = async (request) => {
 		try {
 			await connect();
 
-			Diagnosis = JSON.parse(Diagnosis);
-
 			const result = await Accounts.findOneAndUpdate(
-				{ GoogleEmail: GoogleEmail },
-				{
-				  $push: {
-					[`SicknessReport.${Department}.Updates`]: {
-					  Symptoms: HealthReportValue,
-					  Date: HealthReportDate,
-					}
-				  }
+				{ 
+					GoogleEmail: GoogleEmail, 
+					[`SicknessReport.${Department}`]: { $elemMatch: { Status: "In Progress" } } 
 				},
-				{ new: true } 
-			  );
-
-			let Counts = [];
-
+				{
+					$push: {
+						[`SicknessReport.${Department}.$[elem].Updates`]: {
+							Symptoms: HealthReportValue,
+							Date: HealthReportDate
+						}
+					}
+				},
+				{
+					new: true,
+					arrayFilters: [{ "elem.Status": "In Progress" }]
+				}
+			);
 			
 			await result.save();
 

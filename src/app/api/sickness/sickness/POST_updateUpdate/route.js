@@ -22,32 +22,33 @@ export const POST = async (request) => {
 			await connect();
 			const result = await Accounts.findOneAndUpdate(
 				{ 
-				  GoogleEmail: GoogleEmail, 
-				  [`SicknessReport.${Department}`]: {
-					$elemMatch: {
-					  "Updates._id": Id,
-					  $or: [
-						{ "Status": "In Progress" },
-						{ "Status": "Approved" }
-					  ]
+					GoogleEmail: GoogleEmail, 
+					[`SicknessReport.${Department}`]: {
+						$elemMatch: {
+							"Updates._id": Id,
+							$or: [
+								{ "Status": "In Progress" },
+								{ "Status": "Approved" }
+							]
+						}
 					}
-				  }
 				},
 				{ 
-				  $set: { 
-					[`SicknessReport.${Department}.$[elem].Updates.$[updateElem].Symptoms`]: HealthReportValue,
-					[`SicknessReport.${Department}.$[elem].Updates.$[updateElem].Date`]: HealthReportDate
-				  }
+					$set: { 
+						[`SicknessReport.${Department}.$[elem].Updates.$[updateElem].Symptoms`]: HealthReportValue,
+						[`SicknessReport.${Department}.$[elem].Updates.$[updateDateElem].Date`]: HealthReportDate
+					}
 				},
 				{
-				  arrayFilters: [
-					{ "elem.Status": "In Progress" },
-					{ "elem.Status": "Approved" },
-					{ "updateElem._id": Id }
-				  ]
+					arrayFilters: [
+						{ "elem.Status": "In Progress" },
+						{ "updateElem.Status": "Approved" }, // Changed to updateElem.Status
+						{ "updateDateElem._id": Id } // Unique field name for the second array filter
+					]
 				}
-			  );
-
+			);
+			
+			
 			if (!result) {
 				return new NextResponse('Failed to save', { status: 404 });
 			}
