@@ -71,8 +71,10 @@ const Page = ({ params }) => {
 			if (response.ok) {
 				console.log("Success");
 				mutate();
+				alert("Delete Success!");
 			} else {
 				console.log("Failed");
+				alert("Delete Failed!");
 			}
 		} catch (err) {
 			console.log(err);
@@ -103,9 +105,11 @@ const Page = ({ params }) => {
 				setUploading(false);
 				console.log("Success");
 				mutate(); 
+				alert("Add Success!");
 			} else {
 				setUploading(false);
 				console.log("Failed");
+				alert("Add Failed!");
 			}
 		} catch (err) {
 			console.log(err);
@@ -137,9 +141,11 @@ const Page = ({ params }) => {
 				setUploadingUpdate(false);
 				console.log("Success");
 				mutate(); // mag refresh to
+				alert("Update Success!");
 			} else {
 				setUploadingUpdate(false);
 				console.log("Failed");
+				alert("Update Failed!");
 			}
 		} catch (err) {
 			console.log(err);

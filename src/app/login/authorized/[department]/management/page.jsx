@@ -50,6 +50,7 @@ const Page = ({ params }) => {
 				console.log("Success");
 			} else {
 				console.log("Failed");
+
 			}
 		} catch (err) {
 			console.log(err);
@@ -69,8 +70,10 @@ const Page = ({ params }) => {
 			if (response.ok) {
 				console.log("Success");
 				mutate();
+				alert("Delete Success!");
 			} else {
 				console.log("Failed");
+				alert("Delete Failed try-again!");
 			}
 		} catch (err) {
 			console.log(err);
@@ -100,10 +103,12 @@ const Page = ({ params }) => {
 			if (response.ok) {
 				setUploading(false);
 				console.log("Success");
+				alert("Add Success!");
 				mutate(); 
 			} else {
 				setUploading(false);
 				console.log("Failed");
+				alert("Add Failed try-again!");
 			}
 		} catch (err) {
 			console.log(err);
@@ -135,9 +140,11 @@ const Page = ({ params }) => {
 				setUploadingUpdate(false);
 				console.log("Success");
 				mutate(); // mag refresh to
+				alert("Update Success!");
 			} else {
 				setUploadingUpdate(false);
 				console.log("Failed");
+				alert("Update Failed try-again!");
 			}
 		} catch (err) {
 			console.log(err);
